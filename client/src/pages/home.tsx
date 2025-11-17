@@ -1,6 +1,6 @@
 import zebras from "../assets/zebras.jpeg";
 import rhino from "../assets/rhino.png";
-import { Button } from "./ui/button";
+import { Button } from "../components/ui/button";
 import "../styles/global.css";
 
 export default function Home() {
