@@ -10,6 +10,7 @@ import Services from "./pages/services";
 import Notfound from "./pages/notfound";
 
 // Properties
+import KifaruProperty from "./pages/properties/kifaru-property";
 import KifaruBelgium from "./pages/properties/kifaru-belgium";
 import KifaruBrussels from "./pages/properties/kifaru-brussels";
 import KifaruMsambweni from "./pages/properties/kifaru-msambweni";
@@ -25,6 +26,7 @@ import Payments from "./pages/admin/payments";
 import Reports from "./pages/admin/reports";
 import Guests from "./pages/admin/guests";
 
+
 function App() {
   return (
     <Routes>
@@ -32,6 +34,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
         <Route path="/property" element={<Property />}>
+          <Route index element={<KifaruProperty />} />
           <Route path="belgium" element={<KifaruBelgium />} />
           <Route path="brussels" element={<KifaruBrussels />} />
           <Route path="msambweni" element={<KifaruMsambweni />} />

@@ -14,7 +14,7 @@ import logo from "../../assets/icon/rhino.ico";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isMobile = useIsMobile();
+  // const isMobile = useIsMobile();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -220,7 +220,7 @@ export default function Navbar() {
                   Nertherlands
                 </Link>
                 <Link
-                  to="nyali"
+                  to="/property/nyali"
                   className="block text-sm text-gray-600 hover:text-primary py-1"
                   onClick={toggleMenu}
                 >
