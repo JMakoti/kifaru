@@ -1,0 +1,65 @@
+[
+  {
+    "id": 1,
+    "name": "Kifaru Belgium",
+    "location": "Belgium",
+    "description": "A refined escape in the heart of Belgium, where elegance meets timeless charm.",
+    "images": [
+      "https://res.cloudinary.com/drselhsl4/image/upload/v1750770573/QwetuLinks/fzc7tuuhct5xavx2g5ve.jpg",
+      "https://res.cloudinary.com/drselhsl4/image/upload/v1750770573/QwetuLinks/kzagmttvoytfjhr0yqtc.webp",
+      "https://res.cloudinary.com/drselhsl4/image/upload/v1750767076/QwetuLinks/mmzqg0hi9mm3mqyqacpj.jpg"
+    ],
+    "link": "/property/belgium"
+  },
+  {
+    "id": 2,
+    "name": "Kifaru Brussels",
+    "location": "Brussels",
+    "description": "Immerse yourself in contemporary luxury and cultural richness in vibrant Brussels.",
+    "images": [
+      "https://res.cloudinary.com/drselhsl4/image/upload/v1750767072/QwetuLinks/pgeux5ordfael9rspwzd.jpg",
+      "https://res.cloudinary.com/drselhsl4/image/upload/v1750767069/QwetuLinks/gdbpfnwiabuqfr3geods.jpg"
+    ],
+    "link": "/property/brussels"
+  },
+  {
+    "id": 3,
+    "name": "Kifaru Msambweni",
+    "location": "Msambweni",
+    "description": "Surrender to serene coastal beauty and intimate luxury along the shores of Msambweni.",
+    "images": [
+      "https://res.cloudinary.com/drselhsl4/image/upload/v1763483907/Kifaru/gykpj99seblgx6czx1by.jpg",
+      "https://res.cloudinary.com/drselhsl4/image/upload/v1763483918/Kifaru/agu4ixfinhc6efc4gy8u.jpg"
+    ],
+    "link": "/property/msambweni"
+  },
+  {
+    "id": 4,
+    "name": "Kifaru Nairobi",
+    "location": "Nairobi",
+    "description": "Experience urban sophistication and elevated comfort in the heartbeat of Nairobi.",
+    "images": [
+      "https://res.cloudinary.com/drselhsl4/image/upload/v1750767059/QwetuLinks/rzi0qdirepe7dxdfugun.jpg",
+      "https://res.cloudinary.com/drselhsl4/image/upload/v1750767059/QwetuLinks/vrvvuzjpmkgxg4xva2rx.jpg"
+    ],
+    "link": "/property/nairobi"
+  },
+  {
+    "id": 5,
+    "name": "Kifaru Netherlands",
+    "location": "Netherlands",
+    "description": "Discover coastal tranquility and modern elegance in the scenic Netherlands.",
+    "images": ["/images/properties/nertherlands.jpg"],
+    "link": "/property/nertherlands"
+  },
+  {
+    "id": 6,
+    "name": "Kifaru Nyali",
+    "location": "Nyali",
+    "description": "Indulge in sun-kissed shores and relaxed luxury along the pristine Nyali coastline.",
+    "images": [
+      "https://res.cloudinary.com/drselhsl4/image/upload/v1750767052/QwetuLinks/fbxcq2dsqymt4moljzoc.jpg"
+    ],
+    "link": "/property/kisumu"
+  }
+]

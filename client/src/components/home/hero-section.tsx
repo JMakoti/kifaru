@@ -54,8 +54,14 @@ export default function HeroSection() {
               className="bg-white hover:bg-gray-100 text-primary-600 flex items-center gap-2 text-base"
               asChild
             >
-              <Link to="/about">
-                Learn More <ArrowRight size={16} />
+              <Link to="/about">Learn More</Link>
+            </Button>
+            <Button
+              className="bg-white hover:bg-gray-100 text-primary-600 flex items-center gap-2 text-base"
+              asChild
+            >
+              <Link to="/property">
+                Book Now <ArrowRight size={16} />
               </Link>
             </Button>
           </div>
