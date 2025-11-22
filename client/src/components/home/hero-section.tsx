@@ -48,7 +48,7 @@ export default function HeroSection() {
               className="bg-white hover:text-white text-primary flex items-center gap-2 text-base animate-pulse"
               asChild
             >
-              <Link to="/property">View Properties</Link>
+              <Link to="/property">Explore Properties</Link>
             </Button>
             <Button
               className="bg-white hover:bg-gray-100 text-primary-600 flex items-center gap-2 text-base"

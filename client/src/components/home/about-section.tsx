@@ -6,7 +6,7 @@ export default function AboutSection() {
   return (
     <div className="about-kifaru flex flex-col lg:flex-row justify-center items-center gap-6 lg:gap-8 p-4 md:p-8 w-full">
       <div className="text-content flex flex-col gap-4 md:gap-6 lg:gap-10 max-w-lg order-2 lg:order-1 w-full">
-        <h3 className="text-lg md:text-xl font-semibold">|| ABOUT US</h3>
+        {/* <h3 className="text-lg md:text-xl font-semibold">|| ABOUT US</h3> */}
         <h2 className="font-bold text-2xl font-sans  md:text-3xl lg:text-4xl leading-tight">
           DISCOVER YOUR PERFECT GETAWAY
         </h2>

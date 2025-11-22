@@ -11,12 +11,6 @@ import Notfound from "./pages/notfound";
 
 // Properties
 import KifaruProperty from "./pages/properties/kifaru-property";
-import KifaruBelgium from "./pages/properties/kifaru-belgium";
-import KifaruBrussels from "./pages/properties/kifaru-brussels";
-import KifaruMsambweni from "./pages/properties/kifaru-msambweni";
-import KifaruNairobi from "./pages/properties/kifaru-nairobi";
-import KifaruNertherlands from "./pages/properties/kifaru-nertherlands";
-import KifaruNyali from "./pages/properties/kifaru-nyali";
 
 // Admin Dashboard
 import AdminLayout from "./components/admin_layout/admin_layout";
@@ -25,6 +19,7 @@ import Bookings from "./pages/admin/bookings";
 import Payments from "./pages/admin/payments";
 import Reports from "./pages/admin/reports";
 import Guests from "./pages/admin/guests";
+import KifaruPropertyDetails from "./pages/properties/kifaru-properties-details";
 
 
 function App() {
@@ -35,12 +30,7 @@ function App() {
         <Route path="about" element={<About />} />
         <Route path="/property" element={<Property />}>
           <Route index element={<KifaruProperty />} />
-          <Route path="belgium" element={<KifaruBelgium />} />
-          <Route path="brussels" element={<KifaruBrussels />} />
-          <Route path="msambweni" element={<KifaruMsambweni />} />
-          <Route path="nairobi" element={<KifaruNairobi />} />
-          <Route path="nertherlands" element={<KifaruNertherlands />} />
-          <Route path="nyali" element={<KifaruNyali />} />
+          <Route path=":propertyId" element={<KifaruPropertyDetails />} />
         </Route>
         <Route path="services" element={<Services />} />
         <Route path="contact" element={<Contact />} />

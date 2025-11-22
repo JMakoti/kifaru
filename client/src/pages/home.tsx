@@ -1,4 +1,4 @@
-import "../styles/global.css";
+// import "../styles/global.css";
 import AboutSection from "@/components/home/about-section";
 import HeroSection from "@/components/home/hero-section";
 import PropertySection from "@/components/home/property-section";
