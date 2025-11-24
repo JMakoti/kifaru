@@ -39,16 +39,17 @@ export default function Footer() {
       className={`relative w-full text-gray-300 pt-12 pb-6 mt-12 ${
         isDefaultFooterRoute ? "bg-primary" : "bg-cover bg-center bg-no-repeat"
       }`}
+      
       style={
         !isDefaultFooterRoute && propertyBackgroundUrl
-          ? { backgroundImage: `url('${propertyBackgroundUrl}')` }
+          ? { backgroundImage: `url(${propertyBackgroundUrl})` }
           : undefined
       }
     >
       {!isDefaultFooterRoute && propertyBackgroundUrl && (
         <div className="absolute inset-0 bg-black bg-opacity-60"></div>
       )}
-      <div className="relative z-10">
+      <div className=" relative z-10">
         {isDefaultFooterRoute ? (
           <div className="container mx-auto px-6 md:px-12">
             <div className="grid md:grid-cols-4 gap-8 mb-10">
