@@ -1,62 +1,67 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "react-calendar/dist/Calendar.css";
+import Calendar from "react-calendar";
+import * as LucideIcons from "lucide-react";
 import {
+  Bath,
+  Bed,
   Building2,
   CalendarCheck,
-  Car,
-  Coffee,
   DoorClosed,
   Dumbbell,
   MapPin,
+  Ruler,
   ShowerHead,
   Square,
   User2,
-  Utensils,
-  Wifi,
-  Wind,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import msambweni from "../../assets/images/properties/msambweni-hero.jpg";
-import msambweni1 from "../../assets/images/footers/footer-msambweni.png";
-import msambweni2 from "../../assets/images/properties/nyali-hero.jpg";
-import msambweni3 from "../../assets/images/properties/msambweni-hero.jpg";
-import msambweni4 from "../../assets/images/Interior.jpg";
-import msambweni5 from "../../assets/images/interior3.jpg";
 import palmTree from "../../assets/palmtree.png";
+import properties from "../../components/data/properties.json";
+import Maps from "@/components/property/maps";
+import Reviews from "@/components/property/reviews";
 
 export default function KifaruPropertyDetails() {
-  const { spaceId } = useParams<{ spaceId: string }>();
-  const [loading, setLoading] = useState(true);
+  const { propertyId } = useParams<{ propertyId: string }>();
+  // const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<
     "description" | "features" | "availability" | "maps" | "reviews"
   >("description");
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [animated, setAnimated] = useState(false);
+  const [bookedDates, setBookedDates] = useState<Date[]>([]);
+  const [date, setDate] = useState(new Date());
 
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
-  }, [spaceId]);
+  // if (loading) {
+  //   return (
+  //     <div className="flex justify-center items-center min-h-[500px]">
+  //       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+  //     </div>
+  //   );
+  // }
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
+  const tabs = [
+    "description",
+    "features",
+    "availability",
+    "maps",
+    "reviews",
+  ] as const;
+
+  // Find the property based on the route param
+  const property = properties.find(
+    (prop) => prop.slug.toString() === propertyId
+  );
+  console.log(propertyId);
+  // console.log(property);
+
+  if (!property) {
+    return <div className="text-center py-10">Property not found</div>;
   }
 
-  const images = [
-    msambweni,
-    msambweni1,
-    msambweni2,
-    msambweni3,
-    msambweni4,
-    msambweni5,
-  ].filter(Boolean) as string[];
+  const images = property.images;
 
   const toggleAnimation = () => {
     setAnimated(!animated);
@@ -74,15 +79,41 @@ export default function KifaruPropertyDetails() {
     setCurrentImageIndex((i) => (i - 1 + images.length) % images.length);
   };
 
+  const expandedBookedDates = (check_in: string, check_out: string): Date[] => {
+    const checkinDate = new Date(check_in);
+    const checkoutDate = new Date(check_out);
+    const dates: Date[] = [];
+
+    let currentDate = new Date(checkinDate);
+    while (currentDate <= checkoutDate) {
+      dates.push(new Date(currentDate));
+      currentDate.setDate(currentDate.getDate() + 1);
+    }
+
+    return dates;
+  };
+
+  useEffect(() => {
+    const expanded = property.booked_dates.flatMap(
+      (range: { check_in: string; check_out: string }) =>
+        expandedBookedDates(range.check_in, range.check_out)
+    );
+    setBookedDates(expanded);
+    // setLoading(false);
+  }, [propertyId]);
+
+  const isBooked = (day: Date) =>
+    bookedDates.some((b) => b.toDateString() === day.toDateString());
+
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Header */}
       <div className="flex flex-col lg:flex-row justify-between mb-6">
         <div>
-          <h1 className="text-3xl font-bold">Kifaru Msambweni</h1>
+          <h1 className="text-3xl font-bold">{property.name}</h1>
           <div className="flex gap-2 mt-2 text-gray-600">
             {" "}
-            <MapPin /> South Coast, Msambweni, Kenya
+            <MapPin /> {property.location}, {property.country}
           </div>
         </div>
       </div>
@@ -93,7 +124,7 @@ export default function KifaruPropertyDetails() {
           <div className="relative h-96 rounded-lg overflow-hidden bg-gray-100">
             <img
               src={images[currentImageIndex]}
-              alt="Kifaru Msambweni"
+              alt={property.name}
               className={`w-full h-full object-cover cursor-pointer
               transition-all duration-300 ease-out
               ${
@@ -149,56 +180,19 @@ export default function KifaruPropertyDetails() {
             {/* Tabs */}
             <div className="border-b border-gray-200 mb-6">
               <nav className="flex space-x-8">
-                <button
-                  onClick={() => setActiveTab("description")}
-                  className={`py-4 font-medium text-sm ${
-                    activeTab === "description"
-                      ? "border-b-2 border-blue-500 text-blue-600"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
-                >
-                  Description
-                </button>
-                <button
-                  onClick={() => setActiveTab("features")}
-                  className={`py-4 font-medium text-sm ${
-                    activeTab === "features"
-                      ? "border-b-2 border-blue-500 text-blue-600"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
-                >
-                  Amenities
-                </button>
-                <button
-                  onClick={() => setActiveTab("availability")}
-                  className={`py-4 font-medium text-sm ${
-                    activeTab === "availability"
-                      ? "border-b-2 border-blue-500 text-blue-600"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
-                >
-                  Availability
-                </button>
-                <button
-                  onClick={() => setActiveTab("maps")}
-                  className={`py-4 font-medium text-sm ${
-                    activeTab === "maps"
-                      ? "border-b-2 border-blue-500 text-blue-600"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
-                >
-                  Maps
-                </button>
-                <button
-                  onClick={() => setActiveTab("reviews")}
-                  className={`py-4 font-medium text-sm ${
-                    activeTab === "reviews"
-                      ? "border-b-2 border-blue-500 text-blue-600"
-                      : "text-gray-500 hover:text-gray-700"
-                  }`}
-                >
-                  Reviews
-                </button>
+                {tabs.map((tab) => (
+                  <button
+                    key={tab}
+                    onClick={() => setActiveTab(tab)}
+                    className={`py-4 font-medium text-sm ${
+                      activeTab === tab
+                        ? "border-b-2 border-blue-500 text-blue-600"
+                        : "text-gray-500 hover:text-gray-700"
+                    }`}
+                  >
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  </button>
+                ))}
               </nav>
             </div>
 
@@ -207,34 +201,23 @@ export default function KifaruPropertyDetails() {
               {/* Description Tab */}
               {activeTab === "description" && (
                 <div>
-                  {/* <h3 className="text-xl font-semibold mb-3"> </h3> */}
                   <div>
                     <h3 className="text-2xl font-semibold mb-4">Highlights</h3>
                     <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-                      <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30">
-                        <User2 className="w-5 h-5 text-primary" />
-                        <span className="font-medium">4 Guests</span>
-                      </div>
-
-                      <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30">
-                        <DoorClosed className="w-5 h-5 text-primary" />
-                        <span className="font-medium">2 Bedrooms</span>
-                      </div>
-
-                      <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30">
-                        <ShowerHead className="w-5 h-5 text-primary" />
-                        <span className="font-medium">3 Bathrooms</span>
-                      </div>
-
-                      <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30">
-                        <Square className="w-5 h-5 text-primary" />
-                        <span className="font-medium">Area: 75.0 m²</span>
-                      </div>
-
-                      <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30">
-                        <Building2 className="w-5 h-5 text-primary" />
-                        <span className="font-medium">Holiday home</span>
-                      </div>
+                      {property.highlights.map((highlight: any, i: number) => {
+                        const Icon = (Icons as any)[highlight.icon];
+                        return (
+                          <div
+                            key={i}
+                            className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30"
+                          >
+                            <Icon className="w-5 h-5 text-primary" />
+                            <span className="font-medium">
+                              {highlight.label}
+                            </span>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
 
@@ -242,16 +225,7 @@ export default function KifaruPropertyDetails() {
                     <h3 className="text-2xl font-semibold mb-3">
                       About this space
                     </h3>
-                    <p className="text-gray-600">
-                      Discover paradise at Kifaru Msambweni Beach, where the
-                      Indian Ocean meets unparalleled luxury. Our beachfront
-                      resort offers private villas with ocean views, infinity
-                      pools that blend with the horizon, and direct access to
-                      pristine white sand beaches. Indulge in fresh seafood at
-                      our beachside restaurant, explore vibrant coral reefs, or
-                      simply relax under swaying palm trees. This is coastal
-                      luxury at its finest.
-                    </p>
+                    <p className="text-gray-600">{property.long_description}</p>
                   </div>
                 </div>
               )}
@@ -263,59 +237,87 @@ export default function KifaruPropertyDetails() {
                     Features & Amenities
                   </h3>
                   <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30">
-                      <Wifi className="w-5 h-5 text-primary" />
-                      <span className="font-medium">Wi-Fi</span>
-                    </div>
-
-                    <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30">
-                      <Wind className="w-5 h-5 text-primary" />
-                      <span className="font-medium">Spa & Wellness</span>
-                    </div>
-
-                    <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30">
-                      <Car className="w-5 h-5 text-primary" />
-                      <span className="font-medium">Airport Transfer</span>
-                    </div>
-
-                    <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30">
-                      <Coffee className="w-5 h-5 text-primary" />
-                      <span className="font-medium">Room Service</span>
-                    </div>
-
-                    <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30">
-                      <Dumbbell className="w-5 h-5 text-primary" />
-                      <span className="font-medium">Water Sports</span>
-                    </div>
-
-                    <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30">
-                      <Utensils className="w-5 h-5 text-primary" />
-                      <span className="font-medium">Beachfront Dining</span>
-                    </div>
+                    {property.amenities.map((amenity: any, i: number) => {
+                      const Icon = (LucideIcons as any)[amenity.icon];
+                      return (
+                        <div
+                          key={i}
+                          className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30"
+                        >
+                          {Icon ? (
+                            <Icon className="w-5 h-5 text-primary" />
+                          ) : null}
+                          <span className="font-medium">{amenity.label}</span>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
 
               {/* Availability Tab */}
               {activeTab === "availability" && (
-                <div>
-                  <h1>Calender Containing Days Booked</h1>
+                <div className="flex gap-4 justify-between">
+                  {/* Current Month Calendar */}
+                  <div className="w-1/2">
+                    <h2 className="text-center text-lg font-semibold mb-2">
+                      {date.toLocaleString("default", {
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </h2>
+                    <Calendar
+                      value={date}
+                      defaultView="month"
+                      tileDisabled={({ date }) => isBooked(date)}
+                      tileClassName={({ date }) =>
+                        isBooked(date) ? "booked-date" : "available-date"
+                      }
+                      activeStartDate={
+                        new Date(date.getFullYear(), date.getMonth(), 1)
+                      }
+                      showNavigation={false}
+                    />
+                  </div>
+
+                  {/* Next Month Calendar */}
+                  <div className="w-1/2">
+                    <h2 className="text-center text-lg font-semibold mb-2">
+                      {new Date(
+                        date.getFullYear(),
+                        date.getMonth() + 1,
+                        1
+                      ).toLocaleString("default", {
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </h2>
+                    <Calendar
+                      value={date}
+                      defaultView="month"
+                      tileDisabled={({ date }) => isBooked(date)}
+                      tileClassName={({ date }) =>
+                        isBooked(date) ? "booked-date" : "available-date"
+                      }
+                      activeStartDate={
+                        new Date(date.getFullYear(), date.getMonth() + 1, 1)
+                      }
+                      showNavigation={false}
+                    />
+                  </div>
                 </div>
               )}
 
               {/* Maps Tab */}
               {activeTab === "maps" && (
-                <div>
-                  <h1>Containing Approximate Map location</h1>
-                </div>
+                <Maps
+                  position={property.geolocation as [number, number]}
+                  name={property.name}
+                />
               )}
 
               {/* Reviews Tab  */}
-              {activeTab === "reviews" && (
-                <div>
-                  <h1>Contains customer reviews</h1>
-                </div>
-              )}
+              {activeTab === "reviews" && <Reviews />}
             </div>
           </div>
 
@@ -381,3 +383,16 @@ export default function KifaruPropertyDetails() {
     </div>
   );
 }
+
+// Map icon strings to lucide-react icons
+const Icons: Record<string, any> = {
+  Users: User2,
+  DoorClosed,
+  Dumbbell,
+  Building2,
+  ShowerHead,
+  Square,
+  Bed,
+  Bath,
+  Ruler,
+};

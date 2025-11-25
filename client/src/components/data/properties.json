@@ -2,169 +2,217 @@
   {
     "id": 1,
     "name": "Kifaru Belgium",
-    "location": "Belgiun Countryside",
+    "slug": "belgium",
+    "location": "Belgium Countryside",
     "country": "Belgium",
     "amenities": [
       { "icon": "Wifi", "label": "Free WiFi" },
-      { "icon": "Utensils", "label": "Fine Dining" },
-      { "icon": "Wind", "label": "Spa & Wellness" },
-      { "icon": "Car", "label": "Airport Transfer" },
-      { "icon": "Coffee", "label": "Room Service" },
-      { "icon": "Users", "label": "Conference Rooms" }
+      { "icon": "Utensils", "label": "Farm-to-Table Dining" },
+      { "icon": "Wind", "label": "Countryside Spa" },
+      { "icon": "Bike", "label": "Bicycle Tours" },
+      { "icon": "Wine", "label": "Wine Tasting" },
+      { "icon": "Tree", "label": "Nature Walks" }
     ],
-    "highlights": ["5 Guests", "2 Bedroom", "2 Bathroom", " 8 Square Inches"],
+    "highlights": [
+      { "icon": "Users", "label": "6 Guests" },
+      { "icon": "Bed", "label": "3 Bedrooms" },
+      { "icon": "Bath", "label": "2 Bathrooms" },
+      { "icon": "Ruler", "label": "12 Square Meters" }
+    ],
     "status": "free",
-    "price": "120",
-    "description": "A refined escape in the heart of Belgium, where elegance meets timeless charm.",
-    "long_description": "Experience the perfect blend of two worlds at Kifaru Belgium Lodge. Our property seamlessly combines the refined elegance of European design with the vibrant spirit of African hospitality. Each suite is carefully curated with authentic African art, premium linens, and modern amenities. Wake up to breathtaking countryside views, enjoy farm-to-table dining featuring both Belgian and African cuisines, and unwind in our spa inspired by traditional wellness practices.",
-    "geolocation":[23.0, 46.9],
+    "price": "180",
+    "description": "A refined countryside escape blending European elegance with African soul in the heart of Belgium.",
+    "long_description": "Experience the perfect fusion of European sophistication and African warmth at Kifaru Belgium Lodge. Nestled in the picturesque Belgian countryside, our property features authentic African art collections, premium organic linens, and panoramic rural views. Enjoy farm-to-table dining showcasing Belgian specialties with African-inspired flavors, explore scenic cycling routes through the countryside, and unwind in our spa that combines European wellness techniques with traditional African healing practices.",
+    "geolocation": [50.5, 4.5],
     "images": [
-      "@/assets/images/properties/belgium-hero.jpg",
       "https://res.cloudinary.com/drselhsl4/image/upload/v1750770573/QwetuLinks/kzagmttvoytfjhr0yqtc.webp",
       "https://res.cloudinary.com/drselhsl4/image/upload/v1750767076/QwetuLinks/mmzqg0hi9mm3mqyqacpj.jpg"
     ],
     "link": "/property/belgium",
-    "reviews":[],
-    "created_at": "2024-11-10T10:00:00Z",
-    "updated_at": "2024-11-12T15:30:00Z"
+    "booked_dates": [
+      { "check_in": "2025-12-01", "check_out": "2025-12-05" },
+      { "check_in": "2025-12-15", "check_out": "2025-12-20" },
+      { "check_in": "2025-11-20", "check_out": "2025-11-29" }
+    ],
+    "reviews": []
   },
   {
     "id": 2,
     "name": "Kifaru Brussels",
-    "location": "City Center",
-    "country": "Brussels",
+    "slug": "brussels",
+    "location": "Grand Palace District",
+    "country": "Belgium",
     "amenities": [
-      { "icon": "Waves", "label": "Private Beach" },
-      { "icon": "Utensils", "label": "Beachfront Dining" },
-      { "icon": "Wind", "label": "Spa & Wellness" },
+      { "icon": "Landmark", "label": "City Center Location" },
+      { "icon": "ShoppingBag", "label": "Luxury Shopping" },
+      { "icon": "Utensils", "label": "Michelin-star Dining" },
       { "icon": "Wifi", "label": "Free WiFi" },
-      { "icon": "Utensils", "label": "Fine Dining" },
-      { "icon": "Wind", "label": "Spa & Wellness" },
-      { "icon": "Car", "label": "Airport Transfer" },
-      { "icon": "Coffee", "label": "Room Service" },
-      { "icon": "Users", "label": "Conference Rooms" }
+      { "icon": "Car", "label": "Chauffeur Service" },
+      { "icon": "Users", "label": "Executive Suites" }
     ],
-    "highlights": ["5 Guests", "2 Bedroom", "2 Bathroom", " 8 Square Inches"],
+    "highlights": [
+      { "icon": "Users", "label": "4 Guests" },
+      { "icon": "Bed", "label": "2 Bedrooms" },
+      { "icon": "Bath", "label": "2 Bathrooms" },
+      { "icon": "Ruler", "label": "10 Square Meters" }
+    ],
     "status": "free",
-    "price": "550",
-    "description":"",
-    "longDescription": "Discover paradise at Kifaru Msambweni Beach, where the Indian Ocean meets unparalleled luxury. Our beachfront resort offers private villas with ocean views, infinity pools that blend with the horizon, and direct access to pristine white sand beaches. Indulge in fresh seafood at our beachside restaurant, explore vibrant coral reefs, or simply relax under swaying palm trees. This is coastal luxury at its finest.",
-    "geolocation":[23.0, 46.9],
+    "price": "320",
+    "description": "Urban sophistication meets African elegance in the heart of Brussels' historic center.",
+    "long_description": "Kifaru Brussels epitomizes urban luxury with an African soul. Located steps from the Grand Palace, our boutique hotel offers panoramic city views from stylish suites adorned with contemporary African art. Experience Michelin-starred dining with African-Belgian fusion cuisine, personalized shopping experiences in the luxury district, and exclusive access to cultural landmarks. Our executive suites feature state-of-the-art technology and bespoke service for the discerning traveler.",
+    "geolocation": [50.8503, 4.3517],
     "images": [
       "https://res.cloudinary.com/drselhsl4/image/upload/v1750767072/QwetuLinks/pgeux5ordfael9rspwzd.jpg",
       "https://res.cloudinary.com/drselhsl4/image/upload/v1750767069/QwetuLinks/gdbpfnwiabuqfr3geods.jpg"
     ],
     "link": "/property/brussels",
-    "reviews":[],
-    "created_at": "2024-11-10T10:00:00Z",
-    "updated_at": "2024-11-12T15:30:00Z"
+    "booked_dates": [
+      { "check_in": "2025-12-01", "check_out": "2025-12-05" },
+      { "check_in": "2025-12-15", "check_out": "2025-12-20" },
+      { "check_in": "2025-11-10", "check_out": "2025-11-15" }
+    ],
+    "reviews": []
   },
   {
     "id": 3,
     "name": "Kifaru Msambweni",
-    "location": "South Coast",
+    "slug": "msambweni",
+    "location": "Private Beachfront",
     "country": "Kenya",
     "amenities": [
-      { "icon": "Wifi", "label": "Free WiFi" },
-      { "icon": "Utensils", "label": "Fine Dining" },
-      { "icon": "Wind", "label": "Spa & Wellness" },
-      { "icon": "Car", "label": "Airport Transfer" },
-      { "icon": "Coffee", "label": "Room Service" },
-      { "icon": "Users", "label": "Conference Rooms" }
+      { "icon": "Waves", "label": "Private Beach" },
+      { "icon": "Snorkel", "label": "Coral Reef Access" },
+      { "icon": "Utensils", "label": "Seafood Grill" },
+      { "icon": "Wind", "label": "Ocean-view Spa" },
+      { "icon": "Ship", "label": "Dhow Cruises" },
+      { "icon": "Fish", "label": "Deep Sea Fishing" }
     ],
-    "highlights": ["5 Guests", "2 Bedroom", "2 Bathroom", " 8 Square Inches"],
+    "highlights": [
+      { "icon": "Users", "label": "8 Guests" },
+      { "icon": "Bed", "label": "4 Bedrooms" },
+      { "icon": "Bath", "label": "4 Bathrooms" },
+      { "icon": "Ruler", "label": "15 Square Meters" }
+    ],
     "status": "free",
-    "price": "120",
-    "description": "Surrender to serene coastal beauty and intimate luxury along the shores of Msambweni.",
-    "long_description": "Discover paradise at Kifaru Msambweni Beach, where the Indian Ocean meets unparalleled luxury. Our beachfront resort offers private villas with ocean views, infinity pools that blend with the horizon, and direct access to pristine white sand beaches. Indulge in fresh seafood at our beachside restaurant, explore vibrant coral reefs, or simply relax under swaying palm trees. This is coastal luxury at its finest.",
-    "geolocation":[23.0, 46.9],
+    "price": "450",
+    "description": "Exclusive beachfront sanctuary with direct coral reef access on Kenya's pristine south coast.",
+    "long_description": "Kifaru Msambweni offers an unparalleled beachfront experience on Kenya's untouched south coast. Our private villas feature direct access to one of Africa's most vibrant coral reefs, perfect for snorkeling and diving enthusiasts. Enjoy fresh seafood at our beach grill, embark on traditional dhow sunset cruises, or experience deep-sea fishing adventures. Each villa includes a private infinity pool, outdoor shower, and panoramic Indian Ocean views, creating the ultimate coastal retreat.",
+    "geolocation": [-4.3833, 39.4667],
     "images": [
       "https://res.cloudinary.com/drselhsl4/image/upload/v1763483907/Kifaru/gykpj99seblgx6czx1by.jpg",
       "https://res.cloudinary.com/drselhsl4/image/upload/v1763483918/Kifaru/agu4ixfinhc6efc4gy8u.jpg"
     ],
     "link": "/property/msambweni",
-    "reviews":[],
-    "created_at": "2024-11-10T10:00:00Z",
-    "updated_at": "2024-11-12T15:30:00Z"
+    "booked_dates": [
+      { "check_in": "2025-12-01", "check_out": "2025-12-05" },
+      { "check_in": "2025-11-20", "check_out": "2025-11-29" }
+    ],
+    "reviews": []
   },
   {
     "id": 4,
     "name": "Kifaru Nairobi",
+    "slug": "nairobi",
     "location": "Karen, Nairobi",
     "country": "Kenya",
     "amenities": [
+      { "icon": "TreePine", "label": "Nature Reserve" },
+      { "icon": "Car", "label": "Safari Transfers" },
+      { "icon": "Utensils", "label": "Rooftop Restaurant" },
       { "icon": "Wifi", "label": "Free WiFi" },
-      { "icon": "Utensils", "label": "Fine Dining" },
-      { "icon": "Wind", "label": "Spa & Wellness" },
-      { "icon": "Car", "label": "Airport Transfer" },
-      { "icon": "Coffee", "label": "Room Service" },
-      { "icon": "Users", "label": "Conference Rooms" }
+      { "icon": "Users", "label": "Conference Center" },
+      { "icon": "Eye", "label": "Wildlife Viewing" }
     ],
-    "highlights": ["5 Guests", "2 Bedroom", "2 Bathroom", " 8 Square Inches"],
+    "highlights": [
+      { "icon": "Users", "label": "6 Guests" },
+      { "icon": "Bed", "label": "3 Bedrooms" },
+      { "icon": "Bath", "label": "3 Bathrooms" },
+      {"icon": "Ruler", "label": "12 Square Meters" }
+    ],
     "status": "free",
-    "price": "120",
-    "description": "Experience urban sophistication and elevated comfort in the heartbeat of Nairobi.",
-    "long_description": "Kifaru Nairobi Heights stands as a beacon of modern African luxury in Kenya's vibrant capital. Located in the leafy Karen neighborhood, our boutique hotel offers spacious suites with panoramic city views, contemporary African design, and world-class amenities. Whether you're here for business or leisure, enjoy our award-winning restaurant, rooftop bar, and easy access to Nairobi National Park, Giraffe Centre, and the city's best attractions.",
-    "geolocation":[23.0, 46.9],
+    "price": "280",
+    "description": "Urban wildlife sanctuary offering sophisticated comfort with easy access to Nairobi's premier attractions.",
+    "long_description": "Kifaru Nairobi Heights redefines urban safari living in the prestigious Karen neighborhood. Our property borders a private nature reserve, offering unparalleled wildlife viewing just minutes from the city center. Enjoy our rooftop restaurant with 360-degree views, organize seamless safari transfers to nearby national parks, and host events in our state-of-the-art conference center. Each suite features contemporary African design, private balconies, and modern amenities for both business and leisure travelers.",
+    "geolocation": [-1.2921, 36.8219],
     "images": [
       "https://res.cloudinary.com/drselhsl4/image/upload/v1750767059/QwetuLinks/rzi0qdirepe7dxdfugun.jpg",
       "https://res.cloudinary.com/drselhsl4/image/upload/v1750767059/QwetuLinks/vrvvuzjpmkgxg4xva2rx.jpg"
     ],
     "link": "/property/nairobi",
-    "reviews":[],
-    "created_at": "2024-11-10T10:00:00Z",
-    "updated_at": "2024-11-12T15:30:00Z"
+    "booked_dates": [
+      { "check_in": "2025-12-15", "check_out": "2025-12-20" },
+      { "check_in": "2025-11-01", "check_out": "2025-11-05" }
+    ],
+    "reviews": []
   },
   {
     "id": 5,
     "name": "Kifaru Netherlands",
-    "location": "Dutch Countryside",
+    "slug": "netherlands",
+    "location": "Tulip Fields & Canals",
     "country": "Netherlands",
     "amenities": [
-      { "icon": "Wifi", "label": "Free WiFi" },
-      { "icon": "Utensils", "label": "Fine Dining" },
-      { "icon": "Wind", "label": "Spa & Wellness" },
-      { "icon": "Car", "label": "Airport Transfer" },
-      { "icon": "Coffee", "label": "Room Service" },
-      { "icon": "Users", "label": "Conference Rooms" }
+      { "icon": "Bike", "label": "Premium Bicycles" },
+      { "icon": "Ship", "label": "Private Canal Boat" },
+      { "icon": "Flower", "label": "Tulip Garden" },
+      { "icon": "Utensils", "label": "Dutch-African Cuisine" },
+      { "icon": "Wind", "label": "Wellness Center" },
+      { "icon": "Palette", "label": "Art Workshops" }
     ],
-    "highlights": ["5 Guests", "2 Bedroom", "2 Bathroom", " 8 Square Inches"],
+    "highlights": [
+      { "icon": "Users", "label": "5 Guests" },
+      { "icon": "Bed", "label": "2 Bedrooms" },
+      { "icon": "Bath", "label": "2 Bathrooms" },
+      { "icon": "Ruler", "label": "9 Square Meters" }
+    ],
     "status": "free",
-    "price": "120",
-    "description": "Discover coastal tranquility and modern elegance in the scenic Netherlands.",
-    "long_description": "Set in the enchanting Dutch countryside, Kifaru Netherlands Villa offers a unique escape where Dutch heritage embraces African culture. Our restored historic villa features elegant rooms with modern comforts, surrounded by tulip gardens and scenic canals. Enjoy cycling through flower fields, explore nearby windmills, and experience authentic Dutch-African fusion cuisine. This is countryside luxury reimagined.",
-    "geolocation":[23.0, 46.9],
-    "images": ["/images/properties/netherlands-hero.jpg"],
+    "price": "220",
+    "description": "Historic canal house transformed into a cultural haven where Dutch heritage embraces African warmth.",
+    "long_description": "Kifaru Netherlands Villa offers a unique cultural immersion in a meticulously restored 17th-century canal house. Experience authentic Dutch living with African-inspired hospitality, from cycling through vibrant tulip fields to private canal tours on our classic boat. Participate in traditional Dutch art workshops with African influences, savor innovative Dutch-African fusion cuisine, and relax in our wellness center featuring both European spa treatments and African healing rituals. This is where two rich cultures harmoniously converge.",
+    "geolocation": [52.0, 5.0],
+    "images": [
+      "https://res.cloudinary.com/drselhsl4/image/upload/v1750767055/QwetuLinks/netherlands-hero.jpg"
+    ],
     "link": "/property/netherlands",
-    "reviews":[],
-    "created_at": "2024-11-10T10:00:00Z",
-    "updated_at": "2024-11-12T15:30:00Z"
+    "booked_dates": [
+      { "check_in": "2025-12-01", "check_out": "2025-12-05" },
+      { "check_in": "2025-11-10", "check_out": "2025-11-15" }
+    ],
+    "reviews": []
   },
   {
     "id": 6,
     "name": "Kifaru Nyali",
+    "slug": "nyali",
     "location": "Nyali Beach, Mombasa",
     "country": "Kenya",
     "amenities": [
-      { "icon": "Wifi", "label": "Free WiFi" },
-      { "icon": "Utensils", "label": "Fine Dining" },
-      { "icon": "Wind", "label": "Spa & Wellness" },
-      { "icon": "Car", "label": "Airport Transfer" },
-      { "icon": "Coffee", "label": "Room Service" },
-      { "icon": "Users", "label": "Conference Rooms" }
+      { "icon": "Waves", "label": "Beach Club" },
+      { "icon": "Golf", "label": "Golf Course Access" },
+      { "icon": "Dumbbell", "label": "Fitness Center" },
+      { "icon": "Utensils", "label": "Swahili Fusion Cuisine" },
+      { "icon": "Users", "label": "Family Suites" },
+      { "icon": "Sparkles", "label": "Evening Entertainment" }
     ],
-    "highlights": ["5 Guests", "2 Bedroom", "2 Bathroom", " 8 Square Inches"],
+    "highlights": [
+      { "icon": "Users", "label": "10 Guests" },
+      { "icon": "Bed", "label": "5 Bedrooms" },
+      { "icon": "Bath", "label": "4 Bathrooms" },
+      { "icon": "Ruler", "label": "18 Square Meters" }
+    ],
     "status": "free",
-    "price": "120",
-    "description": "Indulge in sun-kissed shores and relaxed luxury along the pristine Nyali coastline.",
-    "long_description": "Kifaru Nyali Resort epitomizes coastal elegance on Kenya's most beautiful beach. Our luxury resort features spacious suites with private balconies overlooking the Indian Ocean, multiple swimming pools, and direct beach access. Savor fresh seafood at our signature restaurant, rejuvenate at our oceanfront spa, or embark on exciting water sports adventures. With impeccable service and stunning sunsets, Nyali Resort is your ultimate beach escape.",
-    "geolocation":[23.0, 46.9],
+    "price": "380",
+    "description": "Vibrant beach resort offering family-friendly luxury with authentic Swahili coastal experiences.",
+    "long_description": "Kifaru Nyali Resort captures the vibrant spirit of Kenya's coast with premium family-friendly amenities. Our expansive beach club features multiple pools, water sports, and dedicated kids' activities. Enjoy privileged access to championship golf courses, state-of-the-art fitness facilities, and authentic Swahili cultural experiences. Savor coastal fusion cuisine at our beachfront restaurants, enjoy nightly entertainment showcasing local talent, and create unforgettable family memories in our spacious suites designed for multi-generational travel.",
+    "geolocation": [-4.0355, 39.6500],
     "images": [
       "https://res.cloudinary.com/drselhsl4/image/upload/v1750767052/QwetuLinks/fbxcq2dsqymt4moljzoc.jpg"
     ],
     "link": "/property/nyali",
-    "reviews":[],
-    "created_at": "2024-11-10T10:00:00Z",
-    "updated_at": "2024-11-12T15:30:00Z"
+    "booked_dates": [
+      { "check_in": "2025-12-15", "check_out": "2025-12-20" },
+      { "check_in": "2025-11-01", "check_out": "2025-11-05" }
+    ],
+    "reviews": []
   }
 ]

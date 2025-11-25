@@ -84,11 +84,11 @@ function PropertyCard({ property }: { property: any }) {
         {property.description}
       </CardContent>
 
-      <CardFooter className="mb-0">
+      <CardFooter className="mb-0 pb-0">
         <Button variant="link" className="p-0 w-full font-semibold mb-0" asChild>
           <Link
             to={property.link}
-            className="flex gap-1 items-center justify-center bg-primary text-white py-2 rounded text-decoration-none"
+            className="flex gap-1 items-center justify-center bg-primary text-white py-2 rounded text-decoration-none no-underline"
           >
             View Details <ArrowRight size={16} />
           </Link>
