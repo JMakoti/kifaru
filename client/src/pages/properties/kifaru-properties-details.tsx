@@ -24,7 +24,7 @@ import Reviews from "@/components/property/reviews";
 
 export default function KifaruPropertyDetails() {
   const { propertyId } = useParams<{ propertyId: string }>();
-  // const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<
     "description" | "features" | "availability" | "maps" | "reviews"
   >("description");
@@ -32,15 +32,47 @@ export default function KifaruPropertyDetails() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [animated, setAnimated] = useState(false);
   const [bookedDates, setBookedDates] = useState<Date[]>([]);
-  const [date, setDate] = useState(new Date());
+  const [date] = useState(new Date());
 
-  // if (loading) {
-  //   return (
-  //     <div className="flex justify-center items-center min-h-[500px]">
-  //       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
-  //     </div>
-  //   );
-  // }
+  // Find the property based on the route param
+  const property = properties.find(
+    (prop) => prop.slug.toString() === propertyId
+  );
+
+  useEffect(() => {
+    if (!property) return;
+    const expandedBookedDates = (
+      check_in: string,
+      check_out: string
+    ): Date[] => {
+      const checkinDate = new Date(check_in);
+      const checkoutDate = new Date(check_out);
+      const dates: Date[] = [];
+
+      let currentDate = new Date(checkinDate);
+      while (currentDate <= checkoutDate) {
+        dates.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+
+      return dates;
+    };
+
+    const expanded = property.booked_dates.flatMap(
+      (range: { check_in: string; check_out: string }) =>
+        expandedBookedDates(range.check_in, range.check_out)
+    );
+    setBookedDates(expanded);
+    setLoading(false);
+  }, [propertyId, property]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-[500px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+      </div>
+    );
+  }
 
   const tabs = [
     "description",
@@ -49,13 +81,6 @@ export default function KifaruPropertyDetails() {
     "maps",
     "reviews",
   ] as const;
-
-  // Find the property based on the route param
-  const property = properties.find(
-    (prop) => prop.slug.toString() === propertyId
-  );
-  console.log(propertyId);
-  // console.log(property);
 
   if (!property) {
     return <div className="text-center py-10">Property not found</div>;
@@ -79,41 +104,18 @@ export default function KifaruPropertyDetails() {
     setCurrentImageIndex((i) => (i - 1 + images.length) % images.length);
   };
 
-  const expandedBookedDates = (check_in: string, check_out: string): Date[] => {
-    const checkinDate = new Date(check_in);
-    const checkoutDate = new Date(check_out);
-    const dates: Date[] = [];
-
-    let currentDate = new Date(checkinDate);
-    while (currentDate <= checkoutDate) {
-      dates.push(new Date(currentDate));
-      currentDate.setDate(currentDate.getDate() + 1);
-    }
-
-    return dates;
-  };
-
-  useEffect(() => {
-    const expanded = property.booked_dates.flatMap(
-      (range: { check_in: string; check_out: string }) =>
-        expandedBookedDates(range.check_in, range.check_out)
-    );
-    setBookedDates(expanded);
-    // setLoading(false);
-  }, [propertyId]);
-
   const isBooked = (day: Date) =>
     bookedDates.some((b) => b.toDateString() === day.toDateString());
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-6 md:py8">
       {/* Header */}
-      <div className="flex flex-col lg:flex-row justify-between mb-6">
+      <div className="flex flex-col lg:flex-row justify-between mb-6 gap-4">
         <div>
           <h1 className="text-3xl font-bold">{property.name}</h1>
-          <div className="flex gap-2 mt-2 text-gray-600">
+          <div className="flex gap-2 mt-2 text-gray-600 text-sm md:text-base">
             {" "}
-            <MapPin /> {property.location}, {property.country}
+            <MapPin className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" /> {property.location}, {property.country}
           </div>
         </div>
       </div>
@@ -121,7 +123,7 @@ export default function KifaruPropertyDetails() {
       {/* Image Gallery */}
       <div className="mb-8">
         {images.length > 0 ? (
-          <div className="relative h-96 rounded-lg overflow-hidden bg-gray-100">
+          <div className="relative w-full  h-96 rounded-lg overflow-hidden bg-gray-100 md:aspect-auto">
             <img
               src={images[currentImageIndex]}
               alt={property.name}
@@ -175,16 +177,16 @@ export default function KifaruPropertyDetails() {
         className="bg-no-repeat bg-contain"
         style={{ backgroundImage: `url(${palmTree})` }}
       >
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
           <div className="lg:col-span-2">
             {/* Tabs */}
-            <div className="border-b border-gray-200 mb-6">
-              <nav className="flex space-x-8">
+            <div className="border-b border-gray-200 mb-6 overflow-x-auto">
+              <nav className="flex space-x-6 md:space-x-8 min-w-max md:min-w-0">
                 {tabs.map((tab) => (
                   <button
                     key={tab}
                     onClick={() => setActiveTab(tab)}
-                    className={`py-4 font-medium text-sm ${
+                    className={`py-4 font-medium text-sm whitespace-nowrap ${
                       activeTab === tab
                         ? "border-b-2 border-blue-500 text-blue-600"
                         : "text-gray-500 hover:text-gray-700"

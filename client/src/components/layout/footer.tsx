@@ -1,5 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import navLinks from "@/lib/routes";
+import logo from "../../assets/icon/rhino.ico";
 
 export default function Footer() {
   const location = useLocation();
@@ -39,7 +40,6 @@ export default function Footer() {
       className={`relative w-full text-gray-300 pt-12 pb-6 mt-12 ${
         isDefaultFooterRoute ? "bg-primary" : "bg-cover bg-center bg-no-repeat"
       }`}
-      
       style={
         !isDefaultFooterRoute && propertyBackgroundUrl
           ? { backgroundImage: `url(${propertyBackgroundUrl})` }
@@ -55,6 +55,11 @@ export default function Footer() {
             <div className="grid md:grid-cols-4 gap-8 mb-10">
               {/* Brand */}
               <div>
+                <img
+                  src={logo}
+                  alt="Kifaru Logo"
+                  className="w-20 h-15 object-contain"
+                />
                 <h2 className="text-2xl font-bold text-white mb-4">Kifaru</h2>
                 <p className="text-sm text-gray-400 leading-relaxed">
                   Blending luxury, nature, and African culture into
@@ -152,15 +157,15 @@ export default function Footer() {
 
               <div className="flex justify-center space-x-6 mb-6">
                 {navLinks.map((link) => (
-                    <li key={link.to} className="list-none">
-                      <Link
-                        to={link.to}
-                        className="hover:text-white text-sm transition-colors duration-300"
-                      >
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
+                  <li key={link.to} className="list-none">
+                    <Link
+                      to={link.to}
+                      className="hover:text-white text-sm transition-colors duration-300"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
               </div>
 
               <div className="border-t border-gray-600 pt-6">

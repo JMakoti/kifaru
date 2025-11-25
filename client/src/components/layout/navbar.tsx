@@ -10,7 +10,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import logo from "../../assets/icon/rhino.ico";
-import navLinks from '../../lib/routes'
+import navLinks from "../../lib/routes";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -19,9 +19,8 @@ export default function Navbar() {
     setIsMenuOpen(!isMenuOpen);
   };
 
-
   return (
-    <nav className="sticky top-0 z-40 w-full bg-brown/90 backdrop-blur-sm border-b shadow-sm">
+    <nav className="sticky top-0 z-40 w-full bg-accent/80 backdrop-blur-sm border-b shadow-sm">
       <div className="container-custom flex items-center justify-between h-16 md:h-20 pr-4 pl-4">
         <div className="flex items-center">
           <Link to="/" className="flex items-center">
@@ -34,17 +33,20 @@ export default function Navbar() {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex md:items-center md:gap-4 lg:gap-6">
+        <div className="hidden md:flex md:items-center md:gap-4 lg:gap-6 hover:bg-transparent">
           {navLinks.map((link) =>
             link.children ? (
               <NavigationMenu key={link.label} className="bg-transparent">
                 <NavigationMenuList>
                   <NavigationMenuItem>
-                    <NavigationMenuTrigger className="bg-transparent h-auto px-2 py-1 hover:bg-transparent hover:text-primary data-[state=open]:bg-transparent">
+                    <NavigationMenuTrigger
+                      className="bg-transparent shadow-none h-auto px-2 py-1 font-semibold hover:bg-transparent hover:text-primary 
+        data-[state=open]:bg-transparent"
+                    >
                       {link.label}
                     </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <div className="grid grid-cols-2 w-[500px] gap-3 p-4">
+                    <NavigationMenuContent className="backdrop-blur-md bg-white/20 dark:bg-black/20 shadow-none border-none">
+                      <div className="grid grid-cols-2 w-[450px] gap-3 p-4">
                         {link.children.map((property) => (
                           <Link
                             key={property.to}
@@ -66,7 +68,7 @@ export default function Navbar() {
               <NavLink
                 key={link.to}
                 to={link.to}
-                className="px-2 py-1 text-foreground hover:text-primary transition-colors"
+                className="px-2 py-1 text-foreground hover:text-primary  font-semibold transition-colors"
               >
                 {link.label}
               </NavLink>
