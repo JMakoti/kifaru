@@ -1,5 +1,16 @@
 
+/* About Section */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
 
+.scrollbar-hide {
+  -ms-overflow-style: none; 
+  scrollbar-width: none;
+}
+
+
+/* Property Details Section */
 .booked-date {
   position: relative;
   color: #999; 

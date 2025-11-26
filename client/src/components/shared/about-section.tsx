@@ -1,8 +1,12 @@
 import { Button } from "../ui/button";
 import rhino from "../../assets/rhino.png";
 import zebras from "../../assets/zebras.jpeg";
+import { Link, useLocation } from "react-router";
 
 export default function AboutSection() {
+  const location = useLocation();
+  const aboutRoute = location.pathname.startsWith("/about");
+
   return (
     <div className="about-kifaru flex flex-col lg:flex-row justify-center items-center gap-6 lg:gap-8 p-4 md:p-8 w-full">
       <div className="text-content flex flex-col gap-4 md:gap-6 lg:gap-10 max-w-lg order-2 lg:order-1 w-full">
@@ -18,7 +22,30 @@ export default function AboutSection() {
           experiences unfold like poetry, and every stay feels timelessly
           unforgettable.
         </p>
-        <Button className="w-full sm:w-40">Learn More</Button>
+        {/*  */}
+        {!aboutRoute ? (
+          <Button className="w-full sm:w-40">
+            <Link to={"/about"}>Learn More</Link>
+          </Button>
+        ) : (
+          <div className="flex flex-col items-center justify-center gap-4">
+            <div className="text-content flex flex-col bg-orange-50 rounded p-2">
+              <h3 className="font-bold">Our Mission</h3>
+              <p className="text-sm md:text-base leading-relaxed">
+                To design intentional, serene, and culturally inspired spaces
+                that turn everyday moments into effortlessly luxurious
+                experiences.
+              </p>
+            </div>
+            <div className="text-content flex flex-col bg-orange-50 rounded p-2">
+              <h3 className="font-bold">Our Vission</h3>
+              <p className="text-sm md:text-base leading-relaxed">
+                To lead in creating timeless, nature-connected retreats where
+                architecture, comfort, and meaning come together beautifully.
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="grid grid-cols-3 grid-rows-3 gap-1 md:gap-2 w-full w-full sm:max-w-sm md:max-w-md max-w-xs lg:max-w-lg order-1 lg:order-2">

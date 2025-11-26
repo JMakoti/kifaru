@@ -1,4 +1,4 @@
-import PropertySection from "@/components/home/property-section";
+import PropertySection from "@/components/shared/property-section";
 export default function KifaruProperty() {
   return (
     <>

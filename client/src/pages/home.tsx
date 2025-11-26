@@ -1,7 +1,7 @@
 // import "../styles/global.css";
-import AboutSection from "@/components/home/about-section";
+import AboutSection from "@/components/shared/about-section";
 import HeroSection from "@/components/home/hero-section";
-import PropertySection from "@/components/home/property-section";
+import PropertySection from "@/components/shared/property-section";
 
 export default function Home() {
   return (

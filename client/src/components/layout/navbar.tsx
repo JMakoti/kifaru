@@ -9,7 +9,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import logo from "../../assets/icon/rhino.ico";
+import logo from "../../assets/icon/icon.ico";
 import navLinks from "../../lib/routes";
 
 export default function Navbar() {

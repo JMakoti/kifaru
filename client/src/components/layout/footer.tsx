@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import navLinks from "@/lib/routes";
-import logo from "../../assets/icon/rhino.ico";
+import logo from "../../assets/icon/icon2.ico";
 
 export default function Footer() {
   const location = useLocation();
@@ -55,12 +55,14 @@ export default function Footer() {
             <div className="grid md:grid-cols-4 gap-8 mb-10">
               {/* Brand */}
               <div>
+                <div className="flex flex-row gap-2 mb-4">
                 <img
                   src={logo}
                   alt="Kifaru Logo"
-                  className="w-20 h-15 object-contain"
+                  className="w-10 h-10 object-contain"
                 />
-                <h2 className="text-2xl font-bold text-white mb-4">Kifaru</h2>
+                <h2 className="text-4xl font-bold text-white">Kifaru</h2>
+                </div>
                 <p className="text-sm text-gray-400 leading-relaxed">
                   Blending luxury, nature, and African culture into
                   unforgettable experiences.
