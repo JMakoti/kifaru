@@ -29,12 +29,37 @@
       "https://res.cloudinary.com/drselhsl4/image/upload/v1750767076/QwetuLinks/mmzqg0hi9mm3mqyqacpj.jpg"
     ],
     "link": "/property/belgium",
+    "background": "https://res.cloudinary.com/drselhsl4/image/upload/v1764136940/Kifaru/backgrounds/ipshvpes7mlcg9mjc9qu.png",
     "booked_dates": [
       { "check_in": "2025-12-01", "check_out": "2025-12-05" },
       { "check_in": "2025-12-15", "check_out": "2025-12-20" },
       { "check_in": "2025-11-20", "check_out": "2025-11-29" }
     ],
-    "reviews": []
+    "reviews": [
+      {
+        "id": "1",
+        "author": "Sarah Johnson",
+        "avatar": "",
+        "rating": 3,
+        "date": "2024-01-15",
+        "comment": "Absolutely stunning property! The views were breathtaking and the amenities exceeded our expectations. The host was incredibly responsive and helpful. Would definitely recommend to anyone looking for a peaceful getaway.",
+        "verified": true,
+        "response": {
+          "author": "Property Manager",
+          "date": "2024-01-16",
+          "text": "Thank you so much for your kind words, Sarah! We're thrilled you enjoyed your stay and hope to welcome you back soon."
+        }
+      },
+      {
+        "id": "2",
+        "author": "Michael Chen",
+        "avatar": "",
+        "rating": 5,
+        "date": "2024-01-10",
+        "comment": "Perfect location for a family vacation. The property was spotless, well-maintained, and had everything we needed. The beach access was fantastic and the kids loved the pool. Great communication from the host throughout.",
+        "verified": true
+      }
+    ]
   },
   {
     "id": 2,
@@ -66,12 +91,23 @@
       "https://res.cloudinary.com/drselhsl4/image/upload/v1750767069/QwetuLinks/gdbpfnwiabuqfr3geods.jpg"
     ],
     "link": "/property/brussels",
+    "background": "https://res.cloudinary.com/drselhsl4/image/upload/v1764136733/Kifaru/backgrounds/o62ecyczd5wzmg3tacpn.png",
     "booked_dates": [
       { "check_in": "2025-12-01", "check_out": "2025-12-05" },
       { "check_in": "2025-12-15", "check_out": "2025-12-20" },
       { "check_in": "2025-11-10", "check_out": "2025-11-15" }
     ],
-    "reviews": []
+    "reviews": [
+      {
+        "id": "3",
+        "author": "Emma Williams",
+        "avatar": "",
+        "rating": 4,
+        "date": "2023-12-28",
+        "comment": "Beautiful property with amazing sunset views. The only minor issue was that the WiFi could be stronger in some rooms, but overall it was a wonderful experience. The kitchen was well-equipped and the outdoor spaces were perfect for relaxing.",
+        "verified": true
+      }
+    ]
   },
   {
     "id": 3,
@@ -103,11 +139,19 @@
       "https://res.cloudinary.com/drselhsl4/image/upload/v1763483918/Kifaru/agu4ixfinhc6efc4gy8u.jpg"
     ],
     "link": "/property/msambweni",
-    "booked_dates": [
-      { "check_in": "2025-12-01", "check_out": "2025-12-05" },
-      { "check_in": "2025-11-20", "check_out": "2025-11-29" }
-    ],
-    "reviews": []
+    "background": "https://res.cloudinary.com/drselhsl4/image/upload/v1764136941/Kifaru/backgrounds/wanjvnzpktsur9tk72e6.png",
+    "booked_dates": [],
+    "reviews": [
+      {
+        "id": "4",
+        "author": "David Martinez",
+        "avatar": "",
+        "rating": 5,
+        "date": "2023-12-20",
+        "comment": "This place is a hidden gem! The photos don't do it justice. Everything was exactly as described and more. The host went above and beyond to make our stay comfortable. Already planning our next visit!",
+        "verified": true
+      }
+    ]
   },
   {
     "id": 4,
@@ -127,7 +171,7 @@
       { "icon": "Users", "label": "6 Guests" },
       { "icon": "Bed", "label": "3 Bedrooms" },
       { "icon": "Bath", "label": "3 Bathrooms" },
-      {"icon": "Ruler", "label": "12 Square Meters" }
+      { "icon": "Ruler", "label": "12 Square Meters" }
     ],
     "status": "free",
     "price": "280",
@@ -139,6 +183,7 @@
       "https://res.cloudinary.com/drselhsl4/image/upload/v1750767059/QwetuLinks/vrvvuzjpmkgxg4xva2rx.jpg"
     ],
     "link": "/property/nairobi",
+    "background": "https://res.cloudinary.com/drselhsl4/image/upload/v1764137469/Kifaru/backgrounds/yta3ij2ustwby6lbggwy.png",
     "booked_dates": [
       { "check_in": "2025-12-15", "check_out": "2025-12-20" },
       { "check_in": "2025-11-01", "check_out": "2025-11-05" }
@@ -174,11 +219,22 @@
       "https://res.cloudinary.com/drselhsl4/image/upload/v1750767055/QwetuLinks/netherlands-hero.jpg"
     ],
     "link": "/property/netherlands",
+    "background": "https://res.cloudinary.com/drselhsl4/image/upload/v1764137822/Kifaru/backgrounds/xngflgkur5ccgzuhm6nf.png",
     "booked_dates": [
       { "check_in": "2025-12-01", "check_out": "2025-12-05" },
       { "check_in": "2025-11-10", "check_out": "2025-11-15" }
     ],
-    "reviews": []
+    "reviews": [
+      {
+        "id": "5",
+        "author": "Lisa Anderson",
+        "avatar": "",
+        "rating": 5,
+        "date": "2023-12-10",
+        "comment": "Exceptional property in every way. Clean, comfortable, and beautifully decorated. The location is perfect - close to town but still feels private and peaceful. Highly recommend!",
+        "verified": true
+      }
+    ]
   },
   {
     "id": 6,
@@ -204,11 +260,12 @@
     "price": "380",
     "description": "Vibrant beach resort offering family-friendly luxury with authentic Swahili coastal experiences.",
     "long_description": "Kifaru Nyali Resort captures the vibrant spirit of Kenya's coast with premium family-friendly amenities. Our expansive beach club features multiple pools, water sports, and dedicated kids' activities. Enjoy privileged access to championship golf courses, state-of-the-art fitness facilities, and authentic Swahili cultural experiences. Savor coastal fusion cuisine at our beachfront restaurants, enjoy nightly entertainment showcasing local talent, and create unforgettable family memories in our spacious suites designed for multi-generational travel.",
-    "geolocation": [-4.0355, 39.6500],
+    "geolocation": [-4.0355, 39.65],
     "images": [
       "https://res.cloudinary.com/drselhsl4/image/upload/v1750767052/QwetuLinks/fbxcq2dsqymt4moljzoc.jpg"
     ],
     "link": "/property/nyali",
+    "background": "https://res.cloudinary.com/drselhsl4/image/upload/v1764137631/Kifaru/backgrounds/t9ot1vd3xje5d9kn4ga6.png",
     "booked_dates": [
       { "check_in": "2025-12-15", "check_out": "2025-12-20" },
       { "check_in": "2025-11-01", "check_out": "2025-11-05" }

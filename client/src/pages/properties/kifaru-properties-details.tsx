@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "react-calendar/dist/Calendar.css";
-import Calendar from "react-calendar";
 import * as LucideIcons from "lucide-react";
 import {
   Bath,
   Bed,
   Building2,
-  CalendarCheck,
   DoorClosed,
   Dumbbell,
   MapPin,
@@ -17,10 +15,11 @@ import {
   User2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import palmTree from "../../assets/palmtree.png";
 import properties from "../../components/data/properties.json";
 import Maps from "@/components/property/maps";
 import Reviews from "@/components/property/reviews";
+import Availability from "@/components/property/availability";
+import Booking from "@/components/property/booking";
 
 export default function KifaruPropertyDetails() {
   const { propertyId } = useParams<{ propertyId: string }>();
@@ -31,8 +30,6 @@ export default function KifaruPropertyDetails() {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [animated, setAnimated] = useState(false);
-  const [bookedDates, setBookedDates] = useState<Date[]>([]);
-  const [date] = useState(new Date());
 
   // Find the property based on the route param
   const property = properties.find(
@@ -41,28 +38,6 @@ export default function KifaruPropertyDetails() {
 
   useEffect(() => {
     if (!property) return;
-    const expandedBookedDates = (
-      check_in: string,
-      check_out: string
-    ): Date[] => {
-      const checkinDate = new Date(check_in);
-      const checkoutDate = new Date(check_out);
-      const dates: Date[] = [];
-
-      let currentDate = new Date(checkinDate);
-      while (currentDate <= checkoutDate) {
-        dates.push(new Date(currentDate));
-        currentDate.setDate(currentDate.getDate() + 1);
-      }
-
-      return dates;
-    };
-
-    const expanded = property.booked_dates.flatMap(
-      (range: { check_in: string; check_out: string }) =>
-        expandedBookedDates(range.check_in, range.check_out)
-    );
-    setBookedDates(expanded);
     setLoading(false);
   }, [propertyId, property]);
 
@@ -87,6 +62,7 @@ export default function KifaruPropertyDetails() {
   }
 
   const images = property.images;
+  const image = property.background;
 
   const toggleAnimation = () => {
     setAnimated(!animated);
@@ -104,8 +80,7 @@ export default function KifaruPropertyDetails() {
     setCurrentImageIndex((i) => (i - 1 + images.length) % images.length);
   };
 
-  const isBooked = (day: Date) =>
-    bookedDates.some((b) => b.toDateString() === day.toDateString());
+  
 
   return (
     <div className="container mx-auto px-4 py-6 md:py8">
@@ -115,7 +90,8 @@ export default function KifaruPropertyDetails() {
           <h1 className="text-3xl font-bold">{property.name}</h1>
           <div className="flex gap-2 mt-2 text-gray-600 text-sm md:text-base">
             {" "}
-            <MapPin className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" /> {property.location}, {property.country}
+            <MapPin className="w-4 h-4 md:w-5 md:h-5 flex-shrink-0" />{" "}
+            {property.location}, {property.country}
           </div>
         </div>
       </div>
@@ -175,7 +151,7 @@ export default function KifaruPropertyDetails() {
       {/* Tabs and Booking */}
       <div
         className="bg-no-repeat bg-contain"
-        style={{ backgroundImage: `url(${palmTree})` }}
+        style={{ backgroundImage: `url(${image})` }}
       >
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
           <div className="lg:col-span-2">
@@ -259,114 +235,31 @@ export default function KifaruPropertyDetails() {
 
               {/* Availability Tab */}
               {activeTab === "availability" && (
-                <div className="flex gap-4 justify-between">
-                  {/* Current Month Calendar */}
-                  <div className="w-1/2">
-                    <h2 className="text-center text-lg font-semibold mb-2">
-                      {date.toLocaleString("default", {
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </h2>
-                    <Calendar
-                      value={date}
-                      defaultView="month"
-                      tileDisabled={({ date }) => isBooked(date)}
-                      tileClassName={({ date }) =>
-                        isBooked(date) ? "booked-date" : "available-date"
-                      }
-                      activeStartDate={
-                        new Date(date.getFullYear(), date.getMonth(), 1)
-                      }
-                      showNavigation={false}
-                    />
-                  </div>
-
-                  {/* Next Month Calendar */}
-                  <div className="w-1/2">
-                    <h2 className="text-center text-lg font-semibold mb-2">
-                      {new Date(
-                        date.getFullYear(),
-                        date.getMonth() + 1,
-                        1
-                      ).toLocaleString("default", {
-                        month: "long",
-                        year: "numeric",
-                      })}
-                    </h2>
-                    <Calendar
-                      value={date}
-                      defaultView="month"
-                      tileDisabled={({ date }) => isBooked(date)}
-                      tileClassName={({ date }) =>
-                        isBooked(date) ? "booked-date" : "available-date"
-                      }
-                      activeStartDate={
-                        new Date(date.getFullYear(), date.getMonth() + 1, 1)
-                      }
-                      showNavigation={false}
-                    />
-                  </div>
-                </div>
+                <Availability bookedRanges={property.booked_dates} />
               )}
 
               {/* Maps Tab */}
               {activeTab === "maps" && (
-                <Maps
-                  position={property.geolocation as [number, number]}
-                  name={property.name}
-                />
+                <div className="z-">
+                  <Maps
+                    position={property.geolocation as [number, number]}
+                    name={property.name}
+                  />
+                </div>
               )}
 
               {/* Reviews Tab  */}
-              {activeTab === "reviews" && <Reviews />}
+              {activeTab === "reviews" && <Reviews review={property.reviews} />}
             </div>
           </div>
 
           {/* Booking Panel */}
-          <div className="lg:col-span-1">
-            <div className="bg-white border border-gray-200 rounded-lg shadow p-6 sticky top-6">
-              <div className="text-center">
-                <h3 className="text-2xl font-bold mb-2">
-                  Ksh. 1200
-                  <span className="text-gray-600 text-base"> per Day</span>
-                </h3>
-
-                <div className="mb-6 text-sm text-gray-600">
-                  <div>South Coast, Msambweni</div>
-                </div>
-
-                <Button
-                  asChild
-                  size="lg"
-                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold mb-3"
-                >
-                  <Link to="/contact">
-                    <CalendarCheck className="mr-2 w-5 h-5" />
-                    Book Now
-                  </Link>
-                </Button>
-
-                <p className="text-xs text-gray-500 mt-3">
-                  Secure booking process • Instant confirmation
-                </p>
-              </div>
-
-              <div className="mt-6 pt-4 border-t border-gray-200 text-sm space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Status</span>
-                  <span className={"text-green-600"}>Free</span>
-                </div>
-              </div>
-
-              <div className="mt-6 text-center text-sm text-gray-500">
-                Need help?{" "}
-                <a href="#" className="text-indigo-600 hover:text-indigo-800">
-                  Contact support
-                </a>
-              </div>
-            </div>
-          </div>
+          <Booking
+            price={property.price}
+            location={property.location}
+            country={property.country}
+            status={property.status}
+          />
         </div>
         <div className="py-16 px-6 bg-secondary/20">
           <div className="container mx-auto text-center">
