@@ -11,13 +11,10 @@ import {
 } from "@/components/ui/navigation-menu";
 import logo from "../../assets/icon/icon.ico";
 import navLinks from "../../lib/routes";
+import Mobilemenu from "./mobilemenu";
 
 export default function Navbar() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <nav className="sticky top-0 z-40 w-full bg-accent/80 backdrop-blur-sm border-b shadow-sm">
@@ -94,71 +91,19 @@ export default function Navbar() {
         {/* Mobile menu button */}
         <div className="md:hidden">
           <button
-            onClick={toggleMenu}
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
             className="text-foreground hover:text-primary focus:outline-none p-2"
             aria-label="Toggle menu"
           >
-            {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile Navigation */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-white absolute top-16 w-full border-b shadow-lg">
-          <div className="flex flex-col space-y-2 px-4 py-4">
-            {navLinks.map((link) =>
-              link.children ? (
-                <div className="py-2" key={link.label}>
-                  <div className="flex items-center justify-between text-foreground">
-                    <span className="text-foreground">{link.label}</span>
-                  </div>
-                  <div className="pl-4 mt-2 border-l border-gray-200 space-y-2">
-                    {link.children.map((property) => (
-                      <Link
-                        key={property.to}
-                        to={property.to}
-                        className="block text-sm text-gray-600 hover:text-primary py-1"
-                        onClick={toggleMenu}
-                      >
-                        {property.label}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <NavLink
-                  key={link.to}
-                  to={link.to}
-                  onClick={toggleMenu}
-                  className="text-foreground hover:text-primary transition-colors py-2"
-                >
-                  {link.label}
-                </NavLink>
-              )
-            )}
-
-            <div className="flex gap-2 mt-2">
-              <Button
-                className="bg-primary hover:bg-primary/90 text-white flex-1"
-                asChild
-              >
-                <Link to="/signup" onClick={toggleMenu}>
-                  SignUp
-                </Link>
-              </Button>
-              <Button
-                className="bg-primary hover:bg-primary/90 text-white flex-1"
-                asChild
-              >
-                <Link to="/login" onClick={toggleMenu}>
-                  Login
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Mobilemenu
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
+      />
     </nav>
   );
 }
