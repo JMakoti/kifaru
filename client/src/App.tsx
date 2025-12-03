@@ -20,7 +20,7 @@ import Payments from "./pages/admin/payments";
 import Reports from "./pages/admin/reports";
 import Guests from "./pages/admin/guests";
 import KifaruPropertyDetails from "./pages/properties/kifaru-properties-details";
-
+import Payment from "./components/property/payment";
 
 function App() {
   return (
@@ -31,6 +31,7 @@ function App() {
         <Route path="/property" element={<Property />}>
           <Route index element={<KifaruProperty />} />
           <Route path=":propertyId" element={<KifaruPropertyDetails />} />
+          <Route index path=":propertyId/payment" element={<Payment />} />
         </Route>
         <Route path="services" element={<Services />} />
         <Route path="contact" element={<Contact />} />

@@ -11,7 +11,7 @@ interface ReviewItem {
   rating: number;
   date: string;
   comment: string;
-  verified: boolean;
+  verified?: boolean;
   response?: {
     author: string;
     date: string;

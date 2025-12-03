@@ -3,7 +3,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Toaster, toast } from "sonner";
 import { CalendarCheck } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useNavigate} from "react-router";
 
 export default function BookingForm({
   price,
@@ -70,7 +70,8 @@ export default function BookingForm({
       guests: Number(guests),
     };
 
-    navigate("/payment", { state: bookingData });
+    // navigate( `/property/${slug.propertyId}/payment`, { state: bookingData });
+    navigate( "payment", { state: bookingData }); // workes too 
     toast.success(
       "Reservation Completed , Make payments to Finalize the Booking"
     );

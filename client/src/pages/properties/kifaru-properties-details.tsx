@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "react-calendar/dist/Calendar.css";
-import * as LucideIcons from "lucide-react";
+// import * as LucideIcons from "lucide-react";
 import {
   Bath,
   Bed,
@@ -79,8 +79,6 @@ export default function KifaruPropertyDetails() {
     toggleAnimation();
     setCurrentImageIndex((i) => (i - 1 + images.length) % images.length);
   };
-
-  
 
   return (
     <div className="container mx-auto px-4 py-6 md:py8">
@@ -187,9 +185,9 @@ export default function KifaruPropertyDetails() {
                         return (
                           <div
                             key={i}
-                            className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30"
+                            className="flex flex-col items-center gap-3 p-4 rounded-lg bg-secondary/30"
                           >
-                            <Icon className="w-5 h-5 text-primary" />
+                            <Icon className="w-12 h-12 text-primary" />
                             <span className="font-medium">
                               {highlight.label}
                             </span>
@@ -215,7 +213,10 @@ export default function KifaruPropertyDetails() {
                     Features & Amenities
                   </h3>
                   <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    {property.amenities.map((amenity: any, i: number) => {
+                    <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30">
+                     <img src="https://res.cloudinary.com/drselhsl4/image/upload/v1764184137/Kifaru/amenities/nuhz8ilchupjdl13rrsq.jpg" loading="lazy" alt="Holistic Spa & Wellness" />
+                    </div>
+                    {/* {property.amenities.map((amenity: any, i: number) => {
                       const Icon = (LucideIcons as any)[amenity.icon];
                       return (
                         <div
@@ -228,7 +229,7 @@ export default function KifaruPropertyDetails() {
                           <span className="font-medium">{amenity.label}</span>
                         </div>
                       );
-                    })}
+                    })} */}
                   </div>
                 </div>
               )}
