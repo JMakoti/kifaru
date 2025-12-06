@@ -16,11 +16,14 @@ import KifaruProperty from "./pages/properties/kifaru-property";
 import AdminLayout from "./components/admin_layout/admin_layout";
 import Dashboardhome from "./pages/admin/dashboardhome";
 import Bookings from "./pages/admin/bookings";
-import Payments from "./pages/admin/payments";
+import Transcations from "./pages/admin/payments";
 import Reports from "./pages/admin/reports";
 import Guests from "./pages/admin/guests";
+import Settings from "./pages/admin/settings";
+
 import KifaruPropertyDetails from "./pages/properties/kifaru-properties-details";
 import Payment from "./components/property/payment";
+import Properties from "./pages/admin/properties";
 
 function App() {
   return (
@@ -43,12 +46,15 @@ function App() {
       </Route> */}
 
       {/* Admin Dashboard */}
+
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Dashboardhome />} />
+        <Route path="property" element={<Properties />} />
         <Route path="bookings" element={<Bookings />} />
-        <Route path="payments" element={<Payments />} />
+        <Route path="payments" element={<Transcations />} />
         <Route path="reports" element={<Reports />} />
         <Route path="guests" element={<Guests />} />
+        <Route path="settings" element={<Settings />} />
       </Route>
 
       <Route path="*" element={<Notfound />} />

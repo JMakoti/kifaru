@@ -1,16 +1,16 @@
-export default function Bookings() {
+export default function Properties() {
   return (
     <>
       <main className="min-h-screen pt-20">
         <div className="container mx-auto px-6 md:px-12 py-16">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-center mb-8">
-            Bookings
+            Properties
           </h1>
           <p className="text-center text-muted-foreground max-w-2xl mx-auto">
-            Manage and review all property bookings efficiently from this dashboard. Stay updated on guest reservations and booking statuses in real time.
+            Manage your property listings, update details, and monitor property performance all in one place.
           </p>
         </div>
       </main>
     </>
-  );
+  )
 }
