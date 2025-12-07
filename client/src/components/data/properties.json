@@ -35,7 +35,7 @@
     "link": "/property/belgium",
     "background": "https://res.cloudinary.com/drselhsl4/image/upload/v1764136940/Kifaru/backgrounds/ipshvpes7mlcg9mjc9qu.png",
     "booked_dates": [
-      { "check_in": "2025-12-01", "check_out": "2025-12-05" },
+      { "check_in": "2025-12-01", "check_out": "2025-12-14" },
       { "check_in": "2025-12-15", "check_out": "2025-12-20" },
       { "check_in": "2025-11-20", "check_out": "2025-11-29" }
     ],
@@ -215,7 +215,7 @@
       { "icon": "Bath", "label": "2 Bathrooms" },
       { "icon": "Ruler", "label": "9 Square Meters" }
     ],
-    "status": "free",
+    "status": "maintenance",
     "price": "220",
     "description": "Historic canal house transformed into a cultural haven where Dutch heritage embraces African warmth.",
     "long_description": "Kifaru Netherlands Villa offers a unique cultural immersion in a meticulously restored 17th-century canal house. Experience authentic Dutch living with African-inspired hospitality, from cycling through vibrant tulip fields to private canal tours on our classic boat. Participate in traditional Dutch art workshops with African influences, savor innovative Dutch-African fusion cuisine, and relax in our wellness center featuring both European spa treatments and African healing rituals. This is where two rich cultures harmoniously converge.",
@@ -261,7 +261,7 @@
       { "icon": "Bath", "label": "4 Bathrooms" },
       { "icon": "Ruler", "label": "18 Square Meters" }
     ],
-    "status": "free",
+    "status": "booked",
     "price": "380",
     "description": "Vibrant beach resort offering family-friendly luxury with authentic Swahili coastal experiences.",
     "long_description": "Kifaru Nyali Resort captures the vibrant spirit of Kenya's coast with premium family-friendly amenities. Our expansive beach club features multiple pools, water sports, and dedicated kids' activities. Enjoy privileged access to championship golf courses, state-of-the-art fitness facilities, and authentic Swahili cultural experiences. Savor coastal fusion cuisine at our beachfront restaurants, enjoy nightly entertainment showcasing local talent, and create unforgettable family memories in our spacious suites designed for multi-generational travel.",

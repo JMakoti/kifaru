@@ -1,16 +1,11 @@
+import PropertiesView from "@/components/admin/properties/propertyview";
+
 export default function Properties() {
   return (
-    <>
-      <main className="min-h-screen pt-20">
-        <div className="container mx-auto px-6 md:px-12 py-16">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-center mb-8">
-            Properties
-          </h1>
-          <p className="text-center text-muted-foreground max-w-2xl mx-auto">
-            Manage your property listings, update details, and monitor property performance all in one place.
-          </p>
-        </div>
-      </main>
-    </>
-  )
+    <div className="min-h-screen bg-background">
+      <div className="container py-8 px-6">
+        <PropertiesView />
+      </div>
+    </div>
+  );
 }
