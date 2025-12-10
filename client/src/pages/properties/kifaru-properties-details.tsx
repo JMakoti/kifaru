@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "react-calendar/dist/Calendar.css";
-// import * as LucideIcons from "lucide-react";
+import * as LucideIcons from "lucide-react";
 import {
   Bath,
   Bed,
@@ -213,10 +213,10 @@ export default function KifaruPropertyDetails() {
                     Features & Amenities
                   </h3>
                   <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30">
+                    {/* <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30">
                      <img src="https://res.cloudinary.com/drselhsl4/image/upload/v1764184137/Kifaru/amenities/nuhz8ilchupjdl13rrsq.jpg" loading="lazy" alt="Holistic Spa & Wellness" />
-                    </div>
-                    {/* {property.amenities.map((amenity: any, i: number) => {
+                    </div> */}
+                    {property.amenities.map((amenity: any, i: number) => {
                       const Icon = (LucideIcons as any)[amenity.icon];
                       return (
                         <div
@@ -229,7 +229,7 @@ export default function KifaruPropertyDetails() {
                           <span className="font-medium">{amenity.label}</span>
                         </div>
                       );
-                    })} */}
+                    })}
                   </div>
                 </div>
               )}
