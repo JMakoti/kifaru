@@ -6,7 +6,7 @@ import Home from "./pages/home";
 import About from "./pages/about";
 import Property from "./pages/property";
 import Contact from "./pages/contact";
-import Services from "./pages/services";
+// import Services from "./pages/services";
 import Notfound from "./pages/notfound";
 
 // Properties
@@ -36,7 +36,7 @@ function App() {
           <Route path=":propertyId" element={<KifaruPropertyDetails />} />
           <Route index path=":propertyId/payment" element={<Payment />} />
         </Route>
-        <Route path="services" element={<Services />} />
+        {/* <Route path="services" element={<Services />} /> */}
         <Route path="contact" element={<Contact />} />
       </Route>
 

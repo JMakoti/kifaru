@@ -37,7 +37,7 @@ export const navLinks = [
       },
     ],
   },
-  { to: "/services", label: "Services" },
+  // { to: "/services", label: "Services" },
   { to: "/contact", label: "Contact" },
 ];
 
