@@ -1,7 +1,14 @@
+import TransactionView from "@/components/admin/transaction/transactionview";
+
 export default function Transcations() {
   return (
-   <>
-      <main className="min-h-screen pt-20">
+    <>
+      <div className="min-h-screen bg-background">
+        <div className="container py-8 px-6">
+          <TransactionView />
+        </div>
+      </div>
+      {/* <main className="min-h-screen pt-20">
         <div className="container mx-auto px-6 md:px-12 py-16">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-center mb-8">
             Transactions
@@ -10,7 +17,7 @@ export default function Transcations() {
             Track and manage all payment transactions securely. View payment history and resolve issues quickly from this panel.
           </p>
         </div>
-      </main>
+      </main> */}
     </>
-  )
+  );
 }

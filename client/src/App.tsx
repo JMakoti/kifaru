@@ -16,7 +16,7 @@ import KifaruProperty from "./pages/properties/kifaru-property";
 import AdminLayout from "./components/admin_layout/admin_layout";
 import Dashboardhome from "./pages/admin/dashboardhome";
 import Bookings from "./pages/admin/bookings";
-import Transcations from "./pages/admin/payments";
+import Transcations from "./pages/admin/transaction";
 import Reports from "./pages/admin/reports";
 import Guests from "./pages/admin/guests";
 import Settings from "./pages/admin/settings";
