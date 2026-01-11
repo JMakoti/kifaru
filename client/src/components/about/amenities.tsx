@@ -5,18 +5,28 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const smallCards = [
   {
+    title: "Coworking & co-growing spaces",
+    desc: "Kifaru is a bold coworking space that takes you out of your comfort zone and on a creative journey",
+    img: "https://techbedkifaru.be/wp-content/uploads/2020/11/WhatsApp-Image-2020-10-09-at-11.50.44-3-1-605x465.jpeg",
+  },
+  {
+    title: "WaterSport",
+    desc: "There’s plenty to enjoy on the water! You can go sailing, kitesurfing, and surfing on the North Sea",
+    img: "https://www.villamer.nl/assets/uploads/watersport_cadzand/_900x600_crop_center-center_80_none/2392/strandsport.webp",
+  },
+  {
     title: "Coastal Retreats",
     desc: "Peaceful beachfront escapes where soft waves, warm sands, and endless horizons create moments that feel timeless.",
     img: "https://res.cloudinary.com/drselhsl4/image/upload/v1764184034/Kifaru/amenities/plsj8c3cj11rdttfwjt6.jpg",
   },
   {
-    title: "Holistic Spa & Wellness",
-    desc: "Immersive wellness sanctuaries offering soothing therapies, calming aromas, and deeply restorative experiences.",
-    img: "https://res.cloudinary.com/drselhsl4/image/upload/v1764184137/Kifaru/amenities/nuhz8ilchupjdl13rrsq.jpg",
+    title: "African wine tastings & curated events",
+    desc: "The inner man will have a good time with us. The African Tastings of (sparkling) wines and typical products guarantee this. In our jacuzzi you can literally bathe in bubbles.",
+    img: "https://techbedkifaru.be/wp-content/uploads/2020/11/scott-warman-rrYF1RfotSM-unsplash-bewerkt.jpg",
   },
   {
     title: "Cultural Art & Heritage Spaces",
-    desc: "Curated spaces celebrating local artistry, storytelling, and heritage—where culture is preserved, honored, and beautifully showcased.",
+    desc: "Curated spaces celebrating local artistry, storytelling, and heritage where culture is preserved, honored, and beautifully showcased.",
     img: "https://res.cloudinary.com/drselhsl4/image/upload/v1764184624/Kifaru/amenities/dtai9yryhuwim62nuoxt.jpg",
   },
   {
@@ -25,9 +35,9 @@ const smallCards = [
     img: "https://res.cloudinary.com/drselhsl4/image/upload/v1764184030/Kifaru/amenities/wwgmiqajunkoxkfkitx0.jpg",
   },
   {
-    title: "Nature-Inspired Lounges",
-    desc: "Warm, calming lounges crafted with earthy textures and soft lighting, inviting you to pause, unwind, and reconnect.",
-    img: "https://res.cloudinary.com/drselhsl4/image/upload/v1764184037/Kifaru/amenities/klu065euk0nv29cd915l.jpg",
+    title: "Discounted Bike Rental",
+    desc: "Enjoy easy and flexible mobility with our shared bikes perfect for exploring the area at your own pace while staying active and eco-friendly.",
+    img: "https://www.villamer.nl/assets/uploads/winkels_cadzand/_900x600_crop_center-center_80_none/68544/neptunus_tweewielers.webp",
   },
 ];
 
@@ -70,7 +80,7 @@ export default function AmenitiesSection() {
   }, []);
 
   return (
-    <section className="container mx-auto px-2 py-12">
+    <section className="container mx-auto px-2 py-6">
       <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 items-start">
         <div className="lg:col-span-1">
           <div className="relative rounded-2xl overflow-hidden shadow-lg">
@@ -99,7 +109,7 @@ export default function AmenitiesSection() {
 
         {/* RIGHT SIDE SECTION */}
         <div className="flex flex-col mt-12">
-          <h2 className="text-2xl md:text-4xl font-bold">
+          <h2 className="text-3xl font-semibold text-gray-900 leading-tight">
             Amenities & Features
           </h2>
           <p className="mt-3 text-gray-600">

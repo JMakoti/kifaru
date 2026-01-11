@@ -2,7 +2,7 @@ import AboutSection from "@/components/shared/about-section";
 import CTASection from "@/components/about/cta";
 import AmenitiesSection from "@/components/about/amenities";
 import Why_UsSection from "@/components/about/why_us";
-import TestimonialsSection from "@/components/about/testmonials";
+import TestimonialSection from "@/components/about/testmonials";
 
 export default function About() {
   return (
@@ -25,7 +25,7 @@ export default function About() {
       {/* Amenities Section */}
       <AmenitiesSection />
       {/* Testimonial section */}
-      <TestimonialsSection />
+      <TestimonialSection />
       {/* Call to Action */}
       <CTASection />
     </>

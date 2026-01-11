@@ -1,59 +1,60 @@
 import { Card, CardContent } from "@/components/ui/card";
-import luxury from "@/assets/icon/double-bed.png";
-import serinity from "@/assets/icon/inner-peace.png";
-import living from "@/assets/icon/curtains.png";
-import vacation from "@/assets/icon/hut.png";
-import bio from "@/assets/icon/bio.png";
-import nature from "@/assets/icon/leaf.png";
+import luxury from "@/assets/icon/kifaru-comfort.png";
+import dining from "@/assets/icon/kifaru-dining.png";
+import coaching from "@/assets/icon/kifaru-coaching-icon.png";
+import homes from "@/assets/icon/kifaru-homes.png";
+import transport from "@/assets/icon/kifaru-transport.png";
+import humancentered from "@/assets/icon/kifaru-human-centered.png";
 
 export default function Why_UsSection() {
   const items = [
     {
       title: "Luxury & Comfort Focused",
       description:
-        "Whether you seek a peaceful sanctuary or a sophisticated space to entertain.",
+        "guests experience the comfort of consistent, sustainable standards, Across all properties.",
       icon: <img src={luxury} alt="Luxury icon" className="w-14 h-14" />,
     },
     {
-      title: "Serenity & Exclusivity Focused",
+      title: "Flexible Dining Experiences",
       description:
-        "Whether you seek a peaceful sanctuary or a sophisticated space to entertain.",
-      icon: <img src={serinity} alt="Serenity icon" className="w-14 h-14" />,
+        "Ensuring authentic, nourishing food and beverage experiences rooted in local culture.",
+      icon: <img src={dining} alt="Modern icon" className="w-14 h-14" />,
     },
     {
-      title: "Modern & Smart Living",
+      title: "Personal Coaching Professionals",
+      description:
+        "including life coaches, business coaches, and inspirational role models.",
+      icon: <img src={coaching} alt="Serenity icon" className="w-14 h-14" />,
+    },
+
+    {
+      title: "Unique Homes",
       description:
         "Whether you seek a peaceful sanctuary or a sophisticated space to entertain.",
-      icon: <img src={living} alt="Modern icon" className="w-14 h-14" />,
+      icon: <img src={homes} alt="Vacation icon" className="w-14 h-14" />,
     },
     {
-      title: "Unique Vacation Homes",
-      description:
-        "Whether you seek a peaceful sanctuary or a sophisticated space to entertain.",
-      icon: <img src={vacation} alt="Vacation icon" className="w-14 h-14" />,
-    },
-    {
-      title: "Eco-Friendly & Sustainable",
+      title: "Reliable & Ethical Mobility Solutions",
       description:
         "Thoughtfully built homes that respect the environment and reduce impact.",
-      icon: <img src={bio} alt="Eco friendly icon" className="w-14 h-14" />,
+      icon: (
+        <img src={transport} alt="Eco friendly icon" className="w-14 h-14" />
+      ),
     },
     {
-      title: "Nature-Inspired Retreats",
-      description:
-        "Homes that frame green vistas, fresh air, and slow, restorative moments.",
-      icon: <img src={nature} alt="Nature icon" className="w-14 h-14" />,
+      title: "Effortless & Human-centered",
+      description: "It is a living network of spaces, people, and purpose.",
+      icon: <img src={humancentered} alt="Nature icon" className="w-14 h-14" />,
     },
   ];
   return (
     <div>
-      <section className="w-full px-6 md:px-20 py-16 bg-white ">
-        <div className="flex flex-col md:flex-row">
-          {/* Left Intro */}
-          <div className="w-1/2">
-            <h2 className="text-4xl font-bold text-gray-900 leading-tight">
-              Why Choose
-              <br /> Kifaru?
+      <section className="w-full px-6 md:px-20 py-8 bg-white mt-6 ">
+        <div>
+          {/*Intro */}
+          <div className="mb-6">
+            <h2 className="text-3xl font-semibold text-gray-900 leading-tight">
+              Why Choose Kifaru?
             </h2>
           </div>
 
@@ -63,7 +64,7 @@ export default function Why_UsSection() {
               <div>
                 <Card
                   key={index}
-                  className="shadow-none border-none bg-transparent p-6 h-60 bg-blue-50"
+                  className="shadow-none border bg-transparent p-6 h-60 rounded-lg"
                 >
                   <CardContent className="p-0 space-y-2">
                     {item.icon}
@@ -75,10 +76,6 @@ export default function Why_UsSection() {
                     </p>
                   </CardContent>
                 </Card>
-
-                {index !== items.length - 1 && (
-                  <div className="w-px bg-gray-800" />
-                )}
               </div>
             ))}
           </div>

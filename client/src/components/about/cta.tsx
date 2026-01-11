@@ -28,9 +28,10 @@ export default function CTASection() {
         {/* Content */}
         <div className="relative z-10 text-center text-white container mx-auto px-4">
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-6 leading-tight">
-            Start Your Journey With A Trusted
+            {/* Start Your Journey With A Trusted
             <br />
-            Partner Like Kifaru
+            Partner Like Kifaru */}
+            Join hundreds of satisfied guests <br /> across our global properties
           </h1>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-12">

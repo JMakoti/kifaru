@@ -105,12 +105,23 @@ export default function ContactDetailsSection() {
             <div className="lg:col-span-2 space-y-4 animate-slide-up">
               <div>
                 <h2 className="text-4xl font-bold text-foreground mb-4">
-                  Get in Touch
+                  Let’s Plan Your Stay
                 </h2>
                 <p className="text-lg text-muted-foreground">
-                  Our team of experts is ready to help you find the perfect
-                  getaway.
+                  Whether you are traveling solo, with family, or with a
+                  purpose-driven team, we are here to design your ideal Kifaru
+                  experience.
                 </p>
+                <div className="mt-4 mb-4">
+                  <h3 className="text-2xl text-black font-bold">What you can expect</h3>
+                  <div className="text-lg text-muted-foreground">
+                    <ul className="list-disc list-inside">
+                      <li>One dedicated account manager</li>
+                      <li>Transparent booking and clear communication</li>
+                      <li>End-to-end support from inquiry to departure</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
 
               {/* Contact Info Cards */}
@@ -138,7 +149,7 @@ export default function ContactDetailsSection() {
                       Email Us
                     </p>
                     <p className="font-semibold text-lg text-foreground">
-                      info@kifaru.com
+                      requests@techbedkifaru.be
                     </p>
                   </div>
                 </div>
@@ -149,12 +160,20 @@ export default function ContactDetailsSection() {
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground mb-1">
-                      Visit Us
+                      Concierge & On-Site Support
                     </p>
                     <p className="font-semibold text-lg text-foreground">
-                      Nairobi, Kenya
+                      Available per location
                     </p>
                   </div>
+                </div>
+              </div>
+              <div>
+                <h3 className="font-bold">Reach us Throught Our Social Links</h3>
+                <div className="flex gap-4 mt-5">
+                  <div>Whatsapp</div>
+                  <div>Instagram</div>
+                  <div>Facebook</div>
                 </div>
               </div>
             </div>

@@ -198,10 +198,32 @@ export default function KifaruPropertyDetails() {
                   </div>
 
                   <div>
-                    <h3 className="text-2xl font-semibold mb-3">
+                    <h3 className="text-2xl font-semibold mb-3 mt-6">
                       About this space
                     </h3>
                     <p className="text-gray-600">{property.long_description}</p>
+                  </div>
+
+                  <div className="mt-6">
+                    <h3 className="text-2xl font-semibold mb-3">
+                      Background & Story
+                    </h3>
+                    <p className="text-gray-600">{property.background_story}</p>
+                  </div>
+
+                  <div className="mt-6">
+                    <h3 className="text-2xl font-semibold mb-3">
+                      On Site contact
+                    </h3>
+                    <p className="text-gray-600">
+                      {property.on_site_contact?.name}
+                    </p>
+                    <p className="text-gray-600">
+                      {property.on_site_contact?.role}
+                    </p>
+                    <p className="text-gray-600">
+                      {property.on_site_contact?.contact_number}
+                    </p>
                   </div>
                 </div>
               )}
@@ -209,27 +231,89 @@ export default function KifaruPropertyDetails() {
               {/* Amenities Tab */}
               {activeTab === "features" && (
                 <div>
-                  <h3 className="text-xl font-semibold mb-3">
-                    Features & Amenities
-                  </h3>
-                  <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-                    {/* <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30">
+                  <div>
+                    <h3 className="text-xl font-semibold mb-3">
+                      Accommodation & Capacity
+                    </h3>
+                    <div>
+                      {property.accommodation?.bedrooms && (
+                        <div className="grid sm:grid-cols-2 gap-4">
+                          {property.accommodation.bedrooms.map(
+                            (
+                              bedroom: {
+                                name: string;
+                                bed_type: string;
+                                capacity: number | string;
+                              },
+                              index: number
+                            ) => (
+                              <div
+                                key={index}
+                                className="p-5 rounded-lg bg-secondary/30 space-y-2"
+                              >
+                                <h4 className="text-lg font-semibold">
+                                  {bedroom.name}
+                                </h4>
+
+                                <p className="flex items-center gap-3 p-2">
+                                  <Bed /> {bedroom.bed_type}
+                                </p>
+
+                                <p className="flex items-center gap-3 p-2">
+                                  <LucideIcons.Users /> Capacity:{" "}
+                                  {bedroom.capacity}
+                                </p>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="mt-6">
+                    <h3 className="text-xl font-semibold mb-3">
+                      Features & Amenities
+                    </h3>
+                    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+                      {/* <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30">
                      <img src="https://res.cloudinary.com/drselhsl4/image/upload/v1764184137/Kifaru/amenities/nuhz8ilchupjdl13rrsq.jpg" loading="lazy" alt="Holistic Spa & Wellness" />
                     </div> */}
-                    {property.amenities.map((amenity: any, i: number) => {
-                      const Icon = (LucideIcons as any)[amenity.icon];
-                      return (
-                        <div
-                          key={i}
-                          className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30"
-                        >
-                          {Icon ? (
-                            <Icon className="w-5 h-5 text-primary" />
-                          ) : null}
-                          <span className="font-medium">{amenity.label}</span>
+                      {property.amenities.map((amenity: any, i: number) => {
+                        const Icon = (LucideIcons as any)[amenity.icon];
+                        return (
+                          <div
+                            key={i}
+                            className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30"
+                          >
+                            {Icon ? (
+                              <Icon className="w-5 h-5 text-primary" />
+                            ) : null}
+                            <span className="font-medium">{amenity.label}</span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                  <div className="mt-6">
+                    <h3 className="text-xl font-semibold mb-3">
+                      Services offered
+                    </h3>
+                    <div>
+                      {property?.services && (
+                        <div className="grid sm:grid-cols-2 gap-4">
+                          {property.services.map(
+                            (service: string, index: number) => (
+                              <p
+                                key={index}
+                                className="flex items-center gap-3 p-2 rounded-lg bg-secondary/30"
+                              >
+                                {service}
+                              </p>
+                            )
+                          )}
                         </div>
-                      );
-                    })}
+                      )}
+                    </div>
                   </div>
                 </div>
               )}

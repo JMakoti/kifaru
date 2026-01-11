@@ -1,28 +1,102 @@
 [
   {
     "id": 1,
-    "name": "Kifaru Belgium",
+    "name": "Tech & Bed Kifaru Brussels",
     "slug": "belgium",
-    "location": "Belgium Countryside",
+    "location": "Winston Churchill area",
     "country": "Belgium",
+    "unique_features": [
+      {
+        "name": "Events & Shootings",
+        "description": "Kifaru is also pleased to host small-scale enriching events and activities from various sectors that support society."
+      },
+      {
+        "name": "Coworking with Benefits",
+        "description": "Design, functionality, and atmosphere influence the mind. So, it should be fine. Performance, results, satisfaction, and the exchange of ideas are then a sure consequence."
+      },
+      {
+        "name": "Conference Calls",
+        "description": "Our modern communication technology makes E-learning and conference calls and recordings of all kinds an important leg."
+      },
+      {
+        "name": "Work- (Out)",
+        "description": "We support the importance of a healthy lifestyle. That's why a coworking space cannot do without a small gym. We have this space inside, but also outside: running or walking in the Soignes forest."
+      },
+      {
+        "name": "Food Pairing",
+        "description": "The entire venue benefits from a perfect match of food and Kifaru catering, a kitchen and numerous home delivery options."
+      },
+      {
+        "name": "Winetasting",
+        "description": "The inner man will have a good time with us. The African Tastings of (sparkling) wines and typical products guarantee this. In our jacuzzi you can literally bathe in bubbles."
+      }
+    ],
     "amenities": [
-      { "icon": "Wifi", "label": "Free WiFi" },
-      { "icon": "Utensils", "label": "Farm-to-Table Dining" },
-      { "icon": "Wind", "label": "Countryside Spa" },
-      { "icon": "Bike", "label": "Bicycle Tours" },
-      { "icon": "Wine", "label": "Wine Tasting" },
-      { "icon": "Tree", "label": "Nature Walks" }
+      { "icon": "Wifi", "label": "Free Wi-Fi" },
+      { "icon": "Droplets", "label": "Outdoor Rooftop Jacuzzi" },
+      { "icon": "Dumbbell", "label": "Technogym Wall & Workout Area" },
+      { "icon": "Tv", "label": "Smart TV with Virtual Sports Coach" },
+      {
+        "icon": "MonitorPlay",
+        "label": "Outdoor Rooftop TV for Movies & Presentations"
+      },
+      { "icon": "Bike", "label": "Electric Bicycle" },
+      { "icon": "Car", "label": "Rental Car Service" },
+      { "icon": "ShowerHead", "label": "Outdoor Shower" },
+      { "icon": "Activity", "label": "Treadmill for Running" },
+      { "icon": "Wine", "label": "Bar & Lounge Area" },
+      { "icon": "Cigar", "label": "Humidor with Premium Cigars" },
+      { "icon": "Palette", "label": "African Art Collection" },
+      { "icon": "Landmark", "label": "Desmond Tutu Statue" }
+    ],
+    "services": [
+      "Catering & meal options",
+      "Transport & car rental",
+      "Guided tours & cultural experiences",
+      "Event hosting support"
     ],
     "highlights": [
-      { "icon": "Users", "label": "6 Guests" },
-      { "icon": "Bed", "label": "3 Bedrooms" },
-      { "icon": "Bath", "label": "2 Bathrooms" },
-      { "icon": "Ruler", "label": "12 Square Meters" }
+      { "icon": "Users", "label": "Up to 4 Guests" },
+      { "icon": "Bed", "label": "2 Bedrooms" },
+      { "icon": "Bath", "label": "2 Bathrooms" }
+    ],
+    "accommodation": {
+      "max_occupancy": 4,
+      "bedrooms": [
+        {
+          "name": "Master Bedroom",
+          "bed_type": "King-size double bed",
+          "capacity": 2
+        },
+        {
+          "name": "Second Bedroom",
+          "bed_type": "Medium-size bed",
+          "capacity": "1–2 guests (adults or children)"
+        }
+      ]
+    },
+    "on_site_contact": {
+      "name": "Marie Verbreyt",
+      "role": "Friendly Concierge",
+      "contact_number": "requests@techbedkifaru.be"
+    },
+    "package_pricing": [
+      {
+        "package_name": "",
+        "pricing": "",
+        "bedrooms": ""
+      },
+      {
+        "package_name": "",
+        "pricing": "",
+        "bedrooms": ""
+      }
     ],
     "status": "free",
     "price": "180",
-    "description": "A refined countryside escape blending European elegance with African soul in the heart of Belgium.",
-    "long_description": "Experience the perfect fusion of European sophistication and African warmth at Kifaru Belgium Lodge. Nestled in the picturesque Belgian countryside, our property features authentic African art collections, premium organic linens, and panoramic rural views. Enjoy farm-to-table dining showcasing Belgian specialties with African-inspired flavors, explore scenic cycling routes through the countryside, and unwind in our spa that combines European wellness techniques with traditional African healing practices.",
+    "description": "An African oasis in the green heart of Brussels. A unique place where professionals from different continents can work, work in team, reside and collaborate.",
+    "long_description": "Kifaru is a place of inspiration where conviviality, work and the discovery of new horizons take centre stage.Kifaru means ‘rhino’ in Swahili. A rare icon of the African savannah and an honoured member of the Big Five. Like the rhino, the soul of Kifaru Tech & Bed is unique.African visitors feel at home, and Europeans take a relaxing African bath. Kifaru breathes Africa. We leave nothing to chance. It is a unique meeting place where state-of-the-art technology is combined with a comfortable bed. Small in size, but big in satisfaction.The elegant workspace and meeting rooms provide tranquillity through natural materials and durable furniture. African art embellishes our hub.",
+    "background_story": "Debbie and Olivier are the inspirers of the project with Kifaru Brussels being the first development. A love couple who are at home with Desmond Tutu and adventurers at heart.Together with their offspring, they commute between Mombasa, Brussels and the world. The thread running through their activities is facilitating self-development for those who have the least access to it. One of the ways they do this is by closing the digital gap and providing computer classes in places where this is the last priority. Social entrepreneurship while scouting for talent in the least accessible areas of Africa and the world.In Kenya, for example, they have created a window on the world with a one-stop shop that helps young people turn their ideas into reality.Kifaru is therefore intended to be, on the one hand, the pied-à-terre for that burgeoning overseas talent. This way, they get to know the capital of Europe in an accessible way. On the other hand, Kifaru is also a bustling HUB for the indigenous population of Brussels.",
     "geolocation": [50.5, 4.5],
     "images": [
       "https://res.cloudinary.com/drselhsl4/image/upload/v1750770573/QwetuLinks/kzagmttvoytfjhr0yqtc.webp",
@@ -67,7 +141,7 @@
   },
   {
     "id": 2,
-    "name": "Kifaru Brussels",
+    "name": "Ocean Kifaru North-Sea",
     "slug": "brussels",
     "location": "Grand Palace District",
     "country": "Belgium",
@@ -188,7 +262,7 @@
     ],
     "link": "/property/nairobi",
     "background": "https://res.cloudinary.com/drselhsl4/image/upload/v1764136941/Kifaru/backgrounds/wanjvnzpktsur9tk72e6.png",
-    
+
     "booked_dates": [
       { "check_in": "2025-12-15", "check_out": "2025-12-20" },
       { "check_in": "2025-11-01", "check_out": "2025-11-05" }

@@ -1,6 +1,5 @@
 import { ArrowRight, MapPin } from "lucide-react";
 import {
-  Card,
   CardContent,
   CardDescription,
   CardFooter,
@@ -19,7 +18,7 @@ export default function PropertySection() {
         {/* <h2 className="text-4xl font-bold mb-4">Our Properties</h2> */}
         <div className="container mx-auto px-6 md:px-12 py-10">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-center mb-8">
-            Our Exclusive Properties
+            Our Locations
           </h1>
           <p className="text-center text-muted-foreground max-w-2xl mx-auto">
             Discover our curated collection of luxury accommodations across
@@ -70,13 +69,13 @@ function PropertyCard({ property }: { property: any }) {
   }, [property.images.length]);
 
   return (
-    <Card className="border rounded-lg overflow-hidden hover:shadow-lg w-full">
+    <div className="border rounded-lg overflow-hidden hover:shadow-lg w-full">
       <CardHeader className="p-0 m-0 flex-shrink-0">
         <div className="relative">
           <img
             src={property.images[currentImageIndex]}
             alt={property.name}
-            className="w-full h-52 object-cover"
+            className="w-full h-60 object-cover"
           />
           {property.images.length > 1 && (
             <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
@@ -104,10 +103,10 @@ function PropertyCard({ property }: { property: any }) {
         {property.description}
       </CardContent>
 
-      <CardFooter className="mb-0 pb-0">
+      <CardFooter className="mb-6 pb-2 pt-5 w-full" >
         <Button
           variant="link"
-          className="p-0 w-full font-semibold mb-0"
+          className="p-0 w-full font-semibold"
           asChild
         >
           <Link
@@ -118,6 +117,6 @@ function PropertyCard({ property }: { property: any }) {
           </Link>
         </Button>
       </CardFooter>
-    </Card>
+    </div>
   );
 }
