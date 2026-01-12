@@ -77,13 +77,13 @@ export default function Navbar() {
               className="bg-primary hover:bg-primary/90 text-white"
               asChild
             >
-              <Link to="/signup">SignUp</Link>
+              <Link to="/auth/register">SignUp</Link>
             </Button>
             <Button
               className="bg-primary hover:bg-primary/90 text-white"
               asChild
             >
-              <Link to="/login">Login</Link>
+              <Link to="/auth">Login</Link>
             </Button>
           </div>
         </div>

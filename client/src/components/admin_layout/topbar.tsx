@@ -92,7 +92,7 @@ export default function Topbar() {
             <DropdownMenuContent sideOffset={8}>
               <DropdownMenuLabel>Account</DropdownMenuLabel>
               <DropdownMenuItem>
-                <Link to="">
+                <Link to="/admin/profile">
                   <div className="flex flex-row">
                     <User className="mr-2" /> Profile
                   </div>

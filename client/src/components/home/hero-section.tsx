@@ -15,7 +15,8 @@ export default function HeroSection() {
           poster="https://res.cloudinary.com/drselhsl4/image/upload/v1763483919/Kifaru/k096rs8b5wqru5dwghax.jpg"
         >
           <source
-            src="https://res.cloudinary.com/drselhsl4/video/upload/v1763482246/Kifaru/rkmfrnnwjiwowqtztql0.mp4"
+            // src="https://res.cloudinary.com/drselhsl4/video/upload/v1763482246/Kifaru/rkmfrnnwjiwowqtztql0.mp4"
+            src="https://res.cloudinary.com/drselhsl4/video/upload/v1768159278/Kifaru/jyxq43ne939bishlyvnn.mp4"
             type="video/mp4"
           />
           <div

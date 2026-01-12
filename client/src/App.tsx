@@ -24,6 +24,12 @@ import Settings from "./pages/admin/settings";
 import KifaruPropertyDetails from "./pages/properties/kifaru-properties-details";
 import Payment from "./components/property/payment";
 import Properties from "./pages/admin/properties";
+import Login from "./pages/auth/login";
+import Register from "./pages/auth/register";
+import AuthLayout from "./pages/auth/authlayout";
+import ForgetPass from "./pages/auth/forgetpass";
+import AdminProfile from "./pages/profiles/adminprofile";
+import UserProfile from "./pages/profiles/userprofile";
 
 function App() {
   return (
@@ -38,12 +44,14 @@ function App() {
         </Route>
         {/* <Route path="services" element={<Services />} /> */}
         <Route path="contact" element={<Contact />} />
+        <Route path="profile" element={<UserProfile />} />
       </Route>
 
-      {/* <Route element={<AuthLayout />}>
-        <Route path="login" element={<Login />} />
+      <Route path="/auth" element={<AuthLayout />}>
+        <Route index element={<Login />} />
         <Route path="register" element={<Register />} />
-      </Route> */}
+        <Route path="forgot-pass" element={<ForgetPass />} />
+      </Route>
 
       {/* Admin Dashboard */}
 
@@ -55,6 +63,7 @@ function App() {
         <Route path="reports" element={<Reports />} />
         <Route path="guests" element={<Guests />} />
         <Route path="settings" element={<Settings />} />
+        <Route path="profile" element={<AdminProfile />} />
       </Route>
 
       <Route path="*" element={<Notfound />} />
