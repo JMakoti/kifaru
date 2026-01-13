@@ -10,8 +10,6 @@ import {
   Eye,
   EyeOff,
   BubblesIcon,
-  Flag,
-  Languages,
   Contact,
 } from "lucide-react";
 import { useState } from "react";
@@ -24,18 +22,16 @@ export default function Register() {
     email: "",
     password: "",
     password_confirm: "",
-    country_of_residence: "",
     phone_number: "",
     whatsapp_number: "",
-    preferred_language: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/admin")
+    navigate("/admin");
   };
 
   return (
@@ -143,48 +139,6 @@ export default function Register() {
                     value={formData.phone_number}
                     onChange={(e) =>
                       setFormData({ ...formData, phone_number: e.target.value })
-                    }
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="country_of_residence">
-                  Country Of Residence
-                </Label>
-                <div className="relative">
-                  <Flag className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    id="country_of_residence"
-                    placeholder="your country"
-                    className="pl-10"
-                    value={formData.country_of_residence}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        country_of_residence: e.target.value,
-                      })
-                    }
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="preferred_language">Preferred Language</Label>
-                <div className="relative">
-                  <Languages className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input
-                    id="preferred_language"
-                    placeholder="your language"
-                    className="pl-10"
-                    value={formData.preferred_language}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        preferred_language: e.target.value,
-                      })
                     }
                     required
                   />
