@@ -125,7 +125,6 @@ export default function Register() {
                           whatsapp_number: e.target.value,
                         })
                       }
-                      required
                     />
                   </div>
                 </div>

@@ -117,7 +117,7 @@ export default function Footer() {
                   Contact
                 </h3>
                 <ul className="space-y-2 text-sm">
-                  <li>Email: info@kifaru.com</li>
+                  <li>Email: requests@techbedkifaru.be</li>
                   <li>Phone: +254 708 533 033</li>
                   <li>Location: Nairobi, Kenya</li>
                 </ul>

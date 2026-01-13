@@ -30,6 +30,7 @@ import AuthLayout from "./pages/auth/authlayout";
 import ForgetPass from "./pages/auth/forgetpass";
 import AdminProfile from "./pages/profiles/adminprofile";
 import UserProfile from "./pages/profiles/userprofile";
+import ResetPass from "./pages/auth/resetpass";
 
 function App() {
   return (
@@ -51,6 +52,8 @@ function App() {
         <Route index element={<Login />} />
         <Route path="register" element={<Register />} />
         <Route path="forgot-pass" element={<ForgetPass />} />
+        {/* <Route path="reset-pass/:uuid/:token" element={<ResetPass />} /> */}
+        <Route path="reset-pass/" element={<ResetPass />} />
       </Route>
 
       {/* Admin Dashboard */}
