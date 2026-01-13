@@ -180,17 +180,28 @@ export default function ContactDetailsSection() {
                 </h3>
                 <div className="flex gap-4 mt-5">
                   <div>
-                    <img src={whatsapp} alt="Whatsapp" className="w-10 h-10" />
+                    <img
+                      src={whatsapp}
+                      loading="lazy"
+                      alt="Whatsapp"
+                      className="w-10 h-10"
+                    />
                   </div>
                   <div>
                     <img
                       src={instagram}
                       alt="Instagram"
+                      loading="lazy"
                       className="w-10 h-10"
                     />
                   </div>
                   <div>
-                    <img src={facebook} alt="Facebook" className="w-10 h-10" />
+                    <img
+                      src={facebook}
+                      loading="lazy"
+                      alt="Facebook"
+                      className="w-10 h-10"
+                    />
                   </div>
                 </div>
               </div>

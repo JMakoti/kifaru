@@ -61,6 +61,7 @@ export default function TestimonialCard({
         <div className="h-48 w-40 md:h-72 md:w-52 overflow-hidden rounded-lg border shadow-[var(--shadow-soft)]">
           <img
             src={propertyImage}
+            loading="lazy"
             alt="Kifaru property highlight"
             className="h-full w-full object-cover"
           />
