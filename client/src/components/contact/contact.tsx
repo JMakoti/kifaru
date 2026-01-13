@@ -8,6 +8,10 @@ import property2 from "@/assets/property-2.jpg";
 import property3 from "@/assets/property-3.jpg";
 import { Toaster, toast } from "sonner";
 
+import whatsapp from "@/assets/icon/cl-whatsapp.png";
+import instagram from "@/assets/icon/cl-instagram.png";
+import facebook from "@/assets/icon/cl-facebook.png";
+
 const properties = [property1, property2, property3];
 
 export default function ContactDetailsSection() {
@@ -113,7 +117,9 @@ export default function ContactDetailsSection() {
                   experience.
                 </p>
                 <div className="mt-4 mb-4">
-                  <h3 className="text-2xl text-black font-bold">What you can expect</h3>
+                  <h3 className="text-2xl text-black font-bold">
+                    What you can expect
+                  </h3>
                   <div className="text-lg text-muted-foreground">
                     <ul className="list-disc list-inside">
                       <li>One dedicated account manager</li>
@@ -169,11 +175,23 @@ export default function ContactDetailsSection() {
                 </div>
               </div>
               <div>
-                <h3 className="font-bold">Reach us Throught Our Social Links</h3>
+                <h3 className="font-bold">
+                  Reach us Throught Our Social Links
+                </h3>
                 <div className="flex gap-4 mt-5">
-                  <div>Whatsapp</div>
-                  <div>Instagram</div>
-                  <div>Facebook</div>
+                  <div>
+                    <img src={whatsapp} alt="Whatsapp" className="w-10 h-10" />
+                  </div>
+                  <div>
+                    <img
+                      src={instagram}
+                      alt="Instagram"
+                      className="w-10 h-10"
+                    />
+                  </div>
+                  <div>
+                    <img src={facebook} alt="Facebook" className="w-10 h-10" />
+                  </div>
                 </div>
               </div>
             </div>

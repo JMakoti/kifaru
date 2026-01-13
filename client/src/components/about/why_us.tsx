@@ -36,7 +36,7 @@ export default function Why_UsSection() {
     {
       title: "Reliable & Ethical Mobility Solutions",
       description:
-        "Thoughtfully built homes that respect the environment and reduce impact.",
+        "Purpose-driven mobility solutions delivering trust, responsibility, and long-term impact.",
       icon: (
         <img src={transport} alt="Eco friendly icon" className="w-14 h-14" />
       ),
