@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import { useRegister } from "@/services/user.service";
 import {
   Mail,
   Lock,
@@ -29,9 +30,21 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
+  const { mutate, isPending, error } = useRegister();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    navigate("/admin");
+
+    if (formData.password !== formData.password_confirm) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    mutate(formData, {
+      onSuccess: () => {
+        navigate("/auth"); // or dashboard
+      },
+    });
   };
 
   return (
@@ -209,9 +222,14 @@ export default function Register() {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full" size="lg">
+              <Button
+                type="submit"
+                className="w-full"
+                size="lg"
+                disabled={isPending}
+              >
                 <BubblesIcon className="w-4 h-4 mr-2" />
-                Create Account
+                {isPending ? "Creating account..." : "Create Account"}
               </Button>
             </form>
 
@@ -229,6 +247,12 @@ export default function Register() {
             </div>
           </CardContent>
         </Card>
+
+        {error && (
+          <p className="text-sm text-red-500 mt-2">
+            {(error as any)?.response?.data?.message || "Registration failed"}
+          </p>
+        )}
 
         <div className="text-center mt-6 text-sm text-muted-foreground">
           By signing up, you agree to our Terms of Service and Privacy Policy
