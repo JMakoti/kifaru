@@ -21,8 +21,8 @@ export default function UserRoutes() {
           <Route index path=":propertyId/payment" element={<Payment />} />
         </Route>
         <Route path="contact" element={<Contact />} />
-        <Route path="profile" element={<UserProfile />} />
       </Route>
+      <Route path="profile" element={<UserProfile />} />
     </Routes>
   );
 }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, BubblesIcon } from "lucide-react";
 import {
   Card,
@@ -12,15 +12,26 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import { useLogin } from "@/services/user.service";
 
-export default function Login(){
+export default function Login() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+
+  const { mutate, isPending, error } = useLogin();
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    mutate(formData, {
+      onSuccess: () => {
+        navigate("/profile");
+      },
+    });
   };
 
   return (
@@ -106,9 +117,9 @@ export default function Login(){
                 </Link>
               </div>
 
-              <Button type="submit" className="w-full" size="lg">
+              <Button type="submit" className="w-full" size="lg"  disabled={isPending}>
                 <BubblesIcon className="w-4 h-4 mr-2" />
-                Sign In
+                {isPending ? "Signing in..." : "Sign In"}
               </Button>
             </form>
 
@@ -126,7 +137,13 @@ export default function Login(){
             </div>
           </CardContent>
         </Card>
+
+        {error && (
+          <p className="text-sm text-red-500 mt-2">
+            {(error as any)?.response?.data?.message || "Registration failed"}
+          </p>
+        )}
       </div>
     </div>
   );
-};
+}
