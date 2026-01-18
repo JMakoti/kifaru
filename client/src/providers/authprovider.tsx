@@ -1,4 +1,10 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 import type {
   User,
   LoginFormInputs,
@@ -38,8 +44,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-
-   // Setup token interceptor
+  // Setup token interceptor
   useEffect(() => {
     setupTokenInterceptor();
   }, []);
@@ -50,7 +55,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const restoreAuth = async () => {
       try {
-        const token = localStorage.getItem("auth-token");
+        const token = document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("auth-token="))
+          ?.split("=")[1];
+
         if (token) {
           const userData = await getProfile();
           setUser(userData);
@@ -59,9 +68,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       } catch (error) {
         console.error("Failed to restore auth:", error);
-        localStorage.removeItem("authToken");
-        // setUser(null);
-        // setIsAuthenticated(false);
+        document.cookie = 'auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=Strict';
+        document.cookie = 'refresh_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=Strict';
+        setUser(null);
       } finally {
         setIsLoading(false);
       }
@@ -124,14 +133,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       setError(null);
       setIsLoading(false);
-      
+
       // Clear all localStorage
       localStorage.removeItem("auth-token");
       localStorage.removeItem("refresh_token");
     }
   };
 
-  const isAuthenticated = !!user && !!localStorage.getItem("auth-token");
+  // Check if user is authenticated by checking if token exists in cookies
+  const tokenExists = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("auth-token="))
+    ?.split("=")[1];
+  
+  const isAuthenticated = !!user && !!tokenExists;
 
   return (
     <AuthContext.Provider
@@ -143,7 +158,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         logout,
         setUser,
         isLoading,
-        error, clearError
+        error,
+        clearError,
       }}
     >
       {children}

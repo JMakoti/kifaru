@@ -1,17 +1,9 @@
-// import { useEffect } from "react";
-// import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/providers/authprovider";
 import { BookingHistory } from "./bookinghistory";
 import { ProfileSidebar } from "./profilesidebar";
 
 export default function UserProfile() {
   const { user, isLoading } = useAuth();
-  // const queryClient = useQueryClient();
-
-  // Refetch user profile on mount to ensure fresh data
-  // useEffect(() => {
-  //   queryClient.refetchQueries({ queryKey: ["auth-user"] });
-  // }, [queryClient]);
 
   if (isLoading) {
     return (
