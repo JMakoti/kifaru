@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useLogin } from "@/services/user.service";
+import { useAuth } from "@/providers/authprovider";
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -21,17 +21,26 @@ export default function Login() {
   });
   const [showPassword, setShowPassword] = useState(false);
 
-  const { mutate, isPending, error } = useLogin();
   const navigate = useNavigate();
+  const { login, isLoading, error } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    mutate(formData, {
-      onSuccess: () => {
-        navigate("/profile");
-      },
-    });
+    try {
+      await login(formData);
+
+      navigate("/profile", { replace: true });
+
+      // Optional: role-based redirect
+      // if (authResponse.user?.role === "OWNER") {
+      //   navigate("/dashboard", { replace: true });
+      // } else {
+      //   navigate("/profile", { replace: true });
+      // }
+    } catch (err: any) {
+      console.error("Login error:", err);
+    }
   };
 
   return (
@@ -117,9 +126,14 @@ export default function Login() {
                 </Link>
               </div>
 
-              <Button type="submit" className="w-full" size="lg"  disabled={isPending}>
+              <Button
+                type="submit"
+                className="w-full"
+                size="lg"
+                disabled={isLoading}
+              >
                 <BubblesIcon className="w-4 h-4 mr-2" />
-                {isPending ? "Signing in..." : "Sign In"}
+                {isLoading ? "Signing in..." : "Sign In"}
               </Button>
             </form>
 
@@ -139,9 +153,7 @@ export default function Login() {
         </Card>
 
         {error && (
-          <p className="text-sm text-red-500 mt-2">
-            {(error as any)?.response?.data?.message || "Registration failed"}
-          </p>
+          <p className="text-sm text-red-500 mt-3 text-center">{error}</p>
         )}
       </div>
     </div>

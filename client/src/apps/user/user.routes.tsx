@@ -8,6 +8,7 @@ import KifaruPropertyDetails from "./pages/properties/kifaru-properties-details"
 import Payment from "./components/property/payment";
 import Contact from "./pages/contact";
 import UserProfile from "./pages/profiles/userprofile";
+import { ProtectedRoute } from "../auth/routes/protected.route";
 
 export default function UserRoutes() {
   return (
@@ -15,14 +16,21 @@ export default function UserRoutes() {
       <Route element={<MainLayout />}>
         <Route index element={<Home />} />
         <Route path="about" element={<About />} />
-        <Route path="/property" element={<Property />}>
+        <Route path="property" element={<Property />}>
           <Route index element={<KifaruProperty />} />
           <Route path=":propertyId" element={<KifaruPropertyDetails />} />
           <Route index path=":propertyId/payment" element={<Payment />} />
         </Route>
         <Route path="contact" element={<Contact />} />
+        <Route
+          path="profile"
+          element={
+            <ProtectedRoute>
+              <UserProfile />
+            </ProtectedRoute>
+          }
+        />
       </Route>
-      <Route path="profile" element={<UserProfile />} />
     </Routes>
   );
 }

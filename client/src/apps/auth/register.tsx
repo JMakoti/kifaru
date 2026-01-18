@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { useRegister } from "@/services/user.service";
+import { useAuth } from "@/providers/authprovider";
 import {
   Mail,
   Lock,
@@ -30,21 +30,15 @@ export default function Register() {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
 
-  const { mutate, isPending, error } = useRegister();
+  const { register, isLoading, error } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (formData.password !== formData.password_confirm) {
-      alert("Passwords do not match");
-      return;
-    }
+    await register(formData);
 
-    mutate(formData, {
-      onSuccess: () => {
-        navigate("/auth"); // or dashboard
-      },
-    });
+    navigate("/profile", { replace: true });
+    
   };
 
   return (
@@ -226,10 +220,10 @@ export default function Register() {
                 type="submit"
                 className="w-full"
                 size="lg"
-                disabled={isPending}
+                disabled={isLoading}
               >
                 <BubblesIcon className="w-4 h-4 mr-2" />
-                {isPending ? "Creating account..." : "Create Account"}
+                {isLoading ? "Creating account..." : "Create Account"}
               </Button>
             </form>
 

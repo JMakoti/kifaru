@@ -1,9 +1,13 @@
 export interface User {
+  id: number;
   email: string;
   first_name: string;
   last_name: string;
-  phone_number: string;
-  whatsapp_number: string;
+  phone_number?: string;
+  whatsapp_number?: string;
+  role: 'admin' | 'external';
+  preferred_language?: string;
+  country_of_residence?: string;
 }
 
 export interface AuthResponse {

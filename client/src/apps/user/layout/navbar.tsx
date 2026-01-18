@@ -12,9 +12,12 @@ import {
 import logo from "@/assets/icon/icon.ico";
 import navLinks from "../routes";
 import Mobilemenu from "./mobilemenu";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useAuth } from "@/providers/authprovider";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { isAuthenticated , user} = useAuth();
 
   return (
     <nav className="sticky top-0 z-40 w-full bg-accent/80 backdrop-blur-sm border-b shadow-sm">
@@ -69,23 +72,34 @@ export default function Navbar() {
               >
                 {link.label}
               </NavLink>
-            )
+            ),
           )}
 
-          <div className="flex items-center gap-2 ml-2">
-            <Button
-              className="bg-primary hover:bg-primary/90 text-white"
-              asChild
-            >
-              <Link to="/auth/register">SignUp</Link>
-            </Button>
-            <Button
-              className="bg-primary hover:bg-primary/90 text-white"
-              asChild
-            >
-              <Link to="/auth">Login</Link>
-            </Button>
-          </div>
+          {isAuthenticated ? (
+            <div className="flex items-center gap-3 ml-4">
+              <Avatar className="h-12 w-12 cursor-pointer">
+                <AvatarFallback className="font-semibold">
+                  {user?.first_name?.[0]}
+                  {user?.last_name?.[0]}
+                </AvatarFallback>
+              </Avatar>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 ml-2">
+              <Button
+                className="bg-primary hover:bg-primary/90 text-white"
+                asChild
+              >
+                <Link to="/auth">Login</Link>
+              </Button>
+              <Button
+                className="bg-primary hover:bg-primary/90 text-white"
+                asChild
+              >
+                <Link to="/auth/register">SignUp</Link>
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Mobile menu button */}
