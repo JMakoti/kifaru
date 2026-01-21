@@ -17,7 +17,7 @@ import { useAuth } from "@/providers/authprovider";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const { isAuthenticated , user} = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <nav className="sticky top-0 z-40 w-full bg-accent/80 backdrop-blur-sm border-b shadow-sm">
@@ -76,14 +76,16 @@ export default function Navbar() {
           )}
 
           {isAuthenticated ? (
-            <div className="flex items-center gap-3 ml-4">
-              <Avatar className="h-12 w-12 cursor-pointer">
-                <AvatarFallback className="font-semibold">
-                  {user?.first_name?.[0]}
-                  {user?.last_name?.[0]}
-                </AvatarFallback>
-              </Avatar>
-            </div>
+            <Link to="/profile">
+              <div className="flex items-center gap-3 ml-4">
+                <Avatar className="h-12 w-12 cursor-pointer">
+                  <AvatarFallback className="font-semibold">
+                    {user?.first_name?.[0]}
+                    {user?.last_name?.[0]}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+            </Link>
           ) : (
             <div className="flex items-center gap-2 ml-2">
               <Button

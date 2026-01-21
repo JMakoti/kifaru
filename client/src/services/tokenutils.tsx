@@ -24,7 +24,7 @@ export const setupTokenInterceptor = () => {
        if (error.response?.status === 401) {
         document.cookie = 'auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=Strict';
         document.cookie = 'refresh_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=Strict';
-        window.location.href = "/auth";
+        window.location.href = "/";
       }
       return Promise.reject(error);
     },

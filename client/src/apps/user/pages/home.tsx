@@ -13,6 +13,7 @@ export default function Home() {
 
       {/* property section */}
       <PropertySection />
+      asdrftyuiocvb
     </div>
   );
 }

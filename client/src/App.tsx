@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router-dom";
 import UserApp from "./apps/user/userApp";
 import AdminApp from "./apps/admin/adminApp";
 import AuthRoutes from "./apps/auth/auth.routes";
@@ -18,7 +18,8 @@ function LoadingScreen() {
 }
 
 export default function App() {
-  const {isLoading } = useAuth();
+  const {isAuthenticated,isLoading } = useAuth();
+  console.log("Auth Status:", { isAuthenticated, isLoading });
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -33,7 +34,7 @@ export default function App() {
           isAuthenticated ? (
             <Navigate to="/profile" replace />
           ) : (
-            <Navigate to="/user" replace />
+            <Navigate to="/"/>
           )
         }
       /> */}
