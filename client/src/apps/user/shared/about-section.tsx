@@ -1,9 +1,17 @@
 import rhino from "@/assets/rhino.png";
 import zebras from "@/assets/zebras.jpeg";
 import { Link, useLocation } from "react-router";
-import { CheckCircle } from "lucide-react";
+import {
+  Car,
+  CheckCircle,
+  ConciergeBell,
+  Leaf,
+  Palette,
+  Wifi,
+} from "lucide-react";
 import kifaruExperience from "@/assets/property-1.jpg";
 import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
 
 const experiencePoints = [
   {
@@ -34,43 +42,64 @@ export default function AboutSection() {
     <div>
       <div className="about-kifaru flex flex-col lg:flex-row justify-center items-center gap-6 lg:gap-8 p-4 md:p-8 w-full">
         {!aboutRoute ? (
-          <div className="text-content flex flex-col gap-3 max-w-lg order-2 lg:order-1 w-full">
-            {/* <h3 className="text-lg md:text-xl font-semibold">|| ABOUT US</h3> */}
-            <h2 className="font-bold text-2xl font-sans  md:text-3xl lg:text-4xl leading-tight">
+          <div className="text-content flex flex-col gap-4 max-w-lg w-full">
+            <h2 className="font-bold text-2xl md:text-3xl lg:text-4xl leading-tight">
               A Recognizable Experience, Wherever You Land
             </h2>
-            <p className="text-sm md:text-base leading-relaxed">
-              Kifaru Impact Retreat offers a seamless, human-centered
-              hospitality experience across a growing collection of properties
-              in Kenya, Belgium, and the Netherlands.
-            </p>
-            <p>
-              Each Kifaru location reflects a shared standard of conscious
-              luxury:
-            </p>
-            <ul className="list-disc list-inside">
-              <li>Thoughtfully curated interior design and decoration</li>
-              <li>
-                High-quality, eco-conscious bed linen and beauty amenities
-              </li>
-              <li>
-                High-speed Wi-Fi with one universal password across all
-                locations
-              </li>
-              <li>Trusted concierge and housekeeping services</li>
-              <li>Reliable and ethical mobility and transport solutions</li>
-            </ul>
-            <p>
+
+            <p className="text-sm md:text-base leading-relaxed mt-2">
               Whether you are working, resting, or reconnecting, Kifaru ensures
-              you feel at home anywhere in the world.Each stay is thoughtfully
+              you feel at home anywhere in the world. Each stay is thoughtfully
               curated to include relevant meetings, intimate gatherings,
               networking opportunities, and purpose-driven connections aligned
               with the guest’s personal and professional journey.
             </p>
-            {/*  */}
+
+            <p className="text-sm md:text-base">
+              Each Kifaru location reflects a shared standard of conscious
+              luxury:
+            </p>
+
+            {/* Icon + Word */}
+            <motion.div
+              className="grid grid-cols-3 sm:grid-cols-5 gap-6 mt-4"
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={{
+                hidden: {},
+                visible: {
+                  transition: { staggerChildren: 0.1 },
+                },
+              }}
+            >
+              {[
+                { icon: Palette, label: "Design" },
+                { icon: Leaf, label: "Sustainability" },
+                { icon: Wifi, label: "Connectivity" },
+                { icon: ConciergeBell, label: "Care" },
+                { icon: Car, label: "Transportation" },
+              ].map(({ icon: Icon, label }) => (
+                <motion.div
+                  key={label}
+                  className="flex flex-col items-center text-center gap-1"
+                  variants={{
+                    hidden: { opacity: 0, y: 12 },
+                    visible: { opacity: 1, y: 0 },
+                  }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <Icon className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+                  <span className="text-xs md:text-sm font-medium tracking-wide">
+                    {label}
+                  </span>
+                </motion.div>
+              ))}
+            </motion.div>
 
             <Button className="w-full sm:w-40 mt-6">
-              <Link to={"/about"}>Learn More</Link>
+              <Link to="/about">Learn More</Link>
             </Button>
           </div>
         ) : (
