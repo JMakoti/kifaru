@@ -1,21 +1,12 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import {Route, Routes } from "react-router-dom";
 import UserApp from "./apps/user/userApp";
 import AdminApp from "./apps/admin/adminApp";
 import AuthRoutes from "./apps/auth/auth.routes";
 import Notfound from "./apps/user/pages/notfound";
 import "./App.css";
 import { useAuth } from "./providers/authprovider";
+import LoadingScreen from "./components/loadingscreen";
 
-function LoadingScreen() {
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
-        <p className="text-muted-foreground">Loading...</p>
-      </div>
-    </div>
-  );
-}
 
 export default function App() {
   const {isAuthenticated,isLoading } = useAuth();

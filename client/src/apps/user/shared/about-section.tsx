@@ -173,7 +173,9 @@ export default function AboutSection() {
           </div>
         </div>
       </div>
+
       {/* Goals Section */}
+      {aboutRoute && (
       <div className="container max-w-6xl mx-auto px-6 mt-6">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           {/* Content */}
@@ -231,6 +233,7 @@ export default function AboutSection() {
           </div>
         </div>
       </div>
+      )}
     </div>
   );
 }
