@@ -116,6 +116,22 @@ export default function TestimonialSection() {
             ))}
           </div>
         </div>
+
+         {/* Progress Indicator */}
+        <div className="mt-10 flex justify-center gap-2">
+          {testimonials.map((_, i) => (
+            <span
+              key={i}
+              className={`h-1 w-8 rounded-full transition-all duration-500
+                ${
+                  i === index % testimonials.length
+                    ? "bg-black"
+                    : "bg-black/20"
+                }
+              `}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

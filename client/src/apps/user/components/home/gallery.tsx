@@ -76,7 +76,17 @@ const galleryData: GalleryItem[] = [
     mobileWidth: "w-[280px]",
     desktopWidth: "md:w-[500px]",
   },
+  {
+    id: 9,
+    title: "Ocean Kifaru Indian Ocean",
+    imageUrl:
+      "https://res.cloudinary.com/drselhsl4/image/upload/v1769111772/Kifaru/KifaruGallery/fxkwbqmcbi07zc68iukl.jpg",
+    mobileWidth: "w-[290px]",
+    desktopWidth: "md:w-[550px]",
+  },
 ];
+
+
 
 export default function KifaruGallery() {
   const [isPaused, setIsPaused] = useState(false);
