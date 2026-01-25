@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { EditProfileModal } from "./edituserprofile";
 import type { User } from "@/services/user.types";
 import { useAuth } from "@/providers/authprovider";
+import { toast } from "react-toastify";
 
 interface ProfileSidebarProps {
   user: User;
@@ -27,7 +28,9 @@ export function ProfileSidebar({ user, onUserUpdate }: ProfileSidebarProps) {
   const handleLogout = async () => {
     try {
       await logout();
+      toast.success("You have successfully logged out.");
       navigate("/");
+
     } catch (error) {
       console.error("Logout failed:", error);
     }

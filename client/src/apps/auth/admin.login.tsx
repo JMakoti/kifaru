@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import bglogin from "@/assets/property-2.jpg";
 import { useAuth } from "@/providers/authprovider";
+import { extractErrorMessage } from "@/lib/extract-error-message";
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({
@@ -21,6 +22,8 @@ const AdminLogin = () => {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+ const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
 
   const { login, isLoading, error } = useAuth();
   const navigate = useNavigate();
@@ -28,6 +31,7 @@ const AdminLogin = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
     try {
       await login(formData);
 
@@ -35,8 +39,8 @@ const AdminLogin = () => {
       await queryClient.refetchQueries({ queryKey: ["auth-user"] });
 
       navigate("/admin", { replace: true });
-    } catch (err) {
-      console.error(err);
+    } catch (error: any) {
+      setErrorMessage(extractErrorMessage(error));
     }
   };
 
@@ -61,6 +65,12 @@ const AdminLogin = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
+             {errorMessage && (
+              <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md border border-red-200 text-center mb-4">
+                {errorMessage}
+              </div>
+            )}
+            
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>

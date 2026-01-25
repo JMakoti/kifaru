@@ -9,6 +9,9 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import queryClient from "./queryClient.ts";
 import { AuthProvider } from "./providers/authprovider.tsx";
 import { setupTokenInterceptor } from "./services/tokenutils.tsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 setupTokenInterceptor();
 
@@ -18,6 +21,7 @@ createRoot(document.getElementById("root")!).render(
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <App />
+           <ToastContainer position="top-right" autoClose={3000} />
         </AuthProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
