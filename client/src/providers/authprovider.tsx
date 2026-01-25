@@ -1,168 +1,114 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-} from "react";
+import React, { createContext, useContext } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  getProfile,
+  loginUser,
+  logoutUser,
+  registerUser,
+} from "@/services/user.endpoints";
 import type {
   User,
   LoginFormInputs,
   RegisterFormInputs,
   AuthResponse,
 } from "@/services/user.types";
-import {
-  getProfile,
-  loginUser,
-  logoutUser,
-  registerUser,
-} from "../services/user.endpoints";
-import { setupTokenInterceptor } from "@/services/tokenutils";
 
-interface AuthState {
-  isAuthenticated: boolean;
-  user: User | null;
-  login: (credentials: LoginFormInputs) => Promise<AuthResponse>;
-  register: (credentials: RegisterFormInputs) => Promise<AuthResponse>;
-  logout: () => Promise<void>;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
-  isLoading: boolean;
-  error: string | null;
-  clearError: () => void;
-}
-
-const AuthContext = createContext<AuthState | undefined>(undefined);
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within an AuthProvider");
-  return context;
-};
-
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  // Setup token interceptor
-  useEffect(() => {
-    setupTokenInterceptor();
-  }, []);
-
-  const clearError = useCallback(() => setError(null), []);
-
-  // Restore auth state on app load
-  useEffect(() => {
-    const restoreAuth = async () => {
-      try {
-        const token = document.cookie
-          .split("; ")
-          .find((row) => row.startsWith("auth-token="))
-          ?.split("=")[1];
-
-        if (token) {
-          const userData = await getProfile();
-          setUser(userData);
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        console.error("Failed to restore auth:", error);
-        document.cookie = 'auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=Strict';
-        document.cookie = 'refresh_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=Strict';
-        setUser(null);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    restoreAuth();
-  }, []);
-
-  const login = async (credentials: LoginFormInputs): Promise<AuthResponse> => {
-    setIsLoading(true);
-    clearError();
-    try {
-      const authResponse = await loginUser(credentials);
-      const userResponse = await getProfile();
-      setUser(userResponse);
-      setIsLoading(false);
-      return {
-        ...authResponse,
-        user: userResponse,
-      };
-    } catch (error) {
-      setUser(null);
-      setIsLoading(false);
-      throw error;
-    }
-  };
-
-  // const login = async (credentials: LoginFormInputs) => {
-  //   try {
-  //     await loginUser(credentials);
-  //     const userResponse = await getProfile();
-  //     setUser(userResponse);
-  //     return userResponse;
-  //   } catch (error) {
-  //     console.error("Login failed:", error);
-  //     setUser(null);
-  //     throw error;
-  //   }
-  // };
-
-  const register = async (credentials: RegisterFormInputs) => {
-    try {
-      const authResponse = await registerUser(credentials);
-      setUser(authResponse.user);
-      return authResponse;
-    } catch (error) {
-      console.error("Register failed:", error);
-      setUser(null);
-      throw error;
-    }
-  };
-
-  const logout = async () => {
-    try {
-      await logoutUser();
-    } catch (error) {
-      console.error("Logout error:", error);
-    } finally {
-      // Clear all auth states
-      setUser(null);
-      setError(null);
-      setIsLoading(false);
-
-      // Clear all localStorage
-      localStorage.removeItem("auth-token");
-      localStorage.removeItem("refresh_token");
-    }
-  };
-
-  // Check if user is authenticated by checking if token exists in cookies
-  const tokenExists = document.cookie
+// Helper to check if auth token exists in cookies
+const getAuthTokenFromCookie = (): string | null => {
+  const cookieValue = document.cookie
     .split("; ")
     .find((row) => row.startsWith("auth-token="))
     ?.split("=")[1];
-  
-  const isAuthenticated = !!user && !!tokenExists;
+  return cookieValue || null;
+};
+
+interface AuthContextValue {
+  user: User | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  error: Error | null;
+  login: (data: LoginFormInputs) => Promise<AuthResponse>;
+  register: (data: RegisterFormInputs) => Promise<AuthResponse>;
+  logout: () => Promise<void>;
+}
+
+const AUTH_QUERY_KEY = ["auth-user"];
+
+const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const queryClient = useQueryClient();
+
+  /**
+  Load authenticated user
+   */
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useQuery<User | null>({
+    queryKey: AUTH_QUERY_KEY,
+    queryFn: getProfile,
+    enabled: !!getAuthTokenFromCookie(),
+    retry: false,
+    staleTime: 1000 * 60 * 5,
+  });
+
+  /**
+  Login
+   */
+  const loginMutation = useMutation<AuthResponse, Error, LoginFormInputs>({
+    mutationFn: loginUser,
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: AUTH_QUERY_KEY });
+    },
+  });
+
+  /**
+  Register
+   */
+  const registerMutation = useMutation<AuthResponse, Error, RegisterFormInputs>(
+    {
+      mutationFn: registerUser,
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({ queryKey: AUTH_QUERY_KEY });
+      },
+    },
+  );
+
+  /**
+  Logout
+   */
+  const logoutMutation = useMutation({
+    mutationFn: logoutUser,
+    onSuccess: () => {
+      queryClient.setQueryData(AUTH_QUERY_KEY, null);
+      queryClient.clear();
+    },
+  });
 
   return (
     <AuthContext.Provider
       value={{
-        isAuthenticated,
-        user,
-        login,
-        register,
-        logout,
-        setUser,
+        user: user ?? null,
+        isAuthenticated: !!user,
         isLoading,
-        error,
-        clearError,
+        error: error as Error | null,
+        login: loginMutation.mutateAsync,
+        register: registerMutation.mutateAsync,
+        logout: logoutMutation.mutateAsync,
       }}
     >
       {children}
     </AuthContext.Provider>
   );
+}
+
+//  Use Auth Hook
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  return context;
 }

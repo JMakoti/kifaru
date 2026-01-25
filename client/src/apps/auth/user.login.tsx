@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
 import { Mail, Lock, Eye, EyeOff, BubblesIcon } from "lucide-react";
 import {
   Card,
@@ -23,6 +24,7 @@ export default function Login() {
 
   const navigate = useNavigate();
   const { login, isLoading, error } = useAuth();
+  const queryClient = useQueryClient();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,16 +32,12 @@ export default function Login() {
     try {
       await login(formData);
 
-      navigate("/profile", { replace: true });
+      // Wait for profile to be fetched before navigating
+      await queryClient.refetchQueries({ queryKey: ["auth-user"] });
 
-      // Optional: role-based redirect
-      // if (authResponse.user?.role === "OWNER") {
-      //   navigate("/dashboard", { replace: true });
-      // } else {
-      //   navigate("/profile", { replace: true });
-      // }
+      navigate("/profile", { replace: true });
     } catch (err: any) {
-      console.error("Login error:", err);
+      console.error("Login attempt failed:", err);
     }
   };
 
@@ -49,9 +47,7 @@ export default function Login() {
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="flex justify-center mb-2">
-            <div className="flex justify-center mb-1">
-              <BubblesIcon className="h-8 w-8 text-black-600" />
-            </div>
+            <BubblesIcon className="h-8 w-8 text-black-600" />
           </div>
           <h1 className="text-2xl font-bold text-black-800 mb-2 text-balance">
             Kifaru
@@ -63,7 +59,7 @@ export default function Login() {
           <CardHeader className="text-center">
             <CardTitle>Sign In</CardTitle>
             <CardDescription>
-              Enter your credentials to access your dashboard
+              Enter your credentials to access your account
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -81,6 +77,7 @@ export default function Login() {
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
+                    disabled={isLoading}
                     required
                   />
                 </div>
@@ -99,6 +96,7 @@ export default function Login() {
                     onChange={(e) =>
                       setFormData({ ...formData, password: e.target.value })
                     }
+                    disabled={isLoading}
                     required
                   />
                   <Button
@@ -126,14 +124,27 @@ export default function Login() {
                 </Link>
               </div>
 
+              {/* Enhanced Error Display */}
+              {error && (
+                <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md border border-red-200 text-center">
+                  {(error as Error).message || "Invalid email or password."}
+                </div>
+              )}
+
               <Button
                 type="submit"
                 className="w-full"
                 size="lg"
                 disabled={isLoading}
               >
-                <BubblesIcon className="w-4 h-4 mr-2" />
-                {isLoading ? "Signing in..." : "Sign In"}
+                {isLoading ? (
+                  "Signing in..."
+                ) : (
+                  <>
+                    <BubblesIcon className="w-4 h-4 mr-2" />
+                    Sign In
+                  </>
+                )}
               </Button>
             </form>
 
@@ -151,10 +162,6 @@ export default function Login() {
             </div>
           </CardContent>
         </Card>
-
-        {error && (
-          <p className="text-sm text-red-500 mt-3 text-center">{error}</p>
-        )}
       </div>
     </div>
   );

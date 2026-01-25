@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -21,6 +21,7 @@ import {
   User,
 } from "lucide-react";
 import rhino from "@/assets/icon/icon.ico";
+import { useAuth } from "@/providers/authprovider";
 
 export default function AppSidebar({
   children,
@@ -35,6 +36,18 @@ export default function AppSidebar({
     { to: "/admin/guests", label: "Guests", icon: Users },
     { to: "/admin/reports", label: "Reports", icon: BarChart2 },
   ];
+
+  const navigate = useNavigate();
+  const { logout } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/auth/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   return (
     <SidebarProvider>
@@ -134,7 +147,8 @@ export default function AppSidebar({
               variant="ghost"
               size="sm"
               title="Logout"
-              className="w-full h-8 lg:h-10 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+              onClick={handleLogout}
+              className="w-full h-8 lg:h-10 p-0 mt-4 text-destructive hover:text-destructive hover:bg-destructive/10 cursor-pointer"
             >
               <span className="flex items-center gap-2 w-full justify-center">
                 <span className="group-data-[collapsible=icon]:hidden">

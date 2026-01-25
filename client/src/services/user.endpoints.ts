@@ -20,7 +20,7 @@ export const api = axios.create({
 const REGISTER_URL = "/user/register/";
 const LOGIN_URL = "/user/login/";
 const PROFILE_URL = "/user/me/";
-const ADMIN_LOGIN_URL = "/admin/login/";
+// const ADMIN_LOGIN_URL = "/admin/login/";
 const LOGOUT_URL = "/user/logout/";
 
 // get profile
@@ -74,12 +74,12 @@ export const loginUser = async (
 };
 
 //admin login
-export const adminLogin = async (
-  payload: LoginFormInputs,
-): Promise<AuthResponse> => {
-  const { data } = await api.post(ADMIN_LOGIN_URL, payload);
-  return data;
-};
+// export const adminLogin = async (
+//   payload: LoginFormInputs,
+// ): Promise<AuthResponse> => {
+//   const { data } = await api.post(ADMIN_LOGIN_URL, payload);
+//   return data;
+// };
 
 //logout user
 export const logoutUser = async (): Promise<void> => {

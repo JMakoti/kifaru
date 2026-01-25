@@ -5,7 +5,7 @@ export interface User {
   last_name: string;
   phone_number?: string;
   whatsapp_number?: string;
-  role: 'admin' | 'external';
+  role: 'admin' | 'staff' | 'concierge' | 'property_manager' | 'external';
   preferred_language?: string;
   country_of_residence?: string;
 }

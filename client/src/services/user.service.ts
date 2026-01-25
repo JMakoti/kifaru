@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   registerUser,
   loginUser,
-  adminLogin,
+  // adminLogin,
   getProfile,
 } from "./user.endpoints";
 
@@ -20,12 +20,12 @@ export const useLogin = () => {
   });
 };
 
-//admin login user
-export const useAdminLogin = () => {
-  return useMutation({
-    mutationFn: adminLogin,
-  });
-};
+// //admin login user
+// export const useAdminLogin = () => {
+//   return useMutation({
+//     mutationFn: adminLogin,
+//   });
+// };
 
 //get profile
 export const useGetProfile = () => {

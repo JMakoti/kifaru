@@ -100,18 +100,12 @@ export function ProfileSidebar({ user, onUserUpdate }: ProfileSidebarProps) {
               <Phone className="h-4 w-4 text-muted-foreground" />
               <span>{user.phone_number}</span>
             </div>
-            {/* <div className="flex items-center gap-3">
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-              <span className="text-muted-foreground">
-                Member since {user.memberSince}
-              </span>
-            </div> */}
           </div>
 
           <Button
-            className="w-full"
             variant="outline"
             onClick={() => setIsEditModalOpen(true)}
+            className="w-full h-8 lg:h-10 p-0 mt-4 cursor-pointer"
           >
             Edit Profile
           </Button>
@@ -121,7 +115,7 @@ export function ProfileSidebar({ user, onUserUpdate }: ProfileSidebarProps) {
             size="sm"
             title="Logout"
             onClick={handleLogout}
-            className="w-full h-8 lg:h-10 p-0 mt-4 text-destructive hover:text-destructive hover:bg-destructive/10"
+            className="w-full h-8 lg:h-10 p-0 mt-4 text-destructive hover:text-destructive hover:bg-destructive/10 cursor-pointer"
           >
             <span className="flex items-center gap-2 w-full justify-center">
               <span className="group-data-[collapsible=icon]:hidden">

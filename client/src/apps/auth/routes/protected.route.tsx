@@ -1,17 +1,37 @@
-import { Navigate } from "react-router-dom";
+// apps/auth/routes/admin.route.tsx (or wherever your ProtectedRoute is)
 import type { ReactNode } from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/providers/authprovider";
+import LoadingScreen from "@/components/loadingscreen";
 
 interface ProtectedRouteProps {
-  children: ReactNode;
+  allowedRoles?: string[];
+  children?: ReactNode;
 }
 
-export function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { isAuthenticated, isLoading } = useAuth();
+export function ProtectedRoute({
+  allowedRoles,
+  children,
+}: ProtectedRouteProps) {
+  const { user, isLoading, isAuthenticated } = useAuth();
+  const location = useLocation();
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
-  if (!isAuthenticated) return <Navigate to="/auth" replace />;
+  if (!isAuthenticated) {
+    // Redirect logic we discussed earlier
+    const redirectPath = location.pathname.startsWith("/admin")
+      ? "/auth/login"
+      : "/";
+    return <Navigate to={redirectPath} state={{ from: location }} replace />;
+  }
 
-  return <>{children}</>;
+  if (allowedRoles && !allowedRoles.includes(user?.role || "")) {
+    return <Navigate to="/" replace />;
+  }
+
+  // If children exists, render them; otherwise, render the Outlet (for nested routes)
+  return children ? <>{children}</> : <Outlet />;
 }

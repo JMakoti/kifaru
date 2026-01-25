@@ -7,7 +7,7 @@ import Transcations from "./pages/transaction";
 import Reports from "./pages/reports";
 import Guests from "./pages/guests";
 import Settings from "./pages/settings";
-import AdminProfile from "../user/pages/profiles/adminprofile";
+import AdminProfile from "./pages/adminprofile";
 
 export default function AdminRoutes() {
   return (

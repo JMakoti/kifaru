@@ -1,7 +1,7 @@
 import { api } from "./user.endpoints";
 
 export const setupTokenInterceptor = () => {
-  // Attach token to all requests
+  // 1. Request Interceptor: Attach the Bearer token
   api.interceptors.request.use(
     (config) => {
       const token = document.cookie
@@ -14,19 +14,19 @@ export const setupTokenInterceptor = () => {
       }
       return config;
     },
-    (error) => Promise.reject(error),
+    (error) => Promise.reject(error)
   );
 
-  //Handle 401 unauthorized globally
+  // 2. Response Interceptor: Handle 401s
   api.interceptors.response.use(
     (response) => response,
     (error) => {
-       if (error.response?.status === 401) {
+      if (error.response?.status === 401) {
+        // ONLY clear cookies. Do NOT redirect here.
         document.cookie = 'auth-token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=Strict';
         document.cookie = 'refresh_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=Strict';
-        window.location.href = "/";
       }
       return Promise.reject(error);
-    },
+    }
   );
 };

@@ -24,8 +24,9 @@ export default function UserRoutes() {
         <Route path="contact" element={<Contact />} />
         <Route
           path="profile"
+          
           element={
-            <ProtectedRoute>
+            <ProtectedRoute allowedRoles={["external"]}>
               <UserProfile />
             </ProtectedRoute>
           }

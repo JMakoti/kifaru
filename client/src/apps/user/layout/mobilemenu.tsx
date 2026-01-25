@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Link, NavLink } from "react-router";
 import navLinks from "../routes";
+import { useAuth } from "@/providers/authprovider";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -9,6 +11,7 @@ interface MobileMenuProps {
 
 export default function Mobilemenu({ isOpen, onClose }: MobileMenuProps) {
   if (!isOpen) return null;
+  const { isAuthenticated, user } = useAuth();
 
   return (
     <div>
@@ -42,27 +45,40 @@ export default function Mobilemenu({ isOpen, onClose }: MobileMenuProps) {
               >
                 {link.label}
               </NavLink>
-            )
+            ),
           )}
 
-          <div className="flex gap-2 mt-2">
-            <Button
-              className="bg-primary hover:bg-primary/90 text-white flex-1"
-              asChild
-            >
-              <Link to="/signup" onClick={onClose}>
-                SignUp
-              </Link>
-            </Button>
-            <Button
-              className="bg-primary hover:bg-primary/90 text-white flex-1"
-              asChild
-            >
-              <Link to="/login" onClick={onClose}>
-                Login
-              </Link>
-            </Button>
-          </div>
+          {isAuthenticated ? (
+            <Link to="/profile">
+              <div className="flex items-center gap-3 ml-4">
+                <Avatar className="h-12 w-12 cursor-pointer">
+                  <AvatarFallback className="font-semibold">
+                    {user?.first_name?.[0]}
+                    {user?.last_name?.[0]}
+                  </AvatarFallback>
+                </Avatar>
+              </div>
+            </Link>
+          ) : (
+            <div className="flex gap-2 mt-2">
+              <Button
+                className="bg-primary hover:bg-primary/90 text-white flex-1"
+                asChild
+              >
+                <Link to="/auth" onClick={onClose}>
+                  Login
+                </Link>
+              </Button>
+              <Button
+                className="bg-primary hover:bg-primary/90 text-white flex-1"
+                asChild
+              >
+                <Link to="/auth/register" onClick={onClose}>
+                  SignUp
+                </Link>
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </div>
