@@ -1,8 +1,11 @@
 import axios from "axios";
 import type {
   AuthResponse,
+  ForgetPassInput,
   LoginFormInputs,
+  MessageResponse,
   RegisterFormInputs,
+  ResetPassInputs,
   User,
 } from "./user.types";
 
@@ -22,6 +25,8 @@ const LOGIN_URL = "/user/login/";
 const PROFILE_URL = "/user/me/";
 // const ADMIN_LOGIN_URL = "/admin/login/";
 const LOGOUT_URL = "/user/logout/";
+const FORGETPASS_URL = "/user/password-reset/";
+const RESETPASS_URL = `/user/password-reset-confirm/{uidb64}/{token}/`;
 
 // get profile
 export const getProfile = async (): Promise<User> => {
@@ -101,4 +106,33 @@ export const logoutUser = async (): Promise<void> => {
     document.cookie =
       "refresh_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=Strict";
   }
+};
+
+//forget password
+export const forgetPassword = async (
+  inputs: ForgetPassInput
+): Promise<MessageResponse> => {
+  const { data } = await api.post<MessageResponse>(
+    FORGETPASS_URL,
+    inputs
+  );
+  return data;
+};
+
+//reset password
+export const resetPassword = async (
+  inputs: ResetPassInputs
+): Promise<{ message: string }> => {
+  const { uidb64, token, password, password_confirm } = inputs;
+
+  const url = RESETPASS_URL
+    .replace("{uidb64}", uidb64)
+    .replace("{token}", token);
+
+  const { data } = await api.post(url, {
+    password,
+    password_confirm,
+  });
+
+  return data;
 };

@@ -5,7 +5,7 @@ export interface User {
   last_name: string;
   phone_number?: string;
   whatsapp_number?: string;
-  role: 'admin' | 'staff' | 'concierge' | 'property_manager' | 'external';
+  role: "admin" | "staff" | "concierge" | "property_manager" | "external";
   preferred_language?: string;
   country_of_residence?: string;
 }
@@ -21,6 +21,11 @@ export interface AuthError {
   message: string;
 }
 
+export interface MessageResponse {
+  message: string;
+}
+
+
 export interface LoginFormInputs {
   email: string;
   password: string;
@@ -33,4 +38,15 @@ export interface RegisterFormInputs extends LoginFormInputs {
   whatsapp_number: string;
   password: string;
   password_confirm: string;
+}
+
+export interface ForgetPassInput {
+  email: string;
+}
+
+export interface ResetPassInputs {
+  password: string;
+  password_confirm: string;
+  uidb64: string;
+  token: string;
 }

@@ -10,13 +10,21 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { useForgetPassword } from "@/services/user.service";
+import { extractErrorMessage } from "@/lib/extract-error-message";
 
 export default function ForgetPass() {
   const [formData, setFormData] = useState({
     email: "",
   });
+  const forgetPasswordMutation = useForgetPassword();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    forgetPasswordMutation.mutate({
+      email: formData.email,
+    });
   };
 
   return (
@@ -42,6 +50,19 @@ export default function ForgetPass() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {/* SUCCESS MESSAGE */}
+            {forgetPasswordMutation.isSuccess && (
+              <div className="p-3 text-sm text-green-500 bg-green-50 rounded-md border border-green-200 text-center mb-4">
+                {forgetPasswordMutation.data.message}
+              </div>
+            )}
+
+            {/* ERROR MESSAGE */}
+            {forgetPasswordMutation.isError && (
+              <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md border border-red-200 text-center mb-4">
+                {extractErrorMessage(forgetPasswordMutation.error)}
+              </div>
+            )}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
@@ -57,13 +78,19 @@ export default function ForgetPass() {
                       setFormData({ ...formData, email: e.target.value })
                     }
                     required
+                    disabled={forgetPasswordMutation.isPending}
                   />
                 </div>
               </div>
 
-              <Button type="submit" className="w-full" size="lg">
+              <Button
+                type="submit"
+                className="w-full"
+                size="lg"
+                disabled={forgetPasswordMutation.isPending}
+              >
                 <BubblesIcon className="w-4 h-4 mr-2" />
-                Send Email
+                {forgetPasswordMutation.isPending ? "Sending..." : "Send Email"}
               </Button>
             </form>
           </CardContent>
