@@ -121,14 +121,14 @@ export default function Login() {
                 </div>
               </div>
 
-              <div className="flex justify-between">
+              {/* <div className="flex justify-between">
                 <Link
                   to="/auth/forgot-pass"
                   className="text-sm text-primary hover:underline"
                 >
                   Forgot password?
                 </Link>
-              </div>
+              </div> */}
 
               <Button
                 type="submit"

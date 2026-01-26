@@ -18,7 +18,6 @@ export default function ForgetPass() {
     email: "",
   });
   const forgetPasswordMutation = useForgetPassword();
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -53,7 +52,7 @@ export default function ForgetPass() {
             {/* SUCCESS MESSAGE */}
             {forgetPasswordMutation.isSuccess && (
               <div className="p-3 text-sm text-green-500 bg-green-50 rounded-md border border-green-200 text-center mb-4">
-                {forgetPasswordMutation.data.message}
+                {forgetPasswordMutation.data?.message}
               </div>
             )}
 
