@@ -3,16 +3,16 @@ import { useParams, Link } from "react-router-dom";
 import "react-calendar/dist/Calendar.css";
 import * as LucideIcons from "lucide-react";
 import {
-  Bath,
-  Bed,
-  Building2,
-  DoorClosed,
-  Dumbbell,
+  // Bath,
+  // Bed,
+  // Building2,
+  // DoorClosed,
+  // Dumbbell,
   MapPin,
-  Ruler,
-  ShowerHead,
-  Square,
-  User2,
+  // Ruler,
+  // ShowerHead,
+  // Square,
+  // User2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 // import Maps from "@/apps/user/components/property/maps";
