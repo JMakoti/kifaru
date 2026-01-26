@@ -15,54 +15,49 @@ import {
   User2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import properties from "../../../../components/data/properties.json";
-import Maps from "@/apps/user/components/property/maps";
-import Reviews from "@/apps/user/components/property/reviews";
-import Availability from "@/apps/user/components/property/availability";
+// import Maps from "@/apps/user/components/property/maps";
+// import Reviews from "@/apps/user/components/property/reviews";
+// import Availability from "@/apps/user/components/property/availability";
 import Booking from "@/apps/user/components/property/booking";
+import { usePropertyDetails } from "@/services/property.service";
+import LoadingScreen from "@/components/loadingscreen";
 
 export default function KifaruPropertyDetails() {
-  const { propertyId } = useParams<{ propertyId: string }>();
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<
-    "description" | "features" | "availability" | "maps" | "reviews"
-  >("description");
+  const { slug } = useParams<{ slug: string }>();
+  const { data, isLoading, isError, error } = usePropertyDetails(slug!);
+
+  // const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<"description" | "features">(
+    "description",
+  );
+  // "description" | "features" | "availability" | "maps" | "reviews"
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [animated, setAnimated] = useState(false);
 
-  // Find the property based on the route param
-  const property = properties.find(
-    (prop) => prop.slug.toString() === propertyId
-  );
+  const property = data;
 
   useEffect(() => {
     if (!property) return;
-    setLoading(false);
-  }, [propertyId, property]);
+  }, [slug, property]);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[500px]">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
-      </div>
-    );
+  const tabs = ["description", "features"] as const;
+
+  // "availability",
+  //   "maps",
+  //   "reviews",
+  if (isLoading) {
+    return <LoadingScreen />;
   }
-
-  const tabs = [
-    "description",
-    "features",
-    "availability",
-    "maps",
-    "reviews",
-  ] as const;
+  if (isError) return <p>{error.message}</p>;
 
   if (!property) {
     return <div className="text-center py-10">Property not found</div>;
   }
 
   const images = property.images;
-  const image = property.background;
+  // const image = property.background_image;
+  const image = "https://res.cloudinary.com/drselhsl4/image/upload/v1764136940/Kifaru/backgrounds/ipshvpes7mlcg9mjc9qu.png";
 
   const toggleAnimation = () => {
     setAnimated(!animated);
@@ -99,7 +94,8 @@ export default function KifaruPropertyDetails() {
         {images.length > 0 ? (
           <div className="relative w-full  h-96 rounded-lg overflow-hidden bg-gray-100 md:aspect-auto">
             <img
-              src={images[currentImageIndex]}
+              // src={images[currentImageIndex]}
+              src={images[currentImageIndex].image}
               alt={property.name}
               className={`w-full h-full object-cover cursor-pointer
               transition-all duration-300 ease-out
@@ -179,7 +175,7 @@ export default function KifaruPropertyDetails() {
                 <div>
                   <div>
                     <h3 className="text-2xl font-semibold mb-4">Highlights</h3>
-                    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    {/* <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
                       {property.highlights.map((highlight: any, i: number) => {
                         const Icon = (Icons as any)[highlight.icon];
                         return (
@@ -194,7 +190,7 @@ export default function KifaruPropertyDetails() {
                           </div>
                         );
                       })}
-                    </div>
+                    </div> */}
                   </div>
 
                   <div>
@@ -204,14 +200,14 @@ export default function KifaruPropertyDetails() {
                     <p className="text-gray-600">{property.long_description}</p>
                   </div>
 
-                  <div className="mt-6">
+                  {/* <div className="mt-6">
                     <h3 className="text-2xl font-semibold mb-3">
                       Background & Story
                     </h3>
                     <p className="text-gray-600">{property.background_story}</p>
-                  </div>
+                  </div> */}
 
-                  <div className="mt-6">
+                  {/* <div className="mt-6">
                     <h3 className="text-2xl font-semibold mb-3">
                       On Site contact
                     </h3>
@@ -224,7 +220,7 @@ export default function KifaruPropertyDetails() {
                     <p className="text-gray-600">
                       {property.on_site_contact?.contact_number}
                     </p>
-                  </div>
+                  </div> */}
                 </div>
               )}
 
@@ -235,7 +231,7 @@ export default function KifaruPropertyDetails() {
                     <h3 className="text-xl font-semibold mb-3">
                       Accommodation & Capacity
                     </h3>
-                    <div>
+                    {/* <div>
                       {property.accommodation?.bedrooms && (
                         <div className="grid sm:grid-cols-2 gap-4">
                           {property.accommodation.bedrooms.map(
@@ -245,7 +241,7 @@ export default function KifaruPropertyDetails() {
                                 bed_type: string;
                                 capacity: number | string;
                               },
-                              index: number
+                              index: number,
                             ) => (
                               <div
                                 key={index}
@@ -264,11 +260,11 @@ export default function KifaruPropertyDetails() {
                                   {bedroom.capacity}
                                 </p>
                               </div>
-                            )
+                            ),
                           )}
                         </div>
                       )}
-                    </div>
+                    </div> */}
                   </div>
                   <div className="mt-6">
                     <h3 className="text-xl font-semibold mb-3">
@@ -298,7 +294,7 @@ export default function KifaruPropertyDetails() {
                     <h3 className="text-xl font-semibold mb-3">
                       Services offered
                     </h3>
-                    <div>
+                    {/* <div>
                       {property?.services && (
                         <div className="grid sm:grid-cols-2 gap-4">
                           {property.services.map(
@@ -309,32 +305,32 @@ export default function KifaruPropertyDetails() {
                               >
                                 {service}
                               </p>
-                            )
+                            ),
                           )}
                         </div>
                       )}
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               )}
 
               {/* Availability Tab */}
-              {activeTab === "availability" && (
+              {/* {activeTab === "availability" && (
                 <Availability bookedRanges={property.booked_dates} />
-              )}
+              )} */}
 
               {/* Maps Tab */}
-              {activeTab === "maps" && (
+              {/* {activeTab === "maps" && (
                 <div className="z-">
                   <Maps
                     position={property.geolocation as [number, number]}
                     name={property.name}
                   />
                 </div>
-              )}
+              )} */}
 
               {/* Reviews Tab  */}
-              {activeTab === "reviews" && <Reviews review={property.reviews} />}
+              {/* {activeTab === "reviews" && <Reviews review={property.reviews} />} */}
             </div>
           </div>
 
@@ -343,7 +339,7 @@ export default function KifaruPropertyDetails() {
             price={property.price}
             location={property.location}
             country={property.country}
-            status={property.status}
+            // status={property.status}
           />
         </div>
         <div className="py-16 px-6 bg-secondary/20">
@@ -365,14 +361,14 @@ export default function KifaruPropertyDetails() {
 }
 
 // Map icon strings to lucide-react icons
-const Icons: Record<string, any> = {
-  Users: User2,
-  DoorClosed,
-  Dumbbell,
-  Building2,
-  ShowerHead,
-  Square,
-  Bed,
-  Bath,
-  Ruler,
-};
+// const Icons: Record<string, any> = {
+//   Users: User2,
+//   DoorClosed,
+//   Dumbbell,
+//   Building2,
+//   ShowerHead,
+//   Square,
+//   Bed,
+//   Bath,
+//   Ruler,
+// };

@@ -4,15 +4,7 @@ import { Link } from "react-router-dom";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useProperties } from "@/services/property.service";
 import LoadingScreen from "@/components/loadingscreen";
-import type { Property } from "@/services/property.types";
-
-interface PropertyDestinationProps {
-  property: Property;
-  index: number;
-  isLeft: boolean;
-  isHighlighted: boolean;
-  onHover: (index: number | null) => void;
-}
+import type { Property, PropertyDestinationProps } from "@/services/property.types";
 
 function PropertyDestination({
   property,
@@ -57,7 +49,7 @@ function PropertyDestination({
       onMouseEnter={() => onHover(index)}
       onMouseLeave={() => onHover(null)}
     >
-      <Link to={`/properties/${property.slug}`} className="group block">
+      <Link to={`/property/${property.slug}`} className="group block">
         <motion.div
           className={`
             luxury-card
@@ -427,7 +419,6 @@ export default function PropertySection() {
 
       {/* Road Journey Container */}
       <div className="container mx-auto relative min-h-[900px]">
-        {/* Central Road SVG - Desktop */}
         <AnimatedRoad hoveredIndex={hoveredIndex} properties={data} />
 
         {/* Properties Grid */}

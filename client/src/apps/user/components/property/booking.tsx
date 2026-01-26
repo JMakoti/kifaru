@@ -10,7 +10,7 @@ export default function Booking({
   location: String;
   price: String;
   country: String;
-  status: String;
+  // status: String;
 }) {
   const [nights, setNights] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);

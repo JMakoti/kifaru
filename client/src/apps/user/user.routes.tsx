@@ -18,8 +18,8 @@ export default function UserRoutes() {
         <Route path="about" element={<About />} />
         <Route path="property" element={<Property />}>
           <Route index element={<KifaruProperty />} />
-          <Route path=":propertyId" element={<KifaruPropertyDetails />} />
-          <Route index path=":propertyId/payment" element={<Payment />} />
+          <Route path=":slug" element={<KifaruPropertyDetails />} />
+          <Route index path=":slug/payment" element={<Payment />} />
         </Route>
         <Route path="contact" element={<Contact />} />
         <Route

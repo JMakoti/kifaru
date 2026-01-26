@@ -100,3 +100,11 @@ export interface NetworkProperty {
   transport_available: boolean;
   description: string;
 }
+
+export interface PropertyDestinationProps {
+  property: Property;
+  index: number;
+  isLeft: boolean;
+  isHighlighted: boolean;
+  onHover: (index: number | null) => void;
+}
