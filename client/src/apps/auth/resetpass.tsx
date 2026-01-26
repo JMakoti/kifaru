@@ -4,9 +4,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { extractErrorMessage } from "@/lib/extract-error-message";
 import { useResetPassword } from "@/services/user.service";
-import { Lock, Eye, EyeOff, BubblesIcon } from "lucide-react";
+import { Lock, Eye, EyeOff} from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import kifaru from "@/assets/icon/kifaru.png";
 
 export default function ResetPasswordPage() {
   const { uidb64, token } = useParams<{
@@ -43,15 +44,8 @@ export default function ResetPasswordPage() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-light to-muted p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-2">
-            <div className="flex justify-center mb-1">
-              <BubblesIcon className="h-8 w-8 text-black-600" />
-            </div>
-          </div>
-          <h1 className="text-2xl font-bold text-black-800 mb-2 text-balance">
-            Kifaru
-          </h1>
+        <div className="text-center mb-8 items-center flex flex-col">
+          <img src={kifaru} alt="Kifaru Logo" className="w-20 h-20"/>
           <p className="text-muted-foreground mt-2">Reset Your Password</p>
         </div>
 
@@ -145,7 +139,6 @@ export default function ResetPasswordPage() {
                 size="lg"
                 disabled={resetPassword.isPending}
               >
-                <BubblesIcon className="w-4 h-4 mr-2" />
                 {resetPassword.isPending ? "Resetting..." : "Reset password"}
               </Button>
             </form>

@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import navLinks from "@/apps/user/routes";
-import logo from "@/assets/icon/icon2.ico";
+import logo from "@/assets/icon/kifaru.png";
 
 export default function Footer() {
   const location = useLocation();
@@ -55,13 +55,13 @@ export default function Footer() {
             <div className="grid md:grid-cols-4 gap-8 mb-10">
               {/* Brand */}
               <div>
-                <div className="flex flex-row gap-2 mb-4">
-                <img
-                  src={logo}
-                  alt="Kifaru Logo"
-                  className="w-10 h-10 object-contain"
-                />
-                <h2 className="text-4xl font-bold text-white">Kifaru</h2>
+                <div className="flex flex-row items-center gap-2 mb-4">
+                  <img
+                    src={logo}
+                    alt="Kifaru Logo"
+                    className="w-20 h-20 object-contain"
+                  />
+                  <h2 className="text-4xl font-bold text-white">Kifaru</h2>
                 </div>
                 <p className="text-sm text-gray-400 leading-relaxed">
                   Blending luxury, nature, and African culture into
@@ -107,7 +107,7 @@ export default function Footer() {
                         </li>
                       ))}
                     </ul>
-                  ) : null
+                  ) : null,
                 )}
               </div>
 

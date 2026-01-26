@@ -6,9 +6,10 @@ import { Separator } from "@/components/ui/separator";
 import { extractErrorMessage } from "@/lib/extract-error-message";
 import { useAuth } from "@/providers/authprovider";
 import type { AuthResponse } from "@/services/user.types";
-import { Mail, Lock, User, Eye, EyeOff, BubblesIcon } from "lucide-react";
+import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import kifaru from "@/assets/icon/kifaru.png";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -51,10 +52,9 @@ export default function Register() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-light to-muted p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="text-center mb-8">
-          <BubblesIcon className="h-8 w-8 mx-auto mb-2" />
-          <h1 className="text-2xl font-bold">Kifaru</h1>
-          <p className="text-muted-foreground">
+         <div className="text-center mb-8 items-center flex flex-col">
+           <img src={kifaru} alt="Kifaru Logo" className="w-20 h-20"/>
+           <p className="text-muted-foreground">
             Start your plans journey today
           </p>
         </div>

@@ -20,7 +20,7 @@ import {
   Building2,
   User,
 } from "lucide-react";
-import rhino from "@/assets/icon/icon.ico";
+import rhino from "@/assets/icon/kifaru.png";
 import { useAuth } from "@/providers/authprovider";
 
 export default function AppSidebar({
@@ -66,7 +66,7 @@ export default function AppSidebar({
                 src={rhino}
                 loading="lazy"
                 alt="Kifaru"
-                className="w-8 h-6 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6"
+                className="w-15 h-15 group-data-[collapsible=icon]:w-6 group-data-[collapsible=icon]:h-6"
               />
               <span className="hidden md:inline group-data-[collapsible=icon]:hidden">
                 Kifaru

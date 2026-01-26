@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { Mail, Lock, Eye, EyeOff, BubblesIcon } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import bglogin from "@/assets/property-2.jpg";
 import { useAuth } from "@/providers/authprovider";
 import { extractErrorMessage } from "@/lib/extract-error-message";
+import kifaru from "@/assets/icon/kifaru.png";
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({
@@ -51,10 +52,8 @@ const AdminLogin = () => {
     >
       <div className="absolute inset-0 bg-black/50" />
       <div className="relative z-10 w-full max-w-md">
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-1">
-            <BubblesIcon className="h-8 w-8 text-white" />
-          </div>
+        <div className="text-center mb-8 items-center flex flex-col">
+           <img src={kifaru} alt="Kifaru Logo" className="w-20 h-20"/>
         </div>
 
         <Card className="border-2 shadow-lg">
@@ -149,7 +148,6 @@ const AdminLogin = () => {
                   <>signing in...</>
                 ) : (
                   <>
-                    <BubblesIcon className="w-4 h-4 mr-2" />
                     Sign In
                   </>
                 )}

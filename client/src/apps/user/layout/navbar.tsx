@@ -9,7 +9,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import logo from "@/assets/icon/icon.ico";
+import logo from "@/assets/icon/kifaru.png";
 import navLinks from "../routes";
 import Mobilemenu from "./mobilemenu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -27,7 +27,7 @@ export default function Navbar() {
             <img
               src={logo}
               alt="Kifaru Logo"
-              className="w-15 h-15 object-contain"
+              className="w-20 h-20 object-contain"
             />
           </Link>
         </div>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mail, BubblesIcon } from "lucide-react";
+import { Mail } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useForgetPassword } from "@/services/user.service";
 import { extractErrorMessage } from "@/lib/extract-error-message";
+import kifaru from "@/assets/icon/kifaru.png";
 
 export default function ForgetPass() {
   const [formData, setFormData] = useState({
@@ -30,12 +31,8 @@ export default function ForgetPass() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-light to-muted p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-2">
-            <div className="flex justify-center mb-1">
-              <BubblesIcon className="h-8 w-8 text-black-600" />
-            </div>
-          </div>
+        <div className="text-center mb-8 items-center flex flex-col">
+          <img src={kifaru} alt="Kifaru Logo" className="w-20 h-20" />
           <h1 className="text-2xl font-bold text-black-800 mb-2 text-balance">
             Kifaru
           </h1>
@@ -88,7 +85,6 @@ export default function ForgetPass() {
                 size="lg"
                 disabled={forgetPasswordMutation.isPending}
               >
-                <BubblesIcon className="w-4 h-4 mr-2" />
                 {forgetPasswordMutation.isPending ? "Sending..." : "Send Email"}
               </Button>
             </form>
