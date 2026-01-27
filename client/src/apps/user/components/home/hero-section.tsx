@@ -71,9 +71,9 @@ export default function HeroSection() {
             </span>
           </h1>
 
-          <div className="mt-10 flex flex-col sm:flex-row gap-4">
+          <div className="mt-20 md:mt-10 flex flex-col sm:flex-row gap-4">
             <Button
-              className="bg-white hover:text-white text-primary flex items-center gap-2 text-base animate-pulse"
+              className="bg-[var(--kifaru-accent)] hover:text-white text-primary flex items-center gap-2 text-base animate-pulse"
               asChild
             >
               <Link to="/property">Explore Our Retreats</Link>

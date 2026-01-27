@@ -1,4 +1,19 @@
 
+/* Color Variables */
+:root {
+  /* Primary */
+  --color-primary-base: #1C1C1C;
+  /* Background */
+  --color-background: #F5F1EB;
+  /* Accent / CTA */
+  --color-accent: #B89B5E;
+  /* Nature Accent */
+  --color-nature: #3F4A3C;
+  /* Body Text */
+  --color-body-text: #6B6B6B;
+}
+
+
 /* About Section */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
@@ -54,5 +69,7 @@
   transform: scale(1.05);
   cursor: pointer;
 }
+
+
 
 

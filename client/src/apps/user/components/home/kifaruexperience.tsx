@@ -45,11 +45,11 @@ export default function VideoWordStack() {
 
   return (
     <div className="relative flex items-center justify-center min-h-[600px] md:min-h-[800px] bg-white overflow-hidden font-sans p-4">
-      <div className="absolute inset-0 flex flex-col justify-between items-center opacity-5 md:opacity-10 select-none pointer-events-none py-10">
-        <h1 className="text-[18vw] md:text-[15rem] font-black leading-none tracking-tighter">
+      <div className="absolute inset-0 flex flex-col justify-between items-center opacity-70 md:opacity-70 select-none pointer-events-none py-10">
+        <h1 className="text-[18vw] md:text-[15rem] font-black leading-none tracking-tighter text-black">
           KIFARU
         </h1>
-        <h1 className="text-[12vw] md:text-[10rem] font-black leading-none tracking-tighter text-center">
+        <h1 className="text-[12vw] md:text-[10rem] font-black leading-none tracking-tighter text-center text-black">
           EXPERIENCE
         </h1>
       </div>

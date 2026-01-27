@@ -3,6 +3,7 @@ import { Link, NavLink } from "react-router";
 import navLinks from "../routes";
 import { useAuth } from "@/providers/authprovider";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { useProperties } from "@/services/property.service";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -13,25 +14,30 @@ export default function Mobilemenu({ isOpen, onClose }: MobileMenuProps) {
   if (!isOpen) return null;
   const { isAuthenticated, user } = useAuth();
 
+  // Fetch properties dynamically
+  const { data: properties, isLoading, isError } = useProperties();
+
   return (
     <div>
-      <div className="md:hidden bg-accent absolute top-16 w-full border-b shadow-lg">
+      <div className="md:hidden absolute top-16 w-full border-b shadow-lg bg-[var(--kifaru-body)]/95 backdrop-blur-md z-50">
         <div className="flex flex-col space-y-2 px-4 py-4">
           {navLinks.map((link) =>
-            link.children ? (
+            link.label === "Properties" ? (
               <div className="py-2" key={link.label}>
-                <div className="flex items-center justify-between text-foreground">
-                  <span className="text-foreground">{link.label}</span>
+                <div className="flex items-center justify-between text-white font-semibold">
+                  <span>{link.label}</span>
                 </div>
-                <div className="pl-4 mt-2 border-l border-gray-200 space-y-2">
-                  {link.children.map((property) => (
+                <div className="pl-4 mt-2 border-l border-[var(--border)] space-y-2">
+                  {isLoading && <p className="text-white">Loading...</p>}
+                  {isError && <p className="text-red-500">Failed to load</p>}
+                  {properties?.map((property) => (
                     <Link
-                      key={property.to}
-                      to={property.to}
-                      className="block text-sm text-gray-600 hover:text-primary py-1"
+                      key={property.id}
+                      to={`/property/${property.slug}`}
                       onClick={onClose}
+                      className="block text-white text-sm hover:text-[var(--kifaru-accent)] py-1 transition-colors"
                     >
-                      {property.label}
+                      {property.name}
                     </Link>
                   ))}
                 </div>
@@ -41,7 +47,13 @@ export default function Mobilemenu({ isOpen, onClose }: MobileMenuProps) {
                 key={link.to}
                 to={link.to}
                 onClick={onClose}
-                className="text-foreground hover:text-primary transition-colors py-2"
+                className={({ isActive }) =>
+                  `py-2 text-white font-medium transition-colors ${
+                    isActive
+                      ? "text-[var(--kifaru-accent)]"
+                      : "hover:text-[var(--kifaru-accent)]"
+                  }`
+                }
               >
                 {link.label}
               </NavLink>
@@ -49,10 +61,10 @@ export default function Mobilemenu({ isOpen, onClose }: MobileMenuProps) {
           )}
 
           {isAuthenticated ? (
-            <Link to="/profile">
-              <div className="flex items-center gap-3 ml-4">
+            <Link to="/profile" onClick={onClose}>
+              <div className="flex items-center gap-3 mt-4">
                 <Avatar className="h-12 w-12 cursor-pointer">
-                  <AvatarFallback className="font-semibold">
+                  <AvatarFallback className="font-semibold text-white">
                     {user?.first_name?.[0]}
                     {user?.last_name?.[0]}
                   </AvatarFallback>
@@ -60,9 +72,9 @@ export default function Mobilemenu({ isOpen, onClose }: MobileMenuProps) {
               </div>
             </Link>
           ) : (
-            <div className="flex gap-2 mt-2">
+            <div className="flex gap-2 mt-4">
               <Button
-                className="bg-primary hover:bg-primary/90 text-white flex-1"
+                className="bg-[var(--kifaru-primary)] hover:bg-[var(--kifaru-primary)]/90 text-white flex-1"
                 asChild
               >
                 <Link to="/auth" onClick={onClose}>
@@ -70,11 +82,11 @@ export default function Mobilemenu({ isOpen, onClose }: MobileMenuProps) {
                 </Link>
               </Button>
               <Button
-                className="bg-primary hover:bg-primary/90 text-white flex-1"
+                className="bg-[var(--kifaru-accent)] hover:bg-[var(--kifaru-accent)]/90 text-white flex-1"
                 asChild
               >
                 <Link to="/auth/register" onClick={onClose}>
-                  SignUp
+                  Sign Up
                 </Link>
               </Button>
             </div>

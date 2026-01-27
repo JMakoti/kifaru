@@ -4,7 +4,10 @@ import { Link } from "react-router-dom";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useProperties } from "@/services/property.service";
 import LoadingScreen from "@/components/loadingscreen";
-import type { Property, PropertyDestinationProps } from "@/services/property.types";
+import type {
+  Property,
+  PropertyDestinationProps,
+} from "@/services/property.types";
 
 function PropertyDestination({
   property,
@@ -77,7 +80,8 @@ function PropertyDestination({
             <div className="absolute inset-0 bg-gradient-to-t from-foreground/70 via-foreground/20 to-transparent" />
 
             {/* Location Badge */}
-            <div className="absolute bottom-3 left-3 flex items-center gap-1.5 text-primary-foreground text-sm font-medium">
+            {/* Location Badge */}
+            <div className="absolute bottom-4 left-4 flex items-center gap-2 px-3 py-1 bg-[var(--kifaru-accent)]/90 text-white text-sm font-semibold rounded-full shadow-lg">
               <MapPin className="w-4 h-4" />
               <span>
                 {property.location}, {property.country}
@@ -88,26 +92,23 @@ function PropertyDestination({
           {/* Content */}
           <div className="p-5">
             <h3
-              className={`text-xl font-serif font-bold mb-2 group-hover:text-black transition-colors duration-300 ${isLeft ? "md:text-right" : "text-left"}`}
+              className={`text-xl font-serif font-bold mb-2 ${isLeft ? "md:text-right" : "text-left"} text-[var(--foreground)]`}
             >
               {property.name}
             </h3>
             <p
-              className={`text-muted-foreground text-sm mb-4 line-clamp-2 ${isLeft ? "md:text-right" : "text-left"}`}
+              className={`text-sm mb-4 line-clamp-2 ${isLeft ? "md:text-right" : "text-left"} text-[var(--muted-foreground)]`}
             >
               {property.description}
             </p>
 
             <motion.div
-              className={`
-                flex items-center gap-2 text-black font-semibold text-sm
-                ${isLeft ? "md:justify-end" : "justify-start"}
-              `}
+              className={`flex items-center gap-2 font-semibold text-sm ${isLeft ? "md:justify-end" : "justify-start"} text-[var(--kifaru-accent)]`}
               whileHover={{ x: 5 }}
               transition={{ type: "spring", stiffness: 400 }}
             >
               <span>Explore</span>
-              <ArrowRight className="w-4 h-4 text-black" />
+              <ArrowRight className="w-4 h-4 text-[var(--kifaru-accent)]" />
             </motion.div>
           </div>
         </motion.div>
@@ -336,10 +337,10 @@ export default function PropertySection() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  const { data = [], isLoading, isError, error } = useProperties();
+  const { data = [], isLoading } = useProperties();
 
   if (isLoading) return <LoadingScreen />;
-  if (isError) return <p>{(error as Error).message}</p>;
+  // if (isError) return <p>{(error as Error).message}</p>;
 
   return (
     <section
@@ -422,7 +423,7 @@ export default function PropertySection() {
         <AnimatedRoad hoveredIndex={hoveredIndex} properties={data} />
 
         {/* Properties Grid */}
-        <div className="relative z-10 grid md:grid-cols-2 gap-y-16 md:gap-y-24 gap-x-8 max-w-6xl mx-auto">
+        <div className="relative z-10 grid md:grid-cols-2 gap-y-6 md:gap-y-0 gap-x-8 max-w-6xl mx-auto">
           {data?.map((property, index) => {
             const isLeft = index % 2 === 0;
 
