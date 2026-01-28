@@ -124,7 +124,7 @@ export function ProfileSidebar({ user }: ProfileSidebarProps) {
             size="sm"
             title="Logout"
             onClick={handleLogout}
-            className="w-full mt-3 text-destructive hover:bg-destructive/10 hover:text-destructive"
+            className="w-full mt-3 text-destructive cursor-pointer hover:bg-destructive/10 hover:text-destructive"
           >
             <span className="flex items-center gap-2 justify-center">
               Log out
