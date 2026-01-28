@@ -65,54 +65,48 @@ export function BookingHistory() {
   };
 
   return (
-    <div className="flex-1">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-foreground mb-1">
+    <div className="flex-1 space-y-6">
+      {/* Header */}
+      <div>
+        <h1 className="text-2xl font-semibold tracking-tight">
           Booking History
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           View and manage your past and upcoming stays
         </p>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="bg-secondary/50 p-1 mb-6">
-          <TabsTrigger
-            value="all"
-            className="data-[state=active]:bg-card data-[state=active]:shadow-soft"
-          >
-            All ({counts.all})
-          </TabsTrigger>
-          <TabsTrigger
-            value="upcoming"
-            className="data-[state=active]:bg-card data-[state=active]:shadow-soft"
-          >
-            Upcoming ({counts.upcoming})
-          </TabsTrigger>
-          <TabsTrigger
-            value="completed"
-            className="data-[state=active]:bg-card data-[state=active]:shadow-soft"
-          >
-            Completed ({counts.completed})
-          </TabsTrigger>
-          <TabsTrigger
-            value="cancelled"
-            className="data-[state=active]:bg-card data-[state=active]:shadow-soft"
-          >
-            Cancelled ({counts.cancelled})
-          </TabsTrigger>
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        {/* Tabs */}
+        <TabsList className="bg-muted/60 rounded-xl p-1 flex flex-wrap gap-1">
+          {(["all", "upcoming", "completed", "cancelled"] as const).map(
+            (tab) => (
+              <TabsTrigger
+                key={tab}
+                value={tab}
+                className="
+                  capitalize rounded-lg px-4 py-2
+                  data-[state=active]:bg-card
+                  data-[state=active]:shadow-sm
+                "
+              >
+                {tab} ({counts[tab]})
+              </TabsTrigger>
+            ),
+          )}
         </TabsList>
 
-        <TabsContent value={activeTab} className="mt-0">
+        {/* Content */}
+        <TabsContent value={activeTab} className="mt-4">
           <div className="space-y-4">
-            {filteredBookings.length > 0 ? (
+            {filteredBookings.length ? (
               filteredBookings.map((booking) => (
                 <BookingCard key={booking.id} booking={booking} />
               ))
             ) : (
-              <div className="bg-card rounded-2xl shadow-card p-12 text-center">
+              <div className="bg-card rounded-2xl border border-border p-10 text-center">
                 <p className="text-muted-foreground">
-                  No bookings found plan your stay with kifaru.
+                  No bookings found. Plan your next stay with Kifaru.
                 </p>
               </div>
             )}

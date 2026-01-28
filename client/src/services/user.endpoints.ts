@@ -27,6 +27,7 @@ const PROFILE_URL = "/user/me/";
 const LOGOUT_URL = "/user/logout/";
 const FORGETPASS_URL = "/user/password-reset/";
 const RESETPASS_URL = `/user/password-reset-confirm/{uidb64}/{token}/`;
+const EDITPROFILE_URL = "/user/me/";
 
 // get profile
 export const getProfile = async (): Promise<User> => {
@@ -110,24 +111,22 @@ export const logoutUser = async (): Promise<void> => {
 
 //forget password
 export const forgetPassword = async (
-  inputs: ForgetPassInput
+  inputs: ForgetPassInput,
 ): Promise<MessageResponse> => {
-  const { data } = await api.post<MessageResponse>(
-    FORGETPASS_URL,
-    inputs
-  );
+  const { data } = await api.post<MessageResponse>(FORGETPASS_URL, inputs);
   return data;
 };
 
 //reset password
 export const resetPassword = async (
-  inputs: ResetPassInputs
+  inputs: ResetPassInputs,
 ): Promise<{ message: string }> => {
   const { uidb64, token, password, password_confirm } = inputs;
 
-  const url = RESETPASS_URL
-    .replace("{uidb64}", uidb64)
-    .replace("{token}", token);
+  const url = RESETPASS_URL.replace("{uidb64}", uidb64).replace(
+    "{token}",
+    token,
+  );
 
   const { data } = await api.post(url, {
     password,
@@ -135,4 +134,13 @@ export const resetPassword = async (
   });
 
   return data;
+};
+
+// edit user
+export const updateProfile = async (data: FormData) => {
+  const res = await api.patch(EDITPROFILE_URL, data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+  return res.data;
 };

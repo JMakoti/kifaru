@@ -1,10 +1,11 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   registerUser,
   loginUser,
   getProfile,
   forgetPassword,
   resetPassword,
+  updateProfile,
 } from "./user.endpoints";
 import type { ForgetPassInput, MessageResponse, ResetPassInputs } from "./user.types";
 import type { AxiosError } from "axios";
@@ -45,3 +46,15 @@ export const useResetPassword = () => {
     mutationFn: resetPassword,
   });
 };
+
+// update profile
+export function useUpdateProfile() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateProfile,
+    onSuccess: (updatedUser) => {
+      queryClient.setQueryData(["user-profile"], updatedUser);
+    },
+  });
+}

@@ -1,17 +1,14 @@
 import { useAuth } from "@/providers/authprovider";
 import { BookingHistory } from "./bookinghistory";
 import { ProfileSidebar } from "./profilesidebar";
+import LoadingScreen from "@/components/loadingscreen";
 
 export default function UserProfile() {
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
     return (
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="text-center">
-          <p className="text-muted-foreground">Loading profile...</p>
-        </div>
-      </main>
+      <LoadingScreen/>
     );
   }
 

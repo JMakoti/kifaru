@@ -30,6 +30,7 @@ interface AuthContextValue {
   login: (data: LoginFormInputs) => Promise<AuthResponse>;
   register: (data: RegisterFormInputs) => Promise<AuthResponse>;
   logout: () => Promise<void>;
+  refreshUser: () => Promise<void>;
 }
 
 const AUTH_QUERY_KEY = ["auth-user"];
@@ -46,6 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     data: user,
     isLoading,
     error,
+    refetch
   } = useQuery<User | null>({
     queryKey: AUTH_QUERY_KEY,
     queryFn: getProfile,
@@ -87,10 +89,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     },
   });
 
+  const refreshUser = async () => {
+    await refetch();
+  };
+
+
   return (
     <AuthContext.Provider
       value={{
+
         user: user ?? null,
+        refreshUser,
         isAuthenticated: !!user,
         isLoading,
         error: error as Error | null,
