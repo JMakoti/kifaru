@@ -23,7 +23,7 @@ export default function Booking({
               <div className="font-semibold">
                 {nights === 0 ? (
                   <div className="flex items-baseline gap-1">
-                    <span className="text-xl font-bold">Ksh. {price}</span>
+                    <span className="text-xl font-bold">$ {price}</span>
                     <span className="text-gray-500 text-xs align-sub tracking-tight">
                       / Per Day
                     </span>
@@ -31,7 +31,7 @@ export default function Booking({
                 ) : (
                   <div className="flex items-baseline gap-1">
                     <span className="text-xl font-bold">
-                      Ksh. {totalPrice.toLocaleString()}
+                      $ {totalPrice.toLocaleString()}
                     </span>
                     <span className="text-gray-500 text-xs align-sub tracking-tight">
                       {nights > 0 && (

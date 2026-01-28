@@ -26,7 +26,7 @@ const user = [
 const Overview = [
   {
     dayz: "10 days",
-    amount: "Ksh. 4,500",
+    amount: "$ 4,500",
   },
 ];
 
@@ -163,7 +163,7 @@ export default function Payment() {
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">Total Amount</span>
-                  <span className="font-semibold text-primary">Ksh. 4,500</span>
+                  <span className="font-semibold text-primary">$ 4,500</span>
                 </div>
               </div>
             </div>

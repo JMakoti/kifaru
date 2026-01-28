@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -17,66 +19,57 @@ import {
   Eye,
 } from "lucide-react";
 import AddPropertyForm from "./addproperty";
-import propertiesData from "@/components/data/properties.json";
+import { useProperties } from "@/services/property.service";
+import type {
+  Property as APIProperty,
+  PropertyCategory,
+} from "@/services/property.types";
+import LoadingScreen from "@/components/loadingscreen";
 
-interface Property {
+interface PropertyView {
   id: number;
   name: string;
-  type: string;
+  type: PropertyCategory;
   location: string;
   pricePerNight: number;
   bedrooms: number;
   maxGuests: number;
   rating: number;
   status: "available" | "booked" | "blocked" | "maintenance";
+  bookedDaysFromToday: number;
 }
 
 export default function PropertiesView() {
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Transform properties.json data to match the Property interface
-  const properties = useMemo(() => {
-    return propertiesData.map((prop: any) => {
-      // Extract bedrooms and maxGuests from highlights
-      const highlights = prop.highlights || [];
-      const beds =
-        highlights.find((h: any) => h.icon === "Bed")?.label || "1 Bedrooms";
-      const bedroomCount = parseInt(beds.split(" ")[0]) || 1;
+  const { data: fetchedProperties = [], isLoading } = useProperties();
 
-      const guestsLabel =
-        highlights.find((h: any) => h.icon === "Users")?.label || "1 Guests";
-      const guestCount = parseInt(guestsLabel.split(" ")[0]) || 1;
+  const properties: PropertyView[] = useMemo(() => {
+    const today = new Date();
 
-      // Calculate average rating
-      const reviews = prop.reviews || [];
-      const avgRating =
-        reviews.length > 0
-          ? Math.round(
-              (reviews.reduce((sum: number, r: any) => sum + r.rating, 0) /
-                reviews.length) *
-                10
-            ) / 10
-          : 4.5;
+    return fetchedProperties.map((prop: APIProperty) => {
+      const bedrooms = prop.bedrooms || 1;
+      const maxGuests = prop.max_guests || 1;
+      const rating = prop.average_rating || 4.5;
 
-      // REALISTIC STATUS SYSTEM
       type Status = "available" | "booked" | "blocked" | "maintenance";
 
-      function getPropertyStatus(prop: any, bufferDays = 1): Status {
-        const today = new Date();
+      function getPropertyStatus(prop: APIProperty, bufferDays = 1): Status {
+        // Assume blocked/maintenance flags exist on API object
+        if ((prop as any).status === "blocked") return "blocked";
+        if ((prop as any).status === "maintenance") return "maintenance";
 
-        // Manual overrides
-        if (prop.status === "blocked") return "blocked";
-        if (prop.status === "maintenance") return "maintenance";
-
-        if (!prop.booked_dates || prop.booked_dates.length === 0) {
+        // Check booked dates if any
+        if (
+          !(prop as any).booked_dates ||
+          (prop as any).booked_dates.length === 0
+        )
           return "available";
-        }
 
-        const isBookedToday = prop.booked_dates.some((range: any) => {
+        const isBookedToday = (prop as any).booked_dates.some((range: any) => {
           const checkIn = new Date(range.check_in);
           const checkOut = new Date(range.check_out);
 
-          // Apply buffer day(s)
           const bufferedCheckout = new Date(checkOut);
           bufferedCheckout.setDate(bufferedCheckout.getDate() + bufferDays);
 
@@ -86,32 +79,28 @@ export default function PropertiesView() {
         return isBookedToday ? "booked" : "available";
       }
 
-      // NUMBER OF DAYS BOOKED FROM TODAY
       function getBookedDaysFromToday(
-        prop: any,
-        status: string,
-        bufferDays = 1
+        prop: APIProperty,
+        status: Status,
+        bufferDays = 1,
       ): number {
         if (status !== "booked") return 0;
-        const today = new Date();
+        if (!(prop as any).booked_dates) return 0;
+
         let total = 0;
-
-        if (!prop.booked_dates) return 0;
-
-        prop.booked_dates.forEach((range: any) => {
+        (prop as any).booked_dates.forEach((range: any) => {
           const checkIn = new Date(range.check_in);
           const checkOut = new Date(range.check_out);
 
           const bufferedCheckout = new Date(checkOut);
           bufferedCheckout.setDate(bufferedCheckout.getDate() + bufferDays);
 
-          if (bufferedCheckout < today) return; // all past
+          if (bufferedCheckout < today) return;
 
           const start = checkIn < today ? today : checkIn;
           const diff =
             (bufferedCheckout.getTime() - start.getTime()) /
             (1000 * 60 * 60 * 24);
-
           if (diff > 0) total += Math.ceil(diff);
         });
 
@@ -124,26 +113,26 @@ export default function PropertiesView() {
       return {
         id: prop.id,
         name: prop.name,
-        type: prop.name.split(" ").pop() || "Property",
+        type: prop.property_category || "urban",
         location: prop.location,
         pricePerNight: parseInt(prop.price) || 200,
-        bedrooms: bedroomCount,
-        maxGuests: guestCount,
-        rating: avgRating,
+        bedrooms,
+        maxGuests,
+        rating,
         status,
         bookedDaysFromToday,
       };
     });
-  }, [propertiesData]);
+  }, [fetchedProperties]);
 
   const filteredProperties = properties.filter(
-    (property) =>
-      property.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      property.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      property.location.toLowerCase().includes(searchTerm.toLowerCase())
+    (p) =>
+      p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      p.location.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  const getStatusColor = (status: Property["status"]) => {
+  const getStatusColor = (status: PropertyView["status"]) => {
     switch (status) {
       case "available":
         return "bg-emerald/50 text-emerald-600";
@@ -160,11 +149,15 @@ export default function PropertiesView() {
 
   const totalProperties = properties.length;
   const avgNightlyRate = Math.round(
-    properties.reduce((sum, p) => sum + p.pricePerNight, 0) / properties.length
+    properties.reduce((sum, p) => sum + p.pricePerNight, 0) /
+      properties.length || 0,
   );
   const availableCount = properties.filter(
-    (p) => p.status === "available"
+    (p) => p.status === "available",
   ).length;
+
+  if (isLoading)
+    return <LoadingScreen/>
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -184,81 +177,72 @@ export default function PropertiesView() {
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card className="shadow-soft h-30" style={{ animationDelay: "0.1s" }}>
-          <CardContent className="py-3 px-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">
-                  Total Properties
-                </p>
-                <p className="text-2xl font-bold font-heading">
-                  {totalProperties}
-                </p>
-              </div>
-              <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                <Building2 className="h-6 w-6 text-primary" />
-              </div>
+          <CardContent className="py-3 px-6 flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">
+                Total Properties
+              </p>
+              <p className="text-2xl font-bold font-heading">
+                {totalProperties}
+              </p>
+            </div>
+            <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Building2 className="h-6 w-6 text-primary" />
             </div>
           </CardContent>
         </Card>
 
         <Card className="shadow-soft h-30" style={{ animationDelay: "0.2s" }}>
-          <CardContent className="py-3 px-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">
-                  Avg. Nightly Rate
-                </p>
-                <p className="text-2xl font-bold font-heading">
-                  ${avgNightlyRate}
-                </p>
-              </div>
-              <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                <DollarSign className="h-6 w-6 text-primary" />
-              </div>
+          <CardContent className="py-3 px-6 flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">
+                Avg. Nightly Rate
+              </p>
+              <p className="text-2xl font-bold font-heading">
+                ${avgNightlyRate}
+              </p>
+            </div>
+            <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+              <DollarSign className="h-6 w-6 text-primary" />
             </div>
           </CardContent>
         </Card>
 
         <Card className="shadow-soft h-30" style={{ animationDelay: "0.3s" }}>
-          <CardContent className="py-3 px-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium text-muted-foreground">
-                  Available Now
-                </p>
-                <p className="text-2xl font-bold font-heading text-primary">
-                  {availableCount}
-                </p>
-              </div>
-              <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
-                <Home className="h-6 w-6 text-primary" />
-              </div>
+          <CardContent className="py-3 px-6 flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-muted-foreground">
+                Available Now
+              </p>
+              <p className="text-2xl font-bold font-heading text-primary">
+                {availableCount}
+              </p>
+            </div>
+            <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
+              <Home className="h-6 w-6 text-primary" />
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Search and Filters */}
-      <Card className="" style={{ animationDelay: "0.4s" }}>
+      {/* Search and Property List */}
+      <Card style={{ animationDelay: "0.4s" }}>
         <CardHeader>
           <CardTitle className="font-heading text-2xl">
             Property Listings
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="mb-6">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-              <Input
-                placeholder="Search by name, type, or location..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
-              />
-            </div>
+          <div className="mb-6 relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+            <Input
+              placeholder="Search by name, type, or location..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+            />
           </div>
 
-          {/* Properties Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredProperties.map((property, index) => (
               <Card
@@ -266,8 +250,8 @@ export default function PropertiesView() {
                 className="shadow-soft hover-lift card-interactive animate-fade-in border p-2"
                 style={{ animationDelay: `${0.5 + index * 0.1}s` }}
               >
-                <CardContent className="p-4">
-                  <div className="space-y-3">
+                <CardContent className="p-4 flex flex-col h-full">
+                  <div className="space-y-3 flex-1">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <h3 className="font-semibold text-foreground">
@@ -298,7 +282,7 @@ export default function PropertiesView() {
                           Per night
                         </p>
                         <p className="font-semibold font-heading">
-                          Ksh. {property.pricePerNight}
+                          $ {property.pricePerNight}
                         </p>
                       </div>
                       <div>
@@ -320,29 +304,24 @@ export default function PropertiesView() {
                         </p>
                       </div>
                     </div>
+                  </div>
 
-                    <div>
-                      <p className="text-sm ">
-                        Available in {property.bookedDaysFromToday} Days
-                      </p>
-                    </div>
-
-                    <div className="flex gap-2 pt-2">
-                      <Button size="sm" variant="outline">
-                        <Eye className="mr-1 h-4 w-4" />
-                      </Button>
-                      <Button size="sm" variant="outline" className="flex-1">
-                        <Edit className="mr-1 h-4 w-4" />
-                        Edit
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
+                  {/* Buttons at the bottom */}
+                  <div className="flex gap-2 pt-2 mt-auto">
+                    <Button size="sm" variant="outline">
+                      <Eye className="mr-1 h-4 w-4" />
+                    </Button>
+                    <Button size="sm" variant="outline" className="flex-1">
+                      <Edit className="mr-1 h-4 w-4" />
+                      Edit
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
