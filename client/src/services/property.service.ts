@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
-import type { Property } from "./property.types";
-import { fetchProperties, getDetails } from "./property.endpoints";
+import { type PropertyReview, type Property } from "./property.types";
+import { fetchProperties, fetchReviews, getDetails } from "./property.endpoints";
 
 export const PROPERTY_QUERY_KEY = ["properties"];
 export const PROPERTY_DETAILS_QUERY_KEY = ["property-details"];
+export const REVIEWS_QUERY = ["reviews"]
 
 export const useProperties = () => {
   return useQuery<Property[]>({
@@ -21,3 +22,12 @@ export const usePropertyDetails = (slug: string) => {
     enabled: !!slug,
   });
 };
+
+export const useReviews = () =>{
+  return useQuery<PropertyReview[]>({
+    queryKey: REVIEWS_QUERY,
+    queryFn: fetchReviews,
+    staleTime: 1000 * 60 * 5,
+    retry: 2,
+  })
+}

@@ -16,20 +16,25 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 // import Maps from "@/apps/user/components/property/maps";
-// import Reviews from "@/apps/user/components/property/reviews";
+import Reviews from "@/apps/user/components/property/reviews";
 // import Availability from "@/apps/user/components/property/availability";
 import Booking from "@/apps/user/components/property/booking";
 import { usePropertyDetails } from "@/services/property.service";
 import LoadingScreen from "@/components/loadingscreen";
+import type {
+  Amenity,
+  Contact,
+  PricingOption,
+} from "@/services/property.types";
+import { Badge } from "@/components/ui/badge";
 
 export default function KifaruPropertyDetails() {
   const { slug } = useParams<{ slug: string }>();
   const { data, isLoading, isError, error } = usePropertyDetails(slug!);
-
   // const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"description" | "features">(
-    "description",
-  );
+  const [activeTab, setActiveTab] = useState<
+    "description" | "amenities" | "reviews"
+  >("description");
   // "description" | "features" | "availability" | "maps" | "reviews"
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -41,7 +46,7 @@ export default function KifaruPropertyDetails() {
     if (!property) return;
   }, [slug, property]);
 
-  const tabs = ["description", "features"] as const;
+  const tabs = ["description", "amenities", "reviews"] as const;
 
   // "availability",
   //   "maps",
@@ -57,7 +62,8 @@ export default function KifaruPropertyDetails() {
 
   const images = property.images;
   // const image = property.background_image;
-  const image = "https://res.cloudinary.com/drselhsl4/image/upload/v1764136940/Kifaru/backgrounds/ipshvpes7mlcg9mjc9qu.png";
+  const image =
+    "https://res.cloudinary.com/drselhsl4/image/upload/v1764136940/Kifaru/backgrounds/ipshvpes7mlcg9mjc9qu.png";
 
   const toggleAnimation = () => {
     setAnimated(!animated);
@@ -158,7 +164,7 @@ export default function KifaruPropertyDetails() {
                     onClick={() => setActiveTab(tab)}
                     className={`py-4 font-medium text-sm whitespace-nowrap ${
                       activeTab === tab
-                        ? "border-b-2 border-blue-500 text-blue-600"
+                        ? "border-b-2 border-accent-500 text-accent"
                         : "text-gray-500 hover:text-gray-700"
                     }`}
                   >
@@ -175,141 +181,347 @@ export default function KifaruPropertyDetails() {
                 <div>
                   <div>
                     <h3 className="text-2xl font-semibold mb-4">Highlights</h3>
-                    {/* <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-                      {property.highlights.map((highlight: any, i: number) => {
-                        const Icon = (Icons as any)[highlight.icon];
-                        return (
-                          <div
-                            key={i}
-                            className="flex flex-col items-center gap-3 p-4 rounded-lg bg-secondary/30"
-                          >
-                            <Icon className="w-12 h-12 text-primary" />
-                            <span className="font-medium">
-                              {highlight.label}
-                            </span>
-                          </div>
-                        );
-                      })}
-                    </div> */}
-                  </div>
 
+                    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+                      {/* Bedrooms */}
+                      <div className="flex items-center gap-4 p-4 rounded-xl bg-secondary/30">
+                        <div className="flex items-center justify-center">
+                          <LucideIcons.BedDouble className="w-12 h-12 text-primary" />
+                        </div>
+                        <div className="flex flex-col leading-tight">
+                          <span className="text-xl font-semibold">
+                            {property.bedrooms}
+                          </span>
+                          <span className="text-md text-muted-foreground">
+                            Bedrooms
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Bathrooms */}
+                      <div className="flex items-center gap-4 p-4 rounded-xl bg-secondary/30">
+                        <div className="flex items-center justify-center">
+                          <LucideIcons.Bath className="w-12 h-12 text-primary" />
+                        </div>
+                        <div className="flex flex-col leading-tight">
+                          <span className="text-lg font-semibold">
+                            {property.bathrooms}
+                          </span>
+                          <span className="text-sm text-muted-foreground">
+                            Bathrooms
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Interior Size */}
+                      <div className="flex items-center gap-4 p-4 rounded-xl bg-secondary/30">
+                        <div className="flex items-center justify-center">
+                          <LucideIcons.Ruler className="w-12 h-12 text-primary" />
+                        </div>
+                        <div className="flex flex-col leading-tight">
+                          <span className="text-lg font-semibold">
+                            {property.square_meters} m²
+                          </span>
+                          <span className="text-sm text-muted-foreground">
+                            Interior Size
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <div>
                     <h3 className="text-2xl font-semibold mb-3 mt-6">
                       About this space
                     </h3>
-                    <p className="text-gray-600">{property.long_description}</p>
+                    <p className="text-gray-600 text-md">
+                      {property.description}
+                    </p>
+                  </div>
+                  <div>
+                    {property?.features && property.features.length > 0 && (
+                      <div>
+                        <h3 className="text-2xl font-semibold mb-3 mt-6">
+                          Features
+                        </h3>
+
+                        <div className="grid sm:grid-cols-2 gap-4">
+                          {property.features.map((feature) => {
+                            // Dynamically resolve icon, fallback to Check
+                            const Icon =
+                              (feature.icon &&
+                                (LucideIcons as any)[feature.icon]) ||
+                              LucideIcons.Check;
+
+                            return (
+                              <div
+                                key={feature.id}
+                                className="flex gap-4 p-4 rounded-lg bg-secondary/30"
+                              >
+                                {/* Icon */}
+                                <div className="flex items-center justify-center w-10 h-10 rounded-md bg-primary/10 text-primary">
+                                  <Icon className="w-5 h-5" />
+                                </div>
+
+                                {/* Content */}
+                                <div className="flex flex-col gap-1">
+                                  <div className="flex items-center gap-2">
+                                    <span className="font-semibold">
+                                      {feature.name}
+                                    </span>
+
+                                    <Badge
+                                      variant={
+                                        feature.feature_type === "indoor"
+                                          ? "secondary"
+                                          : "outline"
+                                      }
+                                      className="capitalize"
+                                    >
+                                      {feature.feature_type}
+                                    </Badge>
+                                  </div>
+
+                                  <span className="text-sm text-muted-foreground">
+                                    {feature.description}
+                                  </span>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
-                  {/* <div className="mt-6">
-                    <h3 className="text-2xl font-semibold mb-3">
-                      Background & Story
+                  <div className="mt-8 w-full">
+                    <h3 className="text-2xl font-semibold mb-4">
+                      Contact Person
                     </h3>
-                    <p className="text-gray-600">{property.background_story}</p>
-                  </div> */}
 
-                  {/* <div className="mt-6">
-                    <h3 className="text-2xl font-semibold mb-3">
-                      On Site contact
-                    </h3>
-                    <p className="text-gray-600">
-                      {property.on_site_contact?.name}
-                    </p>
-                    <p className="text-gray-600">
-                      {property.on_site_contact?.role}
-                    </p>
-                    <p className="text-gray-600">
-                      {property.on_site_contact?.contact_number}
-                    </p>
-                  </div> */}
+                    <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6">
+                      {property.contacts.map((contact: Contact, i: number) => (
+                        <div
+                          key={i}
+                          className="flex flex-col gap-4 p-5 rounded-2xl bg-secondary/30
+                   transition-all duration-300
+                   hover:bg-secondary/40 hover:shadow-lg hover:-translate-y-1"
+                        >
+                          {/* Header */}
+                          <div className="flex items-center gap-4">
+                            <div
+                              className="w-14 h-14 rounded-full
+                          bg-gradient-to-br from-primary/80 to-primary/40
+                          flex items-center justify-center
+                          text-white text-xl font-semibold"
+                            >
+                              {contact.name.charAt(0)}
+                            </div>
+
+                            <div>
+                              <h4 className="text-lg font-semibold">
+                                {contact.name}
+                              </h4>
+                              <p className="text-sm text-muted-foreground">
+                                {contact.role}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Contact info */}
+                          <div className="flex flex-col gap-2 text-sm">
+                            {contact.email && (
+                              <a
+                                href={`mailto:${contact.email}`}
+                                className="flex items-center gap-2 text-muted-foreground hover:text-primary transition"
+                              >
+                                <LucideIcons.Mail className="w-4 h-4" />
+                                {contact.email}
+                              </a>
+                            )}
+
+                            {contact.phone && (
+                              <a
+                                href={`tel:${contact.phone}`}
+                                className="flex items-center gap-2 text-muted-foreground hover:text-primary transition"
+                              >
+                                <LucideIcons.Phone className="w-4 h-4" />
+                                {contact.phone}
+                              </a>
+                            )}
+
+                            {contact.whatsapp && (
+                              <a
+                                href={`https://wa.me/${contact.whatsapp.replace(/\D/g, "")}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-2 text-green-600 hover:text-green-700 transition"
+                              >
+                                <LucideIcons.MessageCircle className="w-4 h-4" />
+                                WhatsApp
+                              </a>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               )}
 
               {/* Amenities Tab */}
-              {activeTab === "features" && (
+              {activeTab === "amenities" && (
                 <div>
-                  <div>
-                    <h3 className="text-xl font-semibold mb-3">
-                      Accommodation & Capacity
-                    </h3>
-                    {/* <div>
-                      {property.accommodation?.bedrooms && (
-                        <div className="grid sm:grid-cols-2 gap-4">
-                          {property.accommodation.bedrooms.map(
-                            (
-                              bedroom: {
-                                name: string;
-                                bed_type: string;
-                                capacity: number | string;
-                              },
-                              index: number,
-                            ) => (
-                              <div
-                                key={index}
-                                className="p-5 rounded-lg bg-secondary/30 space-y-2"
-                              >
-                                <h4 className="text-lg font-semibold">
-                                  {bedroom.name}
-                                </h4>
+                  <section className="mt-16">
+                    {/* Section Header */}
+                    <div className="mb-8">
+                      <h2 className="text-2xl font-bold">Packages & Pricing</h2>
+                      <p className="text-muted-foreground mt-1">
+                        Flexible options based on stay type and guest preference
+                      </p>
+                    </div>
 
-                                <p className="flex items-center gap-3 p-2">
-                                  <Bed /> {bedroom.bed_type}
-                                </p>
+                    {/* Pricing Cards */}
+                    <div className="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+                      {property.pricing_options.map((option: PricingOption) => (
+                        <div
+                          key={option.id}
+                          className="flex flex-col rounded-2xl border bg-white p-6 shadow-sm hover:shadow-lg transition"
+                        >
+                          {/* Header */}
+                          <div className="mb-4">
+                            <h3 className="text-lg font-semibold capitalize">
+                              {option.accommodation_type.replace("_", " ")}
+                            </h3>
 
-                                <p className="flex items-center gap-3 p-2">
-                                  <LucideIcons.Users /> Capacity:{" "}
-                                  {bedroom.capacity}
-                                </p>
+                            <div className="flex flex-wrap gap-2 mt-2">
+                              <span className="text-xs px-2 py-1 rounded-full bg-secondary">
+                                {option.stay_type.replace("_", " ")}
+                              </span>
+                              <span className="text-xs px-2 py-1 rounded-full bg-secondary">
+                                {option.guest_type}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Stay Rules */}
+                          <div className="space-y-3 text-sm mb-4">
+                            {option.number_of_guests && (
+                              <div className="flex items-center gap-2">
+                                <LucideIcons.Users className="w-4 h-4 text-primary" />
+                                <span>
+                                  <span className="font-medium">Guests:</span>{" "}
+                                  {option.number_of_guests}
+                                </span>
                               </div>
-                            ),
-                          )}
+                            )}
+
+                            <div className="flex items-center gap-2">
+                              <LucideIcons.Moon className="w-4 h-4 text-primary" />
+                              <span>
+                                <span className="font-medium">
+                                  Minimum nights:
+                                </span>{" "}
+                                {option.min_nights}
+                              </span>
+                            </div>
+
+                            {option.max_nights && (
+                              <div className="flex items-center gap-2">
+                                <LucideIcons.Clock className="w-4 h-4 text-primary" />
+                                <span>
+                                  <span className="font-medium">
+                                    Maximum nights:
+                                  </span>{" "}
+                                  {option.max_nights}
+                                </span>
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Meal Plan */}
+                          <div className="mb-6 text-sm">
+                            <p className="font-medium mb-2 flex items-center gap-2">
+                              <LucideIcons.Utensils className="w-4 h-4 text-primary" />
+                              Meal Plan
+                            </p>
+
+                            <div className="space-y-2 text-muted-foreground">
+                              <div className="flex items-center gap-2">
+                                {option.includes_breakfast ? (
+                                  <LucideIcons.Check className="w-4 h-4 text-green-600" />
+                                ) : (
+                                  <LucideIcons.X className="w-4 h-4 text-red-500" />
+                                )}
+                                <span className="flex items-center gap-1">
+                                  <LucideIcons.Coffee className="w-4 h-4" />
+                                  Breakfast included
+                                </span>
+                              </div>
+
+                              <div className="flex items-center gap-2">
+                                {option.includes_fullboard ? (
+                                  <LucideIcons.Check className="w-4 h-4 text-green-600" />
+                                ) : (
+                                  <LucideIcons.X className="w-4 h-4 text-red-500" />
+                                )}
+                                <span className="flex items-center gap-1">
+                                  <LucideIcons.Utensils className="w-4 h-4" />
+                                  Full board included
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Pricing */}
+                          <div className="mt-auto pt-4 border-t">
+                            <div className="flex items-center gap-2">
+                              <LucideIcons.Wallet className="w-5 h-5 text-primary" />
+                              <p className="text-xl font-bold text-primary">
+                                {option.price_per_night}
+                                <span className="text-sm font-normal text-muted-foreground">
+                                  {" "}
+                                  / night
+                                </span>
+                              </p>
+                            </div>
+
+                            {option.weekly_price && (
+                              <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
+                                <LucideIcons.CalendarDays className="w-4 h-4" />
+                                Weekly: {option.weekly_price}
+                              </div>
+                            )}
+                          </div>
                         </div>
-                      )}
-                    </div> */}
-                  </div>
+                      ))}
+                    </div>
+                  </section>
+
                   <div className="mt-6">
                     <h3 className="text-xl font-semibold mb-3">
                       Features & Amenities
                     </h3>
                     <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-                      {/* <div className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30">
-                     <img src="https://res.cloudinary.com/drselhsl4/image/upload/v1764184137/Kifaru/amenities/nuhz8ilchupjdl13rrsq.jpg" loading="lazy" alt="Holistic Spa & Wellness" />
-                    </div> */}
-                      {property.amenities.map((amenity: any, i: number) => {
-                        const Icon = (LucideIcons as any)[amenity.icon];
-                        return (
-                          <div
-                            key={i}
-                            className="flex items-center gap-3 p-4 rounded-lg bg-secondary/30"
-                          >
-                            {Icon ? (
-                              <Icon className="w-5 h-5 text-primary" />
-                            ) : null}
-                            <span className="font-medium">{amenity.label}</span>
+                      {property.amenities.map((amenity: Amenity, i: number) => (
+                        <div
+                          key={i}
+                          className="relative h-60 rounded-lg overflow-hidden shadow-lg group"
+                        >
+                          <img
+                            src={amenity.image}
+                            alt={amenity.label}
+                            loading="lazy"
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                          />
+
+                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <span className="text-white text-center font-semibold px-2">
+                              {amenity.label}
+                            </span>
                           </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                  <div className="mt-6">
-                    <h3 className="text-xl font-semibold mb-3">
-                      Services offered
-                    </h3>
-                    {/* <div>
-                      {property?.services && (
-                        <div className="grid sm:grid-cols-2 gap-4">
-                          {property.services.map(
-                            (service: string, index: number) => (
-                              <p
-                                key={index}
-                                className="flex items-center gap-3 p-2 rounded-lg bg-secondary/30"
-                              >
-                                {service}
-                              </p>
-                            ),
-                          )}
                         </div>
-                      )}
-                    </div> */}
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
@@ -330,7 +542,8 @@ export default function KifaruPropertyDetails() {
               )} */}
 
               {/* Reviews Tab  */}
-              {/* {activeTab === "reviews" && <Reviews review={property.reviews} />} */}
+              {activeTab === "reviews" && <Reviews />}
+              {/* review={}  */}
             </div>
           </div>
 
@@ -342,7 +555,7 @@ export default function KifaruPropertyDetails() {
             // status={property.status}
           />
         </div>
-        <div className="py-16 px-6 bg-secondary/20">
+        <div className="py-16 px-6 bg-secondary/20 mt-20 ">
           <div className="container mx-auto text-center">
             <h2 className="text-3xl font-serif font-bold mb-4">
               Explore More Properties
@@ -359,16 +572,3 @@ export default function KifaruPropertyDetails() {
     </div>
   );
 }
-
-// Map icon strings to lucide-react icons
-// const Icons: Record<string, any> = {
-//   Users: User2,
-//   DoorClosed,
-//   Dumbbell,
-//   Building2,
-//   ShowerHead,
-//   Square,
-//   Bed,
-//   Bath,
-//   Ruler,
-// };

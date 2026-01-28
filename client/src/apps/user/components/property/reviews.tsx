@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Star, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
+import type { PropertyReview } from "@/services/property.types";
+import { useReviews } from "@/services/property.service";
+import LoadingScreen from "@/components/loadingscreen";
 
 interface ReviewItem {
   id: string;
@@ -44,45 +47,68 @@ const StarRating = ({
   );
 };
 
-export default function Reviews({ review }: { review: ReviewItem[] }) {
+const mapApiReviewsToUI = (reviews: PropertyReview[]): ReviewItem[] =>
+  reviews
+    .map((r) => ({
+      id: String(r.id),
+      author: r.user_name,
+      rating: r.rating,
+      comment: r.comment,
+      date: r.created_at,
+      verified: r.rating >= 4,
+      avatar: undefined,
+    }))
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+export default function Reviews() {
+  const { data = [], isLoading } = useReviews();
   const [visibleReviews, setVisibleReviews] = useState(3);
-  const totalReviews = review.length;
-  const averageRating = (
-    review.reduce((sum, r) => sum + r.rating, 0) / totalReviews
-  ).toFixed(1);
 
-  const ratingDistribution = [5, 4, 3, 2, 1].map((stars) => ({
-    stars,
-    count: review.filter((r) => r.rating === stars).length,
-    percentage:
-      (review.filter((r) => r.rating === stars).length / totalReviews) * 100,
-  }));
+  const reviews = useMemo(() => mapApiReviewsToUI(data), [data]);
 
-  const sortedReviews = review;
+  const totalReviews = reviews.length;
+  const averageRating =
+    totalReviews > 0
+      ? (reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews).toFixed(
+          1,
+        )
+      : "0.0";
 
-  const displayedReviews = sortedReviews.slice(0, visibleReviews);
+  const ratingDistribution = [5, 4, 3, 2, 1].map((stars) => {
+    const count = reviews.filter((r) => r.rating === stars).length;
+    return {
+      stars,
+      count,
+      percentage: totalReviews ? (count / totalReviews) * 100 : 0,
+    };
+  });
+
+  const displayedReviews = reviews.slice(0, visibleReviews);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div className="space-y-8">
-      {/* Rating Summary */}
-
-      {review.length === 0 ? (
+      {totalReviews === 0 ? (
         <div className="text-center py-12 mt-20">
           <p className="text-foreground">
             No reviews yet. Be the first to review!
           </p>
         </div>
       ) : (
-        <div>
+        <>
+          {/* Rating Summary */}
           <div className="bg-secondary/30 rounded-lg p-6">
             <div className="grid md:grid-cols-2 gap-8">
               {/* Overall Rating */}
-
               <div className="text-center md:text-left">
                 <div className="flex flex-col md:flex-row items-center gap-4">
                   <div>
-                    <div className="text-5xl font-bold">{averageRating}</div>
-
+                    <div className="text-5xl font-bold p-5">
+                      {averageRating}
+                    </div>
                     <StarRating
                       rating={Math.round(Number(averageRating))}
                       size="lg"
@@ -110,19 +136,17 @@ export default function Reviews({ review }: { review: ReviewItem[] }) {
               </div>
             </div>
           </div>
+
           {/* Guest Reviews */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <h3 className="text-xl font-semibold">Guest Reviews</h3>
-          </div>
+          <h3 className="text-xl font-semibold">Guest Reviews</h3>
 
           {/* Reviews List */}
-          <div className="space-y-6 mt-4">
+          <div className="space-y-6">
             {displayedReviews.map((review) => (
               <div
                 key={review.id}
                 className="border-b border-border pb-6 last:border-0"
               >
-                {/* Review Header */}
                 <div className="flex items-start gap-4 mb-4">
                   <Avatar className="w-12 h-12">
                     <AvatarImage src={review.avatar} alt={review.author} />
@@ -133,6 +157,7 @@ export default function Reviews({ review }: { review: ReviewItem[] }) {
                         .join("")}
                     </AvatarFallback>
                   </Avatar>
+
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1">
                       <h4 className="font-semibold">{review.author}</h4>
@@ -142,6 +167,7 @@ export default function Reviews({ review }: { review: ReviewItem[] }) {
                         </span>
                       )}
                     </div>
+
                     <div className="flex items-center gap-3 text-sm text-muted-foreground">
                       <StarRating rating={review.rating} />
                       <span>•</span>
@@ -150,56 +176,34 @@ export default function Reviews({ review }: { review: ReviewItem[] }) {
                   </div>
                 </div>
 
-                {/* Review Content */}
-                <p className="text-foreground mb-4 leading-relaxed">
-                  {review.comment}
-                </p>
-
-                {/* Property Response */}
-                {review.response && (
-                  <div className="mt-4 ml-16 bg-muted/50 rounded-lg p-4 border-l-2 border-primary">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="font-semibold text-sm">
-                        {review.response.author}
-                      </span>
-                      <span className="text-xs text-muted-foreground">
-                        {new Date(review.response.date).toLocaleDateString()}
-                      </span>
-                    </div>
-                    <p className="text-sm text-foreground">
-                      {review.response.text}
-                    </p>
-                  </div>
-                )}
+                <p className="leading-relaxed">{review.comment}</p>
               </div>
             ))}
           </div>
-          {/* Load More Button */}
-          {sortedReviews.length > 3 &&
-            (visibleReviews < sortedReviews.length ? (
-              <div className="text-center">
+
+          {/* Load More / Less */}
+          {totalReviews > 3 && (
+            <div className="text-center">
+              {visibleReviews < totalReviews ? (
                 <Button
                   variant="outline"
-                  onClick={() => setVisibleReviews((prev) => prev + 3)}
-                  className="min-w-[200px]"
+                  onClick={() => setVisibleReviews((v) => v + 3)}
                 >
                   <ChevronDown className="w-4 h-4 mr-2" />
                   Load More Reviews
                 </Button>
-              </div>
-            ) : (
-              <div className="text-center">
+              ) : (
                 <Button
                   variant="outline"
-                  onClick={() => setVisibleReviews((prev) => prev - 3)}
-                  className="min-w-[200px]"
+                  onClick={() => setVisibleReviews((v) => v - 3)}
                 >
                   <ChevronUp className="w-4 h-4 mr-2" />
                   Load Less Reviews
                 </Button>
-              </div>
-            ))}
-        </div>
+              )}
+            </div>
+          )}
+        </>
       )}
     </div>
   );

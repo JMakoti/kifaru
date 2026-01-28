@@ -10,12 +10,12 @@ export interface Property {
   description: string;
   long_description?: string;
 
-  bedrooms: number;
-  bathrooms: number;
-  square_meters: number;
+  bedrooms: number | null;
+  bathrooms: number | null;
+  square_meters: number | null;
   terrace_size: number | null;
 
-  max_guests: number;
+  max_guests: number | null;
   min_nights: number;
 
   check_in_time: string;
@@ -43,8 +43,9 @@ export interface Property {
 export type PropertyCategory = "coworking" | "beachfront" | "urban";
 
 export interface Amenity {
-  icon: string;
+  image: string;
   label: string;
+  icon?: string;
 }
 
 export interface PropertyImage {
@@ -57,9 +58,7 @@ export interface PricingOption {
   id: number;
 
   accommodation_type: "full_apartment" | "master_bedroom" | "single_bedroom";
-
   guest_type: "international" | "local";
-
   stay_type: "short_term" | "long_term" | "weekly";
 
   number_of_guests: number | null;
@@ -79,7 +78,7 @@ export interface Feature {
   feature_type: "indoor" | "outdoor";
   name: string;
   description: string;
-  icon: string;
+  icon?: string;
 }
 
 export interface Contact {
@@ -87,8 +86,8 @@ export interface Contact {
   name: string;
   role: string;
   email: string;
-  phone: string;
-  whatsapp: string;
+  phone: string | null;
+  whatsapp: string | null;
 }
 
 export interface NetworkProperty {
@@ -98,7 +97,7 @@ export interface NetworkProperty {
   related_property_slug: string;
   travel_time_minutes: number;
   transport_available: boolean;
-  description: string;
+  description: string | null;
 }
 
 export interface PropertyDestinationProps {
@@ -107,4 +106,13 @@ export interface PropertyDestinationProps {
   isLeft: boolean;
   isHighlighted: boolean;
   onHover: (index: number | null) => void;
+}
+
+export interface PropertyReview {
+  id: number;
+  user: number;
+  user_name: string;
+  rating: number;
+  comment: string;
+  created_at: string;
 }
