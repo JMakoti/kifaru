@@ -120,7 +120,7 @@ export default function Footer() {
               <ul className="space-y-2 text-sm text-gray-300">
                 <li>Email: requests@techbedkifaru.be</li>
                 <li>Phone: +254 708 533 033</li>
-                <li>Location: Nairobi, Kenya</li>
+                {/* <li>Location: Nairobi, Kenya</li> */}
               </ul>
             </motion.div>
           </motion.div>

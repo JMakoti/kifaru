@@ -31,7 +31,7 @@ export default function TestimonialCard({
           strokeWidth={1.5}
         />
 
-        <span className="mb-3 inline-block text-sm font-medium text-black">
+        <span className="mb-3 inline-block text-sm font-medium text-accent">
           {property}
         </span>
 

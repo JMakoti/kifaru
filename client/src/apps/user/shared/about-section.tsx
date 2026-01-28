@@ -1,5 +1,4 @@
 import rhino from "@/assets/rhino.png";
-import zebras from "@/assets/zebras.jpeg";
 import { Link, useLocation } from "react-router";
 import {
   Car,
@@ -11,7 +10,32 @@ import {
 } from "lucide-react";
 import kifaruExperience from "@/assets/property-1.jpg";
 import { Button } from "@/components/ui/button";
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
+
+const fadeUp: Variants = {
+  hidden: {
+    opacity: 0,
+    y: 24,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
+
+const staggerContainer: Variants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.15,
+    },
+  },
+};
 
 const experiencePoints = [
   {
@@ -42,7 +66,13 @@ export default function AboutSection() {
     <div>
       <div className="about-kifaru flex flex-col lg:flex-row justify-center items-center gap-6 lg:gap-8 p-4 md:p-8 w-full">
         {!aboutRoute ? (
-          <div className="text-content flex flex-col gap-4 max-w-lg w-full">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-content flex flex-col gap-4 max-w-lg w-full"
+          >
             <h2 className="font-bold text-2xl md:text-3xl lg:text-4xl leading-tight">
               A Recognizable Experience, Wherever You Land
             </h2>
@@ -101,138 +131,211 @@ export default function AboutSection() {
             <Button className="w-full sm:w-40 mt-6">
               <Link to="/about">Learn More</Link>
             </Button>
-          </div>
+          </motion.div>
         ) : (
-          <div className="text-content flex flex-col gap-4 md:gap-6 lg:gap-10 max-w-lg order-2 lg:order-2 w-full">
-            {/* <h3 className="text-lg md:text-xl font-semibold">|| ABOUT US</h3> */}
-            <h2 className="font-bold text-2xl font-sans  md:text-3xl lg:text-4xl leading-tight">
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="text-content flex flex-col gap-4 md:gap-6 lg:gap-10 max-w-lg order-2 lg:order-2 w-full"
+          >
+            <h2 className="text-foreground font-bold text-2xl md:text-3xl lg:text-4xl">
               Our Story
             </h2>
-            <p className="text-sm md:text-base leading-relaxed">
-              Debbie and Olivier are the inspirers behind Kifaru Tech & Bed. A
-              loving couple, spiritually grounded in the legacy of Desmond Tutu
-              and driven by an adventurous heart, they live a life shaped by
-              curiosity, compassion, and connection. Together with their
-              children, they move between Mombasa, Brussels, and the wider world
-              carrying with them a shared mission of creating opportunity where
-              it is least accessible, to foster self-development, bridge the
-              digital gap, and uncover talent in underserved communities.
+
+            <p className="text-foreground/80 text-sm md:text-base leading-relaxed">
+              Debbie and Olivier are the inspirers behind Kifaru Tech & Bed.
+              Guided by compassion, curiosity, and connection, their journey
+              spans continents with a mission to create opportunity where it is
+              least accessible.
             </p>
-            <p>
-              Kifaru was born from this same spirit. It is, a place of
-              inspiration where conviviality, work and the discovery of new
-              horizons take centre stage. Kifaru means ‘rhino’ in Swahili. A
-              rare icon of the African savannah and an honoured member of the
-              Big Five. Like the rhino, the soul of Kifaru Tech & Bed is unique.
-              African visitors feel at home and Europeans take a relaxing
-              African bath. Kifaru breathes Africa. We leave nothing to chance.
-              It is a unique meeting place where state-of-the-art technology is
-              combined with a comfortable bed. Small in size, but big in
-              satisfaction. The elegant workspace and meeting rooms provide
-              tranquillity through natural materials and durable furniture.
-              African art embellishes our hub.
+
+            <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
+              Kifaru—meaning “rhino” in Swahili—is a place of inspiration where
+              work, rest, and discovery meet. Small in scale, big in impact.
+              African soul, European calm.
             </p>
-          </div>
+          </motion.div>
         )}
 
         <div
-          className={`grid grid-cols-3 grid-rows-3 gap-1 md:gap-2 w-full w-full sm:max-w-sm md:max-w-md max-w-xs lg:max-w-lg ${
+          className={`grid grid-cols-3 grid-rows-3 gap-2 md:gap-2 w-full w-full sm:max-w-sm md:max-w-md max-w-xs lg:max-w-lg ${
             aboutRoute ? "order-1 lg:order-1" : "order-1 lg:order-2"
           }`}
         >
           {/* Side K vertical line */}
-          <div className="col-start-1 row-start-1 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-sm">
-            <img src={zebras} alt="" className="w-full h-full object-contain" />
-          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            whileHover={{ scale: 1.5 }}
+            className="col-start-1 row-start-1 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-sm"
+          >
+            <img
+              src="https://res.cloudinary.com/drselhsl4/image/upload/v1763483919/Kifaru/k096rs8b5wqru5dwghax.jpg"
+              alt=""
+              className="w-full h-full object-contain"
+            />
+          </motion.div>
 
-          <div className="col-start-1 row-start-2 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-sm">
-            <img src={zebras} alt="" className="w-full h-full object-contain" />
-          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            whileHover={{ scale: 1.5 }}
+            className="col-start-1 row-start-2 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-sm"
+          >
+            <img
+              src="https://res.cloudinary.com/drselhsl4/image/upload/v1769107834/Kifaru/KifaruGallery/musx5o2xlveqguyl4ldk.jpg"
+              alt=""
+              className="w-full h-full object-contain"
+            />
+          </motion.div>
 
-          <div className="col-start-1 row-start-3 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-sm">
-            <img src={zebras} alt="" className="w-full h-full object-contain" />
-          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            whileHover={{ scale: 1.5 }}
+            className="col-start-1 row-start-3 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-sm"
+          >
+            <img
+              src="https://res.cloudinary.com/drselhsl4/image/upload/v1769111772/Kifaru/KifaruGallery/fxkwbqmcbi07zc68iukl.jpg"
+              alt=""
+              className="w-full h-full object-contain"
+            />
+          </motion.div>
 
           {/* Top diagonal of K */}
-          <div className="col-start-3 row-start-1 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-sm rounded-br-full">
-            <img src={zebras} alt="" className="w-full h-full object-contain" />
-          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            whileHover={{ scale: 1.5 }}
+            className="col-start-3 row-start-1 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-sm rounded-br-full"
+          >
+            <img
+              src="https://res.cloudinary.com/drselhsl4/image/upload/v1769544692/Kifaru/Kifaruimages/bb0qhxpnccosdx8tufjq.jpg"
+              alt=""
+              className="w-full h-full object-contain"
+            />
+          </motion.div>
 
           {/* Middle joint */}
-          <div className="col-start-2 row-start-2 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-sm">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            whileHover={{ scale: 1.5 }}
+            className="col-start-2 row-start-2 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-sm"
+          >
             <img
               src={rhino}
               alt="Featured Rhino"
               className="w-full h-full object-contain"
             />
-          </div>
+          </motion.div>
 
           {/* Bottom diagonal of K */}
-          <div className="col-start-3 row-start-3 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-lg rounded-tr-full">
-            <img src={zebras} alt="" className="w-full h-full object-contain" />
-          </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            whileHover={{ scale: 1.5 }}
+            className="col-start-3 row-start-3 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-lg rounded-tr-full"
+          >
+            <img
+              src="https://res.cloudinary.com/drselhsl4/image/upload/v1769544700/Kifaru/Kifaruimages/trxywi0qctlg0qsxleuz.jpg"
+              alt=""
+              className="w-full h-full object-contain"
+            />
+          </motion.div>
         </div>
       </div>
 
       {/* Goals Section */}
       {aboutRoute && (
-      <div className="container max-w-6xl mx-auto px-6 mt-6">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Content */}
-          <div>
-            <span className="text-primary font-sans text-sm tracking-[0.2em] uppercase mb-4 block">
-              {/* The Kifaru Promise */}
-              We Make Every Interaction
-            </span>
-            <h2 className="heading-section text-foreground mb-6 text-4xl font-bold">
-              Effortless & Human-Centered
-            </h2>
-            <div className="divider-elegant mb-8" />
-            <p className="text-elegant text-muted-foreground mb-10">
-              Our goal is to make every interaction effortless and
-              human-centered. From the moment you reach out, we're here to
-              serve.
-            </p>
-
-            <ul className="space-y-6">
-              {experiencePoints.map((point, index) => (
-                <li key={index} className="flex gap-4 group">
-                  <div className="flex-shrink-0 mt-1">
-                    <CheckCircle className="w-5 h-5 text-black group-hover:text-primary transition-colors duration-300" />
-                  </div>
-                  <div>
-                    <h4 className="font-serif text-lg text-foreground mb-1 group-hover:text-primary transition-colors duration-300">
-                      {point.title}
-                    </h4>
-                    <p className="text-body text-muted-foreground text-sm">
-                      {point.description}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="relative lg:order-first">
-            <div className="aspect-[4/5] rounded-lg overflow-hidden bg-gradient-to-br from-primary/10 via-accent/10 to-secondary relative">
-              <img
-                src={kifaruExperience}
-                alt="Kifaru hospitality experience"
-                className="w-full h-full object-cover"
-              />
-              {/* Decorative overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-foreground/10 to-transparent" />
-            </div>
-
-            {/* Floating accent card */}
-            <div className="absolute -bottom-6 -right-4 md:right-8 bg-card border border-border/50 rounded-lg p-6 shadow-[var(--shadow-soft)] max-w-[200px]">
-              <p className="font-serif text-2xl text-primary mb-1">24/7</p>
-              <p className="text-sm text-muted-foreground">
-                Care & support on the ground
+        <div className="container max-w-6xl mx-auto px-6 mt-6">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            {/* Content */}
+            <motion.div
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+            >
+              <span className="text-primary font-sans text-sm tracking-[0.2em] uppercase mb-4 block">
+                {/* The Kifaru Promise */}
+                We Make Every Interaction
+              </span>
+              <h2 className="heading-section text-foreground mb-6 text-4xl font-bold">
+                Effortless & Human-Centered
+              </h2>
+              <div className="divider-elegant mb-8" />
+              <p className="text-elegant text-muted-foreground mb-10">
+                Our goal is to make every interaction effortless and
+                human-centered. From the moment you reach out, we're here to
+                serve.
               </p>
-            </div>
+
+              <motion.ul
+                variants={staggerContainer}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="space-y-6"
+              >
+                {experiencePoints.map((point, index) => (
+                  <li key={index} className="flex gap-4 group">
+                    <div className="flex-shrink-0 mt-1">
+                      <CheckCircle className="w-5 h-5 text-black group-hover:text-primary transition-colors duration-300" />
+                    </div>
+                    <div>
+                      <h4 className="font-serif text-lg text-foreground mb-1 group-hover:text-primary transition-colors duration-300">
+                        {point.title}
+                      </h4>
+                      <p className="text-body text-muted-foreground text-sm">
+                        {point.description}
+                      </p>
+                    </div>
+                  </li>
+                ))}
+              </motion.ul>
+            </motion.div>
+            <motion.div
+              initial={{ opacity: 0, scale: 1.05 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="relative lg:order-first"
+            >
+              <div className="aspect-[4/5] rounded-lg overflow-hidden bg-gradient-to-br from-primary/10 via-accent/10 to-secondary relative">
+                <img
+                  src={kifaruExperience}
+                  alt="Kifaru hospitality experience"
+                  className="w-full h-full object-cover"
+                />
+                {/* Decorative overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-foreground/10 to-transparent" />
+              </div>
+
+              {/* Floating accent card */}
+              <div className="absolute -bottom-6 -right-4 md:right-8 bg-card border border-border/50 rounded-lg p-6 shadow-[var(--shadow-soft)] max-w-[200px]">
+                <p className="font-serif text-2xl text-primary mb-1">24/7</p>
+                <p className="text-sm text-muted-foreground">
+                  Care & support on the ground
+                </p>
+              </div>
+            </motion.div>
           </div>
         </div>
-      </div>
       )}
     </div>
   );
