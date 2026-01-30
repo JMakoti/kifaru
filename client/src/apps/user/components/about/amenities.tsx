@@ -21,148 +21,141 @@ const smallCards = [
   },
   {
     title: "African wine tastings & curated events",
-    desc: "The inner man will have a good time with us. The African Tastings of (sparkling) wines and typical products guarantee this. In our jacuzzi you can literally bathe in bubbles.",
+    desc: "African tastings of wines and curated cultural experiences designed to delight all senses.",
     img: "https://techbedkifaru.be/wp-content/uploads/2020/11/scott-warman-rrYF1RfotSM-unsplash-bewerkt.jpg",
   },
   {
     title: "Cultural Art & Heritage Spaces",
-    desc: "Curated spaces celebrating local artistry, storytelling, and heritage where culture is preserved, honored, and beautifully showcased.",
+    desc: "Spaces celebrating local artistry, storytelling, and heritage.",
     img: "https://res.cloudinary.com/drselhsl4/image/upload/v1764184624/Kifaru/amenities/dtai9yryhuwim62nuoxt.jpg",
-  },
-  {
-    title: "Scenic Infinity Pools",
-    desc: "Elegant waterscapes designed to blur the line between sky and earth, offering serene dips and breathtaking views.",
-    img: "https://res.cloudinary.com/drselhsl4/image/upload/v1764184030/Kifaru/amenities/wwgmiqajunkoxkfkitx0.jpg",
-  },
-  {
-    title: "Discounted Bike Rental",
-    desc: "Enjoy easy and flexible mobility with our shared bikes perfect for exploring the area at your own pace while staying active and eco-friendly.",
-    img: "https://www.villamer.nl/assets/uploads/winkels_cadzand/_900x600_crop_center-center_80_none/68544/neptunus_tweewielers.webp",
   },
 ];
 
+const LOOPED = [...smallCards, ...smallCards, ...smallCards];
+const TOTAL = smallCards.length;
+
 export default function AmenitiesSection() {
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [main, setMain] = useState(smallCards[0]);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(TOTAL);
 
-  const scrollLeft = () =>
-    scrollRef.current?.scrollBy({ left: -260, behavior: "smooth" });
-  const scrollRight = () =>
-    scrollRef.current?.scrollBy({ left: 260, behavior: "smooth" });
+  const main = smallCards[activeIndex % TOTAL];
 
+  /* ---------------- AUTO CAROUSEL ---------------- */
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => prev + 1);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  /* ----------- INITIAL SCROLL POSITION ------------ */
   useEffect(() => {
     const container = scrollRef.current;
     if (!container) return;
-
-    const handleScroll = () => {
-      const children = Array.from(container.children);
-      let closest = 0;
-      let minOffset = Infinity;
-
-      children.forEach((child, i) => {
-        const offset = Math.abs(
-          child.getBoundingClientRect().left -
-            container.getBoundingClientRect().left
-        );
-        if (offset < minOffset) {
-          minOffset = offset;
-          closest = i;
-        }
-      });
-
-      setActiveIndex(closest);
-      setMain(smallCards[closest]);
-    };
-
-    container.addEventListener("scroll", handleScroll);
-    return () => container.removeEventListener("scroll", handleScroll);
+    const cardWidth = 230; // same as thumbnail min width + gap
+    container.scrollLeft = cardWidth * TOTAL;
   }, []);
+
+  /* ----------- SCROLL TO ACTIVE CARD ------------ */
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+    const cardWidth = 230;
+
+    container.scrollTo({
+      left: activeIndex * cardWidth,
+      behavior: "smooth",
+    });
+
+    // reset silently to middle for infinite loop
+    if (activeIndex >= TOTAL * 2) {
+      setTimeout(() => {
+        container.scrollLeft = cardWidth * TOTAL;
+        setActiveIndex(TOTAL);
+      }, 400);
+    }
+
+    if (activeIndex < TOTAL) {
+      setTimeout(() => {
+        container.scrollLeft = cardWidth * TOTAL;
+        setActiveIndex(TOTAL);
+      }, 400);
+    }
+  }, [activeIndex]);
+
+  const scrollLeft = () => setActiveIndex((i) => i - 1);
+  const scrollRight = () => setActiveIndex((i) => i + 1);
 
   return (
     <section className="container mx-auto px-2 py-6">
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-4 items-start">
-        <div className="lg:col-span-1">
-          <div className="relative rounded-2xl overflow-hidden shadow-lg">
-            <AnimatePresence mode="wait">
-              <motion.img
-                key={main.img}
-                src={main.img}
-                className="w-full h-[300px] md:h-[360px] lg:h-[400px] object-cover"
-                initial={{ opacity: 0, scale: 1.02 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.98 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
-              />
-            </AnimatePresence>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+        {/* MAIN CARD */}
+        <div className="relative rounded-2xl overflow-hidden shadow-lg">
+          <AnimatePresence mode="wait">
+            <motion.img
+              key={main.img}
+              src={main.img}
+              className="w-full h-[400px] object-cover"
+              initial={{ opacity: 0, scale: 1.03 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.5 }}
+            />
+          </AnimatePresence>
 
-            <div className="absolute left-0 bottom-0 p-6 w-full bg-gradient-to-t from-black/70">
-              <h3 className="text-white text-xl md:text-2xl font-semibold">
-                {main.title}
-              </h3>
-              <p className="text-white/85 mt-2 text-sm md:text-base max-w-sm">
-                {main.desc}
-              </p>
-            </div>
+          <div className="absolute bottom-0 p-6 w-full bg-gradient-to-t from-black/70 to-transparent">
+            <h3 className="text-white text-2xl font-semibold">
+              {main.title}
+            </h3>
+            <p className="text-white/80 mt-2 max-w-md">{main.desc}</p>
           </div>
         </div>
 
-        {/* RIGHT SIDE SECTION */}
-        <div className="flex flex-col mt-12">
-          <h2 className="text-3xl font-semibold text-gray-900 leading-tight">
-            Amenities & Features
-          </h2>
-          <p className="mt-3 text-gray-600">
-            Discover a world of luxury with amenities designed for comfort and
-            lifestyle.
+        {/* THUMBNAILS */}
+        <div>
+          <h2 className="text-3xl font-semibold">Amenities & Features</h2>
+          <p className="text-muted-foreground mt-2 max-w-md">
+            Designed for comfort, culture, and unforgettable experiences.
           </p>
 
           <div className="relative mt-6">
             <div
               ref={scrollRef}
-              className="flex gap-5 overflow-x-auto scrollbar-hide pb-2 scroll-smooth"
+              className="flex gap-5 overflow-x-auto scrollbar-hide"
             >
-              {smallCards.map((c, i) => (
+              {LOOPED.map((c, i) => (
                 <motion.div
                   key={i}
-                  onClick={() => {
-                    setActiveIndex(i);
-                    setMain(c);
-                  }}
-                  whileHover={{ scale: 1.04 }}
+                  onClick={() => setActiveIndex(i)}
                   animate={{ scale: i === activeIndex ? 1.05 : 1 }}
                   transition={{ duration: 0.3 }}
-                  className="min-w-[200px] md:min-w-[210px] lg:min-w-[220px] bg-white rounded-xl overflow-hidden shadow-sm cursor-pointer"
+                  className="min-w-[220px] rounded-xl overflow-hidden bg-card border cursor-pointer"
                 >
-                  <img
-                    src={c.img}
-                    className="w-full h-[140px] object-cover"
-                    alt={c.title}
-                  />
+                  <img src={c.img} className="w-full h-[140px] object-cover" />
                   <div className="p-3">
-                    <h4 className="text-base font-medium">{c.title}</h4>
+                    <h4 className="font-medium">{c.title}</h4>
                   </div>
                 </motion.div>
               ))}
             </div>
 
-            {/* Scroll Arrows */}
+            {/* Controls */}
             <Button
-              variant="ghost"
               size="icon"
+              variant="ghost"
               onClick={scrollLeft}
-              className="hidden md:flex absolute -left-3 top-1/2 -translate-y-1/2 bg-white rounded-full shadow-md z-20"
+              className="absolute -left-3 top-1/2 -translate-y-1/2"
             >
-              <ArrowLeft className="w-5 h-5 text-gray-700" />
+              <ArrowLeft />
             </Button>
 
             <Button
-              variant="ghost"
               size="icon"
+              variant="ghost"
               onClick={scrollRight}
-              className="hidden md:flex absolute -right-3 top-1/2 -translate-y-1/2 bg-white rounded-full shadow-md z-20"
+              className="absolute -right-3 top-1/2 -translate-y-1/2"
             >
-              <ArrowRight className="w-5 h-5 text-gray-700" />
+              <ArrowRight />
             </Button>
           </div>
         </div>

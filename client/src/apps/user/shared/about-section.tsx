@@ -138,7 +138,7 @@ export default function AboutSection() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="text-content flex flex-col gap-4 md:gap-6 lg:gap-10 max-w-lg order-2 lg:order-2 w-full"
+            className="text-content flex flex-col gap-4 md:gap-6 lg:gap-10 max-w-lg order-1 lg:order-1 w-full"
           >
             <h2 className="text-foreground font-bold text-2xl md:text-3xl lg:text-4xl">
               Our Story
@@ -161,7 +161,7 @@ export default function AboutSection() {
 
         <div
           className={`grid grid-cols-3 grid-rows-3 gap-2 md:gap-2 w-full w-full sm:max-w-sm md:max-w-md max-w-xs lg:max-w-lg ${
-            aboutRoute ? "order-1 lg:order-1" : "order-1 lg:order-2"
+            aboutRoute ? "order-1 lg:order-1" : "order-1 lg:order-1"
           }`}
         >
           {/* Side K vertical line */}
@@ -175,7 +175,8 @@ export default function AboutSection() {
           >
             <img
               src="https://res.cloudinary.com/drselhsl4/image/upload/v1763483919/Kifaru/k096rs8b5wqru5dwghax.jpg"
-              alt=""
+              alt="Kifaru Tech & Bed"
+              loading="lazy"
               className="w-full h-full object-contain"
             />
           </motion.div>
@@ -190,7 +191,8 @@ export default function AboutSection() {
           >
             <img
               src="https://res.cloudinary.com/drselhsl4/image/upload/v1769107834/Kifaru/KifaruGallery/musx5o2xlveqguyl4ldk.jpg"
-              alt=""
+              alt="Kifaru Tech & Bed"
+              loading="lazy"
               className="w-full h-full object-contain"
             />
           </motion.div>
@@ -205,7 +207,8 @@ export default function AboutSection() {
           >
             <img
               src="https://res.cloudinary.com/drselhsl4/image/upload/v1769111772/Kifaru/KifaruGallery/fxkwbqmcbi07zc68iukl.jpg"
-              alt=""
+              alt="Kifaru Tech & Bed"
+              loading="lazy"
               className="w-full h-full object-contain"
             />
           </motion.div>
@@ -221,7 +224,8 @@ export default function AboutSection() {
           >
             <img
               src="https://res.cloudinary.com/drselhsl4/image/upload/v1769544692/Kifaru/Kifaruimages/bb0qhxpnccosdx8tufjq.jpg"
-              alt=""
+              alt="Kifaru Tech & Bed"
+              loading="lazy"
               className="w-full h-full object-contain"
             />
           </motion.div>
@@ -237,7 +241,8 @@ export default function AboutSection() {
           >
             <img
               src={rhino}
-              alt="Featured Rhino"
+              loading="lazy"
+              alt="Kifaru Tech & Bed"
               className="w-full h-full object-contain"
             />
           </motion.div>
@@ -253,7 +258,8 @@ export default function AboutSection() {
           >
             <img
               src="https://res.cloudinary.com/drselhsl4/image/upload/v1769544700/Kifaru/Kifaruimages/trxywi0qctlg0qsxleuz.jpg"
-              alt=""
+              alt="Kifaru Tech & Bed"
+              loading="lazy"
               className="w-full h-full object-contain"
             />
           </motion.div>
@@ -262,7 +268,7 @@ export default function AboutSection() {
 
       {/* Goals Section */}
       {aboutRoute && (
-        <div className="container max-w-6xl mx-auto px-6 mt-6">
+        <div className="container max-w-6xl mx-auto px-6 mt-6 mb-6">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             {/* Content */}
             <motion.div
@@ -319,6 +325,7 @@ export default function AboutSection() {
               <div className="aspect-[4/5] rounded-lg overflow-hidden bg-gradient-to-br from-primary/10 via-accent/10 to-secondary relative">
                 <img
                   src={kifaruExperience}
+                  loading="lazy"
                   alt="Kifaru hospitality experience"
                   className="w-full h-full object-cover"
                 />
