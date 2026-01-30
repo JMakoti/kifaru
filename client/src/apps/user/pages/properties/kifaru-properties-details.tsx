@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "react-calendar/dist/Calendar.css";
 import * as LucideIcons from "lucide-react";
@@ -24,9 +24,11 @@ import LoadingScreen from "@/components/loadingscreen";
 import type {
   Amenity,
   Contact,
+  GalleryPhoto,
   PricingOption,
 } from "@/services/property.types";
 import { Badge } from "@/components/ui/badge";
+import { PhotoGalleryModal } from "./photogallery";
 
 export default function KifaruPropertyDetails() {
   const { slug } = useParams<{ slug: string }>();
@@ -39,6 +41,7 @@ export default function KifaruPropertyDetails() {
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [animated, setAnimated] = useState(false);
+  const [isGalleryOpen, setIsGalleryOpen] = useState(false);
 
   const property = data;
 
@@ -47,7 +50,6 @@ export default function KifaruPropertyDetails() {
   }, [slug, property]);
 
   const tabs = ["description", "amenities", "reviews"] as const;
-
   // "availability",
   //   "maps",
   //   "reviews",
@@ -65,7 +67,14 @@ export default function KifaruPropertyDetails() {
   const image =
     "https://res.cloudinary.com/drselhsl4/image/upload/v1764136940/Kifaru/backgrounds/ipshvpes7mlcg9mjc9qu.png";
 
+  const galleryPhotos: GalleryPhoto[] = images.map((img, index) => ({
+    id: String(index),
+    src: img.image,
+    label: property.name,
+  }));
+
   const toggleAnimation = () => {
+    if (isGalleryOpen) return;
     setAnimated(!animated);
     setTimeout(() => {
       setAnimated(false);
@@ -80,6 +89,8 @@ export default function KifaruPropertyDetails() {
     toggleAnimation();
     setCurrentImageIndex((i) => (i - 1 + images.length) % images.length);
   };
+
+  type LucideIconComponent = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
   return (
     <div className="container mx-auto px-4 py-6 md:py8">
@@ -98,11 +109,13 @@ export default function KifaruPropertyDetails() {
       {/* Image Gallery */}
       <div className="mb-8">
         {images.length > 0 ? (
-          <div className="relative w-full  h-96 rounded-lg overflow-hidden bg-gray-100 md:aspect-auto">
+          // <div className="relative w-full  h-96 rounded-lg overflow-hidden bg-gray-100 md:aspect-auto">
+          <div className="relative aspect-[16/9] md:aspect-[21/9] rounded-xl overflow-hidden group cursor-pointer">
             <img
               // src={images[currentImageIndex]}
               src={images[currentImageIndex].image}
               alt={property.name}
+              // onClick={() => setIsGalleryOpen(true)}
               className={`w-full h-full object-cover cursor-pointer
               transition-all duration-300 ease-out
               ${
@@ -137,9 +150,19 @@ export default function KifaruPropertyDetails() {
               </>
             )}
 
-            <div className="absolute bottom-4 right-4 bg-black/60 text-white px-3 py-1 rounded-full text-sm">
+            <div className="absolute bottom-4 left-4 bg-black/60 text-white px-3 py-1 rounded-full text-sm">
               {currentImageIndex + 1} / {images.length}
             </div>
+
+            <button
+              onClick={() => setIsGalleryOpen(true)}
+              className="absolute bottom-4 right-4 flex items-center gap-2 bg-background/95 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg hover:bg-background transition-colors"
+            >
+              <LucideIcons.Image className="w-5 h-5 text-foreground" />
+              <span className="text-sm font-medium text-foreground">
+                Show all photos
+              </span>
+            </button>
           </div>
         ) : (
           <div className="h-96 bg-gray-200 flex items-center justify-center">
@@ -246,11 +269,22 @@ export default function KifaruPropertyDetails() {
 
                         <div className="grid sm:grid-cols-2 gap-4">
                           {property.features.map((feature) => {
-                            // Dynamically resolve icon, fallback to Check
-                            const Icon =
-                              (feature.icon &&
-                                (LucideIcons as any)[feature.icon]) ||
-                              LucideIcons.Check;
+                            const iconName =
+                              feature.icon as keyof typeof LucideIcons;
+                            let IconComponent: LucideIconComponent;
+
+                            // Ensure we only assign valid React components
+                            if (
+                              iconName &&
+                              typeof LucideIcons[iconName] === "function" &&
+                              "render" in LucideIcons[iconName] === false
+                            ) {
+                              IconComponent = LucideIcons[
+                                iconName
+                              ] as LucideIconComponent;
+                            } else {
+                              IconComponent = LucideIcons.Check;
+                            }
 
                             return (
                               <div
@@ -259,7 +293,9 @@ export default function KifaruPropertyDetails() {
                               >
                                 {/* Icon */}
                                 <div className="flex items-center justify-center w-10 h-10 rounded-md bg-primary/10 text-primary">
-                                  <Icon className="w-5 h-5" />
+                                  {React.createElement(IconComponent, {
+                                    className: "w-5 h-5",
+                                  })}
                                 </div>
 
                                 {/* Content */}
@@ -514,7 +550,12 @@ export default function KifaruPropertyDetails() {
                             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                           />
 
-                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          {/* Overlay for label */}
+                          <div
+                            className="absolute inset-0 flex items-center justify-center 
+                        bg-black/40 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 
+                        transition-opacity duration-300"
+                          >
                             <span className="text-white text-center font-semibold px-2">
                               {amenity.label}
                             </span>
@@ -568,6 +609,11 @@ export default function KifaruPropertyDetails() {
             </Button>
           </div>
         </div>
+        <PhotoGalleryModal
+          open={isGalleryOpen}
+          onOpenChange={setIsGalleryOpen}
+          photos={galleryPhotos}
+        />
       </div>
     </div>
   );

@@ -116,3 +116,10 @@ export interface PropertyReview {
   comment: string;
   created_at: string;
 }
+
+export interface GalleryPhoto {
+  id: string;
+  src: string;
+  label?: string;
+  category?: string;
+}
