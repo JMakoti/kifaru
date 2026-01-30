@@ -43,7 +43,7 @@ export default function Register() {
       setTimeout(() => {
         navigate("/auth", { replace: true });
       }, 1500);
-    } catch (error: any) {
+    } catch (error) {
       setErrorMessage(extractErrorMessage(error));
     }
   };
@@ -54,9 +54,9 @@ export default function Register() {
         {/* Logo */}
          <div className="text-center mb-8 items-center flex flex-col">
            <img src={kifaru} alt="Kifaru Logo" className="w-20 h-20"/>
-           <p className="text-muted-foreground">
+           {/* <p className="text-muted-foreground">
             Start your plans journey today
-          </p>
+          </p> */}
         </div>
 
         <Card className="border-2 shadow-lg">

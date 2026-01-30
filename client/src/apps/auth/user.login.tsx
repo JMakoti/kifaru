@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useQueryClient } from "@tanstack/react-query";
-import { Mail, Lock, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { toast } from "react-toastify";
 
 import {
@@ -38,31 +38,52 @@ export default function Login() {
 
     try {
       const response: AuthResponse = await login(formData);
-
       await queryClient.refetchQueries({ queryKey: ["auth-user"] });
 
       navigate("/profile", { replace: true });
+
       if (response?.message) {
         toast.success(response.message);
       }
-    } catch (error: any) {
+    } catch (error) {
       setErrorMessage(extractErrorMessage(error));
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-light to-muted p-4">
+    <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-muted to-secondary/30 p-4">
+      {/* Back Button */}
+      <button
+        onClick={() => navigate("/")}
+        className="
+    absolute top-6 left-6
+    flex items-center gap-2
+    px-4 py-2
+    rounded-full
+    border border-border
+    bg-background/70 backdrop-blur
+    text-foreground/70
+    shadow-sm
+    transition
+    hover:text-foreground
+    hover:bg-accent/40
+    hover:border-accent
+  "
+      >
+        <ArrowLeft className="w-5 h-5" />
+        <span className="text-sm font-medium">Back</span>
+      </button>
+
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="text-center mb-8 items-center flex flex-col">
-          <img src={kifaru} alt="Kifaru Logo" className="w-20 h-20"/>
-          {/* <h1 className="text-2xl font-bold mb-2">Kifaru</h1> */}
+        <div className="text-center mb-8 flex flex-col items-center">
+          <img src={kifaru} alt="Kifaru Logo" className="w-20 h-20 mb-2" />
           <p className="text-muted-foreground">Welcome back to Kifaru</p>
         </div>
 
-        <Card className="border-2 shadow-lg">
+        <Card className="border border-border shadow-xl rounded-2xl">
           <CardHeader className="text-center">
-            <CardTitle>Sign In</CardTitle>
+            <CardTitle className="text-2xl">Sign In</CardTitle>
             <CardDescription>
               Enter your credentials to access your account
             </CardDescription>
@@ -71,12 +92,13 @@ export default function Login() {
           <CardContent>
             {/* Error message */}
             {errorMessage && (
-              <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md border border-red-200 text-center mb-4">
+              <div className="p-3 text-sm text-destructive bg-destructive/10 rounded-md border border-destructive/20 text-center mb-4">
                 {errorMessage}
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Email */}
               <div className="space-y-2">
                 <Label>Email</Label>
                 <div className="relative">
@@ -95,6 +117,7 @@ export default function Login() {
                 </div>
               </div>
 
+              {/* Password */}
               <div className="space-y-2">
                 <Label>Password</Label>
                 <div className="relative">
@@ -122,18 +145,9 @@ export default function Login() {
                 </div>
               </div>
 
-              {/* <div className="flex justify-between">
-                <Link
-                  to="/auth/forgot-pass"
-                  className="text-sm text-primary hover:underline"
-                >
-                  Forgot password?
-                </Link>
-              </div> */}
-
               <Button
                 type="submit"
-                className="w-full"
+                className="w-full rounded-full"
                 size="lg"
                 disabled={isLoading}
               >
@@ -141,13 +155,13 @@ export default function Login() {
               </Button>
             </form>
 
-            <Separator className="my-4" />
+            <Separator className="my-6" />
 
             <div className="text-center text-sm text-muted-foreground">
-              Don't have an account?{" "}
+              Don&apos;t have an account?{" "}
               <Link
                 to="/auth/register"
-                className="text-primary hover:underline"
+                className="text-primary font-medium hover:underline"
               >
                 Sign up
               </Link>
