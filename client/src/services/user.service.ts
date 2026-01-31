@@ -6,8 +6,15 @@ import {
   forgetPassword,
   resetPassword,
   updateProfile,
+  getUsersList,
 } from "./user.endpoints";
-import type { ForgetPassInput, MessageResponse, ResetPassInputs } from "./user.types";
+import type {
+  FetchUsersParams,
+  ForgetPassInput,
+  MessageResponse,
+  ResetPassInputs,
+  User,
+} from "./user.types";
 import type { AxiosError } from "axios";
 
 //register user
@@ -41,8 +48,7 @@ export const useForgetPassword = () => {
 
 //reset password
 export const useResetPassword = () => {
-  return useMutation<{ message: string }, Error, ResetPassInputs
-  >({
+  return useMutation<{ message: string }, Error, ResetPassInputs>({
     mutationFn: resetPassword,
   });
 };
@@ -56,5 +62,22 @@ export function useUpdateProfile() {
     onSuccess: (updatedUser) => {
       queryClient.setQueryData(["user-profile"], updatedUser);
     },
+  });
+}
+
+//get guest list
+// export function useAdminUsers(params: FetchUsersParams) {
+//   const queryFn = () => getUsersList(params);
+//   return useQuery<User[], Error>({
+//     queryKey: ["admin-users", params],
+//     queryFn,
+//     keepPreviousData: true,
+//   });
+// }
+
+export function useAdminUsers(params: FetchUsersParams) {
+  return useQuery<User[], Error>({
+    queryKey: ["admin-users", params],
+    queryFn: () => getUsersList(params),
   });
 }

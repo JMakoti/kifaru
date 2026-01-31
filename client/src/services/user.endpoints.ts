@@ -1,6 +1,7 @@
 import axios from "axios";
 import type {
   AuthResponse,
+  FetchUsersParams,
   ForgetPassInput,
   LoginFormInputs,
   MessageResponse,
@@ -28,6 +29,7 @@ const LOGOUT_URL = "/user/logout/";
 const FORGETPASS_URL = "/user/password-reset/";
 const RESETPASS_URL = `/user/password-reset-confirm/{uidb64}/{token}/`;
 const EDITPROFILE_URL = "/user/me/";
+const GETUSERS_URL = "/user/admin/users/";
 
 // get profile
 export const getProfile = async (): Promise<User> => {
@@ -143,4 +145,12 @@ export const updateProfile = async (data: FormData) => {
   });
 
   return res.data;
+};
+
+//get guest list
+export const getUsersList = async (params: FetchUsersParams = {}) => {
+  const response = await api.get<User[]>(GETUSERS_URL, {
+    params,
+  });
+  return response.data;
 };

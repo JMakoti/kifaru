@@ -8,6 +8,12 @@ export interface User {
   role: "admin" | "staff" | "concierge" | "property_manager" | "external";
   preferred_language?: string;
   country_of_residence?: string;
+  is_returning_guest?: boolean,
+  // special_preferences: Record<string, any>;
+  is_active: boolean;
+  is_verified: boolean;
+  is_staff: boolean;
+  date_joined: string;
 }
 
 export interface AuthResponse {
@@ -49,4 +55,13 @@ export interface ResetPassInputs {
   password_confirm: string;
   uidb64: string;
   token: string;
+}
+
+
+export interface FetchUsersParams {
+  role?: string;
+  is_active?: string;
+  is_verified?: string;
+  search?: string;
+  ordering?: string;
 }
