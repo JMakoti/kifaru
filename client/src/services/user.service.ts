@@ -6,7 +6,8 @@ import {
   forgetPassword,
   resetPassword,
   updateProfile,
-  getUsersList,
+  deleteUser,
+  getAdminUsers,
 } from "./user.endpoints";
 import type {
   FetchUsersParams,
@@ -16,6 +17,10 @@ import type {
   User,
 } from "./user.types";
 import type { AxiosError } from "axios";
+
+//query keys
+export const USERS_QUERY_KEY = ["admin-users"];
+export const USERPROFILE_QUERY_KEY = ["user-profile"];
 
 //register user
 export const useRegister = () => {
@@ -34,7 +39,7 @@ export const useLogin = () => {
 //get profile
 export const useGetProfile = () => {
   return useQuery({
-    queryKey: ["user-profile"],
+    queryKey: USERPROFILE_QUERY_KEY,
     queryFn: () => getProfile(),
   });
 };
@@ -60,24 +65,29 @@ export function useUpdateProfile() {
   return useMutation({
     mutationFn: updateProfile,
     onSuccess: (updatedUser) => {
-      queryClient.setQueryData(["user-profile"], updatedUser);
+      queryClient.setQueryData(USERPROFILE_QUERY_KEY, updatedUser);
     },
   });
 }
 
 //get guest list
-// export function useAdminUsers(params: FetchUsersParams) {
-//   const queryFn = () => getUsersList(params);
-//   return useQuery<User[], Error>({
-//     queryKey: ["admin-users", params],
-//     queryFn,
-//     keepPreviousData: true,
-//   });
-// }
-
 export function useAdminUsers(params: FetchUsersParams) {
   return useQuery<User[], Error>({
-    queryKey: ["admin-users", params],
-    queryFn: () => getUsersList(params),
+    queryKey: [USERS_QUERY_KEY, params],
+    queryFn: () => getAdminUsers(params),
+
+    enabled: true,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    retry: false,
+    staleTime: Infinity,
+  });
+}
+
+//admin delete user
+export function useDeleteUser() {
+  return useMutation({
+    mutationFn: deleteUser,
   });
 }

@@ -14,22 +14,13 @@ import {
   Plus,
 } from "lucide-react";
 
-import { useAdminUsers } from "@/services/user.service";
+import { useAdminUsers, useDeleteUser } from "@/services/user.service";
 import LoadingScreen from "@/components/loadingscreen";
 
 export default function CustomersView() {
   const [searchTerm, setSearchTerm] = useState("");
-  const {
-    data: users = [],
-    isLoading,
-    error,
-  } = useAdminUsers({
-    role: undefined,
-    is_active: undefined,
-    is_verified: undefined,
-    search: undefined,
-    ordering: undefined,
-  });
+  const { data: users = [], isLoading, error, refetch } = useAdminUsers({});
+  const [deletingUserId, setDeletingUserId] = useState<number | null>(null);
 
   const filteredUsers = users.filter(
     (user) =>
@@ -45,6 +36,18 @@ export default function CustomersView() {
 
   const totalUsers = users.length;
   const activeUsers = users.filter((u) => u.is_active).length;
+
+  const { mutateAsync } = useDeleteUser();
+
+  const handleDelete = async (userId: number) => {
+    setDeletingUserId(userId);
+    try {
+      await mutateAsync(userId);
+      await refetch();
+    } finally {
+      setDeletingUserId(null);
+    }
+  };
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -209,6 +212,7 @@ export default function CustomersView() {
                       <Button
                         size="sm"
                         variant="outline"
+                        aria-label="Edit user"
                         className="hover:scale-105"
                       >
                         <Edit className="mr-1 h-4 w-4" />
@@ -217,9 +221,13 @@ export default function CustomersView() {
                       <Button
                         size="sm"
                         variant="outline"
+                        aria-label="Delete user"
                         className="text-destructive hover:text-destructive"
+                        disabled={deletingUserId === user.id}
+                        onClick={() => handleDelete(user.id)}
                       >
                         <Trash2 className="h-4 w-4" />
+                        {deletingUserId === user.id ? "Deleting..." : "Delete"}
                       </Button>
                     </div>
                   </div>
