@@ -7,9 +7,7 @@ export default function UserProfile() {
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
-    return (
-      <LoadingScreen/>
-    );
+    return <LoadingScreen />;
   }
 
   if (!user) {
@@ -32,6 +30,10 @@ export default function UserProfile() {
     role: user.role,
     preferred_language: user.preferred_language,
     country_of_residence: user.country_of_residence,
+    is_active: user.is_active,
+    is_verified: user.is_verified,
+    is_staff: user.is_staff,
+    date_joined: user.date_joined,
   };
 
   return (
