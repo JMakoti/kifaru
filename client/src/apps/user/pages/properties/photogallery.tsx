@@ -2,9 +2,18 @@ import { useState, useMemo } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import type { GalleryPhoto } from "@/services/property.types";
+import type { PropertyImage } from "@/services/property.types";
 
-type TabType = "all" | "bedrooms" | "kitchen" | "living" | "dining";
+type TabType =
+  | "all"
+  | "bedroom"
+  | "kitchen"
+  | "living_room"
+  | "dining"
+  | "garden"
+  | "outdoor"
+  | "bathroom"
+  | "other";
 
 interface Tab {
   id: TabType;
@@ -15,7 +24,7 @@ interface Tab {
 interface PhotoGalleryModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  photos: GalleryPhoto[];
+  photos: PropertyImage[];
 }
 
 export function PhotoGalleryModal({
@@ -33,10 +42,18 @@ export function PhotoGalleryModal({
 
     return [
       { id: "all", label: "All photos", count: countByCategory("all") },
-      { id: "bedrooms", label: "Bedrooms", count: countByCategory("bedrooms") },
+      { id: "bedroom", label: "Bedrooms", count: countByCategory("bedroom") },
       { id: "kitchen", label: "Kitchen", count: countByCategory("kitchen") },
-      { id: "living", label: "Living area", count: countByCategory("living") },
+      {
+        id: "living_room",
+        label: "Living area",
+        count: countByCategory("living_room"),
+      },
       { id: "dining", label: "Dining", count: countByCategory("dining") },
+      { id: "bathroom", label: "Bathroom", count: countByCategory("bathroom") },
+      { id: "garden", label: "Garden", count: countByCategory("garden") },
+      { id: "outdoor", label: "Outdoor", count: countByCategory("outdoor") },
+      { id: "other", label: "Other", count: countByCategory("other") },
     ];
   }, [photos]);
 
@@ -62,14 +79,14 @@ export function PhotoGalleryModal({
         <div className="flex items-center justify-between px-6 py-4 border-b border-border">
           <button
             onClick={() => onOpenChange(false)}
-            className="flex items-center gap-2 text-sm font-medium hover:text-primary transition"
+            className="flex items-center gap-2 text-sm font-medium hover:text-primary transition cursor-pointer"
           >
             <ArrowLeft className="w-5 h-5" />
             Photo gallery
           </button>
 
           <Button
-            className="rounded-full px-5"
+            className="rounded-full px-5 cursor-pointer"
             onClick={() => onOpenChange(false)}
           >
             Return to property
@@ -109,14 +126,14 @@ export function PhotoGalleryModal({
                 <div key={photo.id} className="group w-full">
                   <div className="w-full overflow-hidden rounded-lg">
                     <img
-                      src={photo.src}
-                      alt={photo.label ?? "Property photo"}
+                      src={photo.image}
+                      alt={photo.category ?? "Property photo"}
                       className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                   </div>
-                  {photo.label && (
+                  {photo.category && (
                     <p className="mt-2 text-sm font-medium text-foreground/90">
-                      {photo.label}
+                      {photo.category}
                     </p>
                   )}
                 </div>

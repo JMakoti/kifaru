@@ -22,8 +22,8 @@ import { usePropertyDetails } from "@/services/property.service";
 import LoadingScreen from "@/components/loadingscreen";
 import type {
   Amenity,
-  GalleryPhoto,
   PricingOption,
+  PropertyImage,
 } from "@/services/property.types";
 import { Badge } from "@/components/ui/badge";
 import { PhotoGalleryModal } from "./photogallery";
@@ -66,10 +66,11 @@ export default function KifaruPropertyDetails() {
   const image =
     "https://res.cloudinary.com/drselhsl4/image/upload/v1764136940/Kifaru/backgrounds/ipshvpes7mlcg9mjc9qu.png";
 
-  const galleryPhotos: GalleryPhoto[] = images.map((img, index) => ({
-    id: String(index),
-    src: img.image,
-    label: property.name,
+  const galleryPhotos: PropertyImage[] = images.map((img) => ({
+    id: img.id,
+    image: img.image,
+    category: img.category,
+    order: img.order,
   }));
 
   const toggleAnimation = () => {
@@ -155,7 +156,7 @@ export default function KifaruPropertyDetails() {
 
             <button
               onClick={() => setIsGalleryOpen(true)}
-              className="absolute bottom-4 right-4 flex items-center gap-2 bg-background/95 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg hover:bg-background transition-colors"
+              className="absolute bottom-4 right-4 cursor-pointer flex items-center gap-2 bg-background/95 backdrop-blur-sm px-4 py-2 rounded-lg shadow-lg hover:bg-background transition-colors"
             >
               <LucideIcons.Image className="w-5 h-5 text-foreground" />
               <span className="text-sm font-medium text-foreground">

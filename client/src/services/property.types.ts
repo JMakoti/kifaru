@@ -52,6 +52,7 @@ export interface PropertyImage {
   id: number;
   image: string;
   order: number;
+  category?: string;
 }
 
 export interface PricingOption {
@@ -117,9 +118,9 @@ export interface PropertyReview {
   created_at: string;
 }
 
-export interface GalleryPhoto {
-  id: string;
-  src: string;
-  label?: string;
-  category?: string;
-}
+// export interface GalleryPhoto {
+//   id: string;
+//   src: string;
+//   label?: string;
+  
+// }
