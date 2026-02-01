@@ -30,7 +30,7 @@ const Overview = [
   },
 ];
 
-export default function Payment() {
+export default function BookingPreviewPayment() {
   const [activeTab, setActiveTab] = useState<"card" | "bank" | "mpesa">("card");
   const [paymentComplete, setPaymentComplete] = useState(false);
 

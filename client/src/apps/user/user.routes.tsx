@@ -5,10 +5,11 @@ import About from "./pages/about";
 import Property from "./pages/property";
 import KifaruProperty from "./pages/properties/kifaru-property";
 import KifaruPropertyDetails from "./pages/properties/kifaru-properties-details";
-import Payment from "./components/property/payment";
 import Contact from "./pages/contact";
 import UserProfile from "./pages/profiles/userprofile";
 import { ProtectedRoute } from "../auth/routes/protected.route";
+import BookingForm from "./components/property/bookingform";
+import BookingPreviewPayment from "./components/property/bookingpreview";
 
 export default function UserRoutes() {
   return (
@@ -19,7 +20,8 @@ export default function UserRoutes() {
         <Route path="property" element={<Property />}>
           <Route index element={<KifaruProperty />} />
           <Route path=":slug" element={<KifaruPropertyDetails />} />
-          <Route index path=":slug/payment" element={<Payment />} />
+          <Route index path=":slug/booking" element={<BookingForm />} />
+          <Route index path=":slug/payment" element={<BookingPreviewPayment />} />
         </Route>
         <Route path="contact" element={<Contact />} />
         <Route

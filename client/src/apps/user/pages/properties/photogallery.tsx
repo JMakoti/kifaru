@@ -107,7 +107,7 @@ export function PhotoGalleryModal({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {filteredPhotos.map((photo) => (
                 <div key={photo.id} className="group w-full">
-                  <div className="w-full aspect-[4/3] overflow-hidden rounded-lg">
+                  <div className="w-full overflow-hidden rounded-lg">
                     <img
                       src={photo.src}
                       alt={photo.label ?? "Property photo"}

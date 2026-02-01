@@ -18,17 +18,16 @@ import { Button } from "@/components/ui/button";
 // import Maps from "@/apps/user/components/property/maps";
 import Reviews from "@/apps/user/components/property/reviews";
 // import Availability from "@/apps/user/components/property/availability";
-import Booking from "@/apps/user/components/property/booking";
 import { usePropertyDetails } from "@/services/property.service";
 import LoadingScreen from "@/components/loadingscreen";
 import type {
   Amenity,
-  Contact,
   GalleryPhoto,
   PricingOption,
 } from "@/services/property.types";
 import { Badge } from "@/components/ui/badge";
 import { PhotoGalleryModal } from "./photogallery";
+import BookingCard from "../../components/property/bookingcard";
 
 export default function KifaruPropertyDetails() {
   const { slug } = useParams<{ slug: string }>();
@@ -328,79 +327,6 @@ export default function KifaruPropertyDetails() {
                       </div>
                     )}
                   </div>
-
-                  <div className="mt-8 w-full">
-                    <h3 className="text-2xl font-semibold mb-4">
-                      Contact Person
-                    </h3>
-
-                    <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-6">
-                      {property.contacts.map((contact: Contact, i: number) => (
-                        <div
-                          key={i}
-                          className="flex flex-col gap-4 p-5 rounded-2xl bg-secondary/30
-                   transition-all duration-300
-                   hover:bg-secondary/40 hover:shadow-lg hover:-translate-y-1"
-                        >
-                          {/* Header */}
-                          <div className="flex items-center gap-4">
-                            <div
-                              className="w-14 h-14 rounded-full
-                          bg-gradient-to-br from-primary/80 to-primary/40
-                          flex items-center justify-center
-                          text-white text-xl font-semibold"
-                            >
-                              {contact.name.charAt(0)}
-                            </div>
-
-                            <div>
-                              <h4 className="text-lg font-semibold">
-                                {contact.name}
-                              </h4>
-                              <p className="text-sm text-muted-foreground">
-                                {contact.role}
-                              </p>
-                            </div>
-                          </div>
-
-                          {/* Contact info */}
-                          <div className="flex flex-col gap-2 text-sm">
-                            {contact.email && (
-                              <a
-                                href={`mailto:${contact.email}`}
-                                className="flex items-center gap-2 text-muted-foreground hover:text-primary transition"
-                              >
-                                <LucideIcons.Mail className="w-4 h-4" />
-                                {contact.email}
-                              </a>
-                            )}
-
-                            {contact.phone && (
-                              <a
-                                href={`tel:${contact.phone}`}
-                                className="flex items-center gap-2 text-muted-foreground hover:text-primary transition"
-                              >
-                                <LucideIcons.Phone className="w-4 h-4" />
-                                {contact.phone}
-                              </a>
-                            )}
-
-                            {contact.whatsapp && (
-                              <a
-                                href={`https://wa.me/${contact.whatsapp.replace(/\D/g, "")}`}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-2 text-green-600 hover:text-green-700 transition"
-                              >
-                                <LucideIcons.MessageCircle className="w-4 h-4" />
-                                WhatsApp
-                              </a>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
                 </div>
               )}
 
@@ -589,11 +515,12 @@ export default function KifaruPropertyDetails() {
           </div>
 
           {/* Booking Panel */}
-          <Booking
-            price={property.price}
+          <BookingCard
             location={property.location}
             country={property.country}
-            // status={property.status}
+            propertyContacts={property.contacts}
+            name={property.name}
+            slug={property.slug}
           />
         </div>
         <div className="py-16 px-6 bg-secondary/20 mt-20 ">

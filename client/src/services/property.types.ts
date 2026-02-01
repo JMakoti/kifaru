@@ -85,9 +85,9 @@ export interface Contact {
   id: number;
   name: string;
   role: string;
-  email: string;
-  phone: string | null;
-  whatsapp: string | null;
+  email?: string;
+  phone?: string | null;
+  whatsapp?: string | null;
 }
 
 export interface NetworkProperty {
