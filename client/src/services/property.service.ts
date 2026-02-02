@@ -1,10 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
-import { type PropertyReview, type Property } from "./property.types";
-import { fetchProperties, fetchReviews, getDetails } from "./property.endpoints";
+import {
+  type PropertyReview,
+  type Property,
+  type GalleryPhoto,
+} from "./property.types";
+import {
+  fetchGallery,
+  fetchProperties,
+  fetchReviews,
+  getDetails,
+} from "./property.endpoints";
 
 export const PROPERTY_QUERY_KEY = ["properties"];
 export const PROPERTY_DETAILS_QUERY_KEY = ["property-details"];
-export const REVIEWS_QUERY = ["reviews"]
+export const REVIEWS_QUERY = ["reviews"];
+export const GALLERY_QUERY = ["gallery"];
 
 export const useProperties = () => {
   return useQuery<Property[]>({
@@ -23,11 +33,20 @@ export const usePropertyDetails = (slug: string) => {
   });
 };
 
-export const useReviews = () =>{
+export const useReviews = () => {
   return useQuery<PropertyReview[]>({
     queryKey: REVIEWS_QUERY,
     queryFn: fetchReviews,
     staleTime: 1000 * 60 * 5,
     retry: 2,
-  })
-}
+  });
+};
+
+export const useGallery = () => {
+  return useQuery<GalleryPhoto[]>({
+    queryKey: GALLERY_QUERY,
+    queryFn: fetchGallery,
+    staleTime: 1000 * 60 * 5,
+    retry: 2,
+  });
+};

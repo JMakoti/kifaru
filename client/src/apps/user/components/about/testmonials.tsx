@@ -19,15 +19,12 @@ export default function TestimonialSection() {
   const [index, setIndex] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
 
-  const testimonials = useMemo(
-    () => mapReviewsToTestimonials(data),
-    [data]
-  );
+  const testimonials = useMemo(() => mapReviewsToTestimonials(data), [data]);
 
   // duplicate for seamless loop
   const slides = useMemo(
     () => [...testimonials, ...testimonials],
-    [testimonials]
+    [testimonials],
   );
 
   useEffect(() => {
@@ -49,8 +46,7 @@ export default function TestimonialSection() {
         setIndex(0);
         requestAnimationFrame(() => {
           if (trackRef.current) {
-            trackRef.current.style.transition =
-              "transform 700ms ease-in-out";
+            trackRef.current.style.transition = "transform 700ms ease-in-out";
           }
         });
       }, 700);
@@ -86,10 +82,7 @@ export default function TestimonialSection() {
             style={{ transform: `translateX(-${index * 100}%)` }}
           >
             {slides.map((testimonial, i) => (
-              <div
-                key={i}
-                className="min-w-full w-full flex-shrink-0 px-2"
-              >
+              <div key={i} className="min-w-full w-full flex-shrink-0 px-2">
                 <TestimonialCard {...testimonial} />
               </div>
             ))}
@@ -102,9 +95,7 @@ export default function TestimonialSection() {
             <span
               key={i}
               className={`h-1 w-8 rounded-full transition-all duration-500 ${
-                i === index % testimonials.length
-                  ? "bg-black"
-                  : "bg-black/20"
+                i === index % testimonials.length ? "bg-black" : "bg-black/20"
               }`}
             />
           ))}

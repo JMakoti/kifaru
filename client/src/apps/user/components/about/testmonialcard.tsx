@@ -16,7 +16,6 @@ export default function TestimonialCard({
   property,
   image,
 }: TestimonialCardProps) {
-
   return (
     <div className="relative mx-auto w-full max-w-5xl bg-card rounded-2xl border border-border/50 px-5 sm:px-8 md:px-16 py-10 shadow-sm transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
       {/* Glow Accent */}
@@ -59,9 +58,7 @@ export default function TestimonialCard({
             <p className="font-serif font-semibold text-foreground leading-tight">
               {author}
             </p>
-            <p className="text-sm text-muted-foreground truncate">
-              {location}
-            </p>
+            <p className="text-sm text-muted-foreground truncate">{location}</p>
           </div>
         </div>
       </div>

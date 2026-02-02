@@ -1,7 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
+import type { GalleryPhoto } from "@/services/property.types";
+import { useGallery } from "@/services/property.service";
 
 interface GalleryItem {
   id: number;
@@ -11,110 +13,33 @@ interface GalleryItem {
   desktopWidth: string;
 }
 
-const galleryData: GalleryItem[] = [
-  {
-    id: 1,
-    title: "Ocean Kifaru Indian Ocean",
-    imageUrl:
-      "https://res.cloudinary.com/drselhsl4/image/upload/v1769108215/Kifaru/KifaruGallery/znxgb9uxeajnj1wvwonk.jpg",
-    mobileWidth: "w-[280px]",
-    desktopWidth: "md:w-[550px]",
-  },
-  {
-    id: 2,
-    title: "Kifaru Beligium",
-    imageUrl:
-      "https://res.cloudinary.com/drselhsl4/image/upload/v1769107862/Kifaru/KifaruGallery/o90addoqleyd2hhc4p2b.jpg",
-    mobileWidth: "w-[200px]",
-    desktopWidth: "md:w-[300px]",
-  },
-  {
-    id: 3,
-    title: "Kifaru Beligium",
-    imageUrl:
-      "https://res.cloudinary.com/drselhsl4/image/upload/v1769107914/Kifaru/KifaruGallery/szcndfazzvayvc0yjvxu.jpg",
-    mobileWidth: "w-[240px]",
-    desktopWidth: "md:w-[400px]",
-  },
-  {
-    id: 4,
-    title: "Ocean Kifaru Indian Ocean",
-    imageUrl:
-      "https://res.cloudinary.com/drselhsl4/image/upload/v1769108212/Kifaru/KifaruGallery/exhzotyue5u6hma5nytf.jpg",
-    mobileWidth: "w-[300px]",
-    desktopWidth: "md:w-[600px]",
-  },
-  {
-    id: 5,
-    title: "Tech & Bed Kifaru Brussels",
-    imageUrl:
-      "https://res.cloudinary.com/drselhsl4/image/upload/v1769107834/Kifaru/KifaruGallery/musx5o2xlveqguyl4ldk.jpg",
-    mobileWidth: "w-[260px]",
-    desktopWidth: "md:w-[450px]",
-  },
-  {
-    id: 6,
-    title: "Ocean Kifaru Indian Ocean",
-    imageUrl:
-      "https://res.cloudinary.com/drselhsl4/image/upload/v1763483919/Kifaru/k096rs8b5wqru5dwghax.jpg",
-    mobileWidth: "w-[280px]",
-    desktopWidth: "md:w-[520px]",
-  },
-  {
-    id: 7,
-    title: "Kifaru Marbe Inn",
-    imageUrl:
-      "https://res.cloudinary.com/drselhsl4/image/upload/v1769107877/Kifaru/KifaruGallery/wredu87akirqkhj5sw6u.jpg",
-    mobileWidth: "w-[220px]",
-    desktopWidth: "md:w-[350px]",
-  },
-  {
-    id: 8,
-    title: "Close the Gap Hub",
-    imageUrl:
-      "https://res.cloudinary.com/drselhsl4/image/upload/v1769109253/Kifaru/KifaruGallery/d1cszhpzcr9wnbiwspzo.jpg",
-    mobileWidth: "w-[280px]",
-    desktopWidth: "md:w-[500px]",
-  },
-  {
-    id: 9,
-    title: "Ocean Kifaru Indian Ocean",
-    imageUrl:
-      "https://res.cloudinary.com/drselhsl4/image/upload/v1769111772/Kifaru/KifaruGallery/fxkwbqmcbi07zc68iukl.jpg",
-    mobileWidth: "w-[290px]",
-    desktopWidth: "md:w-[550px]",
-  },
-];
+interface ScrollingRowProps {
+  items: GalleryItem[];
+  speed: number;
+  reverse?: boolean;
+  isPaused: boolean;
+}
 
+function ScrollingRow({
+  items,
+  speed,
+  reverse = false,
+  isPaused,
+}: ScrollingRowProps) {
+  if (!items || items.length === 0) return null;
 
-
-export default function KifaruGallery() {
-  const [isPaused, setIsPaused] = useState(false);
-
-  const half = Math.ceil(galleryData.length / 2);
-  const row1 = galleryData.slice(0, half);
-  const row2 = galleryData.slice(half);
-
-  const ScrollingRow = ({
-    items,
-    speed,
-    reverse = false,
-  }: {
-    items: GalleryItem[];
-    speed: number;
-    reverse?: boolean;
-  }) => (
-    <div className="flex mb-4 overflow-hidden mask-fade-edges">
+  return (
+    <div className="relative overflow-hidden">
       <motion.div
-        className="flex gap-3 md:gap-4 px-2"
-        initial={{ x: reverse ? "-50%" : "0%" }}
+        className="flex gap-3 md:gap-5"
         animate={{
           x: isPaused ? undefined : reverse ? ["-50%", "0%"] : ["0%", "-50%"],
         }}
         transition={{
-          ease: "linear",
-          duration: speed,
           repeat: Infinity,
+          repeatType: "loop",
+          duration: speed,
+          ease: "linear",
         }}
       >
         {[...items, ...items].map((item, idx) => (
@@ -141,6 +66,29 @@ export default function KifaruGallery() {
       </motion.div>
     </div>
   );
+}
+const mapGalleryPhotosToUI = (photos: GalleryPhoto[]): GalleryItem[] =>
+  photos
+    .sort((a, b) => a.order - b.order)
+    .map((photo, index) => ({
+      id: photo.id,
+      title: photo.title,
+      imageUrl: photo.image,
+      mobileWidth: index % 2 === 0 ? "w-[280px]" : "w-[220px]",
+      desktopWidth: index % 3 === 0 ? "md:w-[550px]" : "md:w-[350px]",
+    }));
+
+export default function KifaruGallery() {
+  const [isPaused, setIsPaused] = useState(false);
+  const { data = [], isLoading } = useGallery();
+
+  const galleryData = useMemo(() => mapGalleryPhotosToUI(data), [data]);
+
+  const half = Math.ceil(galleryData.length / 2);
+  const row1 = galleryData.slice(0, half);
+  const row2 = galleryData.slice(half);
+
+  if (isLoading || galleryData.length === 0) return null;
 
   return (
     <section
@@ -161,9 +109,10 @@ export default function KifaruGallery() {
         </div>
         <div className="hidden md:block h-[1px] flex-grow mx-8 bg-zinc-100" />
       </div>
+
       <div className="flex flex-col gap-2 md:gap-4">
-        <ScrollingRow items={row1} speed={25} />
-        <ScrollingRow items={row2} speed={30} reverse />
+        <ScrollingRow items={row1} speed={25} isPaused={isPaused} />
+        <ScrollingRow items={row2} speed={30} reverse isPaused={isPaused} />
       </div>
     </section>
   );

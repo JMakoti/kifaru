@@ -122,11 +122,12 @@ export interface PropertyReview {
   created_at: Date;
 }
 
-
-
-// export interface GalleryPhoto {
-//   id: string;
-//   src: string;
-//   label?: string;
-  
-// }
+export interface GalleryPhoto {
+  id: number;
+  image: string;
+  title: string;
+  category: string;
+  order: number;
+  is_featured: boolean;
+  created_at: Date;
+}
