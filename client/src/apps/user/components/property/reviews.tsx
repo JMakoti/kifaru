@@ -7,19 +7,18 @@ import type { PropertyReview } from "@/services/property.types";
 import { useReviews } from "@/services/property.service";
 import LoadingScreen from "@/components/loadingscreen";
 
+interface ReviewsProps {
+  propertyId: number;
+}
+
 interface ReviewItem {
   id: string;
   author: string;
-  avatar?: string;
   rating: number;
-  date: string;
   comment: string;
-  verified?: boolean;
-  response?: {
-    author: string;
-    date: string;
-    text: string;
-  };
+  date:Date;
+  verified: boolean;
+  avatar?: string;
 }
 
 const StarRating = ({
@@ -47,31 +46,42 @@ const StarRating = ({
   );
 };
 
-const mapApiReviewsToUI = (reviews: PropertyReview[]): ReviewItem[] =>
+const mapApiReviewsToUI = (
+  reviews: PropertyReview[],
+  propertyId: number
+): ReviewItem[] =>
   reviews
+    .filter((r) => r.property === propertyId)
     .map((r) => ({
       id: String(r.id),
-      author: r.user_name,
+      author: r.reviewer_name,
       rating: r.rating,
       comment: r.comment,
       date: r.created_at,
       verified: r.rating >= 4,
-      avatar: undefined,
+      avatar: r.avatar,
     }))
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    .sort(
+      (a, b) =>
+        new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
 
-export default function Reviews() {
+export default function Reviews({ propertyId }: ReviewsProps) {
   const { data = [], isLoading } = useReviews();
   const [visibleReviews, setVisibleReviews] = useState(3);
 
-  const reviews = useMemo(() => mapApiReviewsToUI(data), [data]);
+  const reviews = useMemo(
+    () => mapApiReviewsToUI(data, propertyId),
+    [data, propertyId]
+  );
 
   const totalReviews = reviews.length;
+
   const averageRating =
     totalReviews > 0
-      ? (reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews).toFixed(
-          1,
-        )
+      ? (
+          reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
+        ).toFixed(1)
       : "0.0";
 
   const ratingDistribution = [5, 4, 3, 2, 1].map((stars) => {
@@ -171,7 +181,9 @@ export default function Reviews() {
                     <div className="flex items-center gap-3 text-sm text-muted-foreground">
                       <StarRating rating={review.rating} />
                       <span>•</span>
-                      <span>{new Date(review.date).toLocaleDateString()}</span>
+                      <span>
+                        {new Date(review.date).toLocaleDateString()}
+                      </span>
                     </div>
                   </div>
                 </div>

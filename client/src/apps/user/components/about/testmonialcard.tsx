@@ -6,7 +6,7 @@ interface TestimonialCardProps {
   author: string;
   location: string;
   property: string;
-  image: string;
+  image?: string;
 }
 
 export default function TestimonialCard({
@@ -16,12 +16,13 @@ export default function TestimonialCard({
   property,
   image,
 }: TestimonialCardProps) {
+
   return (
     <div className="relative mx-auto w-full max-w-5xl bg-card rounded-2xl border border-border/50 px-5 sm:px-8 md:px-16 py-10 shadow-sm transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
       {/* Glow Accent */}
       <div
-        className=" inset-0 -z-10 blur-3xl opacity-30 
-                      bg-gradient-to-br from-amber-500/30 via-orange-400/20 to-transparent"
+        className="absolute inset-0 -z-10 blur-3xl opacity-30 
+        bg-gradient-to-br from-amber-500/30 via-orange-400/20 to-transparent"
       />
 
       {/* Content */}
@@ -36,8 +37,8 @@ export default function TestimonialCard({
         </span>
 
         <blockquote
-          className="mb-8 text-lg sm:text-xl md:text-2xl leading-relaxed 
-                               font-serif italic text-foreground/90"
+          className="mb-8 text-md sm:text-lg md:text-xl leading-relaxed 
+          font-serif italic text-foreground/90"
         >
           “{quote}”
         </blockquote>
@@ -58,7 +59,9 @@ export default function TestimonialCard({
             <p className="font-serif font-semibold text-foreground leading-tight">
               {author}
             </p>
-            <p className="text-sm text-muted-foreground truncate">{location}</p>
+            <p className="text-sm text-muted-foreground truncate">
+              {location}
+            </p>
           </div>
         </div>
       </div>

@@ -111,12 +111,18 @@ export interface PropertyDestinationProps {
 
 export interface PropertyReview {
   id: number;
+  property: number;
+  property_name: string;
   user: number;
-  user_name: string;
+  reviewer_name: string;
   rating: number;
   comment: string;
-  created_at: string;
+  avatar: string;
+  country: string;
+  created_at: Date;
 }
+
+
 
 // export interface GalleryPhoto {
 //   id: string;

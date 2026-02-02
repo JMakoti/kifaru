@@ -510,7 +510,9 @@ export default function KifaruPropertyDetails() {
               )} */}
 
               {/* Reviews Tab  */}
-              {activeTab === "reviews" && <Reviews />}
+              {activeTab === "reviews" && <Reviews propertyId={property.id} />}\
+              
+
               {/* review={}  */}
             </div>
           </div>

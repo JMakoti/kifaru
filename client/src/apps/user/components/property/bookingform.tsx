@@ -83,7 +83,6 @@ export default function BookingForm() {
   /* Stay Details */
   const [destination] = useState(name);
   const [accommodationType, setAccommodationType] = useState("");
-  const [guestType, setGuestType] = useState("");
   const [stayType, setStayType] = useState("");
 
   const [checkIn, setCheckIn] = useState<Date | null>(null);
@@ -98,7 +97,6 @@ export default function BookingForm() {
 
     const payload = {
       accommodation_type: accommodationType,
-      guest_type: guestType,
       stay_type: stayType,
       check_in: checkIn?.toISOString().split("T")[0],
       check_out: checkOut?.toISOString().split("T")[0],
@@ -222,7 +220,7 @@ export default function BookingForm() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <select
                       className="border rounded-lg px-3 py-2"
                       value={accommodationType}
@@ -232,18 +230,6 @@ export default function BookingForm() {
                       <option value="">Accommodation</option>
                       <option value="full_apartment">Full Apartment</option>
                       <option value="master_bedroom">Master Bedroom</option>
-                      <option value="single_room">Single Room</option>
-                    </select>
-
-                    <select
-                      className="border rounded-lg px-3 py-2"
-                      value={guestType}
-                      onChange={(e) => setGuestType(e.target.value)}
-                      required
-                    >
-                      <option value="">Guest Type</option>
-                      <option value="international">International</option>
-                      <option value="local">Local</option>
                     </select>
 
                     <select
@@ -298,7 +284,8 @@ export default function BookingForm() {
               <Button
                 type="submit"
                 size="lg"
-                className="gap-2 px-10 shadow-lg shadow-primary/20 cursor pointer"
+                className="gap-2 px-10 shadow-lg shadow-primary/20 cursor-pointer"
+                onClick={handleSubmit}
               >
                 Proceed to Payment
                 {/* navigate( "payment", { state: bookingData }); */}
