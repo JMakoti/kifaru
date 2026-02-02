@@ -26,6 +26,13 @@ import type {
 } from "@/services/property.types";
 import LoadingScreen from "@/components/loadingscreen";
 
+// Extend APIProperty to include optional fields for our UI
+interface ExtendedAPIProperty extends APIProperty {
+  status?: "available" | "booked" | "blocked" | "maintenance";
+  booked_dates?: { check_in: string; check_out: string }[];
+}
+
+// Derived property type for rendering
 interface PropertyView {
   id: number;
   name: string;
@@ -44,68 +51,60 @@ export default function PropertiesView() {
 
   const { data: fetchedProperties = [], isLoading } = useProperties();
 
+  // Map API data to UI-friendly property view
   const properties: PropertyView[] = useMemo(() => {
     const today = new Date();
 
-    return fetchedProperties.map((prop: APIProperty) => {
+    return fetchedProperties.map((prop) => {
       const bedrooms = prop.bedrooms || 1;
       const maxGuests = prop.max_guests || 1;
       const rating = prop.average_rating || 4.5;
 
-      type Status = "available" | "booked" | "blocked" | "maintenance";
+      // Determine property status
+      const getPropertyStatus = (prop: ExtendedAPIProperty, bufferDays = 1) => {
+        if (prop.status === "blocked") return "blocked";
+        if (prop.status === "maintenance") return "maintenance";
 
-      function getPropertyStatus(prop: APIProperty, bufferDays = 1): Status {
-        // Assume blocked/maintenance flags exist on API object
-        if ((prop).status === "blocked") return "blocked";
-        if ((prop).status === "maintenance") return "maintenance";
-
-        // Check booked dates if any
-        if (
-          !(prop).booked_dates ||
-          (prop).booked_dates.length === 0
-        )
+        if (!prop.booked_dates || prop.booked_dates.length === 0)
           return "available";
 
-        const isBookedToday = (prop as any).booked_dates.some((range: any) => {
+        const isBookedToday = prop.booked_dates.some((range) => {
           const checkIn = new Date(range.check_in);
           const checkOut = new Date(range.check_out);
-
           const bufferedCheckout = new Date(checkOut);
           bufferedCheckout.setDate(bufferedCheckout.getDate() + bufferDays);
-
           return today >= checkIn && today <= bufferedCheckout;
         });
 
         return isBookedToday ? "booked" : "available";
-      }
+      };
 
-      function getBookedDaysFromToday(
-        prop: APIProperty,
-        status: Status,
+      // Calculate booked days from today
+      const getBookedDaysFromToday = (
+        prop: ExtendedAPIProperty,
+        status: PropertyView["status"],
         bufferDays = 1,
-      ): number {
+      ) => {
         if (status !== "booked") return 0;
-        if (!(prop as any).booked_dates) return 0;
+        if (!prop.booked_dates) return 0;
 
         let total = 0;
-        (prop as any).booked_dates.forEach((range: any) => {
+        for (const range of prop.booked_dates) {
           const checkIn = new Date(range.check_in);
           const checkOut = new Date(range.check_out);
-
           const bufferedCheckout = new Date(checkOut);
           bufferedCheckout.setDate(bufferedCheckout.getDate() + bufferDays);
 
-          if (bufferedCheckout < today) return;
+          if (bufferedCheckout < today) continue;
 
           const start = checkIn < today ? today : checkIn;
           const diff =
             (bufferedCheckout.getTime() - start.getTime()) /
             (1000 * 60 * 60 * 24);
           if (diff > 0) total += Math.ceil(diff);
-        });
-
+        }
         return total;
-      }
+      };
 
       const status = getPropertyStatus(prop);
       const bookedDaysFromToday = getBookedDaysFromToday(prop, status);
@@ -150,14 +149,13 @@ export default function PropertiesView() {
   const totalProperties = properties.length;
   const avgNightlyRate = Math.round(
     properties.reduce((sum, p) => sum + p.pricePerNight, 0) /
-      properties.length || 0,
+      (properties.length || 1),
   );
   const availableCount = properties.filter(
     (p) => p.status === "available",
   ).length;
 
-  if (isLoading)
-    return <LoadingScreen/>
+  if (isLoading) return <LoadingScreen />;
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -176,7 +174,7 @@ export default function PropertiesView() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="shadow-soft h-30" style={{ animationDelay: "0.1s" }}>
+        <Card className="shadow-soft h-30">
           <CardContent className="py-3 px-6 flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-muted-foreground">
@@ -192,7 +190,7 @@ export default function PropertiesView() {
           </CardContent>
         </Card>
 
-        <Card className="shadow-soft h-30" style={{ animationDelay: "0.2s" }}>
+        <Card className="shadow-soft h-30">
           <CardContent className="py-3 px-6 flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-muted-foreground">
@@ -208,7 +206,7 @@ export default function PropertiesView() {
           </CardContent>
         </Card>
 
-        <Card className="shadow-soft h-30" style={{ animationDelay: "0.3s" }}>
+        <Card className="shadow-soft h-30">
           <CardContent className="py-3 px-6 flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-muted-foreground">
@@ -226,7 +224,7 @@ export default function PropertiesView() {
       </div>
 
       {/* Search and Property List */}
-      <Card style={{ animationDelay: "0.4s" }}>
+      <Card>
         <CardHeader>
           <CardTitle className="font-heading text-2xl">
             Property Listings
@@ -306,7 +304,6 @@ export default function PropertiesView() {
                     </div>
                   </div>
 
-                  {/* Buttons at the bottom */}
                   <div className="flex gap-2 pt-2 mt-auto">
                     <Button size="sm" variant="outline">
                       <Eye className="mr-1 h-4 w-4" />

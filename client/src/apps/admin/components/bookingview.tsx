@@ -122,7 +122,7 @@ export default function BookingView() {
       booking.guestName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       booking.id.toString().includes(searchTerm) ||
       booking.propertyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      booking.propertyType.toLowerCase().includes(searchTerm.toLowerCase())
+      booking.propertyType.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   const getStatusColor = (status: PropertyBooking["status"]) => {
@@ -175,8 +175,6 @@ export default function BookingView() {
             Track and manage your property reservations
           </p>
         </div>
-        {/* <NewSaleForm /> */}
-        <p>Booking Form</p>
       </div>
 
       {/* Summary Cards */}
@@ -227,7 +225,7 @@ export default function BookingView() {
       </div>
 
       {/* Booking List */}
-      <div className="shadow-soft">
+      <Card>
         <CardHeader>
           <CardTitle>Recent Booking</CardTitle>
         </CardHeader>
@@ -317,12 +315,12 @@ export default function BookingView() {
                               <span className="text-gray-600">
                                 {calculateNights(
                                   booking.checkIn,
-                                  booking.checkOut
+                                  booking.checkOut,
                                 )}{" "}
                                 night
                                 {calculateNights(
                                   booking.checkIn,
-                                  booking.checkOut
+                                  booking.checkOut,
                                 ) > 1
                                   ? "s"
                                   : ""}
@@ -369,11 +367,10 @@ export default function BookingView() {
                   ? "Try adjusting your search terms"
                   : "Start creating your first booking"}
               </p>
-              <p>Booking Form</p>
             </div>
           )}
         </CardContent>
-      </div>
+      </Card>
     </div>
   );
 }

@@ -1,7 +1,7 @@
 export default function Reports() {
   return (
     <>
-      <main className="min-h-screen pt-20">
+      <main className="min-h-screen pt-20 mt-16">
         <div className="container mx-auto px-6 md:px-12 py-16">
           <h1 className="text-4xl md:text-5xl font-serif font-bold text-center mb-8">
             Reports

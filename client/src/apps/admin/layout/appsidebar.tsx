@@ -9,34 +9,16 @@ import {
   SidebarInset,
 } from "../../../components/ui/sidebar";
 import { Button } from "../../../components/ui/button";
-import {
-  LogOut,
-  Home,
-  Calendar,
-  CreditCard,
-  Users,
-  BarChart2,
-  Settings,
-  Building2,
-  User,
-} from "lucide-react";
+import { LogOut, Settings, User } from "lucide-react";
 import rhino from "@/assets/icon/kifaru.png";
 import { useAuth } from "@/providers/useAuth";
+import { menu } from "../routes";
 
 export default function AppSidebar({
   children,
 }: {
   children?: React.ReactNode;
 }) {
-  const menu = [
-    { to: "/admin", label: "Dashboard", icon: Home },
-    { to: "/admin/property", label: "Properties", icon: Building2 },
-    { to: "/admin/bookings", label: "Bookings", icon: Calendar },
-    { to: "/admin/payments", label: "Transactions", icon: CreditCard },
-    { to: "/admin/guests", label: "Guests", icon: Users },
-    { to: "/admin/reports", label: "Reports", icon: BarChart2 },
-  ];
-
   const navigate = useNavigate();
   const { logout } = useAuth();
 
@@ -54,10 +36,12 @@ export default function AppSidebar({
       <Sidebar
         collapsible="icon"
         className="bg-white/5 text-sidebar-foreground z-50 fixed"
-        style={{
-          ["--sidebar-width"]: "16rem",
-          ["--sidebar-width-icon"]: "3.5rem",
-        }}
+        style={
+          {
+            "--sidebar-width": "16rem",
+            "--sidebar-width-icon": "3.5rem",
+          } as React.CSSProperties
+        }
       >
         <SidebarHeader>
           <div className="flex items-center justify-between gap-2 p-2 group-data-[collapsible=icon]:justify-center">
@@ -95,8 +79,10 @@ export default function AppSidebar({
                         } group-data-[collapsible=icon]:justify-center`
                       }
                     >
-                      <Icon className="w-5 h-5" title={m.label} />
-                      <span className="truncate group-data-[collapsible=icon]:hidden">
+                      {/* Icon always visible */}
+                      <Icon className="w-5 h-5" aria-label={m.label} />
+                      {/* Label hidden on mobile */}
+                      <span className="truncate hidden md:inline group-data-[collapsible=icon]:hidden">
                         {m.label}
                       </span>
                     </NavLink>
@@ -108,6 +94,7 @@ export default function AppSidebar({
         </SidebarContent>
 
         <SidebarFooter>
+          {/* Profile Link */}
           <div className="p-2">
             <NavLink
               to="/admin/profile"
@@ -120,11 +107,13 @@ export default function AppSidebar({
               }
             >
               <User className="w-5 h-5" />
-              <span className="truncate group-data-[collapsible=icon]:hidden">
+              <span className="truncate hidden md:inline group-data-[collapsible=icon]:hidden">
                 Profile
               </span>
             </NavLink>
           </div>
+
+          {/* Settings Link */}
           <div className="p-2">
             <NavLink
               to="/admin/settings"
@@ -137,21 +126,22 @@ export default function AppSidebar({
               }
             >
               <Settings className="w-5 h-5" />
-              <span className="truncate group-data-[collapsible=icon]:hidden">
+              <span className="truncate hidden md:inline group-data-[collapsible=icon]:hidden">
                 Settings
               </span>
             </NavLink>
           </div>
+
+          {/* Logout Button */}
           <div className="p-2">
             <Button
               variant="ghost"
               size="sm"
-              title="Logout"
               onClick={handleLogout}
               className="w-full h-8 lg:h-10 p-0 mt-4 text-destructive hover:text-destructive hover:bg-destructive/10 cursor-pointer"
             >
               <span className="flex items-center gap-2 w-full justify-center">
-                <span className="group-data-[collapsible=icon]:hidden">
+                <span className="hidden md:inline group-data-[collapsible=icon]:hidden">
                   Log out
                 </span>
                 <LogOut className="w-5 h-5" />
@@ -161,7 +151,7 @@ export default function AppSidebar({
         </SidebarFooter>
       </Sidebar>
 
-      {/* Render page content inside SidebarInset so the main content responds to sidebar state */}
+      {/* Page content */}
       {children && <SidebarInset>{children}</SidebarInset>}
     </SidebarProvider>
   );

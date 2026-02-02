@@ -17,12 +17,13 @@ export default function Topbar() {
     { id: 2, title: "Payment succeeded", time: "1d ago" },
   ];
 
-  //GET USER DEATAILS
+  // GET USER DETAILS
   const { user } = useAuth();
 
   return (
-    <header className="w-full border-b bg-background/60 backdrop-blur-sm">
-      <div className="max-w-[1120px] mx-auto px-4 py-3 flex items-center justify-between gap-4">
+    <header className="w-full border-b bg-background/60 backdrop-blur-sm fixed z-50">
+      <div className="max-w-[1020px] px-4 py-3 flex items-center justify-between gap-4">
+        {/* Left side: Title */}
         <div className="flex items-center gap-4">
           <h2 className="text-lg font-semibold">Admin</h2>
           <p className="text-sm text-muted-foreground hidden sm:block">
@@ -30,7 +31,8 @@ export default function Topbar() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        {/* Right side: Notifications & User */}
+        <div className="flex items-center gap-4">
           {/* Notifications */}
           <Popover>
             <PopoverTrigger asChild>
@@ -38,15 +40,16 @@ export default function Topbar() {
                 variant="ghost"
                 size="icon"
                 className="relative"
-                title="Notifications"
+                aria-label="Notifications"
               >
-                <Bell className="w-4 h-4" />
+                <Bell className="w-5 h-5" aria-hidden="true" />
                 {notifications.length > 0 && (
-                  <span className="absolute -top-1 -right-1">
-                    <Badge className="!px-1 !py-0.5 text-[10px] ">
-                      {notifications.length}
-                    </Badge>
-                  </span>
+                  <Badge
+                    className="absolute -top-1 -right-1 !px-1 !py-0.5 text-[10px]"
+                    variant="destructive"
+                  >
+                    {notifications.length}
+                  </Badge>
                 )}
               </Button>
             </PopoverTrigger>
@@ -57,7 +60,7 @@ export default function Topbar() {
                   {notifications.map((n) => (
                     <div
                       key={n.id}
-                      className="flex items-start justify-between gap-2 p-2 rounded hover:bg-accent"
+                      className="flex items-start justify-between gap-2 p-2 rounded hover:bg-accent hover:bg-opacity-20 transition-colors"
                     >
                       <div>
                         <div className="text-sm font-medium">{n.title}</div>
@@ -72,16 +75,16 @@ export default function Topbar() {
             </PopoverContent>
           </Popover>
 
-          <div className="ml-5 flex items-center justify-center gap-2">
-            <Avatar className="h-10 w-10 ring-4 ring-primary/10">
-              {/* <AvatarImage src={} alt="Admin" /> */}
-              <AvatarFallback className="text-xl font-semibold">
+          {/* User Avatar */}
+          <div className="flex items-center gap-2 ml-4">
+            <Avatar className="h-10 w-10 ring-2 ring-primary/20">
+              <AvatarFallback className="text-lg font-semibold">
                 {user
                   ? `${user.first_name[0]}${user.last_name[0]}`.toUpperCase()
                   : "AD"}
               </AvatarFallback>
             </Avatar>
-            <span className="hidden sm:inline font-bold italic">
+            <span className="hidden sm:inline font-semibold italic">
               {user ? `${user.first_name} ${user.last_name}` : "Admin"}
             </span>
           </div>
