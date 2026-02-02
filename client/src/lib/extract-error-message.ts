@@ -1,15 +1,27 @@
-/**
- * Extract EXACT backend error message(s)
- */
-export function extractErrorMessage(error: any): string {
-  const data = error?.response?.data;
+import { AxiosError } from "axios";
 
-  if (typeof data?.message === "string") {
-    return data.message;
-  }
+type ErrorResponseData = {
+  message?: string | string[];
+  [key: string]: string | string[] | undefined;
+};
 
-  if (typeof data === "object" && data !== null) {
-    return Object.values(data).flat().filter(Boolean).join(" ");
+export function extractErrorMessage(error: unknown): string {
+  if (error instanceof AxiosError && error.response?.data) {
+    const data = error.response.data as ErrorResponseData;
+
+    if (typeof data.message === "string") {
+      return data.message;
+    }
+
+    if (Array.isArray(data.message)) {
+      return data.message.filter(Boolean).join(" ");
+    }
+
+    // fallback: flatten all values in the object
+    return Object.values(data)
+      .flatMap((v) => (Array.isArray(v) ? v : [v]))
+      .filter(Boolean)
+      .join(" ");
   }
 
   return "Unknown error occurred";

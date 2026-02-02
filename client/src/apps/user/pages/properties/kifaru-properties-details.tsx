@@ -110,20 +110,24 @@ export default function KifaruPropertyDetails() {
         {/* Image Gallery */}
         <div className="mb-8">
           {images.length > 0 ? (
-            // <div className="relative w-full  h-96 rounded-lg overflow-hidden bg-gray-100 md:aspect-auto">
-            <div className="relative aspect-[16/9] md:aspect-[21/9] rounded-xl overflow-hidden group cursor-pointer">
+            <div
+              className="
+        relative 
+        rounded-xl 
+        overflow-hidden 
+        group 
+        cursor-pointer
+        h-90 
+        md:aspect-[21/9] 
+        md:h-auto 
+      "
+            >
               <img
-                // src={images[currentImageIndex]}
                 src={images[currentImageIndex].image}
                 alt={property.name}
-                // onClick={() => setIsGalleryOpen(true)}
                 className={`w-full h-full object-cover cursor-pointer
-              transition-all duration-300 ease-out
-              ${
-                animated
-                  ? "opacity-0 translate-y-5"
-                  : "opacity-100 translate-y-0"
-              }`}
+          transition-all duration-300 ease-out
+          ${animated ? "opacity-0 translate-y-5" : "opacity-100 translate-y-0"}`}
               />
 
               {images.length > 1 && (
@@ -161,7 +165,7 @@ export default function KifaruPropertyDetails() {
               >
                 <LucideIcons.Image className="w-5 h-5 text-foreground" />
                 <span className="text-sm font-medium text-foreground">
-                  Show all photos
+                  All photos
                 </span>
               </button>
             </div>

@@ -4,9 +4,9 @@ import AdminApp from "./apps/admin/adminApp";
 import AuthRoutes from "./apps/auth/auth.routes";
 import Notfound from "./apps/user/pages/notfound";
 import "./App.css";
-import { useAuth } from "./providers/authprovider";
 import LoadingScreen from "./components/loadingscreen";
 import { ProtectedRoute } from "./apps/auth/routes/protected.route";
+import { useAuth } from "./providers/useAuth";
 
 export default function App() {
   const { isLoading } = useAuth();

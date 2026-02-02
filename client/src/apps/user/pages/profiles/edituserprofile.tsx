@@ -14,7 +14,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "react-toastify";
 import type { User } from "@/services/user.types";
 import { useUpdateProfile } from "@/services/user.service";
-import { useAuth } from "@/providers/authprovider";
+import { useAuth } from "@/providers/useAuth";
 
 interface EditProfileModalProps {
   open: boolean;

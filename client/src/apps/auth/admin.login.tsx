@@ -13,9 +13,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import bglogin from "@/assets/property-2.jpg";
-import { useAuth } from "@/providers/authprovider";
 import { extractErrorMessage } from "@/lib/extract-error-message";
 import kifaru from "@/assets/icon/kifaru.png";
+import { useAuth } from "@/providers/useAuth";
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({

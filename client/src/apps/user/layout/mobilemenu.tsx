@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Link, NavLink } from "react-router";
 import navLinks from "../routes";
-import { useAuth } from "@/providers/authprovider";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useProperties } from "@/services/property.service";
+import { useAuth } from "@/providers/useAuth";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -11,11 +11,10 @@ interface MobileMenuProps {
 }
 
 export default function Mobilemenu({ isOpen, onClose }: MobileMenuProps) {
-  if (!isOpen) return null;
   const { isAuthenticated, user } = useAuth();
-
-  // Fetch properties dynamically
   const { data: properties, isLoading, isError } = useProperties();
+
+  if (!isOpen) return null;
 
   return (
     <div>

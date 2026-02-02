@@ -56,13 +56,13 @@ export default function PropertiesView() {
 
       function getPropertyStatus(prop: APIProperty, bufferDays = 1): Status {
         // Assume blocked/maintenance flags exist on API object
-        if ((prop as any).status === "blocked") return "blocked";
-        if ((prop as any).status === "maintenance") return "maintenance";
+        if ((prop).status === "blocked") return "blocked";
+        if ((prop).status === "maintenance") return "maintenance";
 
         // Check booked dates if any
         if (
-          !(prop as any).booked_dates ||
-          (prop as any).booked_dates.length === 0
+          !(prop).booked_dates ||
+          (prop).booked_dates.length === 0
         )
           return "available";
 

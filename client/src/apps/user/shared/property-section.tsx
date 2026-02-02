@@ -21,7 +21,7 @@ function PropertyDestination({
 
   const images =
     property.images?.length > 0
-      ? property.images.map((img: any) => img.image)
+      ? property.images.map((img) => img.image)
       : [property.background_image];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

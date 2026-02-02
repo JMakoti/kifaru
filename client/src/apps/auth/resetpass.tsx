@@ -4,21 +4,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { extractErrorMessage } from "@/lib/extract-error-message";
 import { useResetPassword } from "@/services/user.service";
-import { Lock, Eye, EyeOff} from "lucide-react";
+import { Lock, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import kifaru from "@/assets/icon/kifaru.png";
 
 export default function ResetPasswordPage() {
-  const { uidb64, token } = useParams<{
-    uidb64: string;
-    token: string;
-  }>();
-
-  if (!uidb64 || !token) {
-    return <p>Invalid password reset link.</p>;
-  }
-
   const resetPassword = useResetPassword();
   const [formData, setFormData] = useState({
     password: "",
@@ -27,6 +18,15 @@ export default function ResetPasswordPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
+
+  const { uidb64, token } = useParams<{
+    uidb64: string;
+    token: string;
+  }>();
+
+  if (!uidb64 || !token) {
+    return <p>Invalid password reset link.</p>;
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +45,7 @@ export default function ResetPasswordPage() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8 items-center flex flex-col">
-          <img src={kifaru} alt="Kifaru Logo" className="w-20 h-20"/>
+          <img src={kifaru} alt="Kifaru Logo" className="w-20 h-20" />
           <p className="text-muted-foreground mt-2">Reset Your Password</p>
         </div>
 

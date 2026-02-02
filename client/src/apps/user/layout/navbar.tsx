@@ -13,8 +13,8 @@ import logo from "@/assets/icon/kifaru.png";
 import navLinks from "../routes";
 import Mobilemenu from "./mobilemenu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { useAuth } from "@/providers/authprovider";
 import { useProperties } from "@/services/property.service";
+import { useAuth } from "@/providers/useAuth";
 
 export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

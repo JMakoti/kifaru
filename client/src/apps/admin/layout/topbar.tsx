@@ -9,7 +9,7 @@ import {
 } from "../../../components/ui/popover";
 import { Avatar, AvatarFallback } from "../../../components/ui/avatar";
 import { Badge } from "../../../components/ui/badge";
-import { useAuth } from "@/providers/authprovider";
+import { useAuth } from "@/providers/useAuth";
 
 export default function Topbar() {
   const notifications = [

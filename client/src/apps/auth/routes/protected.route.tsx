@@ -1,8 +1,8 @@
 // apps/auth/routes/admin.route.tsx (or wherever your ProtectedRoute is)
 import type { ReactNode } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { useAuth } from "@/providers/authprovider";
 import LoadingScreen from "@/components/loadingscreen";
+import { useAuth } from "@/providers/useAuth";
 
 interface ProtectedRouteProps {
   allowedRoles?: string[];

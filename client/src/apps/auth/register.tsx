@@ -4,12 +4,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { extractErrorMessage } from "@/lib/extract-error-message";
-import { useAuth } from "@/providers/authprovider";
 import type { AuthResponse } from "@/services/user.types";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import kifaru from "@/assets/icon/kifaru.png";
+import { useAuth } from "@/providers/useAuth";
 
 export default function Register() {
   const [formData, setFormData] = useState({

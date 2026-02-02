@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from "react";
+import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   getProfile,
@@ -12,6 +12,7 @@ import type {
   RegisterFormInputs,
   AuthResponse,
 } from "@/services/user.types";
+import { AuthContext } from "./auth-context";
 
 // Helper to check if auth token exists in cookies
 const getAuthTokenFromCookie = (): string | null => {
@@ -22,7 +23,7 @@ const getAuthTokenFromCookie = (): string | null => {
   return cookieValue || null;
 };
 
-interface AuthContextValue {
+export interface AuthContextValue {
   user: User | null;
   isAuthenticated: boolean;
   isLoading: boolean;
@@ -35,8 +36,6 @@ interface AuthContextValue {
 
 const AUTH_QUERY_KEY = ["auth-user"];
 
-const AuthContext = createContext<AuthContextValue | undefined>(undefined);
-
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const queryClient = useQueryClient();
 
@@ -47,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     data: user,
     isLoading,
     error,
-    refetch
+    refetch,
   } = useQuery<User | null>({
     queryKey: AUTH_QUERY_KEY,
     queryFn: getProfile,
@@ -93,11 +92,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await refetch();
   };
 
-
   return (
     <AuthContext.Provider
       value={{
-
         user: user ?? null,
         refreshUser,
         isAuthenticated: !!user,
@@ -111,13 +108,4 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-//  Use Auth Hook
-export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
 }

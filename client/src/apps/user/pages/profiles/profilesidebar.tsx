@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { EditProfileModal } from "./edituserprofile";
 import type { User } from "@/services/user.types";
-import { useAuth } from "@/providers/authprovider";
+import { useAuth } from "@/providers/useAuth";
 
 interface ProfileSidebarProps {
   user: User;

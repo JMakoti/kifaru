@@ -1,4 +1,4 @@
-import { useAuth } from "@/providers/authprovider";
+import { useAuth } from "@/providers/useAuth";
 import { BookingHistory } from "./bookinghistory";
 import { ProfileSidebar } from "./profilesidebar";
 import LoadingScreen from "@/components/loadingscreen";

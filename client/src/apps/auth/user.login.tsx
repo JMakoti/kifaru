@@ -15,10 +15,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useAuth } from "@/providers/authprovider";
 import { extractErrorMessage } from "@/lib/extract-error-message";
 import type { AuthResponse } from "@/services/user.types";
 import kifaru from "@/assets/icon/kifaru.png";
+import { useAuth } from "@/providers/useAuth";
 
 export default function Login() {
   const [formData, setFormData] = useState({

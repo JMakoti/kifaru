@@ -21,7 +21,7 @@ import {
   User,
 } from "lucide-react";
 import rhino from "@/assets/icon/kifaru.png";
-import { useAuth } from "@/providers/authprovider";
+import { useAuth } from "@/providers/useAuth";
 
 export default function AppSidebar({
   children,
@@ -55,8 +55,8 @@ export default function AppSidebar({
         collapsible="icon"
         className="bg-white/5 text-sidebar-foreground z-50 fixed"
         style={{
-          ["--sidebar-width" as any]: "16rem",
-          ["--sidebar-width-icon" as any]: "3.5rem",
+          ["--sidebar-width"]: "16rem",
+          ["--sidebar-width-icon"]: "3.5rem",
         }}
       >
         <SidebarHeader>
@@ -82,7 +82,7 @@ export default function AppSidebar({
           <nav className="p-2">
             <ul className="flex flex-col gap-1">
               {menu.map((m) => {
-                const Icon = m.icon as any;
+                const Icon = m.icon;
                 return (
                   <li key={m.to}>
                     <NavLink
