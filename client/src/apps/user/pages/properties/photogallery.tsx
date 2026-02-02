@@ -1,8 +1,11 @@
-import { useState, useMemo } from "react";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+"use client";
+
+import { useMemo, useState } from "react";
+// import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import type { PropertyImage } from "@/services/property.types";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 
 type TabType =
   | "all"
@@ -34,6 +37,7 @@ export function PhotoGalleryModal({
 }: PhotoGalleryModalProps) {
   const [activeTab, setActiveTab] = useState<TabType>("all");
 
+  // Prepare tabs with counts
   const tabs: Tab[] = useMemo(() => {
     const countByCategory = (category: TabType) =>
       category === "all"
@@ -57,6 +61,7 @@ export function PhotoGalleryModal({
     ];
   }, [photos]);
 
+  // Filter photos based on active tab
   const filteredPhotos = useMemo(() => {
     if (activeTab === "all") return photos;
     return photos.filter((photo) => photo.category === activeTab);
@@ -66,15 +71,19 @@ export function PhotoGalleryModal({
     tabs.find((tab) => tab.id === activeTab)?.label ?? "All photos";
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent
-        showCloseButton={false}
-        className="max-w-6xl w-[95vw] h-[90vh] p-0 gap-0 overflow-hidden flex flex-col"
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent
+        side="right"
+        className="
+    w-screen
+    md:w-[85vw]
+    xl:w-[75vw]
+    max-w-none
+    p-0
+    flex flex-col
+    [&_[data-radix-sheet-close]]:hidden
+  "
       >
-        {/* <DialogContent
-        showCloseButton={false}
-        className="max-w-[1200px] w-full h-[95vh] p-0 flex flex-col overflow-hidden bg-background text-foreground"
-      > */}
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-4 border-b border-border">
           <button
@@ -121,27 +130,38 @@ export function PhotoGalleryModal({
               No photos available for this category.
             </p>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {filteredPhotos.map((photo) => (
-                <div key={photo.id} className="group w-full">
-                  <div className="w-full overflow-hidden rounded-lg">
-                    <img
-                      src={photo.image}
-                      alt={photo.category ?? "Property photo"}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
+            <div className="flex flex-wrap gap-4">
+              {filteredPhotos.map((photo, index) => {
+                const mobileWidth = index % 2 === 0 ? "w-[320px]" : "w-[320px]";
+
+                const desktopWidth =
+                  index % 3 === 0 ? "md:w-[550px]" : "md:w-[350px]";
+
+                return (
+                  <div
+                    key={photo.id}
+                    className={`rounded-lg overflow-hidden group cursor-pointer ${mobileWidth} ${desktopWidth}`}
+                  >
+                    <div className="w-full h-[180px] sm:h-[200px] md:h-[240px] lg:h-[280px] overflow-hidden rounded-lg">
+                      <img
+                        src={photo.image}
+                        alt={photo.category ?? "Property photo"}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                    </div>
+
+                    {photo.category && (
+                      <p className="mt-2 text-sm font-medium text-foreground/90 capitalize">
+                        {photo.category.replace("_", " ")}
+                      </p>
+                    )}
                   </div>
-                  {photo.category && (
-                    <p className="mt-2 text-sm font-medium text-foreground/90">
-                      {photo.category}
-                    </p>
-                  )}
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
-      </DialogContent>
-    </Dialog>
+      </SheetContent>
+    </Sheet>
   );
 }
