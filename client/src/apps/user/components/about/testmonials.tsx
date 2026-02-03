@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import TestimonialCard from "./testmonialcard";
 import { useReviews } from "@/services/property.service";
-import type { PropertyReview } from "@/services/property.types";
 import LoadingScreen from "@/components/loadingscreen";
+import type { PropertyReview } from "@/types/property";
 
 const SLIDE_DURATION = 6000;
 const mapReviewsToTestimonials = (reviews: PropertyReview[]) =>

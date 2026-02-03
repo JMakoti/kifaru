@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
 import { Star, Pencil, Trash2 } from "lucide-react";
-import {  CATEGORY_LABELS, type GalleryImage } from "@/types/gallery";
+import {  CATEGORY_LABELS, type GalleryPhoto} from "@/types/gallery";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 interface GalleryCardProps {
-  image: GalleryImage;
-  onEdit: (image: GalleryImage) => void;
-  onDelete: (image: GalleryImage) => void;
-  onToggleFeatured: (image: GalleryImage) => void;
+  image: GalleryPhoto;
+  onEdit: (image: GalleryPhoto) => void;
+  onDelete: (image: GalleryPhoto) => void;
+  onToggleFeatured: (image: GalleryPhoto) => void;
 }
 
 export function GalleryCard({ 

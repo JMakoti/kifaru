@@ -22,18 +22,18 @@ import {
   CATEGORY_LABELS,
   type GalleryCategory,
   type GalleryFormData,
-  type GalleryImage,
+  type GalleryPhoto,
 } from "@/types/gallery";
 
 interface GalleryModalProps {
   open: boolean;
   onClose: () => void;
   onSubmit: (data: GalleryFormData) => void;
-  editImage?: GalleryImage | null;
+  editImage?: GalleryPhoto | null;
 }
 
 const getInitialFormData = (
-  editImage?: GalleryImage | null,
+  editImage?: GalleryPhoto | null,
 ): GalleryFormData => ({
   title: editImage?.title ?? "",
   category: editImage?.category ?? "property_showcase",

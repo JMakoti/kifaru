@@ -71,7 +71,13 @@ function Stepper({ label, value, min, max, onChange }: StepperProps) {
 
 export default function BookingForm() {
   const location = useLocation();
-  const { name } = location.state as { name: string };
+
+  const { name, max_guests } = location.state as {
+    // id: number;
+    name: string;
+    max_guests: number | null;
+    // min_nights: number;
+  };
   /* Guest Details */
   const [guestData, setGuestData] = useState({
     fullName: "",
@@ -109,6 +115,8 @@ export default function BookingForm() {
 
     console.log("Booking Payload:", payload);
   };
+
+  const safeMaxGuests = max_guests ?? 1;
 
   return (
     <div className="min-h-screen bg-background">
@@ -258,14 +266,15 @@ export default function BookingForm() {
                       label="Adults"
                       value={adults}
                       min={1}
-                      max={50}
+                      max={Math.max(1, safeMaxGuests - children)}
                       onChange={setAdults}
                     />
+
                     <Stepper
                       label="Children"
                       value={children}
                       min={0}
-                      max={50}
+                      max={Math.max(0, safeMaxGuests - adults)}
                       onChange={setChildren}
                     />
                   </div>
@@ -287,7 +296,7 @@ export default function BookingForm() {
                 className="gap-2 px-10 shadow-lg shadow-primary/20 cursor-pointer"
                 onClick={handleSubmit}
               >
-                Proceed to Payment
+                Preview Your Booking
                 {/* navigate( "payment", { state: bookingData }); */}
                 <ArrowRight className="w-4 h-4" />
               </Button>

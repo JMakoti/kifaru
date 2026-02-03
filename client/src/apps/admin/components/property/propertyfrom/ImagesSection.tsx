@@ -34,7 +34,7 @@ export function ImagesSection({ images, onChange }: ImagesSectionProps) {
   const updateImage = (
     index: number,
     field: keyof PropertyImage,
-    value: string | number,
+    value: string | File | null | number,
   ) => {
     const updated = [...images];
     updated[index] = { ...updated[index], [field]: value };
@@ -77,11 +77,7 @@ export function ImagesSection({ images, onChange }: ImagesSectionProps) {
                     type="file"
                     accept="image/*"
                     onChange={(e) =>
-                      updateImage(
-                        index,
-                        "image",
-                        e.target.files?.[0]?.name || "",
-                      )
+                      updateImage(index, "image", e.target.files?.[0] || null)
                     }
                     className="pl-10 file:border-0 file:bg-transparent file:text-sm file:text-muted-foreground hover:file:text-primary"
                   />

@@ -15,7 +15,7 @@ export function AmenitiesSection({
   onChange,
 }: AmenitiesSectionProps) {
   const addAmenity = () => {
-    onChange([...amenities, { image: null, label: "" }]); 
+    onChange([...amenities, { image: null, label: "" }]);
   };
 
   const removeAmenity = (index: number) => {
@@ -25,7 +25,7 @@ export function AmenitiesSection({
   const updateAmenity = (
     index: number,
     field: keyof Amenity,
-    value: string,
+    value: string | File | null,
   ) => {
     const updated = [...amenities];
     updated[index] = { ...updated[index], [field]: value };
@@ -71,11 +71,7 @@ export function AmenitiesSection({
                     type="file"
                     accept="image/*"
                     onChange={(e) =>
-                      updateAmenity(
-                        index,
-                        "image",
-                        e.target.files?.[0]?.name || "",
-                      )
+                      updateAmenity(index, "image", e.target.files?.[0] || null,)
                     }
                     className="pl-10 file:border-0 file:bg-transparent file:text-sm file:text-muted-foreground hover:file:text-primary"
                   />

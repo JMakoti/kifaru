@@ -4,10 +4,7 @@ import { Link } from "react-router-dom";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useProperties } from "@/services/property.service";
 import LoadingScreen from "@/components/loadingscreen";
-import type {
-  Property,
-  PropertyDestinationProps,
-} from "@/services/property.types";
+import type { Property, PropertyDestinationProps } from "@/types/property";
 
 function PropertyDestination({
   property,
@@ -20,8 +17,8 @@ function PropertyDestination({
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
   const images =
-    property.images?.length > 0
-      ? property.images.map((img) => img.image)
+    property.property_images?.length > 0
+      ? property.property_images.map((img) => img.image)
       : [property.background_image];
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

@@ -1,18 +1,22 @@
-export type GalleryCategory = 
-  | "property_showcase" 
-  | "interior_design" 
-  | "architecture" 
-  | "landscape" 
-  | "lifestyle";
+export type GalleryCategory =
+  | "lifestyle"
+  | "property_showcase"
+  | "amenities"
+  | "location"
+  | "events"
+  | "dining"
+  | "activities"
+  | "other";
 
-export interface GalleryImage {
+//  gallery photo
+export interface GalleryPhoto {
   id: number;
   image: string;
   title: string;
   category: GalleryCategory;
   order: number;
   is_featured: boolean;
-  created_at: string;
+  created_at: Date;
 }
 
 export interface GalleryFormData {
@@ -22,10 +26,26 @@ export interface GalleryFormData {
   imageFile: File | null;
 }
 
+// export const IMAGE_CATEGORY_CHOICE: {
+//   value: GalleryCategory;
+//   label: string;
+// }[] = [
+//   { value: "property_showcase", label: "Property Showcase" },
+//   { value: "lifestyle", label: "Lifestyle" },
+//   { value: "amenities", label: "Amenities" },
+//   { value: "location", label: "Location" },
+//   { value: "events", label: "Events" },
+//   { value: "dining", label: "Dining" },
+//   { value: "other", label: "Other" },
+// ];
+
 export const CATEGORY_LABELS: Record<GalleryCategory, string> = {
   property_showcase: "Property Showcase",
-  interior_design: "Interior Design",
-  architecture: "Architecture",
-  landscape: "Landscape",
+  amenities: "Amenities",
+  location: "Location",
+  events: "Events",
   lifestyle: "Lifestyle",
+  dining: "Dining",
+  activities: "Activities",
+  other: "Other",
 };

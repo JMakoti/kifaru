@@ -8,13 +8,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import type { GalleryImage } from "@/types/gallery";
+import type { GalleryPhoto } from "@/types/gallery";
 
 interface DeleteConfirmDialogProps {
   open: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  image: GalleryImage | null;
+  image: GalleryPhoto | null;
 }
 
 export function DeleteConfirmDialog({

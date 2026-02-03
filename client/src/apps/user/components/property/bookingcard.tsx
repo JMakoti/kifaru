@@ -1,12 +1,15 @@
+import type { Contact } from "@/types/property";
 import BookingRequest from "./bookingrequest";
 import * as LucideIcons from "lucide-react";
-import type { Contact } from "@/services/property.types";
 import { useNavigate } from "react-router";
 
 interface BookingProps {
   location: string;
   country: string;
   name: string;
+  id: number;
+  max_guests: number | null;
+  min_nights: number;
   slug: string;
   propertyContacts: Contact[];
 }
@@ -16,12 +19,17 @@ export default function BookingCard({
   country,
   name,
   slug,
+  id,
+  max_guests,
+  min_nights,
   propertyContacts,
 }: BookingProps & { slug: string }) {
   const navigate = useNavigate();
 
   const handleBookingClick = () => {
-    navigate(`/property/${slug}/booking`, { state: { name } });
+    navigate(`/property/${slug}/booking`, {
+      state: { id, name, max_guests, min_nights },
+    });
   };
 
   return (

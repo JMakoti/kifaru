@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import type { GalleryPhoto } from "@/services/property.types";
 import { useGallery } from "@/services/property.service";
+import type { GalleryPhoto } from "@/types/gallery";
 
 interface GalleryItem {
   id: number;

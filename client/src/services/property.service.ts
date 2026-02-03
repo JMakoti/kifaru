@@ -1,17 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  type PropertyReview,
-  type Property,
-  type GalleryPhoto,
-} from "./property.types";
-import {
   createProperty,
+  deleteProperty,
   fetchGallery,
   fetchProperties,
   fetchReviews,
   getDetails,
 } from "./property.endpoints";
-import type { PropertyFormData } from "@/types/property";
+import type { Property, PropertyReview } from "@/types/property";
+import type { GalleryPhoto } from "@/types/gallery";
 
 export const PROPERTY_QUERY_KEY = ["properties"];
 export const PROPERTY_DETAILS_QUERY_KEY = ["property-details"];
@@ -22,10 +19,16 @@ export const useCreateProperty = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: PropertyFormData) => createProperty(data),
+    mutationFn: createProperty,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: PROPERTY_QUERY_KEY });
     },
+  });
+};
+
+export const useDeleteProperty = () => {
+  return useMutation({
+    mutationFn: deleteProperty,
   });
 };
 

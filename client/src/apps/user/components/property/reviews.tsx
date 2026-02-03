@@ -3,9 +3,9 @@ import { Star, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
-import type { PropertyReview } from "@/services/property.types";
 import { useReviews } from "@/services/property.service";
 import LoadingScreen from "@/components/loadingscreen";
+import type { PropertyReview } from "@/types/property";
 
 interface ReviewsProps {
   propertyId: number;

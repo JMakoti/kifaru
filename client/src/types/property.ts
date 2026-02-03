@@ -1,45 +1,30 @@
-export type PropertyCategory =
-  | "retreat"
-  | "beachfront"
-  | "urban"
-  | "coworking"
-  | "mountain"
-  | "countryside";
+export type PropertyCategory = "retreat" | "beachfront" | "urban" | "coworking";
 
 export type ImageCategory =
   | "bedroom"
   | "bathroom"
-  | "living"
+  | "living_room"
   | "kitchen"
-  | "exterior"
-  | "amenity"
-  | "view";
-
-export type AccommodationType =
-  | "master_bedroom"
-  | "standard_bedroom"
-  | "shared_room"
-  | "entire_property";
-
-export type GuestType = "international" | "local" | "corporate";
-
-export type StayType = "short_term" | "long_term" | "monthly";
-
-export type FeatureType =
   | "outdoor"
-  | "indoor"
-  | "wellness"
-  | "entertainment"
-  | "convenience";
+  | "garden"
+  | "other";
+
+export type AccommodationType = "master_bedroom" | "full_property";
+
+export type GuestType = "international" | "local";
+
+export type StayType = "short_term" | "long_term" | "weekly";
+
+export type FeatureType = "outdoor" | "indoor" | "service" | "unique";
 
 export interface Amenity {
-  image: File | null;
+  image: File | string | null;
   label: string;
 }
 
 export interface PropertyImage {
   id?: number;
-  image: File | null;
+  image: File | string | null;
   category: ImageCategory;
   order: number;
 }
@@ -75,7 +60,11 @@ export interface Contact {
   whatsapp: string;
 }
 
-export interface PropertyFormData {
+export interface Highlight {
+  text: string;
+}
+
+export interface Property {
   id?: number;
   name: string;
   slug?: string;
@@ -94,13 +83,15 @@ export interface PropertyFormData {
   check_out_time: string;
   prepayment_percentage: number;
   cancellation_days: number;
-  background_image: File | null;
+  background_image: File | string | null;
   wifi_password: string;
   amenities: Amenity[];
-  images: PropertyImage[];
+  property_images: PropertyImage[];
   pricing_options: PricingOption[];
   features: Feature[];
   contacts: Contact[];
+  highlights: Highlight[];
+  average_rating?: number | null;
 }
 
 export const PROPERTY_CATEGORIES: { value: PropertyCategory; label: string }[] =
@@ -109,18 +100,16 @@ export const PROPERTY_CATEGORIES: { value: PropertyCategory; label: string }[] =
     { value: "beachfront", label: "Beachfront" },
     { value: "urban", label: "Urban" },
     { value: "coworking", label: "Co-working" },
-    { value: "mountain", label: "Mountain" },
-    { value: "countryside", label: "Countryside" },
   ];
 
 export const IMAGE_CATEGORIES: { value: ImageCategory; label: string }[] = [
   { value: "bedroom", label: "Bedroom" },
   { value: "bathroom", label: "Bathroom" },
-  { value: "living", label: "Living Room" },
+  { value: "living_room", label: "Living Room" },
   { value: "kitchen", label: "Kitchen" },
-  { value: "exterior", label: "Exterior" },
-  { value: "amenity", label: "Amenity" },
-  { value: "view", label: "View" },
+  { value: "garden", label: "Garden" },
+  { value: "outdoor", label: "Outdoor" },
+  { value: "other", label: "Other" },
 ];
 
 export const ACCOMMODATION_TYPES: {
@@ -128,32 +117,31 @@ export const ACCOMMODATION_TYPES: {
   label: string;
 }[] = [
   { value: "master_bedroom", label: "Master Bedroom" },
-  { value: "standard_bedroom", label: "Standard Bedroom" },
-  { value: "shared_room", label: "Shared Room" },
-  { value: "entire_property", label: "Entire Property" },
+  { value: "full_property", label: "Full Property" },
 ];
 
 export const GUEST_TYPES: { value: GuestType; label: string }[] = [
   { value: "international", label: "International" },
   { value: "local", label: "Local" },
-  { value: "corporate", label: "Corporate" },
 ];
 
 export const STAY_TYPES: { value: StayType; label: string }[] = [
   { value: "short_term", label: "Short Term" },
   { value: "long_term", label: "Long Term" },
-  { value: "monthly", label: "Monthly" },
+  { value: "weekly", label: "Weekly" },
 ];
 
 export const FEATURE_TYPES: { value: FeatureType; label: string }[] = [
   { value: "outdoor", label: "Outdoor" },
   { value: "indoor", label: "Indoor" },
-  { value: "wellness", label: "Wellness" },
-  { value: "entertainment", label: "Entertainment" },
-  { value: "convenience", label: "Convenience" },
+  { value: "service", label: "Service" },
+  { value: "unique", label: "Unique" },
+  // { value: "wellness", label: "Wellness" },
+  // { value: "entertainment", label: "Entertainment" },
+  // { value: "convenience", label: "Convenience" },
 ];
 
-export const emptyPropertyForm: PropertyFormData = {
+export const emptyPropertyForm: Property = {
   name: "",
   location: "",
   country: "",
@@ -173,8 +161,33 @@ export const emptyPropertyForm: PropertyFormData = {
   background_image: null,
   wifi_password: "",
   amenities: [],
-  images: [],
+  property_images: [],
   pricing_options: [],
   features: [],
   contacts: [],
+  highlights: [],
+  average_rating: 0,
 };
+
+// destinations
+export interface PropertyDestinationProps {
+  property: Property;
+  index: number;
+  isLeft: boolean;
+  isHighlighted: boolean;
+  onHover: (index: number | null) => void;
+}
+
+//property review
+export interface PropertyReview {
+  id?: number;
+  property: number;
+  property_name: string;
+  user: number;
+  reviewer_name: string;
+  rating: number;
+  comment: string;
+  avatar: string;
+  country: string;
+  created_at: Date;
+}

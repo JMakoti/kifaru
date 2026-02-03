@@ -20,14 +20,15 @@ import Reviews from "@/apps/user/components/property/reviews";
 // import Availability from "@/apps/user/components/property/availability";
 import { usePropertyDetails } from "@/services/property.service";
 import LoadingScreen from "@/components/loadingscreen";
-import type {
-  Amenity,
-  PricingOption,
-  PropertyImage,
-} from "@/services/property.types";
 import { Badge } from "@/components/ui/badge";
 import { PhotoGalleryModal } from "./photogallery";
 import BookingCard from "../../components/property/bookingcard";
+import type {
+  Amenity,
+  Feature,
+  PricingOption,
+  PropertyImage,
+} from "@/types/property";
 
 export default function KifaruPropertyDetails() {
   const { slug } = useParams<{ slug: string }>();
@@ -61,12 +62,13 @@ export default function KifaruPropertyDetails() {
     return <div className="text-center py-10">Property not found</div>;
   }
 
-  const images = property.images;
   // const image = property.background_image;
   const image =
     "https://res.cloudinary.com/drselhsl4/image/upload/v1764136940/Kifaru/backgrounds/ipshvpes7mlcg9mjc9qu.png";
 
-  const galleryPhotos: PropertyImage[] = images.map((img) => ({
+  const images: PropertyImage[] = property.property_images ?? [];
+
+  const galleryPhotos: PropertyImage[] = images.map((img: PropertyImage) => ({
     id: img.id,
     image: img.image,
     category: img.category,
@@ -275,7 +277,7 @@ export default function KifaruPropertyDetails() {
                           </h3>
 
                           <div className="grid sm:grid-cols-2 gap-4">
-                            {property.features.map((feature) => {
+                            {property.features.map((feature: Feature) => {
                               const iconName =
                                 feature.icon as keyof typeof LucideIcons;
                               let IconComponent: LucideIconComponent;
@@ -531,11 +533,14 @@ export default function KifaruPropertyDetails() {
 
             {/* Booking Panel */}
             <BookingCard
-              location={property.location}
-              country={property.country}
-              propertyContacts={property.contacts}
+              id={property.id}
               name={property.name}
               slug={property.slug}
+              location={property.location}
+              country={property.country}
+              max_guests={property.max_guests}
+              min_nights={property.min_nights}
+              propertyContacts={property.contacts}
             />
           </div>
           <div className="py-16 px-6 bg-secondary/20 mt-20 ">

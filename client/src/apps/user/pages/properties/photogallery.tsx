@@ -4,8 +4,8 @@ import { useMemo, useState } from "react";
 // import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import type { PropertyImage } from "@/services/property.types";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
+import type { PropertyImage } from "@/types/property";
 
 type TabType =
   | "all"

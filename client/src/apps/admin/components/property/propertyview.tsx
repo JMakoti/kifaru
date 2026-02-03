@@ -18,13 +18,13 @@ import {
   Star,
   Eye,
 } from "lucide-react";
-import { useProperties } from "@/services/property.service";
+import { useDeleteProperty, useProperties } from "@/services/property.service";
+import LoadingScreen from "@/components/loadingscreen";
+import { PropertyFormSheet } from "./propertyfrom";
 import type {
   Property as APIProperty,
   PropertyCategory,
-} from "@/services/property.types";
-import LoadingScreen from "@/components/loadingscreen";
-import { PropertyFormSheet } from "./propertyfrom";
+} from "@/types/property";
 
 // Extend APIProperty to include optional fields for our UI
 interface ExtendedAPIProperty extends APIProperty {
@@ -34,8 +34,9 @@ interface ExtendedAPIProperty extends APIProperty {
 
 // Derived property type for rendering
 interface PropertyView {
-  id: number;
+  id?: number;
   name: string;
+  slug:string;
   type: PropertyCategory;
   location: string;
   pricePerNight: number;
@@ -48,8 +49,9 @@ interface PropertyView {
 
 export default function PropertiesView() {
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [deletingProperty, setDeletingProperty] = useState<string | null>(null);
   const { data: fetchedProperties = [], isLoading } = useProperties();
+  const { mutateAsync } = useDeleteProperty();
 
   // Map API data to UI-friendly property view
   const properties: PropertyView[] = useMemo(() => {
@@ -112,6 +114,7 @@ export default function PropertiesView() {
       return {
         id: prop.id,
         name: prop.name,
+        slug:prop.slug,
         type: prop.property_category || "urban",
         location: prop.location,
         pricePerNight: parseInt(prop.price) || 200,
@@ -156,6 +159,15 @@ export default function PropertiesView() {
   ).length;
 
   if (isLoading) return <LoadingScreen />;
+
+  const handleDelete = async (slug: string) => {
+    setDeletingProperty(slug);
+    try {
+      await mutateAsync(slug);
+    } finally {
+      setDeletingProperty(null);
+    }
+  };
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -316,8 +328,13 @@ export default function PropertiesView() {
                       size="sm"
                       variant="outline"
                       className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                      disabled={deletingProperty === property.slug}
+                      onClick={() => handleDelete(property.slug)}
                     >
                       <Trash2 className="h-4 w-4" />
+                      {deletingProperty === property.slug
+                        ? "Deleting..."
+                        : "Delete"}
                     </Button>
                   </div>
                 </CardContent>

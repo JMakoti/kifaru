@@ -44,7 +44,7 @@ import {
 import {
   emptyPropertyForm,
   PROPERTY_CATEGORIES,
-  type PropertyFormData,
+  type Property,
 } from "@/types/property";
 import { useCreateProperty } from "@/services/property.service";
 import { toast } from "sonner";
@@ -91,12 +91,12 @@ const steps = [
 export function PropertyFormSheet() {
   const [open, setOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<PropertyFormData>(emptyPropertyForm);
+  const [formData, setFormData] = useState<Property>(emptyPropertyForm);
   const createMutation = useCreateProperty();
 
-  const updateField = <K extends keyof PropertyFormData>(
+  const updateField = <K extends keyof Property>(
     field: K,
-    value: PropertyFormData[K],
+    value: Property[K],
   ) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -109,15 +109,29 @@ export function PropertyFormSheet() {
     if (currentStep > 0) setCurrentStep(currentStep - 1);
   };
 
-  const handleSubmit = () => {
-    console.log("Submitting property:", formData);
-    //  if (formData.id && editMutation) {
-    //   await editMutation.mutateAsync(formData);
-    // } else {
-    createMutation.mutateAsync(formData);
-    toast.success("Property saved!");
-    // }
-    setOpen(false);
+  // const handleSubmit = () => {
+  //   console.log("Submitting property:", formData);
+  //   //  if (formData.id && editMutation) {
+  //   //   await editMutation.mutateAsync(formData);
+  //   // } else {
+  //   createMutation.mutateAsync(formData);
+  //   toast.success("Property saved!");
+  //   // }
+  //   setOpen(false);
+  // };
+
+  const handleSubmit = async () => {
+    try {
+      createMutation.mutate(formData, {
+        onSuccess: () => {
+          toast.success("Property saved!");
+          setOpen(false);
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to save property. Check console for details.");
+    }
   };
 
   const renderStepContent = () => {
@@ -190,7 +204,7 @@ export function PropertyFormSheet() {
                 onValueChange={(value) =>
                   updateField(
                     "property_category",
-                    value as PropertyFormData["property_category"],
+                    value as Property["property_category"],
                   )
                 }
               >
@@ -448,8 +462,8 @@ export function PropertyFormSheet() {
       case "images":
         return (
           <ImagesSection
-            images={formData.images}
-            onChange={(images) => updateField("images", images)}
+            images={formData.property_images}
+            onChange={(images) => updateField("property_images", images)}
           />
         );
 
