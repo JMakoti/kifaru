@@ -121,6 +121,7 @@ export default function Footer() {
                 <li>Email: requests@techbedkifaru.be</li>
                 <li>Phone: +254 708 533 033</li>
                 {/* <li>Location: Nairobi, Kenya</li> */}
+                <Link to="/auth/login">Admin</Link>
               </ul>
             </motion.div>
           </motion.div>

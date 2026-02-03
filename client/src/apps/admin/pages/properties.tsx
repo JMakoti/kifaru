@@ -1,4 +1,4 @@
-import PropertiesView from "@/apps/admin/components/propertyview";
+import PropertiesView from "@/apps/admin/components/property/propertyview";
 
 export default function Properties() {
   return (

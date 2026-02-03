@@ -1,3 +1,4 @@
+import type { PropertyFormData } from "@/types/property";
 import type { GalleryPhoto, Property, PropertyReview } from "./property.types";
 import { api } from "./user.endpoints";
 
@@ -7,8 +8,7 @@ const GET_DETAILS = "/properties";
 const GET_GALLERY = "/gallery/";
 // const UPDATE_PROPERTY = "";
 // const DELETE_PROPERTY = "";
-// const CREATE_PROPERTY = "";
-
+const CREATE_PROPERTY = "/properties/";
 const GET_REVIEWS = "/reviews/";
 
 // get propertties
@@ -27,6 +27,12 @@ export const getDetails = async (slug: string): Promise<Property> => {
 export const fetchReviews = async (): Promise<PropertyReview[]> => {
   const { data } = await api.get(GET_REVIEWS);
   return data;
+};
+
+// create property
+export const createProperty = async (data: PropertyFormData) => {
+  const response = await api.post(CREATE_PROPERTY, data);
+  return response.data;
 };
 
 //get reviews

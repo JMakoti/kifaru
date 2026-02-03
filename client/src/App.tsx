@@ -15,25 +15,25 @@ export default function App() {
     return <LoadingScreen />;
   }
   return (
-      <Routes>
-        {/* Auth System */}
-        <Route path="/auth/*" element={<AuthRoutes />} />
+    <Routes>
+      {/* Auth System */}
+      <Route path="/auth/*" element={<AuthRoutes />} />
 
-        {/* Admin mini-system */}
-        <Route
-          path="/admin/*"
-          element={
-            <ProtectedRoute allowedRoles={["admin"]}>
-              <AdminApp />
-            </ProtectedRoute>
-          }
-        />
+      {/* Admin mini-system */}
+      <Route
+        path="/admin/*"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminApp />
+          </ProtectedRoute>
+        }
+      />
 
-        {/* User main system */}
-        <Route path="/*" element={<UserApp />} />
+      {/* User main system */}
+      <Route path="/*" element={<UserApp />} />
 
-        {/* 404 Page */}
-        <Route path="*" element={<Notfound />} />
-      </Routes>
+      {/* 404 Page */}
+      <Route path="*" element={<Notfound />} />
+    </Routes>
   );
 }

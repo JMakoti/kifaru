@@ -18,13 +18,13 @@ import {
   Star,
   Eye,
 } from "lucide-react";
-import AddPropertyForm from "./addproperty";
 import { useProperties } from "@/services/property.service";
 import type {
   Property as APIProperty,
   PropertyCategory,
 } from "@/services/property.types";
 import LoadingScreen from "@/components/loadingscreen";
+import { PropertyFormSheet } from "./propertyfrom";
 
 // Extend APIProperty to include optional fields for our UI
 interface ExtendedAPIProperty extends APIProperty {
@@ -169,7 +169,7 @@ export default function PropertiesView() {
             Manage your vacation properties and bookings
           </p>
         </div>
-        <AddPropertyForm />
+        <PropertyFormSheet />
       </div>
 
       {/* Summary Cards */}
@@ -336,7 +336,7 @@ export default function PropertiesView() {
                   ? "Try adjusting your search terms"
                   : "Start by adding your first property"}
               </p>
-              <AddPropertyForm />
+              <PropertyFormSheet />
             </div>
           )}
         </CardContent>
