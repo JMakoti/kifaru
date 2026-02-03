@@ -8,6 +8,7 @@ import Reports from "./pages/reports";
 import Guests from "./pages/guests";
 import Settings from "./pages/settings";
 import AdminProfile from "./pages/adminprofile";
+import Gallery from "./pages/gallery";
 
 export default function AdminRoutes() {
   return (
@@ -15,6 +16,7 @@ export default function AdminRoutes() {
       <Route element={<AdminLayout />}>
         <Route index element={<DashboardHome />} />
         <Route path="property" element={<Properties />} />
+        <Route path="gallery" element={<Gallery/>}/>
         <Route path="bookings" element={<Bookings />} />
         <Route path="payments" element={<Transcations />} />
         <Route path="reports" element={<Reports />} />

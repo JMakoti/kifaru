@@ -137,7 +137,7 @@ export function PropertyFormSheet() {
               />
             </FormField>
 
-            <FormField
+            {/* <FormField
               label="Slug"
               htmlFor="slug"
               hint="URL-friendly identifier for your property"
@@ -148,7 +148,7 @@ export function PropertyFormSheet() {
                 value={formData.slug}
                 onChange={(e) => updateField("slug", e.target.value)}
               />
-            </FormField>
+            </FormField> */}
 
             <FormField label="Description" htmlFor="description">
               <Textarea

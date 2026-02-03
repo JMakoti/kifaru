@@ -1,14 +1,36 @@
-export type PropertyCategory = "retreat" | "beachfront" | "urban" | "coworking" | "mountain" | "countryside";
+export type PropertyCategory =
+  | "retreat"
+  | "beachfront"
+  | "urban"
+  | "coworking"
+  | "mountain"
+  | "countryside";
 
-export type ImageCategory = "bedroom" | "bathroom" | "living" | "kitchen" | "exterior" | "amenity" | "view";
+export type ImageCategory =
+  | "bedroom"
+  | "bathroom"
+  | "living"
+  | "kitchen"
+  | "exterior"
+  | "amenity"
+  | "view";
 
-export type AccommodationType = "master_bedroom" | "standard_bedroom" | "shared_room" | "entire_property";
+export type AccommodationType =
+  | "master_bedroom"
+  | "standard_bedroom"
+  | "shared_room"
+  | "entire_property";
 
 export type GuestType = "international" | "local" | "corporate";
 
 export type StayType = "short_term" | "long_term" | "monthly";
 
-export type FeatureType = "outdoor" | "indoor" | "wellness" | "entertainment" | "convenience";
+export type FeatureType =
+  | "outdoor"
+  | "indoor"
+  | "wellness"
+  | "entertainment"
+  | "convenience";
 
 export interface Amenity {
   image: File | null;
@@ -56,7 +78,7 @@ export interface Contact {
 export interface PropertyFormData {
   id?: number;
   name: string;
-  slug: string;
+  slug?: string;
   location: string;
   country: string;
   property_category: PropertyCategory;
@@ -72,7 +94,7 @@ export interface PropertyFormData {
   check_out_time: string;
   prepayment_percentage: number;
   cancellation_days: number;
-  background_image:  File | null;
+  background_image: File | null;
   wifi_password: string;
   amenities: Amenity[];
   images: PropertyImage[];
@@ -81,14 +103,15 @@ export interface PropertyFormData {
   contacts: Contact[];
 }
 
-export const PROPERTY_CATEGORIES: { value: PropertyCategory; label: string }[] = [
-  { value: "retreat", label: "Retreat" },
-  { value: "beachfront", label: "Beachfront" },
-  { value: "urban", label: "Urban" },
-  { value: "coworking", label: "Co-working" },
-  { value: "mountain", label: "Mountain" },
-  { value: "countryside", label: "Countryside" },
-];
+export const PROPERTY_CATEGORIES: { value: PropertyCategory; label: string }[] =
+  [
+    { value: "retreat", label: "Retreat" },
+    { value: "beachfront", label: "Beachfront" },
+    { value: "urban", label: "Urban" },
+    { value: "coworking", label: "Co-working" },
+    { value: "mountain", label: "Mountain" },
+    { value: "countryside", label: "Countryside" },
+  ];
 
 export const IMAGE_CATEGORIES: { value: ImageCategory; label: string }[] = [
   { value: "bedroom", label: "Bedroom" },
@@ -100,7 +123,10 @@ export const IMAGE_CATEGORIES: { value: ImageCategory; label: string }[] = [
   { value: "view", label: "View" },
 ];
 
-export const ACCOMMODATION_TYPES: { value: AccommodationType; label: string }[] = [
+export const ACCOMMODATION_TYPES: {
+  value: AccommodationType;
+  label: string;
+}[] = [
   { value: "master_bedroom", label: "Master Bedroom" },
   { value: "standard_bedroom", label: "Standard Bedroom" },
   { value: "shared_room", label: "Shared Room" },
@@ -129,7 +155,6 @@ export const FEATURE_TYPES: { value: FeatureType; label: string }[] = [
 
 export const emptyPropertyForm: PropertyFormData = {
   name: "",
-  slug: "",
   location: "",
   country: "",
   property_category: "retreat",
