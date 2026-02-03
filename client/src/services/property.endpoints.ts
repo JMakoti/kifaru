@@ -35,6 +35,9 @@ export const createProperty = async (data: PropertyFormData) => {
   return response.data;
 };
 
+//get specificed property booked date
+
+
 //get reviews
 export const fetchGallery = async (): Promise<GalleryPhoto[]> => {
   const { data } = await api.get(GET_GALLERY);
