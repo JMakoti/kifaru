@@ -3,6 +3,7 @@ import { Star, Pencil, Trash2 } from "lucide-react";
 import {  CATEGORY_LABELS, type GalleryPhoto} from "@/types/gallery";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { resolveImageSrc } from "@/hooks/resolveImage";
 
 interface GalleryCardProps {
   image: GalleryPhoto;
@@ -29,7 +30,7 @@ export function GalleryCard({
       {/* Image Container */}
       <div className="relative aspect-[4/3] overflow-hidden">
         <img
-          src={image.image}
+          src={resolveImageSrc(image.image)}
           alt={image.title}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />

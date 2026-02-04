@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import type { PropertyImage } from "@/types/property";
+import { resolveImageSrc } from "@/hooks/resolveImage";
 
 type TabType =
   | "all"
@@ -144,7 +145,7 @@ export function PhotoGalleryModal({
                   >
                     <div className="w-full h-[180px] sm:h-[200px] md:h-[240px] lg:h-[280px] overflow-hidden rounded-lg">
                       <img
-                        src={photo.image}
+                        src={resolveImageSrc(photo.image)}
                         alt={photo.category ?? "Property photo"}
                         className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                       />

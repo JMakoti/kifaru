@@ -4,7 +4,7 @@ import { toast } from "sonner";
 import type {
   GalleryCategory,
   GalleryFormData,
-  GalleryImage,
+  GalleryPhoto,
 } from "@/types/gallery";
 import { GalleryHeader } from "../components/gallery/GalleryHeader";
 import { EmptyState } from "../components/gallery/EmptyState";
@@ -13,7 +13,7 @@ import { GalleryModal } from "../components/gallery/GalleryModal";
 import { DeleteConfirmDialog } from "../components/gallery/DeleteConfirmDialog";
 
 // Sample data with generated images
-const initialImages: GalleryImage[] = [
+const initialImages: GalleryPhoto[] = [
   {
     id: 1,
     image:
@@ -22,35 +22,35 @@ const initialImages: GalleryImage[] = [
     category: "property_showcase",
     order: 1,
     is_featured: true,
-    created_at: new Date().toISOString(),
+    created_at: new Date(),
   },
   {
     id: 2,
     image:
       "https://res.cloudinary.com/dlktscrkj/image/upload/v1/gallery/kw1rfxcofbieivpn1saf",
     title: "Modern Living Room",
-    category: "interior_design",
+    category: "lifestyle",
     order: 2,
     is_featured: false,
-    created_at: new Date().toISOString(),
+    created_at: new Date(),
   },
   {
     id: 3,
     image:
       "https://res.cloudinary.com/dlktscrkj/image/upload/v1/gallery/u6adqdc8tr3q79kx82cj",
     title: "Urban Corporate Tower",
-    category: "architecture",
+    category: "activities",
     order: 3,
     is_featured: true,
-    created_at: new Date().toISOString(),
+    created_at: new Date(),
   },
 ];
 
 export default function Gallery() {
-  const [images, setImages] = useState<GalleryImage[]>(initialImages);
+  const [images, setImages] = useState<GalleryPhoto[]>(initialImages);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingImage, setEditingImage] = useState<GalleryImage | null>(null);
-  const [deletingImage, setDeletingImage] = useState<GalleryImage | null>(null);
+  const [editingImage, setEditingImage] = useState<GalleryPhoto | null>(null);
+  const [deletingImage, setDeletingImage] = useState<GalleryPhoto | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<
     GalleryCategory | "all"
   >("all");
@@ -65,12 +65,12 @@ export default function Gallery() {
     setIsModalOpen(true);
   };
 
-  const handleEdit = (image: GalleryImage) => {
+  const handleEdit = (image: GalleryPhoto) => {
     setEditingImage(image);
     setIsModalOpen(true);
   };
 
-  const handleDelete = (image: GalleryImage) => {
+  const handleDelete = (image: GalleryPhoto) => {
     setDeletingImage(image);
   };
 
@@ -82,7 +82,7 @@ export default function Gallery() {
     }
   };
 
-  const handleToggleFeatured = (image: GalleryImage) => {
+  const handleToggleFeatured = (image: GalleryPhoto) => {
     setImages(
       images.map((img) =>
         img.id === image.id ? { ...img, is_featured: !img.is_featured } : img,
@@ -116,7 +116,7 @@ export default function Gallery() {
       toast.success(`"${formData.title}" updated successfully`);
     } else {
       // Create new
-      const newImage: GalleryImage = {
+      const newImage: GalleryPhoto = {
         id: Date.now(),
         title: formData.title,
         category: formData.category,
@@ -125,7 +125,7 @@ export default function Gallery() {
           ? URL.createObjectURL(formData.imageFile)
           : "/placeholder.svg",
         order: images.length + 1,
-        created_at: new Date().toISOString(),
+        created_at: new Date(),
       };
       setImages([...images, newImage]);
       toast.success(`"${formData.title}" added to gallery`);

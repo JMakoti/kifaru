@@ -65,7 +65,7 @@ export interface Highlight {
 }
 
 export interface Property {
-  id?: number;
+  id: number;
   name: string;
   slug?: string;
   location: string;
@@ -142,6 +142,7 @@ export const FEATURE_TYPES: { value: FeatureType; label: string }[] = [
 ];
 
 export const emptyPropertyForm: Property = {
+  id:0,
   name: "",
   location: "",
   country: "",
@@ -180,7 +181,7 @@ export interface PropertyDestinationProps {
 
 //property review
 export interface PropertyReview {
-  id?: number;
+  id: number;
   property: number;
   property_name: string;
   user: number;

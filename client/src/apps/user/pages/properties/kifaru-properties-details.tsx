@@ -29,6 +29,7 @@ import type {
   PricingOption,
   PropertyImage,
 } from "@/types/property";
+import { resolveImageSrc } from "@/hooks/resolveImage";
 
 export default function KifaruPropertyDetails() {
   const { slug } = useParams<{ slug: string }>();
@@ -58,8 +59,8 @@ export default function KifaruPropertyDetails() {
   }
   if (isError) return <p>{error.message}</p>;
 
-  if (!property) {
-    return <div className="text-center py-10">Property not found</div>;
+  if (!property || !property.id || !property.slug) {
+    return <div className="text-center py-10">Invalid property data</div>;
   }
 
   // const image = property.background_image;
@@ -125,11 +126,13 @@ export default function KifaruPropertyDetails() {
       "
             >
               <img
-                src={images[currentImageIndex].image}
+                src={resolveImageSrc(images[currentImageIndex]?.image)}
                 alt={property.name}
-                className={`w-full h-full object-cover cursor-pointer
-          transition-all duration-300 ease-out
-          ${animated ? "opacity-0 translate-y-5" : "opacity-100 translate-y-0"}`}
+                className={`w-full h-full object-cover transition-all duration-300 ${
+                  animated
+                    ? "opacity-0 translate-y-5"
+                    : "opacity-100 translate-y-0"
+                }`}
               />
 
               {images.length > 1 && (
@@ -487,7 +490,7 @@ export default function KifaruPropertyDetails() {
                               className="relative h-60 rounded-lg overflow-hidden shadow-lg group"
                             >
                               <img
-                                src={amenity.image}
+                                src={resolveImageSrc(amenity.image)}
                                 alt={amenity.label}
                                 loading="lazy"
                                 className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"

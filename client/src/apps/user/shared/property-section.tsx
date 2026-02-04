@@ -5,6 +5,7 @@ import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useProperties } from "@/services/property.service";
 import LoadingScreen from "@/components/loadingscreen";
 import type { Property, PropertyDestinationProps } from "@/types/property";
+import { resolveImageSrc } from "@/hooks/resolveImage";
 
 function PropertyDestination({
   property,
@@ -68,7 +69,7 @@ function PropertyDestination({
           {/* Image Container */}
           <div className="relative overflow-hidden rounded-t-2xl">
             <motion.img
-              src={images[currentImageIndex]}
+              src={resolveImageSrc(images[currentImageIndex])}
               alt={property.name}
               className="w-full h-52 object-cover"
               whileHover={{ scale: 1.08 }}
