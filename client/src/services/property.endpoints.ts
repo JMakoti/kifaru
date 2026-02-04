@@ -8,7 +8,7 @@ const GET_PROPERTIES = "/properties/";
 const GET_DETAILS = "/properties";
 const GET_GALLERY = "/gallery/";
 // const UPDATE_PROPERTY = "";
-const DELETE_PROPERTY = "/properties/";
+const DELETE_PROPERTY = "/properties";
 const CREATE_PROPERTY = "/properties/";
 const GET_REVIEWS = "/reviews/";
 

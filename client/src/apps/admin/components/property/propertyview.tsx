@@ -36,7 +36,7 @@ interface ExtendedAPIProperty extends APIProperty {
 interface PropertyView {
   id?: number;
   name: string;
-  slug:string;
+  slug?: string;
   type: PropertyCategory;
   location: string;
   pricePerNight: number;
@@ -50,7 +50,7 @@ interface PropertyView {
 export default function PropertiesView() {
   const [searchTerm, setSearchTerm] = useState("");
   const [deletingProperty, setDeletingProperty] = useState<string | null>(null);
-  const { data: fetchedProperties = [], isLoading } = useProperties();
+  const { data: fetchedProperties = [], isLoading, refetch } = useProperties();
   const { mutateAsync } = useDeleteProperty();
 
   // Map API data to UI-friendly property view
@@ -114,7 +114,7 @@ export default function PropertiesView() {
       return {
         id: prop.id,
         name: prop.name,
-        slug:prop.slug,
+        slug: prop.slug,
         type: prop.property_category || "urban",
         location: prop.location,
         pricePerNight: parseInt(prop.price) || 200,
@@ -160,10 +160,12 @@ export default function PropertiesView() {
 
   if (isLoading) return <LoadingScreen />;
 
-  const handleDelete = async (slug: string) => {
+  const handleDelete = async (slug?: string) => {
+    if (!slug) return;
     setDeletingProperty(slug);
     try {
       await mutateAsync(slug);
+      await refetch();
     } finally {
       setDeletingProperty(null);
     }
@@ -328,7 +330,9 @@ export default function PropertiesView() {
                       size="sm"
                       variant="outline"
                       className="text-destructive hover:text-destructive hover:bg-destructive/10"
-                      disabled={deletingProperty === property.slug}
+                      disabled={
+                        !property.slug || deletingProperty === property.slug
+                      }
                       onClick={() => handleDelete(property.slug)}
                     >
                       <Trash2 className="h-4 w-4" />

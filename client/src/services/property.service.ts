@@ -17,7 +17,6 @@ export const GALLERY_QUERY = ["gallery"];
 
 export const useCreateProperty = () => {
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: createProperty,
     onSuccess: () => {
@@ -36,8 +35,12 @@ export const useProperties = () => {
   return useQuery<Property[]>({
     queryKey: PROPERTY_QUERY_KEY,
     queryFn: fetchProperties,
-    staleTime: 1000 * 60 * 5,
-    retry: 2,
+    enabled: true,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    retry: false,
+    staleTime: Infinity,
   });
 };
 
