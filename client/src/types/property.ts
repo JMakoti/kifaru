@@ -142,7 +142,7 @@ export const FEATURE_TYPES: { value: FeatureType; label: string }[] = [
 ];
 
 export const emptyPropertyForm: Property = {
-  id:0,
+  id: 0,
   name: "",
   location: "",
   country: "",
@@ -191,4 +191,25 @@ export interface PropertyReview {
   avatar: string;
   country: string;
   created_at: Date;
+}
+
+//property booking dates
+export interface BookingEvent {
+  type: "booking" | "maintenance" | string;
+  id: number;
+  start_date: string;
+  end_date: string | null;
+  title: string;
+  status: "confirmed" | "pending" | string;
+  booking_reference: string;
+  guest_name: string;
+  reason?: string;
+}
+
+export interface PropertyBookingsResponse {
+  property_id: number;
+  property_name: string;
+  start_date: string;
+  end_date: string | null;
+  events: BookingEvent[];
 }

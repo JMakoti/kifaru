@@ -122,12 +122,13 @@ export function PropertyFormSheet() {
 
   const handleSubmit = async () => {
     try {
-      createMutation.mutate(formData, {
-        onSuccess: () => {
-          toast.success("Property saved!");
-          setOpen(false);
-        },
-      });
+      console.log(formData);
+      // createMutation.mutate(formData, {
+      //   onSuccess: () => {
+      //     toast.success("Property saved!");
+      //     setOpen(false);
+      //   },
+      // });
     } catch (error) {
       console.error(error);
       toast.error("Failed to save property. Check console for details.");

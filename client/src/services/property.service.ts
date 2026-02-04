@@ -5,6 +5,7 @@ import {
   fetchGallery,
   fetchProperties,
   fetchReviews,
+  getBookedDates,
   getDetails,
 } from "./property.endpoints";
 import type { Property, PropertyReview } from "@/types/property";
@@ -67,5 +68,14 @@ export const useGallery = () => {
     queryFn: fetchGallery,
     staleTime: 1000 * 60 * 5,
     retry: 2,
+  });
+};
+
+export const usePropertyBookings = (propertyId: number | string) => {
+  return useQuery({
+    queryKey: ["property-bookings", propertyId],
+    queryFn: () => getBookedDates(propertyId),
+    enabled: !!propertyId,
+    staleTime: 1000 * 60 * 5,
   });
 };

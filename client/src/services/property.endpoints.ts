@@ -1,4 +1,8 @@
-import type { Property, PropertyReview } from "@/types/property";
+import type {
+  Property,
+  PropertyBookingsResponse,
+  PropertyReview,
+} from "@/types/property";
 import { api } from "./user.endpoints";
 import type { GalleryPhoto } from "@/types/gallery";
 import { buildPropertyFormData } from "@/apps/admin/utils/formdata";
@@ -11,6 +15,7 @@ const GET_GALLERY = "/gallery/";
 const DELETE_PROPERTY = "/properties";
 const CREATE_PROPERTY = "/properties/";
 const GET_REVIEWS = "/reviews/";
+const GET_BOOKEDDATES = "/properties";
 
 // get propertties
 export const fetchProperties = async (): Promise<Property[]> => {
@@ -44,6 +49,14 @@ export const deleteProperty = (slug: string) =>
   api.delete(`${DELETE_PROPERTY}/${slug}/`);
 
 //get specificed property booked date
+export const getBookedDates = async (
+  id: number | string,
+): Promise<PropertyBookingsResponse> => {
+  const response = await api.get<PropertyBookingsResponse>(
+    `${GET_BOOKEDDATES}/${id}/calendar`,
+  );
+  return response.data;
+};
 
 //get reviews
 export const fetchGallery = async (): Promise<GalleryPhoto[]> => {

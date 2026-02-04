@@ -21,7 +21,7 @@ export default function UserRoutes() {
           <Route index element={<KifaruProperty />} />
           <Route path=":slug" element={<KifaruPropertyDetails />} />
           <Route index path=":slug/booking" element={<BookingForm />} />
-          <Route index path=":slug/payment" element={<BookingPreviewPayment />} />
+          <Route index path=":slug/preview" element={<BookingPreviewPayment />} />
         </Route>
         <Route path="contact" element={<Contact />} />
         <Route
