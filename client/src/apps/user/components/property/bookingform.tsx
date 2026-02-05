@@ -12,6 +12,7 @@ import {
   User2Icon,
   IdCard,
   Phone,
+  Loader2,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -24,7 +25,16 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { DateRangePicker } from "./DateRangePicker";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
+import { usePropertyBookings } from "@/services/property.service";
+import { useCalculateBookingPrice } from "@/services/booking.service";
+import {
+  ACCOMMODATION_TYPES,
+  STAY_TYPES,
+  type AccommodationType,
+  type StayType,
+} from "@/types/property";
+import { useAuth } from "@/providers/useAuth";
 
 interface StepperProps {
   label: string;
@@ -71,37 +81,60 @@ function Stepper({ label, value, min, max, onChange }: StepperProps) {
 
 export default function BookingForm() {
   const location = useLocation();
+  const { user, isLoading: authLoading } = useAuth();
 
-  const { name, max_guests } = location.state as {
-    // id: number;
+  const { id, slug, name, max_guests } = location.state as {
+    id: number;
     name: string;
     max_guests: number | null;
+    slug: string;
     // min_nights: number;
   };
-  /* Guest Details */
+
+  //guest data
   const [guestData, setGuestData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
+    fullName: user
+      ? `${user.first_name || ""} ${user.last_name || ""}`.trim()
+      : "",
+    email: user?.email || "",
+    phone: user?.phone_number || "",
     idNumber: "",
   });
 
   /* Stay Details */
   const [destination] = useState(name);
-  const [accommodationType, setAccommodationType] = useState("");
-  const [stayType, setStayType] = useState("");
-
+  const [accommodationType, setAccommodationType] = useState<
+    AccommodationType | ""
+  >("");
+  const [stayType, setStayType] = useState<StayType | "">("");
   const [checkIn, setCheckIn] = useState<Date | null>(null);
   const [checkOut, setCheckOut] = useState<Date | null>(null);
-
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
+
+  /*Calendar Queries */
+  const { data: bookingData } = usePropertyBookings(id);
+  // Price Calculation Query
+  const { data: pricing, isFetching: isCalculating } = useCalculateBookingPrice(
+    {
+      property: id,
+      check_in: checkIn ? checkIn.toISOString().split("T")[0] : "",
+      check_out: checkOut ? checkOut.toISOString().split("T")[0] : "",
+      accommodation_type: accommodationType as AccommodationType,
+      number_of_guests: adults + children,
+    },
+  );
+  const navigate = useNavigate();
 
   /* Submit */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!pricing) return;
+
     const payload = {
+      property_id: id,
+      property_name: name,
       accommodation_type: accommodationType,
       stay_type: stayType,
       check_in: checkIn?.toISOString().split("T")[0],
@@ -111,7 +144,11 @@ export default function BookingForm() {
       number_of_guests: adults + children,
       destination,
       guest: guestData,
+      pricing: pricing,
+      slug: slug,
     };
+
+    navigate(`/property/${slug}/preview`, { state: payload });
 
     console.log("Booking Payload:", payload);
   };
@@ -127,10 +164,19 @@ export default function BookingForm() {
             <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-3">
               Complete Your Booking
             </h1>
-            <p className="text-muted-foreground text-lg max-w-2xl">
-              Fill in your details and choose your perfect stay for an
-              unforgettable experience
-            </p>
+            {authLoading ? (
+              <p className="text-sm text-muted-foreground animate-pulse">
+                Loading your profile...
+              </p>
+            ) : user ? (
+              <p className="text-sm text-green-600 font-medium">
+                Welcome back! We've pre-filled your details from your account.
+              </p>
+            ) : (
+              <p className="text-muted-foreground text-lg max-w-2xl">
+                Fill in your details for an unforgettable experience.
+              </p>
+            )}
           </div>
 
           <form onSubmit={handleSubmit}>
@@ -230,31 +276,42 @@ export default function BookingForm() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <select
-                      className="border rounded-lg px-3 py-2"
+                      className="border rounded-lg px-3 py-2 bg-background"
                       value={accommodationType}
-                      onChange={(e) => setAccommodationType(e.target.value)}
+                      onChange={(e) =>
+                        setAccommodationType(
+                          e.target.value as AccommodationType,
+                        )
+                      }
                       required
                     >
                       <option value="">Accommodation</option>
-                      <option value="full_apartment">Full Apartment</option>
-                      <option value="master_bedroom">Master Bedroom</option>
+                      {ACCOMMODATION_TYPES.map((type) => (
+                        <option key={type.value} value={type.value}>
+                          {type.label}
+                        </option>
+                      ))}
                     </select>
 
                     <select
-                      className="border rounded-lg px-3 py-2"
+                      className="border rounded-lg px-3 py-2 bg-background"
                       value={stayType}
-                      onChange={(e) => setStayType(e.target.value)}
+                      onChange={(e) => setStayType(e.target.value as StayType)}
                       required
                     >
-                      <option value="">Stay Type</option>
-                      <option value="short_term">Short Term</option>
-                      <option value="long_term">Long Term</option>
+                      <option value="">Select Stay Type</option>
+                      {STAY_TYPES.map((type) => (
+                        <option key={type.value} value={type.value}>
+                          {type.label}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
                   <DateRangePicker
                     startDate={checkIn}
                     endDate={checkOut}
+                    bookedEvents={bookingData?.events || []}
                     onDateChange={(start, end) => {
                       setCheckIn(start);
                       setCheckOut(end);
@@ -293,12 +350,21 @@ export default function BookingForm() {
               <Button
                 type="submit"
                 size="lg"
-                className="gap-2 px-10 shadow-lg shadow-primary/20 cursor-pointer"
+                className="gap-2 px-10 shadow-lg shadow-primary/20 cursor-pointer min-w-[200px]"
                 onClick={handleSubmit}
+                disabled={isCalculating || !pricing}
               >
-                Preview Your Booking
-                {/* navigate( "payment", { state: bookingData }); */}
-                <ArrowRight className="w-4 h-4" />
+                {isCalculating ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Calculating...
+                  </>
+                ) : (
+                  <>
+                    Preview Your Booking
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
               </Button>
             </div>
           </form>

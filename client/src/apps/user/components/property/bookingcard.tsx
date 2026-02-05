@@ -28,7 +28,7 @@ export default function BookingCard({
 
   const handleBookingClick = () => {
     navigate(`/property/${slug}/booking`, {
-      state: { id, name, max_guests, min_nights },
+      state: { id, name, max_guests, min_nights, slug },
     });
   };
 

@@ -15,17 +15,22 @@ import {
   isToday,
   startOfWeek,
   endOfWeek,
+  isWithinInterval,
+  parseISO,
 } from "date-fns";
+import type { BookingEvent } from "@/types/property";
 
 interface DateRangePickerProps {
   startDate: Date | null;
   endDate: Date | null;
+  bookedEvents: BookingEvent[];
   onDateChange: (start: Date | null, end: Date | null) => void;
 }
 
 export function DateRangePicker({
   startDate,
   endDate,
+  bookedEvents,
   onDateChange,
 }: DateRangePickerProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
@@ -33,11 +38,34 @@ export function DateRangePicker({
 
   const nextMonth = addMonths(currentMonth, 1);
 
+  // check if a day is already booked
+  const isDateBooked = (day: Date) => {
+    return bookedEvents.some((event) => {
+      if (!event.start_date || !event.end_date) return false;
+      return isWithinInterval(day, {
+        start: parseISO(event.start_date),
+        end: parseISO(event.end_date),
+      });
+    });
+  };
+
   const handleDateClick = (date: Date) => {
     if (selecting === "start") {
       onDateChange(date, null);
       setSelecting("end");
     } else {
+      // Logic to prevent booking OVER an existing reservation
+      const hasBookingInRange = bookedEvents.some((event) => {
+        const start = parseISO(event.start_date);
+        const end = parseISO(event.end_date);
+        return startDate && isBefore(start, date) && isAfter(end, startDate);
+      });
+
+      if (hasBookingInRange) {
+        alert("Selected range includes already booked dates.");
+        return;
+      }
+
       if (startDate && isBefore(date, startDate)) {
         onDateChange(date, null);
         setSelecting("end");
@@ -98,6 +126,7 @@ export function DateRangePicker({
 
         <div className="grid grid-cols-7 gap-1">
           {days.map((day) => {
+            const isBooked = isDateBooked(day);
             const isCurrentMonth = isSameMonth(day, month);
             const isPast = isBefore(day, today) && !isToday(day);
             const isStart = startDate && isSameDay(day, startDate);
@@ -107,7 +136,8 @@ export function DateRangePicker({
               endDate &&
               isAfter(day, startDate) &&
               isBefore(day, endDate);
-            const isDisabled = !isCurrentMonth || isPast;
+
+            const isDisabled = !isCurrentMonth || isPast || isBooked;
 
             return (
               <button
@@ -121,9 +151,14 @@ export function DateRangePicker({
                   // normal
                   "text-foreground hover:bg-accent hover:text-accent-foreground",
 
+                  isBooked &&
+                    "bg-muted text-muted-foreground opacity-50 cursor-not-allowed line-through",
+
                   // disabled
-                  isDisabled &&
-                    "text-muted-foreground opacity-40 hover:bg-transparent cursor-not-allowed",
+                  // isDisabled &&
+                  //   "text-muted-foreground opacity-40 hover:bg-transparent cursor-not-allowed",
+                  !isCurrentMonth && "opacity-0 pointer-events-none",
+                  isPast && "text-muted-foreground opacity-40 cursor-not-allowed",
 
                   // start / end
                   isStart &&
@@ -132,17 +167,16 @@ export function DateRangePicker({
                     "bg-primary text-primary-foreground rounded-r-lg rounded-l-none",
 
                   // in range
-                  isInRange &&
-                    "bg-primary/15 text-foreground rounded-none",
+                  isInRange && "bg-primary/15 text-foreground rounded-none",
 
                   // today
-                  isToday(day) &&
-                    !isStart &&
-                    !isEnd &&
-                    "ring-1 ring-primary",
+                  isToday(day) && !isStart && !isEnd && "ring-1 ring-primary",
                 )}
               >
                 {format(day, "d")}
+                {isBooked && isCurrentMonth && (
+                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-destructive rounded-full" />
+                )}
               </button>
             );
           })}

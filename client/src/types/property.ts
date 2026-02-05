@@ -9,7 +9,7 @@ export type ImageCategory =
   | "garden"
   | "other";
 
-export type AccommodationType = "master_bedroom" | "full_property";
+export type AccommodationType = "master_bedroom" | "full_apartment";
 
 export type GuestType = "international" | "local";
 
@@ -117,7 +117,7 @@ export const ACCOMMODATION_TYPES: {
   label: string;
 }[] = [
   { value: "master_bedroom", label: "Master Bedroom" },
-  { value: "full_property", label: "Full Property" },
+  { value: "full_apartment", label: "Full Apartment" },
 ];
 
 export const GUEST_TYPES: { value: GuestType; label: string }[] = [
@@ -198,7 +198,7 @@ export interface BookingEvent {
   type: "booking" | "maintenance" | string;
   id: number;
   start_date: string;
-  end_date: string | null;
+  end_date: string;
   title: string;
   status: "confirmed" | "pending" | string;
   booking_reference: string;
@@ -210,6 +210,6 @@ export interface PropertyBookingsResponse {
   property_id: number;
   property_name: string;
   start_date: string;
-  end_date: string | null;
+  end_date: string;
   events: BookingEvent[];
 }

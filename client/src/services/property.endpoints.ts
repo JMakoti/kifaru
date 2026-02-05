@@ -53,7 +53,7 @@ export const getBookedDates = async (
   id: number | string,
 ): Promise<PropertyBookingsResponse> => {
   const response = await api.get<PropertyBookingsResponse>(
-    `${GET_BOOKEDDATES}/${id}/calendar`,
+    `${GET_BOOKEDDATES}/${id}/calendar/`,
   );
   return response.data;
 };

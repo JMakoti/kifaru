@@ -35,10 +35,11 @@ export const useCalculateBookingPrice = (params?: BookingPriceQuery) =>
     queryKey: BOOKING_KEYS.price(params),
     queryFn: () => bookingApi.calculatePrice(params!),
     enabled:
-      !!params?.property &&
+      !!params?.property &&  //property id
       !!params?.check_in &&
       !!params?.check_out &&
-      !!params?.accommodation_type,
+      !!params?.accommodation_type &&
+      !!params?.number_of_guests,
     staleTime: 60_000,
   });
 

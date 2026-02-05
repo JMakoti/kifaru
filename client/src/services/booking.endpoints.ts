@@ -1,4 +1,4 @@
-import type { BookingPayload, BookingPriceQuery, BookingPriceResponse } from "@/types/booking.types";
+import type { Booking, BookingPayload, BookingPriceQuery, BookingPriceResponse } from "@/types/booking.types";
 import { api } from "./user.endpoints";
 const BOOKINGS = "/bookings";
 const MY_BOOKINGS = "/bookings/my-bookings";
@@ -44,8 +44,8 @@ export const bookingApi = {
     await api.post(`${BOOKINGS}/${id}/cancel/`);
   },
 
-  myBookings: async (): Promise<BookingPayload[]> => {
-    const response = await api.get<BookingPayload[]>(`${MY_BOOKINGS}/`);
+  myBookings: async (): Promise<Booking[]> => {
+    const response = await api.get<Booking[]>(`${MY_BOOKINGS}/`);
     return response.data;
   },
 };
