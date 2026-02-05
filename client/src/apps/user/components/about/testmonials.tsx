@@ -6,7 +6,7 @@ import type { PropertyReview } from "@/types/property";
 
 const SLIDE_DURATION = 6000;
 const mapReviewsToTestimonials = (reviews: PropertyReview[]) =>
-  reviews.map((r) => ({
+  reviews.slice(0, 10).map((r) => ({
     quote: r.comment,
     author: r.reviewer_name,
     location: r.country || "Guest",
