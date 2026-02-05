@@ -15,6 +15,7 @@ interface DeleteConfirmDialogProps {
   onClose: () => void;
   onConfirm: () => void;
   image: GalleryPhoto | null;
+  isDeleting?: boolean;
 }
 
 export function DeleteConfirmDialog({
@@ -22,6 +23,7 @@ export function DeleteConfirmDialog({
   onClose,
   onConfirm,
   image,
+  isDeleting = false,
 }: DeleteConfirmDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={onClose}>
@@ -36,12 +38,15 @@ export function DeleteConfirmDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className="border-border">Cancel</AlertDialogCancel>
+          <AlertDialogCancel className="border-border" disabled={isDeleting}>
+            Cancel
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={onConfirm}
+            disabled={isDeleting}
             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            Delete
+            {isDeleting ? "Deleting..." : "Delete"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

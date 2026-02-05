@@ -4,13 +4,11 @@ import type {
   PropertyReview,
 } from "@/types/property";
 import { api } from "./user.endpoints";
-import type { GalleryPhoto } from "@/types/gallery";
 import { buildPropertyFormData } from "@/apps/admin/utils/formdata";
 
 // ENDPOINTS
 const GET_PROPERTIES = "/properties/";
 const GET_DETAILS = "/properties";
-const GET_GALLERY = "/gallery/";
 // const UPDATE_PROPERTY = "";
 const DELETE_PROPERTY = "/properties";
 const CREATE_PROPERTY = "/properties/";
@@ -56,10 +54,4 @@ export const getBookedDates = async (
     `${GET_BOOKEDDATES}/${id}/calendar/`,
   );
   return response.data;
-};
-
-//get reviews
-export const fetchGallery = async (): Promise<GalleryPhoto[]> => {
-  const { data } = await api.get(GET_GALLERY);
-  return data;
 };

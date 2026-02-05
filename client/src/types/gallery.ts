@@ -8,6 +8,10 @@ export type GalleryCategory =
   | "activities"
   | "other";
 
+// gallery update
+
+export type GalleryUpdatePayload = Partial<GalleryFormData>;
+
 //  gallery photo
 export interface GalleryPhoto {
   id: number;
@@ -16,28 +20,18 @@ export interface GalleryPhoto {
   category: GalleryCategory;
   order: number;
   is_featured: boolean;
+  is_active: boolean;
   created_at: Date;
 }
 
 export interface GalleryFormData {
+  image: File | null;
   title: string;
   category: GalleryCategory;
+  order: number;
   is_featured: boolean;
-  imageFile: File | null;
+  is_active: boolean;
 }
-
-// export const IMAGE_CATEGORY_CHOICE: {
-//   value: GalleryCategory;
-//   label: string;
-// }[] = [
-//   { value: "property_showcase", label: "Property Showcase" },
-//   { value: "lifestyle", label: "Lifestyle" },
-//   { value: "amenities", label: "Amenities" },
-//   { value: "location", label: "Location" },
-//   { value: "events", label: "Events" },
-//   { value: "dining", label: "Dining" },
-//   { value: "other", label: "Other" },
-// ];
 
 export const CATEGORY_LABELS: Record<GalleryCategory, string> = {
   property_showcase: "Property Showcase",

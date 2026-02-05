@@ -1,6 +1,7 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Upload, X } from "lucide-react";
+
 import {
   Dialog,
   DialogContent,
@@ -18,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
 import {
   CATEGORY_LABELS,
   type GalleryCategory,
@@ -30,15 +32,18 @@ interface GalleryModalProps {
   onClose: () => void;
   onSubmit: (data: GalleryFormData) => void;
   editImage?: GalleryPhoto | null;
+  isSubmitting?: boolean;
 }
 
 const getInitialFormData = (
   editImage?: GalleryPhoto | null,
 ): GalleryFormData => ({
+  image: null,
   title: editImage?.title ?? "",
   category: editImage?.category ?? "property_showcase",
+  order: editImage?.order ?? 0,
   is_featured: editImage?.is_featured ?? false,
-  imageFile: null,
+  is_active: editImage?.is_active ?? true,
 });
 
 export function GalleryModal({
@@ -46,25 +51,33 @@ export function GalleryModal({
   onClose,
   onSubmit,
   editImage,
+  isSubmitting = false,
 }: GalleryModalProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [formData, setFormData] =
-    useState<GalleryFormData>(getInitialFormData());
-  const [preview, setPreview] = useState<string | null>(null);
+  const [formData, setFormData] = useState<GalleryFormData>(() =>
+    getInitialFormData(editImage),
+  );
+  const [preview, setPreview] = useState<string | null>(
+    editImage?.image ?? null,
+  );
   const [isDragging, setIsDragging] = useState(false);
 
-  useEffect(() => {
-    if (!open) return;
+  // useEffect(() => {
+  //   if (open) {
+  //     // Reset form data to the new editImage values
+  //     setFormData(getInitialFormData(editImage));
+  //     // Set the preview to the existing image URL or null
+  //     setPreview(editImage?.image ?? null);
+  //   }
+  // }, [open, editImage]);
 
-    setFormData(getInitialFormData(editImage));
-    setPreview(editImage?.image ?? null);
-  }, [open, editImage]);
+  // FILE HANDLING
 
   const handleFileChange = (file: File | null) => {
     if (!file) return;
 
-    setFormData((prev) => ({ ...prev, imageFile: file }));
+    setFormData((prev) => ({ ...prev, image: file }));
 
     const reader = new FileReader();
     reader.onloadend = () => setPreview(reader.result as string);
@@ -76,15 +89,15 @@ export function GalleryModal({
     setIsDragging(false);
 
     const file = e.dataTransfer.files[0];
-    if (file && file.type.startsWith("image/")) {
+    if (file?.type.startsWith("image/")) {
       handleFileChange(file);
     }
   };
 
+  // SUBMIT
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(formData);
-    onClose();
   };
 
   return (
@@ -100,6 +113,7 @@ export function GalleryModal({
           {/* Image Upload */}
           <div className="space-y-2">
             <Label>Image</Label>
+
             <div
               onClick={() => fileInputRef.current?.click()}
               onDrop={handleDrop}
@@ -129,7 +143,7 @@ export function GalleryModal({
                       onClick={(e) => {
                         e.stopPropagation();
                         setPreview(null);
-                        setFormData((p) => ({ ...p, imageFile: null }));
+                        setFormData((p) => ({ ...p, image: null }));
                       }}
                     >
                       <X className="h-4 w-4" />
@@ -210,11 +224,20 @@ export function GalleryModal({
 
           {/* Actions */}
           <div className="flex gap-3">
-            <Button variant="outline" type="button" onClick={onClose}>
+            <Button
+              variant="outline"
+              type="button"
+              onClick={onClose}
+              disabled={isSubmitting}
+            >
               Cancel
             </Button>
-            <Button type="submit">
-              {editImage ? "Save Changes" : "Add Image"}
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting
+                ? "Saving..."
+                : editImage
+                  ? "Save Changes"
+                  : "Add Image"}
             </Button>
           </div>
         </form>

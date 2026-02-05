@@ -11,43 +11,15 @@ import { EmptyState } from "../components/gallery/EmptyState";
 import { GalleryCard } from "../components/gallery/GalleryCard";
 import { GalleryModal } from "../components/gallery/GalleryModal";
 import { DeleteConfirmDialog } from "../components/gallery/DeleteConfirmDialog";
-
-// Sample data with generated images
-const initialImages: GalleryPhoto[] = [
-  {
-    id: 1,
-    image:
-      "https://res.cloudinary.com/dlktscrkj/image/upload/v1/gallery/hnxe7yifzedfzplmgeht",
-    title: "Oceanfront Villa Estate",
-    category: "property_showcase",
-    order: 1,
-    is_featured: true,
-    created_at: new Date(),
-  },
-  {
-    id: 2,
-    image:
-      "https://res.cloudinary.com/dlktscrkj/image/upload/v1/gallery/kw1rfxcofbieivpn1saf",
-    title: "Modern Living Room",
-    category: "lifestyle",
-    order: 2,
-    is_featured: false,
-    created_at: new Date(),
-  },
-  {
-    id: 3,
-    image:
-      "https://res.cloudinary.com/dlktscrkj/image/upload/v1/gallery/u6adqdc8tr3q79kx82cj",
-    title: "Urban Corporate Tower",
-    category: "activities",
-    order: 3,
-    is_featured: true,
-    created_at: new Date(),
-  },
-];
+import {
+  useCreateGallery,
+  useDeleteGallery,
+  useGalleryList,
+  useUpdateGallery,
+} from "@/services/gallery.sevice";
+import LoadingScreen from "@/components/loadingscreen";
 
 export default function Gallery() {
-  const [images, setImages] = useState<GalleryPhoto[]>(initialImages);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingImage, setEditingImage] = useState<GalleryPhoto | null>(null);
   const [deletingImage, setDeletingImage] = useState<GalleryPhoto | null>(null);
@@ -55,6 +27,13 @@ export default function Gallery() {
     GalleryCategory | "all"
   >("all");
 
+  //queries
+  const { data: images = [], isLoading } = useGalleryList();
+  const createGallery = useCreateGallery();
+  const updateGallery = useUpdateGallery();
+  const deleteGallery = useDeleteGallery();
+
+  //filter images
   const filteredImages = useMemo(() => {
     if (selectedCategory === "all") return images;
     return images.filter((img) => img.category === selectedCategory);
@@ -75,62 +54,61 @@ export default function Gallery() {
   };
 
   const confirmDelete = () => {
-    if (deletingImage) {
-      setImages(images.filter((img) => img.id !== deletingImage.id));
-      toast.success(`"${deletingImage.title}" deleted successfully`);
-      setDeletingImage(null);
-    }
+    if (!deletingImage) return;
+
+    deleteGallery.mutate(deletingImage.id, {
+      onSuccess: () => {
+        toast.success(`"${deletingImage.title}" deleted successfully`);
+        setDeletingImage(null);
+      },
+    });
   };
 
   const handleToggleFeatured = (image: GalleryPhoto) => {
-    setImages(
-      images.map((img) =>
-        img.id === image.id ? { ...img, is_featured: !img.is_featured } : img,
-      ),
-    );
-    toast.success(
-      image.is_featured
-        ? `"${image.title}" removed from featured`
-        : `"${image.title}" marked as featured`,
+    // Partial update for PATCH
+    const data: Partial<GalleryFormData> = {
+      is_featured: !image.is_featured,
+    };
+
+    updateGallery.mutate(
+      { id: image.id, data },
+      {
+        onSuccess: () => {
+          toast.success(
+            image.is_featured
+              ? `"${image.title}" removed from featured`
+              : `"${image.title}" marked as featured`,
+          );
+        },
+      },
     );
   };
 
   const handleSubmit = (formData: GalleryFormData) => {
     if (editingImage) {
-      // Update existing
-      setImages(
-        images.map((img) =>
-          img.id === editingImage.id
-            ? {
-                ...img,
-                title: formData.title,
-                category: formData.category,
-                is_featured: formData.is_featured,
-                image: formData.imageFile
-                  ? URL.createObjectURL(formData.imageFile)
-                  : img.image,
-              }
-            : img,
-        ),
+      updateGallery.mutate(
+        { id: editingImage.id, data: formData },
+        {
+          onSuccess: () => {
+            toast.success(`"${formData.title}" updated successfully`);
+            setIsModalOpen(false);
+            setEditingImage(null);
+          },
+        },
       );
-      toast.success(`"${formData.title}" updated successfully`);
     } else {
-      // Create new
-      const newImage: GalleryPhoto = {
-        id: Date.now(),
-        title: formData.title,
-        category: formData.category,
-        is_featured: formData.is_featured,
-        image: formData.imageFile
-          ? URL.createObjectURL(formData.imageFile)
-          : "/placeholder.svg",
-        order: images.length + 1,
-        created_at: new Date(),
-      };
-      setImages([...images, newImage]);
-      toast.success(`"${formData.title}" added to gallery`);
+      createGallery.mutate(formData, {
+        onSuccess: () => {
+          toast.success(`"${formData.title}" added to gallery`);
+          setIsModalOpen(false);
+        },
+      });
     }
   };
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div className="min-h-screen bg-background mt-15">
@@ -163,10 +141,16 @@ export default function Gallery() {
         </main>
 
         <GalleryModal
+          key={editingImage?.id}
           open={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
+          // onClose={() => setIsModalOpen(false)}
+          onClose={() => {
+            setIsModalOpen(false);
+            setEditingImage(null);
+          }}
           onSubmit={handleSubmit}
           editImage={editingImage}
+          isSubmitting={createGallery.isPending || updateGallery.isPending}
         />
 
         <DeleteConfirmDialog
@@ -174,6 +158,7 @@ export default function Gallery() {
           onClose={() => setDeletingImage(null)}
           onConfirm={confirmDelete}
           image={deletingImage}
+          isDeleting={deleteGallery.isPending}
         />
       </div>
     </div>

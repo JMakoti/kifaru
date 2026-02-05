@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Star, Pencil, Trash2 } from "lucide-react";
-import {  CATEGORY_LABELS, type GalleryPhoto} from "@/types/gallery";
+import { CATEGORY_LABELS, type GalleryPhoto } from "@/types/gallery";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { resolveImageSrc } from "@/hooks/resolveImage";
@@ -12,11 +12,11 @@ interface GalleryCardProps {
   onToggleFeatured: (image: GalleryPhoto) => void;
 }
 
-export function GalleryCard({ 
-  image, 
-  onEdit, 
-  onDelete, 
-  onToggleFeatured 
+export function GalleryCard({
+  image,
+  onEdit,
+  onDelete,
+  onToggleFeatured,
 }: GalleryCardProps) {
   return (
     <motion.div
@@ -34,10 +34,10 @@ export function GalleryCard({
           alt={image.title}
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
-        
+
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        
+
         {/* Featured Badge */}
         {image.is_featured && (
           <div className="absolute top-3 left-3">
@@ -47,7 +47,7 @@ export function GalleryCard({
             </Badge>
           </div>
         )}
-        
+
         {/* Action Buttons */}
         <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-2 group-hover:translate-y-0">
           <Button
@@ -56,8 +56,8 @@ export function GalleryCard({
             className="h-8 w-8 bg-background/80 backdrop-blur-sm hover:bg-background"
             onClick={() => onToggleFeatured(image)}
           >
-            <Star 
-              className={`h-4 w-4 ${image.is_featured ? 'fill-primary text-primary' : ''}`} 
+            <Star
+              className={`h-4 w-4 ${image.is_featured ? "fill-primary text-primary" : ""}`}
             />
           </Button>
           <Button
@@ -78,7 +78,7 @@ export function GalleryCard({
           </Button>
         </div>
       </div>
-      
+
       {/* Content */}
       <div className="p-4">
         <h3 className="font-display text-lg font-medium text-foreground truncate">
@@ -88,9 +88,7 @@ export function GalleryCard({
           <Badge variant="outline" className="text-xs font-normal">
             {CATEGORY_LABELS[image.category]}
           </Badge>
-          <span className="text-xs text-muted-foreground">
-            #{image.order}
-          </span>
+          <span className="text-xs text-muted-foreground">#{image.order}</span>
         </div>
       </div>
     </motion.div>

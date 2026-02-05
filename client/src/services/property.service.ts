@@ -2,14 +2,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createProperty,
   deleteProperty,
-  fetchGallery,
   fetchProperties,
   fetchReviews,
   getBookedDates,
   getDetails,
 } from "./property.endpoints";
 import type { Property, PropertyReview } from "@/types/property";
-import type { GalleryPhoto } from "@/types/gallery";
 
 export const PROPERTY_QUERY_KEY = ["properties"];
 export const PROPERTY_DETAILS_QUERY_KEY = ["property-details"];
@@ -57,15 +55,6 @@ export const useReviews = () => {
   return useQuery<PropertyReview[]>({
     queryKey: REVIEWS_QUERY,
     queryFn: fetchReviews,
-    staleTime: 1000 * 60 * 5,
-    retry: 2,
-  });
-};
-
-export const useGallery = () => {
-  return useQuery<GalleryPhoto[]>({
-    queryKey: GALLERY_QUERY,
-    queryFn: fetchGallery,
     staleTime: 1000 * 60 * 5,
     retry: 2,
   });

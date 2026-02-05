@@ -2,8 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { useGallery } from "@/services/property.service";
 import type { GalleryPhoto } from "@/types/gallery";
+import { useGalleryList } from "@/services/gallery.sevice";
 
 interface GalleryItem {
   id: number;
@@ -80,7 +80,7 @@ const mapGalleryPhotosToUI = (photos: GalleryPhoto[]): GalleryItem[] =>
 
 export default function KifaruGallery() {
   const [isPaused, setIsPaused] = useState(false);
-  const { data = [], isLoading } = useGallery();
+  const { data = [], isLoading } = useGalleryList();
 
   const galleryData = useMemo(() => mapGalleryPhotosToUI(data), [data]);
 
