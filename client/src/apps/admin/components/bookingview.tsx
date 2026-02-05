@@ -11,123 +11,20 @@ import {
   Home,
   MapPin,
   Users,
-  CreditCard,
 } from "lucide-react";
+import type { Booking } from "@/types/booking.types";
 
 interface PropertyBooking {
-  id: string;
-  guestName: string;
-  guestEmail?: string;
-  propertyName: string;
-  propertyType: string;
-  checkIn: Date;
-  checkOut: Date;
-  guests: number;
-  total: number;
-  status: "confirmed" | "pending" | "cancelled";
-  paymentMethod: "mobile" | "card" | "bank_transfer";
-  bookingDate: Date;
+  data: Booking[];
 }
 
-export default function BookingView() {
+export default function BookingView({ data }: PropertyBooking) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [booking] = useState<PropertyBooking[]>([
-    {
-      id: "BK-2024-1213",
-      guestName: "Alice Johnson",
-      guestEmail: "alice@example.com",
-      propertyName: "Kifaru Belgium",
-      propertyType: "Villa",
-      checkIn: new Date(2024, 3, 20),
-      checkOut: new Date(2024, 3, 27),
-      guests: 4,
-      total: 2800.0,
-      status: "confirmed",
-      paymentMethod: "card",
-      bookingDate: new Date(2024, 2, 15, 10, 30),
-    },
-    {
-      id: "BK-2024-1235",
-      guestName: "Bob Smith",
-      guestEmail: "bob@example.com",
-      propertyName: "Kifaru Nyali",
-      propertyType: "Apartment",
-      checkIn: new Date(2024, 3, 18),
-      checkOut: new Date(2024, 3, 21),
-      guests: 2,
-      total: 450.0,
-      status: "pending",
-      paymentMethod: "bank_transfer",
-      bookingDate: new Date(2024, 2, 15, 14, 15),
-    },
-    {
-      id: "BK-2024-1335",
-      guestName: "Carol Davis",
-      guestEmail: "carol@example.com",
-      propertyName: "Kifaru Msambweni",
-      propertyType: "Cabin",
-      checkIn: new Date(2024, 3, 10),
-      checkOut: new Date(2024, 3, 17),
-      guests: 6,
-      total: 1950.0,
-      status: "confirmed",
-      paymentMethod: "mobile",
-      bookingDate: new Date(2024, 2, 14, 16, 45),
-    },
-    {
-      id: "BK-2024-4235",
-      guestName: "David Wilson",
-      propertyName: "Kifaru Neitherlands",
-      propertyType: "Studio",
-      checkIn: new Date(2024, 3, 15),
-      checkOut: new Date(2024, 3, 16),
-      guests: 1,
-      total: 120.0,
-      status: "cancelled",
-      paymentMethod: "card",
-      bookingDate: new Date(2024, 2, 14, 9, 20),
-    },
-  ]);
 
-  const formatDate = (date: Date) => {
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const month = months[date.getMonth()];
-    const day = date.getDate().toString().padStart(2, "0");
-    const year = date.getFullYear();
-    return `${month} ${day}, ${year}`;
-  };
-
-  const formatDateTime = (date: Date) => {
-    const dateStr = formatDate(date);
-    const hours = date.getHours().toString().padStart(2, "0");
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-    return `${dateStr} at ${hours}:${minutes}`;
-  };
-
-  const filteredBooking = booking.filter(
-    (booking) =>
-      booking.guestName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      booking.id.toString().includes(searchTerm) ||
-      booking.propertyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      booking.propertyType.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
-
-  const getStatusColor = (status: PropertyBooking["status"]) => {
+  const getStatusStyle = (status: string) => {
     switch (status) {
       case "confirmed":
+      case "completed":
         return "bg-green-100 text-green-700";
       case "pending":
         return "bg-yellow-100 text-yellow-700";
@@ -138,30 +35,54 @@ export default function BookingView() {
     }
   };
 
-  const getPaymentIcon = (method: PropertyBooking["paymentMethod"]) => {
-    switch (method) {
-      case "card":
-        return <CreditCard className="h-4 w-4" />;
-      case "mobile":
-        return <DollarSign className="h-4 w-4" />;
-      case "bank_transfer":
-        return <Home className="w-4 h-4" />;
-      default:
-        return null;
-    }
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return "TBD";
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    });
   };
 
-  const calculateNights = (checkIn: Date, checkOut: Date) => {
-    const diffTime = Math.abs(checkOut.getTime() - checkIn.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  };
+  // const filteredBooking = booking.filter(
+  //   (booking) =>
+  //     booking.guestName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     booking.id.toString().includes(searchTerm) ||
+  //     booking.propertyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     booking.propertyType.toLowerCase().includes(searchTerm.toLowerCase()),
+  // );
 
-  const totalBookings = booking.filter((b) => b.status === "confirmed").length;
-  const totalRevenue = booking
-    .filter((b) => b.status === "confirmed")
-    .reduce((sum, booking) => sum + booking.total, 0);
-  const pendingBookings = booking.filter((b) => b.status === "pending").length;
+  // const getPaymentIcon = (method: PropertyBooking["paymentMethod"]) => {
+  //   switch (method) {
+  //     case "card":
+  //       return <CreditCard className="h-4 w-4" />;
+  //     case "mobile":
+  //       return <DollarSign className="h-4 w-4" />;
+  //     case "bank_transfer":
+  //       return <Home className="w-4 h-4" />;
+  //     default:
+  //       return null;
+  //   }
+  // };
+
+  const totalBookings = data.filter(
+    (b) => b.status === "confirmed" || b.status === "completed",
+  ).length;
+
+  const totalRevenue = data
+    .filter((b) => b.status === "confirmed" || b.status === "completed")
+    .reduce((sum, b) => sum + parseFloat(b.total_amount || "0"), 0);
+
+  const pendingBookings = data.filter((b) => b.status === "pending").length;
+
+  //filtered booking
+  const filteredBookings = data.filter(
+    (b) =>
+      b.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      b.booking_reference.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      b.property_name.toLowerCase().includes(searchTerm.toLowerCase()),
+  );
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -243,9 +164,9 @@ export default function BookingView() {
           </div>
 
           <div className="space-y-4">
-            {filteredBooking.map((booking) => (
+            {filteredBookings.map((b) => (
               <Card
-                key={booking.id}
+                key={b.id}
                 className="shadow-soft hover:shadow-medium transition-all"
               >
                 <CardContent className="p-4">
@@ -254,19 +175,17 @@ export default function BookingView() {
                       <div className="flex items-center justify-between">
                         <div>
                           <h3 className="font-semibold text-lg">
-                            Booking #{booking.id}
+                            {b.booking_reference}
                           </h3>
-                          <p className="text-muted-foreground">
-                            {booking.guestName}
-                          </p>
-                          {booking.guestEmail && (
+                          <p className="text-muted-foreground">{b.full_name}</p>
+                          {b.email && (
                             <p className="text-sm text-muted-foreground">
-                              {booking.guestEmail}
+                              {b.email}
                             </p>
                           )}
                         </div>
-                        <Badge className={getStatusColor(booking.status)}>
-                          {booking.status}
+                        <Badge className={getStatusStyle(b.status)}>
+                          {b.status}
                         </Badge>
                       </div>
 
@@ -275,10 +194,10 @@ export default function BookingView() {
                           <div className="flex items-center gap-2">
                             <MapPin className="w-4 h-4 text-gray-500" />
                             <span className="font-medium">
-                              {booking.propertyName}
+                              {b.property_name}
                             </span>
                             <Badge variant="outline" className="ml-auto">
-                              {booking.propertyType}
+                              {b.accommodation_type}
                             </Badge>
                           </div>
 
@@ -288,7 +207,7 @@ export default function BookingView() {
                               <div>
                                 <div className="text-gray-600">Check-in</div>
                                 <div className="font-medium">
-                                  {formatDate(booking.checkIn)}
+                                  {formatDate(b.check_in)}
                                 </div>
                               </div>
                             </div>
@@ -297,33 +216,28 @@ export default function BookingView() {
                               <div>
                                 <div className="text-gray-600">Check-out</div>
                                 <div className="font-medium">
-                                  {formatDate(booking.checkOut)}
+                                  {formatDate(b.check_out)}
                                 </div>
                               </div>
                             </div>
                           </div>
 
                           <div className="flex items-center justify-between text-sm pt-2 border-t">
-                            <div className="flex items-center gap-2">
-                              <Users className="w-4 h-4 text-gray-500" />
-                              <span>
-                                {booking.guests} guest
-                                {booking.guests > 1 ? "s" : ""}
+                            <div className="flex items-center gap-3">
+                              <div className="flex items-center gap-1 text-muted-foreground">
+                                <Users className="w-4 h-4" />
+                                <span className="text-foreground font-medium">
+                                  {b.number_of_guests}
+                                </span>
+                              </div>
+                              <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                                ({b.number_of_adults}A / {b.number_of_children}
+                                C)
                               </span>
                             </div>
                             <div>
-                              <span className="text-gray-600">
-                                {calculateNights(
-                                  booking.checkIn,
-                                  booking.checkOut,
-                                )}{" "}
-                                night
-                                {calculateNights(
-                                  booking.checkIn,
-                                  booking.checkOut,
-                                ) > 1
-                                  ? "s"
-                                  : ""}
+                              <span className="text-primary font-semibold">
+                                {b.total_days} Night(s)
                               </span>
                             </div>
                           </div>
@@ -331,17 +245,18 @@ export default function BookingView() {
                       </div>
 
                       <div className="flex items-center justify-between pt-2">
-                        <div className="flex items-center gap-2 text-sm text-gray-600">
-                          {getPaymentIcon(booking.paymentMethod)}
-                          <span className="capitalize">
-                            {booking.paymentMethod.replace("_", " ")}
-                          </span>
-                          <span className="text-gray-400">•</span>
-                          <span>{formatDateTime(booking.bookingDate)}</span>
-                        </div>
+                        {/* <div className="flex items-center gap-2 text-sm text-gray-600">
+                        {getPaymentIcon(booking.paymentMethod)}
+                        <span className="capitalize">
+                          {booking.paymentMethod.replace("_", " ")}
+                        </span>
+                        <span className="text-gray-400">•</span>
+                        <span>{formatDateTime(booking.bookingDate)}</span>
+                      </div> */}
+                        <div className="flex items-center gap-2 text-sm text-gray-600"></div>
                         <div className="text-right">
                           <div className="text-2xl font-bold text-black-600">
-                            ${booking.total.toFixed(2)}
+                            ${b.total_amount}
                           </div>
                           <div className="text-xs text-gray-500">Total</div>
                         </div>
@@ -358,15 +273,10 @@ export default function BookingView() {
             ))}
           </div>
 
-          {filteredBooking.length === 0 && (
+          {filteredBookings.length === 0 && (
             <div className="text-center py-12 text-gray-500">
               <Home className="w-12 h-12 mx-auto mb-4 opacity-50" />
               <p className="text-lg font-medium">No bookings found</p>
-              <p className="text-sm">
-                {searchTerm
-                  ? "Try adjusting your search terms"
-                  : "Start creating your first booking"}
-              </p>
             </div>
           )}
         </CardContent>

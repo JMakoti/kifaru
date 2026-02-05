@@ -13,6 +13,7 @@ import {
   IdCard,
   Phone,
   Loader2,
+  AlertCircle,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -42,6 +43,22 @@ interface StepperProps {
   min: number;
   max: number;
   onChange: (value: number) => void;
+}
+
+interface ApiError {
+  response?: {
+    data?: {
+      success: boolean;
+      error_type: string;
+      message: string;
+      suggestion: string;
+      details: {
+        property_name: string;
+        your_nights: number;
+        your_stay_type: string;
+      };
+    };
+  };
 }
 
 function Stepper({ label, value, min, max, onChange }: StepperProps) {
@@ -83,6 +100,8 @@ export default function BookingForm() {
   const location = useLocation();
   const { user, isLoading: authLoading } = useAuth();
 
+  
+
   const { id, slug, name, max_guests } = location.state as {
     id: number;
     name: string;
@@ -115,15 +134,17 @@ export default function BookingForm() {
   /*Calendar Queries */
   const { data: bookingData } = usePropertyBookings(id);
   // Price Calculation Query
-  const { data: pricing, isFetching: isCalculating } = useCalculateBookingPrice(
-    {
-      property: id,
-      check_in: checkIn ? checkIn.toISOString().split("T")[0] : "",
-      check_out: checkOut ? checkOut.toISOString().split("T")[0] : "",
-      accommodation_type: accommodationType as AccommodationType,
-      number_of_guests: adults + children,
-    },
-  );
+  const {
+    data: pricing,
+    isFetching: isCalculating,
+    error: pricingError,
+  } = useCalculateBookingPrice({
+    property: id,
+    check_in: checkIn ? checkIn.toISOString().split("T")[0] : "",
+    check_out: checkOut ? checkOut.toISOString().split("T")[0] : "",
+    accommodation_type: accommodationType as AccommodationType,
+    number_of_guests: adults + children,
+  });
   const navigate = useNavigate();
 
   /* Submit */
@@ -154,6 +175,7 @@ export default function BookingForm() {
   };
 
   const safeMaxGuests = max_guests ?? 1;
+  const apiErrorData = (pricingError as ApiError)?.response?.data;
 
   return (
     <div className="min-h-screen bg-background">
@@ -252,6 +274,31 @@ export default function BookingForm() {
 
               {/* BOOKING DETAILS */}
               <Card>
+                {pricingError && (
+                  <div className="mx-6 mt-4 p-4 rounded-lg border border-amber-500/50 bg-amber-500/10 text-amber-900 dark:text-amber-200 flex gap-3 items-start animate-in fade-in slide-in-from-top-2">
+                    <div className="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center shrink-0">
+                      <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                    </div>
+                    <div className="space-y-1">
+                      <p className="font-bold text-sm leading-none">
+                        Stay Duration Policy
+                      </p>
+                      <p className="text-sm leading-relaxed">
+                        {apiErrorData?.message ||
+                          "Something went wrong with your stay calculation."}
+                      </p>
+
+                      {apiErrorData?.suggestion && (
+                        <div className="mt-2 flex items-center gap-2 text-xs font-medium text-amber-700 dark:text-amber-300">
+                          <span className="bg-amber-500/20 px-1.5 py-0.5 rounded uppercase text-[10px]">
+                            Tip
+                          </span>
+                          {apiErrorData.suggestion}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
                 <CardHeader className="border-b border-border bg-muted/50 rounded-t-xl">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">

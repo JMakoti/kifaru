@@ -26,8 +26,8 @@ export const bookingApi = {
     return response.data;
   },
 
-  getAll: async (): Promise<BookingPayload[]> => {
-    const response = await api.get<BookingPayload[]>(`${BOOKINGS}/`);
+  getAll: async (): Promise<Booking[]> => {
+    const response = await api.get<Booking[]>(`${BOOKINGS}/`);
     return response.data;
   },
 
