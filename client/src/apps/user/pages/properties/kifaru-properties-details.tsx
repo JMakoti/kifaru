@@ -63,9 +63,9 @@ export default function KifaruPropertyDetails() {
     return <div className="text-center py-10">Invalid property data</div>;
   }
 
-  const image = property.background_image;
-  // const image =
-  //   "https://res.cloudinary.com/drselhsl4/image/upload/v1764136940/Kifaru/backgrounds/ipshvpes7mlcg9mjc9qu.png";
+  // const bgimage = property.background_image;
+  const bgimage =
+    "https://res.cloudinary.com/drselhsl4/image/upload/v1764136940/Kifaru/backgrounds/ipshvpes7mlcg9mjc9qu.png";
 
   const images: PropertyImage[] = property.property_images ?? [];
 
@@ -184,7 +184,7 @@ export default function KifaruPropertyDetails() {
         {/* Tabs and Booking */}
         <div
           className="bg-no-repeat bg-contain"
-          style={{ backgroundImage: `url(${image})` }}
+          style={{ backgroundImage: `url(${bgimage})` }}
         >
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
             <div className="lg:col-span-2">
