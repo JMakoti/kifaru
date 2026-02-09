@@ -61,7 +61,7 @@ export default function BookingPreviewPayment() {
     );
   }
 
-  const handleConfirmBooking = () => {
+  const handleConfirmBooking = async () => {
     // Apply the type here to fix the "unused" and "any" errors
     const payload: BookingPayload = {
       property: booking.property_id,
@@ -80,30 +80,47 @@ export default function BookingPreviewPayment() {
       special_requests: "",
     };
 
-    createBookingMutation.mutate(payload, {
-      onSuccess: (data) => {
-        // navigate(`/property/${booking.slug}/payment`);
-        // navigate(`/property/${booking.slug}/payment`, {
-        //   state: { bookingId: data.id },
-        // });
-        console.log("ID received in Component:", data.id);
+    try {
+      const data = await createBookingMutation.mutateAsync(payload);
 
-        if (data?.id) {
-          navigate(`/property/${booking.slug}/payment`, {
-            state: { bookingId: data.id },
-          });
-        } else {
-          console.error(
-            "No ID found in server response. Check the console log above.",
-          );
-        }
-      },
+      console.log("Response received in component:", data);
 
-      onError: (error) => {
-        console.error("Booking failed:", error.message);
-      },
-    });
+      if (data?.id) {
+        // 3. Navigate with the ID
+        navigate(`/property/${booking.slug}/payment`, {
+          state: { bookingId: data.id },
+        });
+      } else {
+        console.error("Booking created but ID is missing in response:", data);
+      }
+    } catch (error) {
+      console.error("Booking submission failed:", error);
+    }
   };
+  // createBookingMutation.mutate(payload, {
+  //   onSuccess: (data) => {
+  //     // navigate(`/property/${booking.slug}/payment`);
+  //     // navigate(`/property/${booking.slug}/payment`, {
+  //     //   state: { bookingId: data.id },
+  //     // });
+  //     console.log("ID received in Component:", data.id);
+
+  //     if (data?.id) {
+  //       navigate(`/property/${booking.slug}/payment`, {
+  //         state: { bookingId: data.id },
+  //       });
+  //     } else {
+  //       console.error(
+  //         "No ID found in server response. Check the console log above.",
+  //       );
+  //     }
+  //   },
+
+  //   onError: (error) => {
+  //     console.error("Booking failed:", error.message);
+  //   },
+  // });
+  // };
 
   return (
     <div className="min-h-screen bg-background py-8 md:py-12">

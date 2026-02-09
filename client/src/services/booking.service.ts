@@ -50,14 +50,33 @@ export const useCalculateBookingPrice = (params?: BookingPriceQuery) =>
 
 // MUTATIONS
 
+// export const useCreateBooking = () => {
+//   const queryClient = useQueryClient();
+
+//   return useMutation({
+//     mutationFn: (data: BookingPayload) => bookingApi.create(data),
+//     onSuccess: () => {
+//       queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.all });
+//       queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.my });
+//     },
+//   });
+// };
+
 export const useCreateBooking = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data: BookingPayload) => bookingApi.create(data),
-    onSuccess: () => {
+    onSuccess: (data) => {
+      // Invalidate queries
       queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.all });
       queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.my });
+      
+      // Log here to see if the hook sees the ID
+      console.log("Hook level success, ID:", data?.id);
+      
+      // Return data so the component's mutate call can see it
+      return data; 
     },
   });
 };
