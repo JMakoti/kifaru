@@ -1,4 +1,12 @@
-import type { Booking, BookingPayload, BookingPriceQuery, BookingPriceResponse } from "@/types/booking.types";
+import type {
+  Booking,
+  BookingPayload,
+  BookingPriceQuery,
+  BookingPriceResponse,
+  BookingResponse,
+  InitializePaymentPayload,
+  InitializePaymentResponse,
+} from "@/types/booking.types";
 import { api } from "./user.endpoints";
 const BOOKINGS = "/bookings";
 const MY_BOOKINGS = "/bookings/my-bookings";
@@ -21,8 +29,18 @@ export const bookingApi = {
   /* --------------------------------
    * BOOKINGS CRUD
    * -------------------------------- */
-  create: async (data: BookingPayload): Promise<BookingPayload> => {
-    const response = await api.post<BookingPayload>(`${BOOKINGS}/`, data);
+  // create: async (data: BookingPayload): Promise<BookingPayload> => {
+  //   const response = await api.post<BookingPayload>(`${BOOKINGS}/`, data);
+  //   console.log("Backend Raw Response:", response.data);
+  //   return response.data;
+  // },
+  create: async (data: BookingPayload): Promise<BookingResponse> => {
+    // We expect the backend to return the newly created object (BookingResponse)
+    const response = await api.post<BookingResponse>(`${BOOKINGS}/`, data);
+
+    // response.data contains the actual JSON body from the server
+    console.log("Full response.data from Backend:", response.data);
+
     return response.data;
   },
 
@@ -47,5 +65,16 @@ export const bookingApi = {
   myBookings: async (): Promise<Booking[]> => {
     const response = await api.get<Booking[]>(`${MY_BOOKINGS}/`);
     return response.data;
+  },
+};
+
+// Payment Api
+export const paymentApi = {
+  //initialize payment
+  initialize: async (
+    payload: InitializePaymentPayload,
+  ): Promise<InitializePaymentResponse> => {
+    const { data } = await api.post("/payment/initialize/", payload);
+    return data;
   },
 };

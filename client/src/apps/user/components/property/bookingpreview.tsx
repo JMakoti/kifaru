@@ -79,10 +79,24 @@ export default function BookingPreviewPayment() {
       jacuzzi_reservation: false,
       special_requests: "",
     };
-    
+
     createBookingMutation.mutate(payload, {
-      onSuccess: () => {
-        navigate(`/property/${booking.slug}/payment`);
+      onSuccess: (data) => {
+        // navigate(`/property/${booking.slug}/payment`);
+        // navigate(`/property/${booking.slug}/payment`, {
+        //   state: { bookingId: data.id },
+        // });
+        console.log("ID received in Component:", data.id);
+
+        if (data?.id) {
+          navigate(`/property/${booking.slug}/payment`, {
+            state: { bookingId: data.id },
+          });
+        } else {
+          console.error(
+            "No ID found in server response. Check the console log above.",
+          );
+        }
       },
 
       onError: (error) => {

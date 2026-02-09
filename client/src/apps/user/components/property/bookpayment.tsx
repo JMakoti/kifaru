@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import {
   CheckCircle2,
   Timer,
@@ -9,11 +9,18 @@ import {
   ExternalLink,
   ShieldCheck,
   AlertCircle,
+  Loader2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useInitializePayment } from "@/services/booking.service";
 
 export default function ConfirmPaymentBooking() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const bookingId = location.state?.bookingId;
+
+  const { mutate: initializePayment, isPending } = useInitializePayment();
 
   // Set the expiry to 30 minutes from now
   const [expiryTime] = useState(() => Date.now() + 30 * 60 * 1000);
@@ -46,6 +53,14 @@ export default function ConfirmPaymentBooking() {
     const timer = setInterval(calculateTime, 1000);
     return () => clearInterval(timer);
   }, [expiryTime]);
+
+  const handlePayment = () => {
+    if (!bookingId) {
+      console.error("No booking ID found in state");
+      return;
+    }
+    initializePayment({ booking_id: bookingId });
+  };
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
@@ -106,11 +121,22 @@ export default function ConfirmPaymentBooking() {
           <Button
             size="lg"
             className="w-full h-16 text-lg font-bold shadow-xl transition-all active:scale-95"
-            disabled={isExpired}
-            onClick={() => (window.location.href = "/payment-portal")}
+            disabled={isExpired || isPending || !bookingId}
+            onClick={handlePayment}
           >
-            {isExpired ? "Booking Expired" : "Make Payment Now"}
-            {!isExpired && <ExternalLink className="w-4 h-4 ml-2" />}
+            {isPending ? (
+              <>
+                <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                Securing Gateway...
+              </>
+            ) : isExpired ? (
+              "Booking Expired"
+            ) : (
+              <>
+                Make Payment Now
+                <ExternalLink className="w-4 h-4 ml-2" />
+              </>
+            )}
           </Button>
 
           <Button

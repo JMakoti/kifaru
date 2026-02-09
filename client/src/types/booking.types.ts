@@ -4,7 +4,6 @@ import type { AccommodationType } from "./property";
  * Payload used when CREATING a booking
  */
 export interface BookingPayload {
-  id?: 0;
   property: number;
   accommodation_type: AccommodationType;
   check_in: string;
@@ -70,4 +69,23 @@ export interface Booking {
   email?: string;
   phone?: string;
   created_at: string;
+}
+
+export interface BookingResponse extends BookingPayload {
+  id: number;
+}
+
+
+// Payload to Initialize Payment
+
+export interface InitializePaymentPayload {
+  booking_id: number;
+}
+
+export interface InitializePaymentResponse {
+  message: string;
+  payment_id: number;
+  authorization_url: string;
+  reference: string;
+  access_code: string;
 }

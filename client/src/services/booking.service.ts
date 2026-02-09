@@ -1,6 +1,11 @@
-import type { BookingPayload, BookingPriceQuery } from "@/types/booking.types";
+import type {
+  BookingPayload,
+  BookingPriceQuery,
+  InitializePaymentPayload,
+  InitializePaymentResponse,
+} from "@/types/booking.types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { bookingApi } from "./booking.endpoints";
+import { bookingApi, paymentApi } from "./booking.endpoints";
 
 //  QUERY KEYS
 const BOOKING_KEYS = {
@@ -35,7 +40,7 @@ export const useCalculateBookingPrice = (params?: BookingPriceQuery) =>
     queryKey: BOOKING_KEYS.price(params),
     queryFn: () => bookingApi.calculatePrice(params!),
     enabled:
-      !!params?.property &&  //property id
+      !!params?.property && //property id
       !!params?.check_in &&
       !!params?.check_out &&
       !!params?.accommodation_type &&
@@ -76,6 +81,25 @@ export const useDeleteBooking = () => {
     mutationFn: (id: number) => bookingApi.delete(id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.all });
+    },
+  });
+};
+
+//initialize payment
+export const useInitializePayment = () => {
+  return useMutation<
+    InitializePaymentResponse,
+    Error,
+    InitializePaymentPayload
+  >({
+    mutationFn: paymentApi.initialize,
+    onSuccess: (data) => {
+      // Logic after successful initialization
+      // Example: Redirecting to the payment gateway
+      window.location.href = data.authorization_url;
+    },
+    onError: (error) => {
+      console.error("Payment initialization failed:", error.message);
     },
   });
 };
