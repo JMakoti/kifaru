@@ -2,12 +2,21 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, Users } from "lucide-react";
 import type { Booking } from "@/types/booking.types";
+import { Button } from "@/components/ui/button";
+import { useCancelBooking } from "@/services/booking.service";
 
 interface PropertyBooking {
   booking: Booking;
 }
 
 export default function BookingCard({ booking }: PropertyBooking) {
+  const cancelBooking = useCancelBooking();
+
+  const handleCancel = () => {
+    if (!confirm("Are you sure you want to cancel this booking?")) return;
+    cancelBooking.mutate(booking.id);
+  };
+
   const getStatusStyle = () => {
     switch (booking.status) {
       case "completed":
@@ -104,7 +113,17 @@ export default function BookingCard({ booking }: PropertyBooking) {
             <span>•</span>
             <span>{formatDateTime(booking.bookingDate)}</span>
           </div> */}
-          <div className="flex items-center gap-2 text-sm text-muted-foreground"></div>
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Button
+              onClick={handleCancel}
+              className="border border-red-500 text-red-500 bg-red-50 hover:bg-red-50 px-4 py-2 rounded-md transition-colors cursor-pointer"
+              disabled={
+                cancelBooking.isPending || booking.status === "cancelled"
+              }
+            >
+              {cancelBooking.isPending ? "Cancelling..." : "Cancel Booking"}
+            </Button>
+          </div>
 
           <div className="text-right">
             <p className="text-2xl font-semibold">${booking.total_amount}</p>
