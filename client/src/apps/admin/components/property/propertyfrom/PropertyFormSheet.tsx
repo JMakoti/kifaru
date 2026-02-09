@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { FileInput } from "@/components/ui/file-input";
 import { FormSection } from "./FormSection";
 import { FormField } from "./FormField";
 import { StepIndicator } from "./StepIndicator";
@@ -26,6 +27,12 @@ import { ImagesSection } from "./ImagesSection";
 import { PricingOptionsSection } from "./PricingOptionsSection";
 import { FeaturesSection } from "./FeaturesSection";
 import { ContactsSection } from "./ContactsSection";
+import { HighlightsSection } from "./HighlightsSection";
+import {
+  emptyPropertyForm,
+  PROPERTY_CATEGORIES,
+  type Property,
+} from "@/types/property";
 import {
   Building2,
   MapPin,
@@ -40,14 +47,13 @@ import {
   Home,
   Wifi,
   Clock,
+  Star,
+  Loader2,
 } from "lucide-react";
 import {
-  emptyPropertyForm,
-  PROPERTY_CATEGORIES,
-  type Property,
-} from "@/types/property";
-import { useCreateProperty } from "@/services/property.service";
-import { toast } from "sonner";
+  useCreateProperty,
+  useUpdateProperty,
+} from "@/services/property.service";
 
 const steps = [
   {
@@ -60,6 +66,11 @@ const steps = [
     id: "pricing",
     label: "Pricing",
     icon: <DollarSign className="w-3.5 h-3.5" />,
+  },
+  {
+    id: "highlights",
+    label: "Highlights",
+    icon: <Star className="w-3.5 h-3.5" />,
   },
   {
     id: "amenities",
@@ -88,11 +99,36 @@ const steps = [
   },
 ];
 
-export function PropertyFormSheet() {
-  const [open, setOpen] = useState(false);
+interface PropertyFormSheetProps {
+  property?: Property;
+  onSuccess?: () => void;
+  open?: boolean; // Add this
+  onOpenChange?: (open: boolean) => void; // Add this
+}
+
+export function PropertyFormSheet({
+  property,
+  onSuccess,
+  open: externalOpen,
+  onOpenChange: setExternalOpen,
+}: PropertyFormSheetProps) {
+  // const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const isControlled = externalOpen !== undefined;
+  const open = isControlled ? externalOpen : internalOpen;
+  const setOpen = isControlled ? setExternalOpen! : setInternalOpen;
+
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<Property>(emptyPropertyForm);
+  const [formData, setFormData] = useState<Property>(
+    () => property || emptyPropertyForm,
+  );
+
   const createMutation = useCreateProperty();
+  const updateMutation = useUpdateProperty();
+
+  // const isEditing = !!property?.slug;
+  const isEditing = Boolean(property?.slug);
+  const isPending = createMutation.isPending || updateMutation.isPending;
 
   const updateField = <K extends keyof Property>(
     field: K,
@@ -109,29 +145,34 @@ export function PropertyFormSheet() {
     if (currentStep > 0) setCurrentStep(currentStep - 1);
   };
 
-  // const handleSubmit = () => {
-  //   console.log("Submitting property:", formData);
-  //   //  if (formData.id && editMutation) {
-  //   //   await editMutation.mutateAsync(formData);
-  //   // } else {
-  //   createMutation.mutateAsync(formData);
-  //   toast.success("Property saved!");
-  //   // }
-  //   setOpen(false);
-  // };
-
   const handleSubmit = async () => {
     try {
-      console.log(formData);
-      // createMutation.mutate(formData, {
-      //   onSuccess: () => {
-      //     toast.success("Property saved!");
-      //     setOpen(false);
-      //   },
-      // });
+      if (isEditing && formData.slug) {
+        await updateMutation.mutateAsync({
+          slug: formData.slug,
+          property: formData,
+        });
+      } else {
+        await createMutation.mutateAsync(formData);
+      }
+      setOpen(false);
+      if (!isEditing) {
+        setFormData(emptyPropertyForm);
+        setCurrentStep(0);
+      }
+      onSuccess?.();
     } catch (error) {
-      console.error(error);
-      toast.error("Failed to save property. Check console for details.");
+      // Error handling is done in the mutation hooks
+      console.error("Failed to save property:", error);
+    }
+  };
+
+  const handleOpenChange = (isOpen: boolean) => {
+    setOpen(isOpen);
+
+    if (!isOpen && !isEditing) {
+      setFormData(emptyPropertyForm);
+      setCurrentStep(0);
     }
   };
 
@@ -160,7 +201,7 @@ export function PropertyFormSheet() {
               <Input
                 id="slug"
                 placeholder="oceanfront-beach-villa"
-                value={formData.slug}
+                value={formData.slug || ""}
                 onChange={(e) => updateField("slug", e.target.value)}
               />
             </FormField> */}
@@ -312,23 +353,16 @@ export function PropertyFormSheet() {
               </FormField>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-4">
               <FormField label="Background Image" htmlFor="backgroundImage">
-                <div className="relative">
-                  <ImageIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
-                  <Input
-                    id="backgroundImage"
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) =>
-                      updateField(
-                        "background_image",
-                        e.target.files?.[0] || null,
-                      )
-                    }
-                    className="pl-10 file:border-0 file:bg-transparent file:text-sm file:text-muted-foreground hover:file:text-primary"
-                  />
-                </div>
+                <FileInput
+                  id="backgroundImage"
+                  value={formData.background_image}
+                  onChange={(file) => updateField("background_image", file)}
+                  accept="image/*"
+                  fileOnly
+                  className="w-full"
+                />
               </FormField>
 
               <FormField label="WiFi Password" htmlFor="wifiPassword">
@@ -452,6 +486,14 @@ export function PropertyFormSheet() {
           </FormSection>
         );
 
+      case "highlights":
+        return (
+          <HighlightsSection
+            highlights={formData.highlights}
+            onChange={(highlights) => updateField("highlights", highlights)}
+          />
+        );
+
       case "amenities":
         return (
           <AmenitiesSection
@@ -498,29 +540,29 @@ export function PropertyFormSheet() {
   };
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet open={open} onOpenChange={handleOpenChange}>
       <SheetTrigger asChild>
         <Button size="lg" className="gap-2">
           <Plus className="w-5 h-5" />
-          Add Property
+          {isEditing ? "Edit Property" : "Add Property"}
         </Button>
       </SheetTrigger>
 
       <SheetContent
-        className="p-0 flex flex-col h-full w-screen
-    md:w-[85vw]
-    xl:w-[75vw]
-    max-w-none"
+        className="p-0 flex flex-col w-screen
+            md:w-[85vw]
+            xl:w-[75vw]
+            max-w-none"
       >
         {/* Header */}
-        <div className="border-b border-border p-6 pb-4 bg-gradient-to-b from-accent/20 via-accent/10 to-background">
+        <div className="border-b border-border/50 p-6 pb-4 bg-gradient-to-b from-secondary/30 to-transparent">
           <div className="flex items-center justify-between gap-4">
             <SheetHeader className="text-left">
               <SheetTitle className="text-2xl font-display">
-                {formData.id ? "Edit Property" : "Add New Property"}
+                {isEditing ? "Edit Property" : "Add New Property"}
               </SheetTitle>
               <SheetDescription>
-                Complete each section to create your property listing
+                Complete each section to create your premium property listing
               </SheetDescription>
             </SheetHeader>
 
@@ -550,13 +592,13 @@ export function PropertyFormSheet() {
         </ScrollArea>
 
         {/* Footer */}
-        <div className="border-t border-border p-6 bg-gradient-to-t from-muted/60 to-background">
+        <div className="border-t border-border/50 p-6 bg-gradient-to-t from-secondary/20 to-transparent">
           <div className="flex items-center justify-between gap-4">
             <Button
               variant="outline"
               onClick={prevStep}
-              disabled={currentStep === 0}
-              className="gap-2 cursor-pointer"
+              disabled={currentStep === 0 || isPending}
+              className="gap-2"
             >
               <ChevronLeft className="w-4 h-4" />
               Back
@@ -569,22 +611,27 @@ export function PropertyFormSheet() {
             </div>
 
             {currentStep < steps.length - 1 ? (
-              <Button
-                variant="default"
-                onClick={nextStep}
-                className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
-              >
+              <Button onClick={nextStep} className="gap-2" disabled={isPending}>
                 Next
                 <ChevronRight className="w-4 h-4" />
               </Button>
             ) : (
               <Button
                 onClick={handleSubmit}
-                className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer"
-                disabled={createMutation.isPending}
+                className="gap-2"
+                disabled={isPending}
               >
-                <Save className="w-4 h-4" />
-                {createMutation.isPending ? "Saving..." : "Save Property"}
+                {isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <Save className="w-4 h-4" />
+                    Save Property
+                  </>
+                )}
               </Button>
             )}
           </div>

@@ -63,9 +63,9 @@ export default function KifaruPropertyDetails() {
     return <div className="text-center py-10">Invalid property data</div>;
   }
 
-  // const image = property.background_image;
-  const image =
-    "https://res.cloudinary.com/drselhsl4/image/upload/v1764136940/Kifaru/backgrounds/ipshvpes7mlcg9mjc9qu.png";
+  const image = property.background_image;
+  // const image =
+  //   "https://res.cloudinary.com/drselhsl4/image/upload/v1764136940/Kifaru/backgrounds/ipshvpes7mlcg9mjc9qu.png";
 
   const images: PropertyImage[] = property.property_images ?? [];
 

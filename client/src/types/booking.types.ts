@@ -59,8 +59,10 @@ export interface Booking {
   total_days: number;
   total_amount: string;
   status: "pending" | "confirmed" | "cancelled" | "completed";
-  payment_status: string | null;
+  payment_status?: string | null; // not called from the backend
   accommodation_type?: AccommodationType;
+  guest_type:string;
+  stay_type:string;
   number_of_guests?: number;
   number_of_adults?: number;
   number_of_children?: number;

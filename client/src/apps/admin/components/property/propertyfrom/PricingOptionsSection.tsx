@@ -6,7 +6,8 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { FormField } from "./FormField";
 import { FormSection } from "./FormSection";
-import { ACCOMMODATION_TYPES, GUEST_TYPES, STAY_TYPES, type PricingOption } from "@/types/property";
+import type { PricingOption, AccommodationType, GuestType, StayType } from "@/types/property";
+import { ACCOMMODATION_TYPES, GUEST_TYPES, STAY_TYPES } from "@/types/property";
 
 interface PricingOptionsSectionProps {
   pricingOptions: PricingOption[];
@@ -48,7 +49,7 @@ export function PricingOptionsSection({ pricingOptions, onChange }: PricingOptio
         {pricingOptions.map((option, index) => (
           <div 
             key={index} 
-            className="group relative bg-muted/40 rounded-xl p-6 border border-border/40 hover:border-primary/30 transition-all duration-200 animate-scale-in"
+            className="group relative bg-secondary/30 rounded-xl p-6 border border-border/40 hover:border-primary/30 transition-all duration-200 animate-scale-in"
           >
             <div className="absolute top-3 right-3 flex items-center gap-2">
               <span className="text-xs font-medium text-muted-foreground bg-muted px-2 py-1 rounded-md">
@@ -69,12 +70,12 @@ export function PricingOptionsSection({ pricingOptions, onChange }: PricingOptio
                 <FormField label="Accommodation Type" htmlFor={`pricing-accom-${index}`}>
                   <Select 
                     value={option.accommodation_type} 
-                    onValueChange={(value) => updateOption(index, "accommodation_type", value)}
+                    onValueChange={(value) => updateOption(index, "accommodation_type", value as AccommodationType)}
                   >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="w-full">
+                    <SelectContent>
                       {ACCOMMODATION_TYPES.map((type) => (
                         <SelectItem key={type.value} value={type.value}>
                           {type.label}
@@ -87,12 +88,12 @@ export function PricingOptionsSection({ pricingOptions, onChange }: PricingOptio
                 <FormField label="Guest Type" htmlFor={`pricing-guest-${index}`}>
                   <Select 
                     value={option.guest_type} 
-                    onValueChange={(value) => updateOption(index, "guest_type", value)}
+                    onValueChange={(value) => updateOption(index, "guest_type", value as GuestType)}
                   >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="w-full">
+                    <SelectContent>
                       {GUEST_TYPES.map((type) => (
                         <SelectItem key={type.value} value={type.value}>
                           {type.label}
@@ -105,12 +106,12 @@ export function PricingOptionsSection({ pricingOptions, onChange }: PricingOptio
                 <FormField label="Stay Type" htmlFor={`pricing-stay-${index}`}>
                   <Select 
                     value={option.stay_type} 
-                    onValueChange={(value) => updateOption(index, "stay_type", value)}
+                    onValueChange={(value) => updateOption(index, "stay_type", value as StayType)}
                   >
-                    <SelectTrigger className="w-full">
+                    <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent className="w-full">
+                    <SelectContent>
                       {STAY_TYPES.map((type) => (
                         <SelectItem key={type.value} value={type.value}>
                           {type.label}

@@ -7,3 +7,4 @@ export { ImagesSection } from "./ImagesSection";
 export { PricingOptionsSection } from "./PricingOptionsSection";
 export { FeaturesSection } from "./FeaturesSection";
 export { ContactsSection } from "./ContactsSection";
+export { HighlightsSection } from "./HighlightsSection";

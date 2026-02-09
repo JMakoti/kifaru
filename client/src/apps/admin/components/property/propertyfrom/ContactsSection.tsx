@@ -40,7 +40,7 @@ export function ContactsSection({ contacts, onChange }: ContactsSectionProps) {
         {contacts.map((contact, index) => (
           <div 
             key={index} 
-            className="group relative bg-muted/40 rounded-xl p-5 border border-border/40 hover:border-primary/30 transition-all duration-200 animate-scale-in"
+            className="group relative bg-secondary/30 rounded-xl p-5 border border-border/40 hover:border-primary/30 transition-all duration-200 animate-scale-in"
           >
             <button
               type="button"

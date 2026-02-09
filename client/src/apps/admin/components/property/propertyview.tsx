@@ -44,25 +44,25 @@ interface PropertyView {
   maxGuests: number;
   rating: number;
   status: "available" | "booked" | "blocked" | "maintenance";
-  bookedDaysFromToday: number;
 }
 
 export default function PropertiesView() {
   const [searchTerm, setSearchTerm] = useState("");
   const [deletingProperty, setDeletingProperty] = useState<string | null>(null);
-  const { data: fetchedProperties = [], isLoading, refetch } = useProperties();
+  const [editingSlug, setEditingSlug] = useState<string | null>(null);
+  const [isSheetOpen, setIsSheetOpen] = useState(false); // New state
+  const { data = [], isLoading, refetch } = useProperties();
   const { mutateAsync } = useDeleteProperty();
 
   // Map API data to UI-friendly property view
   const properties: PropertyView[] = useMemo(() => {
     const today = new Date();
 
-    return fetchedProperties.map((prop) => {
+    return data?.map((prop) => {
       const bedrooms = prop.bedrooms || 1;
       const maxGuests = prop.max_guests || 1;
       const rating = prop.average_rating || 4.5;
 
-      // Determine property status
       const getPropertyStatus = (prop: ExtendedAPIProperty, bufferDays = 1) => {
         if (prop.status === "blocked") return "blocked";
         if (prop.status === "maintenance") return "maintenance";
@@ -75,41 +75,14 @@ export default function PropertiesView() {
           const checkOut = new Date(range.check_out);
           const bufferedCheckout = new Date(checkOut);
           bufferedCheckout.setDate(bufferedCheckout.getDate() + bufferDays);
+
           return today >= checkIn && today <= bufferedCheckout;
         });
 
         return isBookedToday ? "booked" : "available";
       };
 
-      // Calculate booked days from today
-      const getBookedDaysFromToday = (
-        prop: ExtendedAPIProperty,
-        status: PropertyView["status"],
-        bufferDays = 1,
-      ) => {
-        if (status !== "booked") return 0;
-        if (!prop.booked_dates) return 0;
-
-        let total = 0;
-        for (const range of prop.booked_dates) {
-          const checkIn = new Date(range.check_in);
-          const checkOut = new Date(range.check_out);
-          const bufferedCheckout = new Date(checkOut);
-          bufferedCheckout.setDate(bufferedCheckout.getDate() + bufferDays);
-
-          if (bufferedCheckout < today) continue;
-
-          const start = checkIn < today ? today : checkIn;
-          const diff =
-            (bufferedCheckout.getTime() - start.getTime()) /
-            (1000 * 60 * 60 * 24);
-          if (diff > 0) total += Math.ceil(diff);
-        }
-        return total;
-      };
-
       const status = getPropertyStatus(prop);
-      const bookedDaysFromToday = getBookedDaysFromToday(prop, status);
 
       return {
         id: prop.id,
@@ -122,10 +95,14 @@ export default function PropertiesView() {
         maxGuests,
         rating,
         status,
-        bookedDaysFromToday,
       };
     });
-  }, [fetchedProperties]);
+  }, [data]);
+
+  const editingProperty = useMemo(() => {
+    if (!editingSlug) return undefined;
+    return data.find((p) => p.slug === editingSlug);
+  }, [editingSlug, data]);
 
   const filteredProperties = properties.filter(
     (p) =>
@@ -160,6 +137,11 @@ export default function PropertiesView() {
 
   if (isLoading) return <LoadingScreen />;
 
+  const handleEdit = (slug: string) => {
+    setEditingSlug(slug);
+    setIsSheetOpen(true); // Triggered by event, no Effect needed!
+  };
+
   const handleDelete = async (slug?: string) => {
     if (!slug) return;
     setDeletingProperty(slug);
@@ -183,7 +165,27 @@ export default function PropertiesView() {
             Manage your vacation properties and bookings
           </p>
         </div>
-        <PropertyFormSheet />
+        {/* <PropertyFormSheet
+          property={editingProperty}
+          onSuccess={() => {
+            setEditingSlug(null);
+            refetch();
+          }}
+        /> */}
+        <PropertyFormSheet
+          key={editingSlug || "new"}
+          property={editingProperty}
+          open={isSheetOpen}
+          onOpenChange={(open) => {
+            setIsSheetOpen(open);
+            if (!open) setEditingSlug(null);
+          }}
+          onSuccess={() => {
+            setIsSheetOpen(false);
+            setEditingSlug(null);
+            refetch();
+          }}
+        />
       </div>
 
       {/* Summary Cards */}
@@ -322,10 +324,16 @@ export default function PropertiesView() {
                     <Button size="sm" variant="outline">
                       <Eye className="mr-1 h-4 w-4" />
                     </Button>
-                    <Button size="sm" variant="outline" className="flex-1">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="flex-1"
+                      onClick={() => property.slug && handleEdit(property.slug)}
+                    >
                       <Edit className="mr-1 h-4 w-4" />
                       Edit
                     </Button>
+
                     <Button
                       size="sm"
                       variant="outline"

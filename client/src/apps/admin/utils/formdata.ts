@@ -1,63 +1,76 @@
 import type { Property } from "@/types/property";
 
-export function buildPropertyFormData(data: Property) {
-  const fd = new FormData();
+export function buildPropertyFormData(property: Property): FormData {
+  const formData = new FormData();
 
-  // --- Primitive fields ---
-  const primitiveFields: (keyof Property)[] = [
-    "name",
-    "location",
-    "country",
-    "property_category",
-    "price",
-    "description",
-    "bedrooms",
-    "bathrooms",
-    "square_meters",
-    "terrace_size",
-    "max_guests",
-    "min_nights",
-    "check_in_time",
-    "check_out_time",
+  // Simple text fields
+  formData.append("name", property.name);
+  if (property.slug) formData.append("slug", property.slug);
+  formData.append("location", property.location);
+  formData.append("country", property.country);
+  formData.append("property_category", property.property_category);
+  formData.append("price", property.price);
+  formData.append("description", property.description);
+  formData.append("bedrooms", property.bedrooms.toString());
+  formData.append("bathrooms", property.bathrooms.toString());
+  formData.append("square_meters", property.square_meters.toString());
+  if (property.terrace_size) {
+    formData.append("terrace_size", property.terrace_size.toString());
+  }
+  formData.append("max_guests", property.max_guests.toString());
+  formData.append("min_nights", property.min_nights.toString());
+  formData.append("check_in_time", property.check_in_time);
+  formData.append("check_out_time", property.check_out_time);
+  formData.append(
     "prepayment_percentage",
-    "cancellation_days",
-    "wifi_password",
-  ];
+    property.prepayment_percentage.toString(),
+  );
+  formData.append("cancellation_days", property.cancellation_days.toString());
+  formData.append("wifi_password", property.wifi_password);
 
-  primitiveFields.forEach((key) => {
-    const value = data[key];
-    if (value !== undefined && value !== null) {
-      fd.append(key, String(value));
+  // Background image — File upload
+  if (property.background_image) {
+    if (property.background_image instanceof File) {
+      formData.append("background_image", property.background_image);
+    } else {
+      formData.append("background_image", property.background_image);
     }
-  });
-
-  // --- Background image ---
-  if (data.background_image instanceof File) {
-    fd.append("background_image", data.background_image);
   }
 
-  // --- Amenities ---
-  data.amenities.forEach((amenity, i) => {
-    fd.append(`amenities[${i}][label]`, amenity.label);
+  // Amenities: labels as JSON, files as separate "amenity_images" entries
+  const amenityMeta = property.amenities.map((a) => ({ label: a.label }));
+  formData.append("amenities", JSON.stringify(amenityMeta));
+
+  property.amenities.forEach((amenity) => {
     if (amenity.image instanceof File) {
-      fd.append(`amenities[${i}][image]`, amenity.image);
+      formData.append("amenity_images", amenity.image);
     }
   });
 
-  // --- Property Images ---
-  data.property_images.forEach((img, i) => {
-    fd.append(`property_images[${i}][category]`, img.category);
-    fd.append(`property_images[${i}][order]`, String(img.order));
+  // Property images: metadata as JSON, files as separate "images" entries
+  const imagesMeta = property.property_images.map((img) => ({
+    category: img.category,
+    order: img.order,
+  }));
+  formData.append("property_images", JSON.stringify(imagesMeta));
+
+  property.property_images.forEach((img) => {
     if (img.image instanceof File) {
-      fd.append(`property_images[${i}][image]`, img.image);
+      formData.append("images", img.image);
     }
   });
 
-  // --- Nested arrays as JSON ---
-  fd.append("features", JSON.stringify(data.features));
-  fd.append("contacts", JSON.stringify(data.contacts));
-  fd.append("highlights", JSON.stringify(data.highlights));
-  fd.append("pricing_options", JSON.stringify(data.pricing_options));
+  // Highlights as JSON
+  formData.append("highlights", JSON.stringify(property.highlights));
 
-  return fd;
+  // Pricing options as JSON
+  formData.append("pricing_options", JSON.stringify(property.pricing_options));
+
+  // Features as JSON
+  formData.append("features", JSON.stringify(property.features));
+
+  // Contacts as JSON
+  formData.append("contacts", JSON.stringify(property.contacts));
+
+  return formData;
 }
