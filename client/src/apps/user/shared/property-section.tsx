@@ -69,6 +69,8 @@ function PropertyDestination({
           {/* Image Container */}
           <div className="relative overflow-hidden rounded-t-2xl">
             <motion.img
+              loading="lazy"
+              decoding="async"
               src={resolveImageSrc(images[currentImageIndex])}
               alt={property.name}
               className="w-full h-52 object-cover"
@@ -337,7 +339,11 @@ export default function PropertySection() {
 
   const { data = [], isLoading } = useProperties();
 
-  if (isLoading) return <LoadingScreen />;
+  if (isLoading && !data?.length) {
+    return <LoadingScreen />;
+  }
+
+  // if (isLoading) return <LoadingScreen />;
   // if (isError) return <p>{(error as Error).message}</p>;
 
   return (

@@ -1,14 +1,25 @@
 import { QueryClient } from "@tanstack/react-query";
+import { persistQueryClient } from "@tanstack/react-query-persist-client";
+import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      refetchOnMount: true,
-      refetchOnReconnect: false, //Avoid refetch on network is reconnected
-      refetchOnWindowFocus: false, // Avoid refetching on focus
-      staleTime: 5 * 60 * 1000, // 5 minutes stale time
+      staleTime: Infinity,
+      gcTime: Infinity,
+      retry: 1,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
     },
   },
 });
 
-export default queryClient;
+const persister = createSyncStoragePersister({
+  storage: window.localStorage,
+});
+
+persistQueryClient({
+  queryClient,
+  persister,
+});

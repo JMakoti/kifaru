@@ -12,12 +12,13 @@ export function useProperties() {
   return useQuery<Property[]>({
     queryKey: PROPERTY_QUERY_KEY,
     queryFn: propertyApi.getAll,
-    enabled: true,
+    staleTime: Infinity,
+    gcTime: Infinity,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    retry: false,
-    staleTime: Infinity,
+    retry: 1,
+    placeholderData: (previousData) => previousData,
   });
 }
 
