@@ -179,20 +179,6 @@ export interface PropertyDestinationProps {
   onHover: (index: number | null) => void;
 }
 
-//property review
-export interface PropertyReview {
-  id: number;
-  property: number;
-  property_name: string;
-  user: number;
-  reviewer_name: string;
-  rating: number;
-  comment: string;
-  avatar: string;
-  country: string;
-  created_at: Date;
-}
-
 //property booking dates
 export interface BookingEvent {
   type: "booking" | "maintenance" | string;
@@ -212,4 +198,28 @@ export interface PropertyBookingsResponse {
   start_date: string;
   end_date: string;
   events: BookingEvent[];
+}
+
+//property review
+export interface PropertyReview {
+  id: number;
+  property: number;
+  property_name: string;
+  user: number;
+  reviewer_name: string;
+  rating: number;
+  comment: string;
+  avatar: string;
+  country: string;
+  created_at: string;
+}
+
+export interface ReviewPayload {
+  property: number;
+  user: number;
+  reviewer_name: string;
+  rating: number;
+  comment: string;
+  avatar: string | File;
+  country: string;
 }

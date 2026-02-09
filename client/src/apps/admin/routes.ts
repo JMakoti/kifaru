@@ -5,6 +5,7 @@ import {
   CreditCard,
   GalleryThumbnails,
   Home,
+  ThumbsUp,
   Users,
 } from "lucide-react";
 
@@ -14,6 +15,7 @@ export const menu = [
   { to: "/admin/gallery", label: "Gallery", icon: GalleryThumbnails },
   { to: "/admin/bookings", label: "Bookings", icon: Calendar },
   { to: "/admin/payments", label: "Transactions", icon: CreditCard },
+  { to: "/admin/reviews", label: "Reviews", icon: ThumbsUp },
   { to: "/admin/guests", label: "Guests", icon: Users },
   { to: "/admin/reports", label: "Reports", icon: BarChart2 },
 ];
