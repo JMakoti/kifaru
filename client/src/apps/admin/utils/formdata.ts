@@ -32,8 +32,6 @@ export function buildPropertyFormData(property: Property): FormData {
   if (property.background_image) {
     if (property.background_image instanceof File) {
       formData.append("background_image", property.background_image);
-    } else {
-      formData.append("background_image", property.background_image);
     }
   }
 

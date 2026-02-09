@@ -138,8 +138,9 @@ export default function PropertiesView() {
   if (isLoading) return <LoadingScreen />;
 
   const handleEdit = (slug: string) => {
+    if (!slug) return;
     setEditingSlug(slug);
-    setIsSheetOpen(true); // Triggered by event, no Effect needed!
+    setIsSheetOpen(true);
   };
 
   const handleDelete = async (slug?: string) => {
