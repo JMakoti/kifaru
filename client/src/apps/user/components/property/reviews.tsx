@@ -16,7 +16,7 @@ interface ReviewItem {
   author: string;
   rating: number;
   comment: string;
-  date:Date;
+  date: Date;
   verified: boolean;
   avatar?: string;
 }
@@ -48,7 +48,7 @@ const StarRating = ({
 
 const mapApiReviewsToUI = (
   reviews: PropertyReview[],
-  propertyId: number
+  propertyId: number,
 ): ReviewItem[] =>
   reviews
     .filter((r) => r.property === propertyId)
@@ -57,31 +57,31 @@ const mapApiReviewsToUI = (
       author: r.reviewer_name,
       rating: r.rating,
       comment: r.comment,
-      date: r.created_at,
+      date: new Date(r.created_at),
       verified: r.rating >= 4,
       avatar: r.avatar,
     }))
-    .sort(
-      (a, b) =>
-        new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
+    .sort((a, b) => b.date.getTime() - a.date.getTime());
 
 export default function Reviews({ propertyId }: ReviewsProps) {
-  const { data = [], isLoading } = useReviews();
+  const { useGetReviews } = useReviews();
+  // Queries & Mutations
+  const { data, isLoading } = useGetReviews();
+  const reviewList = useMemo(() => data?.results || [], [data]);
   const [visibleReviews, setVisibleReviews] = useState(3);
 
   const reviews = useMemo(
-    () => mapApiReviewsToUI(data, propertyId),
-    [data, propertyId]
+    () => mapApiReviewsToUI(reviewList, propertyId),
+    [reviewList, propertyId],
   );
 
   const totalReviews = reviews.length;
 
   const averageRating =
     totalReviews > 0
-      ? (
-          reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews
-        ).toFixed(1)
+      ? (reviews.reduce((sum, r) => sum + r.rating, 0) / totalReviews).toFixed(
+          1,
+        )
       : "0.0";
 
   const ratingDistribution = [5, 4, 3, 2, 1].map((stars) => {
@@ -181,9 +181,7 @@ export default function Reviews({ propertyId }: ReviewsProps) {
                     <div className="flex items-center gap-3 text-sm text-muted-foreground">
                       <StarRating rating={review.rating} />
                       <span>•</span>
-                      <span>
-                        {new Date(review.date).toLocaleDateString()}
-                      </span>
+                      <span>{new Date(review.date).toLocaleDateString()}</span>
                     </div>
                   </div>
                 </div>

@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-// import { motion } from "framer-motion";
 import { Play } from "lucide-react";
 
 const SLIDES = [
@@ -23,90 +22,58 @@ const SLIDES = [
   },
 ];
 
-// Generate random horizontal offsets, either left (-) or right (+)
-// const randomHorizontalOffset = () => (Math.random() < 0.5 ? -1 : 1) * (100 + Math.random() * 50);
-
 export default function VideoWordStack() {
   const [index, setIndex] = useState(0);
-  // const [wordOffsets, setWordOffsets] = useState(SLIDES[0].words.map(() => 0));
 
-  // Change slide every 30s
   useEffect(() => {
     const slideTimer = setInterval(() => {
       setIndex((prev) => (prev + 1) % SLIDES.length);
-      // setWordOffsets(SLIDES[(index + 1) % SLIDES.length].words.map(() => 0));
     }, 30000);
     return () => clearInterval(slideTimer);
-  }, [index]);
-
-  // Float words continuously every 2s
-  // useEffect(() => {
-  //   const floatTimer = setInterval(() => {
-  //     setWordOffsets(SLIDES[index].words.map(() => randomHorizontalOffset()));
-  //   }, 2000);
-  //   return () => clearInterval(floatTimer);
-  // }, [index]);
+  }, []);
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-[600px] md:min-h-[800px] bg-white overflow-visible font-sans p-4">
-      {/* Background Titles */}
-      <div className="absolute inset-0 flex flex-col justify-between items-center opacity-70 md:opacity-70 select-none pointer-events-none py-10">
-        <h1 className="text-[18vw] md:text-[15rem] font-black leading-none tracking-tighter text-black">
+    <div className="relative flex flex-col items-center justify-center min-h-[70vh] md:min-h-screen bg-white overflow-hidden font-sans p-4 sm:p-8">
+      {/* Background Titles - Uses clamp() for fluid typography across all screens */}
+      <div className="absolute inset-0 flex flex-col justify-between items-center opacity-10 md:opacity-20 select-none pointer-events-none py-4 md:py-12 z-0">
+        <h1 className="text-[22vw] 2xl:text-[20rem] font-black leading-none tracking-tighter text-black">
           KIFARU
         </h1>
-        <h1 className="text-[12vw] md:text-[10rem] font-black leading-none tracking-tighter text-center text-black">
+        <h1 className="text-[15vw] 2xl:text-[14rem] font-black leading-none tracking-tighter text-center text-black">
           EXPERIENCE
         </h1>
       </div>
 
-      {/* Video Card */}
-      <div className="relative w-full max-w-[320px] sm:max-w-[380px] aspect-[3/4]">
-        <div className="absolute inset-0 bg-indigo-200 rounded-[2rem] shadow-lg transform -rotate-3 sm:-rotate-6 translate-x-2 sm:translate-x-4 translate-y-1 sm:translate-y-2" />
-        <div className="absolute inset-0 bg-pink-200 rounded-[2rem] shadow-lg transform rotate-2 sm:rotate-3 -translate-x-1 sm:-translate-x-2" />
+      {/* Video Card Container - Responsive scaling based on viewport */}
+      <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[400px] lg:max-w-[450px] aspect-[3/4] z-10">
+        {/* Decorative Background Layers - Scaled transforms for smaller screens */}
+        <div className="absolute inset-0 bg-indigo-200 rounded-[1.5rem] sm:rounded-[2rem] shadow-lg transform -rotate-3 sm:-rotate-6 translate-x-2 sm:translate-x-4 translate-y-1 sm:translate-y-2" />
+        <div className="absolute inset-0 bg-pink-200 rounded-[1.5rem] sm:rounded-[2rem] shadow-lg transform rotate-2 sm:rotate-3 -translate-x-1 sm:-translate-x-2" />
 
-        <div className="absolute inset-0 bg-black rounded-[2rem] shadow-2xl overflow-hidden border-[4px] sm:border-[6px] border-white">
+        {/* Main Video Card */}
+        <div className="absolute inset-0 bg-black rounded-[1.5rem] sm:rounded-[2rem] shadow-2xl overflow-hidden border-[4px] sm:border-[8px] border-white">
           <video
             key={SLIDES[index].video}
             autoPlay
             muted
             loop
             playsInline
-            className="absolute inset-0 w-full h-full object-cover scale-110"
+            className="absolute inset-0 w-full h-full object-cover"
           >
             <source src={SLIDES[index].video} type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/40" />
 
-          {/* Play Button */}
+          {/* Subtle Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30" />
+
+          {/* Interactive Play Button */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full border-2 border-white/50 flex items-center justify-center bg-white/10 backdrop-blur-md">
-              <Play className="text-white fill-white w-5 h-5 sm:w-6 sm:h-6 ml-1" />
+            <div className="group cursor-pointer w-14 h-14 sm:w-20 sm:h-20 rounded-full border-2 border-white/30 flex items-center justify-center bg-white/10 backdrop-blur-md transition-transform hover:scale-110">
+              <Play className="text-white fill-white w-6 h-6 sm:w-8 sm:h-8 ml-1" />
             </div>
           </div>
         </div>
       </div>
-
-      {/* Floating Words Centered Vertically */}
-      {/* <div className="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full h-full pointer-events-none">
-        {SLIDES[index].words.map((word, i) => (
-          <motion.h2
-            key={`${index}-${i}`}
-            animate={{
-              x: wordOffsets[i], // horizontal float only
-              y: Math.random() * 20 - 10, // slight vertical jitter
-            }}
-            initial={{ x: 0, y: 0 }}
-            transition={{
-              type: "tween",
-              ease: "easeInOut",
-              duration: 2,
-            }}
-            className={`absolute text-2xl sm:text-3xl font-black italic tracking-tighter text-black drop-shadow-lg`}
-          >
-            {word}
-          </motion.h2>
-        ))}
-      </div> */}
     </div>
   );
 }

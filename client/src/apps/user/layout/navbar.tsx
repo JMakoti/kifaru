@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { Link, NavLink } from "react-router";
@@ -21,7 +21,8 @@ export default function Navbar() {
   const { isAuthenticated, user } = useAuth();
 
   // Fetch properties dynamically
-  const { data: properties, isLoading, isError } = useProperties();
+  const { data, isLoading, isError } = useProperties();
+  const propertyList = useMemo(() => data?.results || [], [data]);
 
   return (
     <nav className="sticky top-0 z-40 w-full bg-[var(--kifaru-body)]/80 backdrop-blur-md border-b border-[var(--border)] shadow-sm">
@@ -53,7 +54,7 @@ export default function Navbar() {
                         {isError && (
                           <p className="text-red-500">Failed to load</p>
                         )}
-                        {properties?.map((property) => (
+                        {propertyList.map((property) => (
                           <Link
                             key={property.id}
                             to={`/property/${property.slug}`}

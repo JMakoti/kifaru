@@ -74,20 +74,24 @@ const mapGalleryPhotosToUI = (photos: GalleryPhoto[]): GalleryItem[] =>
       id: photo.id,
       title: photo.title,
       imageUrl: photo.image,
-      mobileWidth: index % 2 === 0 ? "w-[280px]" : "w-[220px]",
-      desktopWidth: index % 3 === 0 ? "md:w-[550px]" : "md:w-[350px]",
+      mobileWidth: index % 2 === 0 ? "w-64" : "w-52",
+      desktopWidth: index % 3 === 0 ? "md:w-[500px]" : "md:w-80",
     }));
 
 export default function KifaruGallery() {
   const [isPaused, setIsPaused] = useState(false);
-  const { data = [], isLoading } = useGalleryList();
+  const { data, isLoading } = useGalleryList();
 
-  const galleryData = useMemo(() => mapGalleryPhotosToUI(data), [data]);
+  const galleryData = useMemo(() => {
+    const photos = data?.results || [];
+    return mapGalleryPhotosToUI(photos);
+  }, [data]);
 
   const half = Math.ceil(galleryData.length / 2);
   const row1 = galleryData.slice(0, half);
   const row2 = galleryData.slice(half);
 
+  // Return null or a skeleton during loading
   if (isLoading || galleryData.length === 0) return null;
 
   return (

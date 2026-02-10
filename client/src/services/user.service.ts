@@ -15,6 +15,7 @@ import type {
   MessageResponse,
   ResetPassInputs,
   User,
+  UsersPaginatedResponse,
 } from "./user.types";
 import type { AxiosError } from "axios";
 
@@ -72,7 +73,7 @@ export function useUpdateProfile() {
 
 //get guest list
 export function useAdminUsers(params?: FetchUsersParams) {
-  return useQuery<User[], Error>({
+  return useQuery<UsersPaginatedResponse<User>, Error>({
     queryKey: params ? [USERS_QUERY_KEY, params] : [USERS_QUERY_KEY],
     queryFn: () => getAdminUsers(params),
 

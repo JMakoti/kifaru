@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,10 +19,12 @@ import LoadingScreen from "@/components/loadingscreen";
 
 export default function CustomersView() {
   const [searchTerm, setSearchTerm] = useState("");
-  const { data: users = [], isLoading, error, refetch } = useAdminUsers({});
+  const { data, isLoading, error, refetch } = useAdminUsers({});
   const [deletingUserId, setDeletingUserId] = useState<number | null>(null);
 
-  const filteredUsers = users.filter(
+  const userList = useMemo(() => data?.results || [], [data]);
+
+  const filteredUsers = userList.filter(
     (user) =>
       user.first_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.last_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -34,8 +36,8 @@ export default function CustomersView() {
       ? "bg-[var(--kifaru-nature)]/50 text-background"
       : "bg-muted/20 text-muted-foreground";
 
-  const totalUsers = users.length;
-  const activeUsers = users.filter((u) => u.is_active).length;
+  const totalUsers = userList.length;
+  const activeUsers = userList.filter((u) => u.is_active).length;
 
   const { mutateAsync } = useDeleteUser();
 

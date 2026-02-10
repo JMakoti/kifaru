@@ -1,8 +1,10 @@
 import type {
   Property,
   PropertyBookingsResponse,
+  PropertyPaginatedResponse,
   PropertyReview,
   ReviewPayload,
+  ReviewsPaginatedResponse,
 } from "@/types/property";
 import { api } from "./user.endpoints";
 import { buildPropertyFormData } from "@/apps/admin/utils/formdata";
@@ -40,8 +42,10 @@ export const propertyApi = {
   },
 
   // Get all properties
-  getAll: async (): Promise<Property[]> => {
-    const response = await api.get<Property[]>(`${PROPERTY}/`);
+  getAll: async (): Promise<PropertyPaginatedResponse<Property>> => {
+    const response = await api.get<PropertyPaginatedResponse<Property>>(
+      `${PROPERTY}/`,
+    );
     return response.data;
   },
 
@@ -69,8 +73,10 @@ export const propertyApi = {
 
 export const reviewApi = {
   //get reviews
-  getAll: async (): Promise<PropertyReview[]> => {
-    const { data } = await api.get(`${REVIEWS}/`);
+  getAll: async (): Promise<ReviewsPaginatedResponse<PropertyReview>> => {
+    const { data } = await api.get<ReviewsPaginatedResponse<PropertyReview>>(
+      `${REVIEWS}/`,
+    );
     return data;
   },
 

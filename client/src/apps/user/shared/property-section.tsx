@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { MapPin, ArrowRight, Compass } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, useInView, AnimatePresence } from "framer-motion";
@@ -337,9 +337,12 @@ export default function PropertySection() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  const { data = [], isLoading } = useProperties();
+  const { data, isLoading } = useProperties();
+  const propertyList = useMemo(() => data?.results || [], [data]);
 
-  if (isLoading && !data?.length) {
+  console.log(data);
+
+  if (isLoading && !propertyList.length) {
     return <LoadingScreen />;
   }
 
@@ -424,11 +427,11 @@ export default function PropertySection() {
 
       {/* Road Journey Container */}
       <div className="container mx-auto relative min-h-[900px]">
-        <AnimatedRoad hoveredIndex={hoveredIndex} properties={data} />
+        <AnimatedRoad hoveredIndex={hoveredIndex} properties={propertyList} />
 
         {/* Properties Grid */}
         <div className="relative z-10 grid md:grid-cols-2 gap-y-6 md:gap-y-0 gap-x-8 max-w-6xl mx-auto">
-          {data?.map((property, index) => {
+          {propertyList.map((property, index) => {
             const isLeft = index % 2 === 0;
 
             return (

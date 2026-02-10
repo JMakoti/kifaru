@@ -71,12 +71,12 @@ export const useCreateBooking = () => {
       // Invalidate queries
       queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.all });
       queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.my });
-      
+
       // Log here to see if the hook sees the ID
       console.log("Hook level success, ID:", data?.id);
-      
+
       // Return data so the component's mutate call can see it
-      return data; 
+      return data;
     },
   });
 };

@@ -1,14 +1,14 @@
-import type { GalleryFormData, GalleryPhoto } from "@/types/gallery";
+import type { GalleryFormData, GalleryPhoto, PropertyGalleryResponse } from "@/types/gallery";
 import { api } from "./user.endpoints";
 
 const GALLERY = "/gallery";
 
 export const galleryApi = {
   // --- GET all ---
-  getAll: async (): Promise<GalleryPhoto[]> => {
-    const response = await api.get<GalleryPhoto[]>(`${GALLERY}/`);
-    return response.data;
-  },
+  getAll: async (): Promise<PropertyGalleryResponse<GalleryPhoto>> => {
+  const response = await api.get<PropertyGalleryResponse<GalleryPhoto>>(`${GALLERY}/`);
+  return response.data;
+},
 
   // --- GET by ID ---
   getById: async (id: number): Promise<GalleryPhoto> => {

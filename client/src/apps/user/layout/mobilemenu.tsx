@@ -4,6 +4,7 @@ import navLinks from "../routes";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useProperties } from "@/services/property.service";
 import { useAuth } from "@/providers/useAuth";
+import { useMemo } from "react";
 
 interface MobileMenuProps {
   isOpen: boolean;
@@ -12,7 +13,9 @@ interface MobileMenuProps {
 
 export default function Mobilemenu({ isOpen, onClose }: MobileMenuProps) {
   const { isAuthenticated, user } = useAuth();
-  const { data: properties, isLoading, isError } = useProperties();
+  const { data, isLoading, isError } = useProperties();
+
+  const propertyList = useMemo(() => data?.results || [], [data]);
 
   if (!isOpen) return null;
 
@@ -29,7 +32,7 @@ export default function Mobilemenu({ isOpen, onClose }: MobileMenuProps) {
                 <div className="pl-4 mt-2 border-l border-[var(--border)] space-y-2">
                   {isLoading && <p className="text-white">Loading...</p>}
                   {isError && <p className="text-red-500">Failed to load</p>}
-                  {properties?.map((property) => (
+                  {propertyList.map((property) => (
                     <Link
                       key={property.id}
                       to={`/property/${property.slug}`}

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useMemo } from "react";
 import {
   Dialog,
   DialogContent,
@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Upload, X, Loader2 } from "lucide-react";
+import { X, Loader2 } from "lucide-react";
 import type { PropertyReview, ReviewPayload } from "@/types/property";
 import { useProperties } from "@/services/property.service";
 
@@ -45,7 +45,8 @@ export default function ReviewFormDialog({
   isLoading: isSubmitting,
 }: Props) {
   // 1. Fetch Real Data
-  const { data: properties = [], isLoading: loadingProps } = useProperties();
+  const { data, isLoading: loadingProps } = useProperties();
+  const propertyList = useMemo(() => data?.results || [], [data]);
 
   //   const [form, setForm] = useState(empty);
   const [form, setForm] = useState(
@@ -63,27 +64,6 @@ export default function ReviewFormDialog({
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string>("");
   const fileRef = useRef<HTMLInputElement>(null);
-
-  //   useEffect(() => {
-  //     if (open) {
-  //       if (review) {
-  //         setForm({
-  //           property: review.property,
-  //           user: review.user,
-  //           reviewer_name: review.reviewer_name,
-  //           rating: review.rating,
-  //           comment: review.comment,
-  //           avatar: review.avatar,
-  //           country: review.country,
-  //         });
-  //         setAvatarPreview(review.avatar || "");
-  //       } else {
-  //         setForm(empty);
-  //         setAvatarPreview("");
-  //       }
-  //       setAvatarFile(null);
-  //     }
-  //   }, [review, open]);
 
   const set = (key: keyof typeof form, value: string | number) =>
     setForm((f) => ({ ...f, [key]: value }));
@@ -148,7 +128,7 @@ export default function ReviewFormDialog({
                   />
                 </SelectTrigger>
                 <SelectContent>
-                  {properties.map((p) => (
+                  {propertyList.map((p) => (
                     <SelectItem key={p.id} value={String(p.id)}>
                       {p.name}
                     </SelectItem>
@@ -207,23 +187,26 @@ export default function ReviewFormDialog({
                 )}
               </div>
               <div className="flex-1">
-                <Button
+                {/* <Button
                   type="button"
                   variant="outline"
                   size="sm"
                   disabled={isSubmitting}
                   onClick={() => fileRef.current?.click()}
                   className="w-full"
+                  
                 >
+
                   <Upload className="mr-2 h-3.5 w-3.5" />
                   Upload Photo
-                </Button>
+                </Button> */}
                 <input
                   ref={fileRef}
                   type="file"
                   accept="image/*"
                   className="hidden"
                   onChange={handleFileChange}
+                  disabled
                 />
               </div>
             </div>

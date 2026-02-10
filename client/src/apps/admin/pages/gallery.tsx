@@ -28,10 +28,12 @@ export default function Gallery() {
   >("all");
 
   //queries
-  const { data: images = [], isLoading } = useGalleryList();
+  const { data, isLoading } = useGalleryList();
   const createGallery = useCreateGallery();
   const updateGallery = useUpdateGallery();
   const deleteGallery = useDeleteGallery();
+
+  const images = useMemo(() => data?.results || [], [data]);
 
   //filter images
   const filteredImages = useMemo(() => {

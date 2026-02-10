@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Loader2, Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,12 +18,14 @@ export default function ReviewsView() {
   const { useGetReviews, useCreateReview, useUpdateReview, useDeleteReview } =
     useReviews();
   // Queries & Mutations
-  const { data: reviews = [], isLoading } = useGetReviews();
+  const { data, isLoading } = useGetReviews();
   const createMutation = useCreateReview();
   const updateMutation = useUpdateReview();
   const deleteMutation = useDeleteReview();
 
-  const filtered = reviews.filter(
+  const reviewList = useMemo(() => data?.results || [], [data]);
+
+  const filtered = reviewList.filter(
     (r) =>
       r.reviewer_name.toLowerCase().includes(search.toLowerCase()) ||
       r.comment.toLowerCase().includes(search.toLowerCase()) ||

@@ -15,11 +15,16 @@ const mapReviewsToTestimonials = (reviews: PropertyReview[]) =>
   }));
 
 export default function TestimonialSection() {
-  const { data = [], isLoading } = useReviews();
+  const { useGetReviews } = useReviews();
+  const { data, isLoading } = useGetReviews();
+
   const [index, setIndex] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
 
-  const testimonials = useMemo(() => mapReviewsToTestimonials(data), [data]);
+  const testimonials = useMemo(
+    () => mapReviewsToTestimonials(data?.results ?? []),
+    [data],
+  );
 
   // duplicate for seamless loop
   const slides = useMemo(

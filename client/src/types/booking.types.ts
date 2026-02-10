@@ -75,6 +75,14 @@ export interface BookingResponse extends BookingPayload {
   id: number;
 }
 
+//booking response
+export interface BookingPaginatedResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
+
 
 // Payload to Initialize Payment
 

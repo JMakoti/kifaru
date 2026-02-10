@@ -51,14 +51,16 @@ export default function PropertiesView() {
   const [deletingProperty, setDeletingProperty] = useState<string | null>(null);
   const [editingSlug, setEditingSlug] = useState<string | null>(null);
   const [isSheetOpen, setIsSheetOpen] = useState(false); // New state
-  const { data = [], isLoading, refetch } = useProperties();
+  const { data, isLoading, refetch } = useProperties();
   const { mutateAsync } = useDeleteProperty();
 
   // Map API data to UI-friendly property view
+  const propertyList = useMemo(() => data?.results || [], [data]);
+
   const properties: PropertyView[] = useMemo(() => {
     const today = new Date();
 
-    return data?.map((prop) => {
+    return propertyList.map((prop) => {
       const bedrooms = prop.bedrooms || 1;
       const maxGuests = prop.max_guests || 1;
       const rating = prop.average_rating || 4.5;
@@ -97,12 +99,12 @@ export default function PropertiesView() {
         status,
       };
     });
-  }, [data]);
+  }, [propertyList]);
 
   const editingProperty = useMemo(() => {
     if (!editingSlug) return undefined;
-    return data.find((p) => p.slug === editingSlug);
-  }, [editingSlug, data]);
+    return propertyList.find((p) => p.slug === editingSlug);
+  }, [editingSlug, propertyList]);
 
   const filteredProperties = properties.filter(
     (p) =>

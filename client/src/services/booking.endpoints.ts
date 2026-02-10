@@ -1,5 +1,6 @@
 import type {
   Booking,
+  BookingPaginatedResponse,
   BookingPayload,
   BookingPriceQuery,
   BookingPriceResponse,
@@ -35,18 +36,16 @@ export const bookingApi = {
   //   return response.data;
   // },
   create: async (data: BookingPayload): Promise<BookingResponse> => {
-    // We expect the backend to return the newly created object (BookingResponse)
     const response = await api.post<BookingResponse>(`${BOOKINGS}/`, data);
-
-    // response.data contains the actual JSON body from the server
     console.log("Full response.data from Backend:", response.data);
-
     return response.data;
   },
 
   getAll: async (): Promise<Booking[]> => {
-    const response = await api.get<Booking[]>(`${BOOKINGS}/`);
-    return response.data;
+    const response = await api.get<BookingPaginatedResponse<Booking>>(
+      `${BOOKINGS}/`,
+    );
+    return response.data.results;
   },
 
   getById: async (id: number): Promise<BookingPayload> => {
@@ -63,8 +62,10 @@ export const bookingApi = {
   },
 
   myBookings: async (): Promise<Booking[]> => {
-    const response = await api.get<Booking[]>(`${MY_BOOKINGS}/`);
-    return response.data;
+    const response = await api.get<BookingPaginatedResponse<Booking>>(
+      `${MY_BOOKINGS}/`,
+    );
+    return response.data.results;
   },
 };
 

@@ -1,6 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { propertyApi, reviewApi } from "./property.endpoints";
-import type { Property, PropertyReview, ReviewPayload } from "@/types/property";
+import type {
+  Property,
+  PropertyPaginatedResponse,
+  PropertyReview,
+  ReviewPayload,
+  ReviewsPaginatedResponse,
+} from "@/types/property";
 import { toast } from "sonner";
 
 export const PROPERTY_QUERY_KEY = ["properties"];
@@ -9,7 +15,7 @@ export const PROPERTY_BOOKING = ["property-bookings"];
 
 // Query hook to fetch all properties
 export function useProperties() {
-  return useQuery<Property[]>({
+  return useQuery<PropertyPaginatedResponse<Property>>({
     queryKey: PROPERTY_QUERY_KEY,
     queryFn: propertyApi.getAll,
     staleTime: Infinity,
@@ -21,7 +27,6 @@ export function useProperties() {
     placeholderData: (previousData) => previousData,
   });
 }
-
 // Query hook to fetch a single property
 export function usePropertyDetails(slug: string) {
   return useQuery<Property, Error>({
@@ -118,7 +123,7 @@ export const useReviews = () => {
 
   // 1. Fetch all reviews
   const useGetReviews = () =>
-    useQuery<PropertyReview[]>({
+    useQuery<ReviewsPaginatedResponse<PropertyReview>>({
       queryKey: REVIEWS_QUERY,
       queryFn: reviewApi.getAll,
       staleTime: 1000 * 60 * 5,

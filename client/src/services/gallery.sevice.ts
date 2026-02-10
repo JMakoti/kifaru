@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import type { GalleryFormData, GalleryPhoto } from "@/types/gallery";
+import type { GalleryFormData, GalleryPhoto, PropertyGalleryResponse } from "@/types/gallery";
 import { galleryApi } from "./gallery.endpoints";
 
 // --- QUERY KEYS ---
@@ -15,10 +15,10 @@ export const galleryKeys = {
 // --- GET ALL ---
 
 export const useGalleryList = () => {
-  return useQuery<GalleryPhoto[]>({
+  return useQuery<PropertyGalleryResponse<GalleryPhoto>>({
     queryKey: galleryKeys.list(),
     queryFn: galleryApi.getAll,
-    staleTime: 1000 * 60 * 5, // 5 min
+    staleTime: 1000 * 60 * 5, 
     retry: 2,
   });
 };

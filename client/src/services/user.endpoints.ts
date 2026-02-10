@@ -8,6 +8,7 @@ import type {
   RegisterFormInputs,
   ResetPassInputs,
   User,
+  UsersPaginatedResponse,
 } from "./user.types";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
@@ -149,12 +150,15 @@ export const updateProfile = async (data: FormData) => {
 };
 
 //get guest list
-export const getAdminUsers = async (params?: FetchUsersParams) => {
-  const response = await api.get<User[]>(GETUSERS_URL, {
+export const getAdminUsers = async (
+  params?: FetchUsersParams
+): Promise<UsersPaginatedResponse<User>> => {
+  const response = await api.get<UsersPaginatedResponse<User>>(GETUSERS_URL, {
     params,
   });
   return response.data;
 };
+
 
 //delete user
 export const deleteUser = (id: number) =>

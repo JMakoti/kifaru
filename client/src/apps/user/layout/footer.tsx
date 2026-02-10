@@ -3,12 +3,14 @@ import navLinks from "@/apps/user/routes";
 import logo from "@/assets/icon/kifaru.png";
 import { useProperties } from "@/services/property.service";
 import { motion } from "framer-motion";
+import { useMemo } from "react";
 
 export default function Footer() {
   const location = useLocation();
   const propertyRoute = location.pathname.split("/")[2];
 
-  const { data: properties } = useProperties();
+  const { data } = useProperties();
+  const propertyList = useMemo(() => data?.results || [], [data]);
 
   const defaultFooterRoutes = [
     "/",
@@ -21,7 +23,7 @@ export default function Footer() {
   const isDefaultFooterRoute = defaultFooterRoutes.includes(location.pathname);
 
   // Find the current property from API data
-  const currentProperty = properties?.find((p) => p.slug === propertyRoute);
+  const currentProperty = propertyList.find((p) => p.slug === propertyRoute);
 
   // Animation Variants
   const fadeUp = {
@@ -100,7 +102,7 @@ export default function Footer() {
                 Destinations
               </h3>
               <ul className="space-y-2">
-                {properties?.map((property) => (
+                {propertyList.map((property) => (
                   <motion.li
                     key={property.id}
                     whileHover={linkHover}

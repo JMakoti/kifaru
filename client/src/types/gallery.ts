@@ -43,3 +43,11 @@ export const CATEGORY_LABELS: Record<GalleryCategory, string> = {
   activities: "Activities",
   other: "Other",
 };
+
+export interface PropertyGalleryResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
+

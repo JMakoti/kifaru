@@ -169,6 +169,13 @@ export const emptyPropertyForm: Property = {
   highlights: [],
   average_rating: 0,
 };
+//property paginated response
+export interface PropertyPaginatedResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
 
 // destinations
 export interface PropertyDestinationProps {
@@ -220,4 +227,11 @@ export interface ReviewPayload {
   comment: string;
   avatar: string | File;
   country: string;
+}
+
+export interface ReviewsPaginatedResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
 }

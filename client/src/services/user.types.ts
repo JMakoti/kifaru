@@ -65,3 +65,12 @@ export interface FetchUsersParams {
   search?: string;
   ordering?: string;
 }
+
+
+export interface UsersPaginatedResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
+
