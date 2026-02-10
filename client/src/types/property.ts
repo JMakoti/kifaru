@@ -205,7 +205,6 @@ export interface PropertyReview {
   id: number;
   property: number;
   property_name: string;
-  user: number;
   reviewer_name: string;
   rating: number;
   comment: string;
@@ -216,7 +215,6 @@ export interface PropertyReview {
 
 export interface ReviewPayload {
   property: number;
-  user: number;
   reviewer_name: string;
   rating: number;
   comment: string;

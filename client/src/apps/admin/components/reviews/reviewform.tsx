@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,19 +9,27 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Upload, X } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Upload, X, Loader2 } from "lucide-react";
 import type { PropertyReview, ReviewPayload } from "@/types/property";
+import { useProperties } from "@/services/property.service";
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   review?: PropertyReview | null;
   onSubmit: (payload: ReviewPayload) => void;
+  isLoading?: boolean;
 }
 
 const empty: Omit<ReviewPayload, "avatar"> & { avatar: string } = {
   property: 0,
-  user: 0,
   reviewer_name: "",
   rating: 5,
   comment: "",
@@ -34,33 +42,48 @@ export default function ReviewFormDialog({
   onOpenChange,
   review,
   onSubmit,
+  isLoading: isSubmitting,
 }: Props) {
-  const [form, setForm] = useState<
-    Omit<ReviewPayload, "avatar"> & { avatar: string }
-  >(empty);
+  // 1. Fetch Real Data
+  const { data: properties = [], isLoading: loadingProps } = useProperties();
+
+  //   const [form, setForm] = useState(empty);
+  const [form, setForm] = useState(
+    review
+      ? {
+          property: review.property,
+          reviewer_name: review.reviewer_name,
+          rating: review.rating,
+          comment: review.comment,
+          avatar: review.avatar,
+          country: review.country,
+        }
+      : empty,
+  );
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string>("");
   const fileRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (review) {
-      setForm({
-        property: review.property,
-        user: review.user,
-        reviewer_name: review.reviewer_name,
-        rating: review.rating,
-        comment: review.comment,
-        avatar: review.avatar,
-        country: review.country,
-      });
-      setAvatarPreview(review.avatar || "");
-      setAvatarFile(null);
-    } else {
-      setForm(empty);
-      setAvatarPreview("");
-      setAvatarFile(null);
-    }
-  }, [review, open]);
+  //   useEffect(() => {
+  //     if (open) {
+  //       if (review) {
+  //         setForm({
+  //           property: review.property,
+  //           user: review.user,
+  //           reviewer_name: review.reviewer_name,
+  //           rating: review.rating,
+  //           comment: review.comment,
+  //           avatar: review.avatar,
+  //           country: review.country,
+  //         });
+  //         setAvatarPreview(review.avatar || "");
+  //       } else {
+  //         setForm(empty);
+  //         setAvatarPreview("");
+  //       }
+  //       setAvatarFile(null);
+  //     }
+  //   }, [review, open]);
 
   const set = (key: keyof typeof form, value: string | number) =>
     setForm((f) => ({ ...f, [key]: value }));
@@ -90,50 +113,53 @@ export default function ReviewFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-lg" key={review?.id ?? "new-review"}>
         <DialogHeader>
           <DialogTitle>{review ? "Edit Review" : "New Review"}</DialogTitle>
         </DialogHeader>
+
         <form onSubmit={handleSubmit} className="grid gap-4 py-2">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-1.5">
-              <Label>Reviewer Name</Label>
-              <Input
-                value={form.reviewer_name}
-                onChange={(e) => set("reviewer_name", e.target.value)}
-                required
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label>Country</Label>
-              <Input
-                value={form.country}
-                onChange={(e) => set("country", e.target.value)}
-                required
-              />
-            </div>
+          {/* Country Field */}
+          <div className="space-y-1.5">
+            <Label>Country</Label>
+            <Input
+              value={form.country}
+              onChange={(e) => set("country", e.target.value)}
+              placeholder="e.g. Kenya"
+              required
+              disabled={isSubmitting}
+            />
           </div>
-          <div className="grid grid-cols-3 gap-4">
+
+          <div className="grid grid-cols-2 gap-4">
+            {/* Property Select */}
             <div className="space-y-1.5">
-              <Label>Property ID</Label>
-              <Input
-                type="number"
-                value={form.property}
-                onChange={(e) => set("property", +e.target.value)}
-                required
-              />
+              <Label>Property</Label>
+              <Select
+                disabled={isSubmitting || loadingProps}
+                value={form.property ? String(form.property) : ""}
+                onValueChange={(v) => set("property", +v)}
+              >
+                <SelectTrigger>
+                  <SelectValue
+                    placeholder={
+                      loadingProps ? "Loading..." : "Select property"
+                    }
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {properties.map((p) => (
+                    <SelectItem key={p.id} value={String(p.id)}>
+                      {p.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
+
+            {/* Rating Field */}
             <div className="space-y-1.5">
-              <Label>User ID</Label>
-              <Input
-                type="number"
-                value={form.user}
-                onChange={(e) => set("user", +e.target.value)}
-                required
-              />
-            </div>
-            <div className="space-y-1.5">
-              <Label>Rating (1-5)</Label>
+              <Label>Rating</Label>
               <Input
                 type="number"
                 min={1}
@@ -141,68 +167,102 @@ export default function ReviewFormDialog({
                 value={form.rating}
                 onChange={(e) => set("rating", +e.target.value)}
                 required
+                disabled={isSubmitting}
               />
             </div>
           </div>
+
+          {/* User Select */}
           <div className="space-y-1.5">
-            <Label>Avatar</Label>
-            <div className="flex items-center gap-3">
-              {avatarPreview ? (
-                <div className="relative">
-                  <img
-                    src={avatarPreview}
-                    alt="Avatar preview"
-                    className="h-12 w-12 rounded-full object-cover"
-                  />
+            <Label>Reviewer (User)</Label>
+            <Input
+              value={form.reviewer_name}
+              onChange={(e) => set("reviewer_name", e.target.value)}
+              placeholder="e.g. John Doe"
+              required
+              disabled={isSubmitting}
+            />
+          </div>
+
+          {/* Avatar Section */}
+          <div className="space-y-1.5">
+            <Label>Avatar Image</Label>
+            <div className="flex items-center gap-3 p-3 border rounded-md bg-muted/30">
+              <div className="relative shrink-0">
+                <img
+                  src={
+                    avatarPreview ||
+                    `https://ui-avatars.com/api/?name=${encodeURIComponent(form.reviewer_name || "?")}`
+                  }
+                  className="h-12 w-12 rounded-full object-cover bg-background border"
+                />
+                {avatarPreview && (
                   <button
                     type="button"
                     onClick={clearAvatar}
-                    className="absolute -right-1 -top-1 rounded-full bg-destructive p-0.5 text-primary-foreground"
+                    className="absolute -right-1 -top-1 rounded-full bg-destructive p-0.5 text-white shadow-sm"
                   >
                     <X className="h-3 w-3" />
                   </button>
-                </div>
-              ) : null}
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={() => fileRef.current?.click()}
-              >
-                <Upload className="mr-1.5 h-3.5 w-3.5" /> Choose File
-              </Button>
-              <input
-                ref={fileRef}
-                type="file"
-                accept="image/*"
-                className="hidden"
-                onChange={handleFileChange}
-              />
-              {avatarFile && (
-                <span className="text-xs text-muted-foreground truncate max-w-[140px]">
-                  {avatarFile.name}
-                </span>
-              )}
+                )}
+              </div>
+              <div className="flex-1">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  disabled={isSubmitting}
+                  onClick={() => fileRef.current?.click()}
+                  className="w-full"
+                >
+                  <Upload className="mr-2 h-3.5 w-3.5" />
+                  Upload Photo
+                </Button>
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleFileChange}
+                />
+              </div>
             </div>
           </div>
+
+          {/* Comment Field */}
           <div className="space-y-1.5">
-            <Label>Comment</Label>
+            <Label>Guest Comment</Label>
             <Textarea
               rows={3}
               value={form.comment}
               onChange={(e) => set("comment", e.target.value)}
+              placeholder="Enter review feedback..."
               required
+              disabled={isSubmitting}
             />
           </div>
-          <div className="flex justify-end gap-2 pt-2">
+
+          <div className="flex justify-end gap-2 pt-4">
             <Button
               type="button"
-              variant="outline"
+              variant="ghost"
+              disabled={isSubmitting}
               onClick={() => onOpenChange(false)}
             >
               Cancel
             </Button>
-            <Button type="submit">{review ? "Update" : "Create"}</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : review ? (
+                "Update Review"
+              ) : (
+                "Create Review"
+              )}
+            </Button>
           </div>
         </form>
       </DialogContent>

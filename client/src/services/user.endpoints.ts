@@ -149,7 +149,7 @@ export const updateProfile = async (data: FormData) => {
 };
 
 //get guest list
-export const getAdminUsers = async (params: FetchUsersParams) => {
+export const getAdminUsers = async (params?: FetchUsersParams) => {
   const response = await api.get<User[]>(GETUSERS_URL, {
     params,
   });

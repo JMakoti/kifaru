@@ -2,54 +2,14 @@ import type {
   Property,
   PropertyBookingsResponse,
   PropertyReview,
+  ReviewPayload,
 } from "@/types/property";
 import { api } from "./user.endpoints";
 import { buildPropertyFormData } from "@/apps/admin/utils/formdata";
 
 // ENDPOINTS
 const PROPERTY = "/properties";
-const REVIEWS = "/reviews/";
-
-// get propertties
-// export const fetchProperties = async (): Promise<Property[]> => {
-//   const { data } = await api.get(PROPERTY);
-//   return data;
-// };
-
-// // get properties details
-// export const getDetails = async (slug: string): Promise<Property> => {
-//   const { data } = await api.get(`${GET_DETAILS}/${slug}/`);
-//   return data;
-// };
-
-// //get reviews
-// export const fetchReviews = async (): Promise<PropertyReview[]> => {
-//   const { data } = await api.get(REVIEWS);
-//   return data;
-// };
-
-// // create property
-// export const createProperty = async (data: Property) => {
-//   const formData = buildPropertyFormData(data);
-//   const response = await api.post(CREATE_PROPERTY, formData, {
-//     headers: { "Content-Type": "multipart/form-data" },
-//   });
-//   return response.data;
-// };
-
-// // delete property
-// export const deleteProperty = (slug: string) =>
-//   api.delete(`${DELETE_PROPERTY}/${slug}/`);
-
-//get specificed property booked date
-// export const getBookedDates = async (
-//   id: number | string,
-// ): Promise<PropertyBookingsResponse> => {
-//   const response = await api.get<PropertyBookingsResponse>(
-//     `${PROPERTY}/${id}/calendar/`,
-//   );
-//   return response.data;
-// };
+const REVIEWS = "/reviews";
 
 // Property API endpoints
 export const propertyApi = {
@@ -107,11 +67,51 @@ export const propertyApi = {
   },
 };
 
-// Reviews API endpoints
 export const reviewApi = {
   //get reviews
   getAll: async (): Promise<PropertyReview[]> => {
-    const { data } = await api.get(REVIEWS);
+    const { data } = await api.get(`${REVIEWS}/`);
     return data;
+  },
+
+  //get specific review
+  getById: async (id: number): Promise<PropertyReview> => {
+    const { data } = await api.get(`${REVIEWS}/${id}/`);
+    return data;
+  },
+
+  //create a new review
+  create: async (payload: ReviewPayload): Promise<PropertyReview> => {
+    // Use FormData if sending a File object
+    const formData = new FormData();
+    Object.entries(payload).forEach(([key, value]) => {
+      formData.append(key, value as string | Blob);
+    });
+
+    const { data } = await api.post(`${REVIEWS}/`, formData);
+    return data;
+  },
+
+  //update the review
+  update: async (
+    id: number,
+    payload: Partial<ReviewPayload>,
+  ): Promise<PropertyReview> => {
+    const formData = new FormData();
+
+    Object.entries(payload).forEach(([key, value]) => {
+      // Only append if value exists to avoid overwriting with null/undefined
+      if (value !== undefined && value !== null) {
+        formData.append(key, value as string | Blob);
+      }
+    });
+
+    const { data } = await api.patch(`${REVIEWS}/${id}/`, formData);
+    return data;
+  },
+
+  //delete a specific review
+  delete: async (id: number): Promise<void> => {
+    await api.delete(`${REVIEWS}/${id}/`);
   },
 };

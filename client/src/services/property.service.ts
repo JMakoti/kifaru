@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { propertyApi, reviewApi } from "./property.endpoints";
-import type { Property, PropertyReview } from "@/types/property";
+import type { Property, PropertyReview, ReviewPayload } from "@/types/property";
 import { toast } from "sonner";
 
 export const PROPERTY_QUERY_KEY = ["properties"];
@@ -104,11 +104,80 @@ export const usePropertyBookings = (propertyId: number | string) => {
 };
 
 //Query hook to fetch all reviews
+// export const useReviews = () => {
+//   return useQuery<PropertyReview[]>({
+//     queryKey: REVIEWS_QUERY,
+//     queryFn: reviewApi.getAll,
+//     staleTime: 1000 * 60 * 5,
+//     retry: 2,
+//   });
+// };
+
 export const useReviews = () => {
-  return useQuery<PropertyReview[]>({
-    queryKey: REVIEWS_QUERY,
-    queryFn: reviewApi.getAll,
-    staleTime: 1000 * 60 * 5,
-    retry: 2,
-  });
+  const queryClient = useQueryClient();
+
+  // 1. Fetch all reviews
+  const useGetReviews = () =>
+    useQuery<PropertyReview[]>({
+      queryKey: REVIEWS_QUERY,
+      queryFn: reviewApi.getAll,
+      staleTime: 1000 * 60 * 5,
+      retry: 2,
+    });
+
+  // 2. Fetch a single review
+  const useGetReview = (id: number) =>
+    useQuery({
+      queryKey: [REVIEWS_QUERY, id],
+      queryFn: () => reviewApi.getById(id),
+      enabled: !!id,
+    });
+
+  // 3. Create a review
+  const useCreateReview = () =>
+    useMutation({
+      mutationFn: reviewApi.create,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [REVIEWS_QUERY] });
+      },
+    });
+
+  // 4. Create a review
+  const useUpdateReview = () =>
+    useMutation({
+      mutationFn: ({
+        id,
+        payload,
+      }: {
+        id: number;
+        payload: Partial<ReviewPayload>;
+      }) => reviewApi.update(id, payload),
+      onSuccess: (updatedReview) => {
+        queryClient.invalidateQueries({ queryKey: [REVIEWS_QUERY] });
+        queryClient.setQueryData(
+          [REVIEWS_QUERY, updatedReview.id],
+          updatedReview,
+        );
+      },
+    });
+
+  // 5. Delete a review
+  const useDeleteReview = () =>
+    useMutation({
+      mutationFn: reviewApi.delete,
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [REVIEWS_QUERY] });
+      },
+      onError: (error) => {
+        console.error("Delete failed:", error);
+      },
+    });
+
+  return {
+    useGetReviews,
+    useGetReview,
+    useCreateReview,
+    useUpdateReview,
+    useDeleteReview,
+  };
 };
