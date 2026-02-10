@@ -16,7 +16,7 @@ const mapReviewsToTestimonials = (reviews: PropertyReview[]) =>
 
 export default function TestimonialSection() {
   const { useGetReviews } = useReviews();
-  const { data, isLoading } = useGetReviews();
+  const { data, isLoading, refetch } = useGetReviews();
 
   const [index, setIndex] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
@@ -57,6 +57,13 @@ export default function TestimonialSection() {
       }, 700);
     }
   }, [index, testimonials.length]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 30000); // every 30s
+    return () => clearInterval(interval);
+  }, [refetch]);
 
   if (isLoading) {
     return <LoadingScreen />;

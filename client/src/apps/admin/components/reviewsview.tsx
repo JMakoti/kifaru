@@ -18,7 +18,7 @@ export default function ReviewsView() {
   const { useGetReviews, useCreateReview, useUpdateReview, useDeleteReview } =
     useReviews();
   // Queries & Mutations
-  const { data, isLoading } = useGetReviews();
+  const { data, isLoading, refetch } = useGetReviews();
   const createMutation = useCreateReview();
   const updateMutation = useUpdateReview();
   const deleteMutation = useDeleteReview();
@@ -40,6 +40,7 @@ export default function ReviewsView() {
           onSuccess: () => {
             toast.success("Review updated");
             setFormOpen(false);
+            refetch();
           },
           onError: () => toast.error("Failed to update review"),
         },
@@ -49,6 +50,7 @@ export default function ReviewsView() {
         onSuccess: () => {
           toast.success("Review created");
           setFormOpen(false);
+          refetch();
         },
         onError: () => toast.error("Failed to create review"),
       });
@@ -61,6 +63,7 @@ export default function ReviewsView() {
         onSuccess: () => {
           toast.success("Review deleted");
           setDeleteId(null);
+          refetch();
         },
       });
     }
