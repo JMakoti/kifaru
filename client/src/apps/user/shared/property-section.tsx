@@ -340,8 +340,6 @@ export default function PropertySection() {
   const { data, isLoading } = useProperties();
   const propertyList = useMemo(() => data?.results || [], [data]);
 
-  console.log(data);
-
   if (isLoading && !propertyList.length) {
     return <LoadingScreen />;
   }
