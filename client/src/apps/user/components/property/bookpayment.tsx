@@ -23,7 +23,7 @@ export default function ConfirmPaymentBooking() {
   const { mutate: initializePayment, isPending } = useInitializePayment();
 
   // Set the expiry to 30 minutes from now
-  const [expiryTime] = useState(() => Date.now() + 30 * 60 * 1000);
+  const [expiryTime] = useState(() => Date.now() + 10 * 60 * 1000);
   const [timeLeft, setTimeLeft] = useState("");
   const [isExpired, setIsExpired] = useState(false);
 

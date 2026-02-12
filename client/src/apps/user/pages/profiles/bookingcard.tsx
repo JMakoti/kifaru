@@ -3,7 +3,10 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, Users } from "lucide-react";
 import type { Booking } from "@/types/booking.types";
 import { Button } from "@/components/ui/button";
-import { useCancelBooking } from "@/services/booking.service";
+import {
+  useCancelBooking,
+  useInitializePayment,
+} from "@/services/booking.service";
 
 interface PropertyBooking {
   booking: Booking;
@@ -11,18 +14,31 @@ interface PropertyBooking {
 
 export default function BookingCard({ booking }: PropertyBooking) {
   const cancelBooking = useCancelBooking();
-
+  const { mutate: initializePayment, isPending } = useInitializePayment();
   const handleCancel = () => {
     if (!confirm("Are you sure you want to cancel this booking?")) return;
     cancelBooking.mutate(booking.id);
   };
 
+  const handlePayment = () => {
+    if (!booking.id) {
+      console.error("No booking ID found in state");
+      return;
+    }
+    initializePayment({ booking_id: booking.id });
+  };
+
   const getStatusStyle = () => {
     switch (booking.status) {
+      case "confirmed":
       case "completed":
         return "bg-green-100 text-green-700";
+      case "pending":
+        return "bg-yellow-100 text-yellow-700";
       case "cancelled":
         return "bg-red-100 text-red-700";
+      default:
+        return "bg-gray-100 text-gray-700";
     }
   };
 
@@ -113,16 +129,30 @@ export default function BookingCard({ booking }: PropertyBooking) {
             <span>•</span>
             <span>{formatDateTime(booking.bookingDate)}</span>
           </div> */}
+
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            <Button
-              onClick={handleCancel}
-              className="border border-red-500 text-red-500 bg-red-50 hover:bg-red-50 px-4 py-2 rounded-md transition-colors cursor-pointer"
-              disabled={
-                cancelBooking.isPending || booking.status === "cancelled"
-              }
-            >
-              {cancelBooking.isPending ? "Cancelling..." : "Cancel Booking"}
-            </Button>
+            {/* Show Cancel button if not already cancelled or completed */}
+            {booking.status !== "cancelled" &&
+              booking.status !== "completed" && (
+                <Button
+                  onClick={handleCancel}
+                  className="border border-red-500 text-red-500 bg-red-50 hover:bg-red-50 px-4 py-2 rounded-md transition-colors cursor-pointer"
+                  disabled={cancelBooking.isPending}
+                >
+                  {cancelBooking.isPending ? "Cancelling..." : "Cancel Booking"}
+                </Button>
+              )}
+
+            {/* Only show Make Payment if the status is 'pending' */}
+            {booking.status === "pending" && (
+              <Button
+                onClick={handlePayment}
+                disabled={isPending}
+                className="border border-primary text-primary bg-primary/10 hover:bg-primary/20 px-4 py-2 rounded-md transition-colors cursor-pointer"
+              >
+                {isPending ? "Securing Gateway..." : "Make Payment"}
+              </Button>
+            )}
           </div>
 
           <div className="text-right">

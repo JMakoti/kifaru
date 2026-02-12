@@ -29,6 +29,7 @@ export interface BookingPriceQuery {
   check_out: string;
   accommodation_type: AccommodationType;
   number_of_guests?: number;
+  phone: string;
 }
 
 /**
@@ -36,7 +37,6 @@ export interface BookingPriceQuery {
  */
 export interface BookingPriceResponse {
   guest_type: string;
-  stay_type: string;
   price_per_night: string;
   weekly_price: string;
   total_nights: number;
@@ -60,8 +60,8 @@ export interface Booking {
   status: "pending" | "confirmed" | "cancelled" | "completed";
   payment_status?: string | null; // not called from the backend
   accommodation_type?: AccommodationType;
-  guest_type:string;
-  stay_type:string;
+  guest_type: string;
+  stay_type: string;
   number_of_guests?: number;
   number_of_adults?: number;
   number_of_children?: number;
@@ -82,7 +82,6 @@ export interface BookingPaginatedResponse<T> {
   previous: string | null;
   results: T[];
 }
-
 
 // Payload to Initialize Payment
 

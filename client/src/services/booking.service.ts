@@ -6,6 +6,7 @@ import type {
 } from "@/types/booking.types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { bookingApi, paymentApi } from "./booking.endpoints";
+import type { AxiosError } from "axios";
 
 //  QUERY KEYS
 const BOOKING_KEYS = {
@@ -44,7 +45,8 @@ export const useCalculateBookingPrice = (params?: BookingPriceQuery) =>
       !!params?.check_in &&
       !!params?.check_out &&
       !!params?.accommodation_type &&
-      !!params?.number_of_guests,
+      !!params?.number_of_guests &&
+      !!params?.phone,
     staleTime: 60_000,
   });
 
@@ -108,17 +110,24 @@ export const useDeleteBooking = () => {
 export const useInitializePayment = () => {
   return useMutation<
     InitializePaymentResponse,
-    Error,
+    AxiosError<{ message: string }>, 
     InitializePaymentPayload
   >({
     mutationFn: paymentApi.initialize,
     onSuccess: (data) => {
-      // Logic after successful initialization
-      // Example: Redirecting to the payment gateway
-      window.location.href = data.authorization_url;
+      if (data.authorization_url) {
+        window.location.href = data.authorization_url;
+      } else {
+        console.error("Payment initialization failed: URL missing in response");
+      }
     },
     onError: (error) => {
-      console.error("Payment initialization failed:", error.message);
+      // Use the typed error message from the backend if available
+      const backendMessage = error.response?.data?.message;
+      console.error(
+        "Payment initialization failed:",
+        backendMessage || error.message,
+      );
     },
   });
 };

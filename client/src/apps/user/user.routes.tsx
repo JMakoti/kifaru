@@ -11,6 +11,7 @@ import { ProtectedRoute } from "../auth/routes/protected.route";
 import BookingForm from "./components/property/bookingform";
 import BookingPreviewPayment from "./components/property/bookingpreview";
 import ConfirmPaymentBooking from "./components/property/bookpayment";
+import Confirmbooking from "./components/property/confirmbooking";
 
 export default function UserRoutes() {
   return (
@@ -23,12 +24,12 @@ export default function UserRoutes() {
           <Route path=":slug" element={<KifaruPropertyDetails />} />
           <Route path=":slug/booking" element={<BookingForm />} />
           <Route path=":slug/preview" element={<BookingPreviewPayment />} />
-          <Route path=":slug/payment" element={<ConfirmPaymentBooking/>}/>
+          <Route path=":slug/payment" element={<ConfirmPaymentBooking />} />
+          <Route path=":payment/callback" element={<Confirmbooking />} />
         </Route>
         <Route path="contact" element={<Contact />} />
         <Route
           path="profile"
-          
           element={
             <ProtectedRoute allowedRoles={["external"]}>
               <UserProfile />

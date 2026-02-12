@@ -31,9 +31,7 @@ import { usePropertyBookings } from "@/services/property.service";
 import { useCalculateBookingPrice } from "@/services/booking.service";
 import {
   ACCOMMODATION_TYPES,
-  STAY_TYPES,
   type AccommodationType,
-  type StayType,
 } from "@/types/property";
 import { useAuth } from "@/providers/useAuth";
 
@@ -100,8 +98,6 @@ export default function BookingForm() {
   const location = useLocation();
   const { user, isLoading: authLoading } = useAuth();
 
-  
-
   const { id, slug, name, max_guests } = location.state as {
     id: number;
     name: string;
@@ -125,7 +121,6 @@ export default function BookingForm() {
   const [accommodationType, setAccommodationType] = useState<
     AccommodationType | ""
   >("");
-  const [stayType, setStayType] = useState<StayType | "">("");
   const [checkIn, setCheckIn] = useState<Date | null>(null);
   const [checkOut, setCheckOut] = useState<Date | null>(null);
   const [adults, setAdults] = useState(1);
@@ -144,6 +139,7 @@ export default function BookingForm() {
     check_out: checkOut ? checkOut.toISOString().split("T")[0] : "",
     accommodation_type: accommodationType as AccommodationType,
     number_of_guests: adults + children,
+    phone: guestData.phone,
   });
   const navigate = useNavigate();
 
@@ -157,7 +153,6 @@ export default function BookingForm() {
       property_id: id,
       property_name: name,
       accommodation_type: accommodationType,
-      stay_type: stayType,
       check_in: checkIn?.toISOString().split("T")[0],
       check_out: checkOut?.toISOString().split("T")[0],
       number_of_adults: adults,
@@ -334,20 +329,6 @@ export default function BookingForm() {
                     >
                       <option value="">Accommodation</option>
                       {ACCOMMODATION_TYPES.map((type) => (
-                        <option key={type.value} value={type.value}>
-                          {type.label}
-                        </option>
-                      ))}
-                    </select>
-
-                    <select
-                      className="border rounded-lg px-3 py-2 bg-background"
-                      value={stayType}
-                      onChange={(e) => setStayType(e.target.value as StayType)}
-                      required
-                    >
-                      <option value="">Select Stay Type</option>
-                      {STAY_TYPES.map((type) => (
                         <option key={type.value} value={type.value}>
                           {type.label}
                         </option>

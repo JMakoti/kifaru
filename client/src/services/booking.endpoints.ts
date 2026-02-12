@@ -75,7 +75,7 @@ export const paymentApi = {
   initialize: async (
     payload: InitializePaymentPayload,
   ): Promise<InitializePaymentResponse> => {
-    const { data } = await api.post("/payment/initialize/", payload);
+    const { data } = await api.post("/payments/initialize/", payload);
     return data;
   },
 };

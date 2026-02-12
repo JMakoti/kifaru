@@ -1,10 +1,18 @@
 import BookingView from "@/apps/admin/components/bookingview";
 import { useBookings } from "@/services/booking.service";
 import type { Booking } from "@/types/booking.types";
+import { useEffect } from "react";
 
 export default function Bookings() {
   // 1. Destructure correctly. 'data' is renamed to 'allBookings' to avoid confusion.
-  const { data: allBookings = [] as Booking[], isLoading } = useBookings();
+  const { data: allBookings = [] as Booking[], isLoading,refetch  } = useBookings();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [refetch]);
 
   if (isLoading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;

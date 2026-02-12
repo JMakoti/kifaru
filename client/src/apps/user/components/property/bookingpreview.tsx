@@ -22,7 +22,6 @@ interface BookingState {
   property_id: number;
   property_name: string;
   accommodation_type: string;
-  stay_type: string;
   check_in: string;
   check_out: string;
   number_of_adults: number;
@@ -194,7 +193,7 @@ export default function BookingPreviewPayment() {
                         Stay Type
                       </p>
                       <p className="font-bold capitalize">
-                        {booking.stay_type.replace("_", " ")}
+                        {/* {booking.stay_type.replace("_", " ")} */}
                       </p>
                     </div>
                   </div>
