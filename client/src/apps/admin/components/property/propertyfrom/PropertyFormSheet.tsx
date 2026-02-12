@@ -36,7 +36,6 @@ import {
 import {
   Building2,
   MapPin,
-  DollarSign,
   Image as ImageIcon,
   Sparkles,
   Users,
@@ -49,6 +48,7 @@ import {
   Clock,
   Star,
   Loader2,
+  EuroIcon,
 } from "lucide-react";
 import {
   useCreateProperty,
@@ -65,7 +65,7 @@ const steps = [
   {
     id: "pricing",
     label: "Pricing",
-    icon: <DollarSign className="w-3.5 h-3.5" />,
+    icon: <EuroIcon className="w-3.5 h-3.5" />,
   },
   {
     id: "highlights",
@@ -85,7 +85,7 @@ const steps = [
   {
     id: "pricingOptions",
     label: "Rates",
-    icon: <DollarSign className="w-3.5 h-3.5" />,
+    icon: <EuroIcon className="w-3.5 h-3.5" />,
   },
   {
     id: "features",
@@ -395,7 +395,7 @@ export function PropertyFormSheet({
               hint="Default nightly rate"
             >
               <div className="relative">
-                <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                <EuroIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
                   id="basePrice"
                   placeholder="0.00"

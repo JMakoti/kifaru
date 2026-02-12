@@ -1,4 +1,4 @@
-import { Plus, X, DollarSign } from "lucide-react";
+import { Plus, X, EuroIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -156,7 +156,7 @@ export function PricingOptionsSection({ pricingOptions, onChange }: PricingOptio
                 
                 <FormField label="Nightly Price" htmlFor={`pricing-nightly-${index}`}>
                   <div className="relative">
-                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <EuroIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input
                       id={`pricing-nightly-${index}`}
                       placeholder="0.00"
@@ -172,7 +172,7 @@ export function PricingOptionsSection({ pricingOptions, onChange }: PricingOptio
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
                 <FormField label="Weekly Price" htmlFor={`pricing-weekly-${index}`}>
                   <div className="relative">
-                    <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <EuroIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input
                       id={`pricing-weekly-${index}`}
                       placeholder="0.00"
