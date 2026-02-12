@@ -28,7 +28,7 @@ interface Props {
   isLoading?: boolean;
 }
 
-const empty: Omit<ReviewPayload, "avatar"> & { avatar: string } = {
+const empty: ReviewPayload = {
   property: 0,
   reviewer_name: "",
   rating: 5,
@@ -59,7 +59,7 @@ export default function ReviewFormDialog({
           avatar: review.avatar,
           country: review.country,
         }
-      : empty,
+      : { ...empty },
   );
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string>("");

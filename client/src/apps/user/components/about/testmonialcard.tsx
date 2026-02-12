@@ -16,6 +16,11 @@ export default function TestimonialCard({
   property,
   image,
 }: TestimonialCardProps) {
+  
+  const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(
+    author,
+  )}&background=random&size=128`;
+
   return (
     <div className="relative mx-auto w-full max-w-5xl bg-card rounded-2xl border border-border/50 px-5 sm:px-8 md:px-16 py-10 shadow-sm transition-all duration-500 hover:shadow-xl hover:-translate-y-1">
       {/* Glow Accent */}
@@ -44,10 +49,18 @@ export default function TestimonialCard({
 
         <div className="flex items-center gap-4 pt-4 border-t border-border/40">
           <div className="relative">
-            <img
+            {/* <img
               src={image}
               alt={author}
               className="h-12 w-12 sm:h-14 sm:w-14 rounded-full object-cover ring-2 ring-accent/40 transition-all duration-700 group-hover:ring-accent/80"
+            /> */}
+            <img
+              src={image || fallbackAvatar}
+              alt={author}
+              className="h-12 w-12 sm:h-14 sm:w-14 rounded-full object-cover ring-2 ring-accent/40 transition-all duration-700 group-hover:ring-accent/80"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = fallbackAvatar;
+              }}
             />
             <div className="absolute -bottom-1 -right-1 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full bg-accent text-accent-foreground shadow-md">
               <span className="text-[10px] sm:text-xs font-bold">✓</span>

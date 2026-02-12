@@ -126,6 +126,8 @@ export default function ReviewsView() {
       )}
 
       <ReviewFormDialog
+        // Changing the key forces React to reset the entire component state
+        key={editing ? `edit-${editing.id}` : formOpen ? "new-open" : "new-closed"}
         open={formOpen}
         onOpenChange={(o) => {
           setFormOpen(o);
@@ -135,6 +137,17 @@ export default function ReviewsView() {
         onSubmit={handleSubmit}
         isLoading={createMutation.isPending || updateMutation.isPending}
       />
+
+      {/* <ReviewFormDialog
+        open={formOpen}
+        onOpenChange={(o) => {
+          setFormOpen(o);
+          if (!o) setEditing(null);
+        }}
+        review={editing}
+        onSubmit={handleSubmit}
+        isLoading={createMutation.isPending || updateMutation.isPending}
+      /> */}
 
       <DeleteConfirmDialog
         open={deleteId !== null}
