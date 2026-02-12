@@ -156,7 +156,7 @@ export default function BookingCard({ booking }: PropertyBooking) {
           </div>
 
           <div className="text-right">
-            <p className="text-2xl font-semibold">${booking.total_amount}</p>
+            <p className="text-2xl font-semibold">€{booking.total_amount}</p>
             <p className="text-xs text-muted-foreground">Total</p>
           </div>
         </div>

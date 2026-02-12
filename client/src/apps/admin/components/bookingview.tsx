@@ -121,7 +121,7 @@ export default function BookingView({ data }: PropertyBooking) {
                 <p className="text-sm font-medium text-muted-foreground">
                   Total Revenue
                 </p>
-                <p className="text-2xl font-bold">${totalRevenue.toFixed(2)}</p>
+                <p className="text-2xl font-bold">€{totalRevenue.toFixed(2)}</p>
               </div>
               <DollarSign className="h-8 w-8 text-primary" />
             </div>
@@ -256,7 +256,7 @@ export default function BookingView({ data }: PropertyBooking) {
                         <div className="flex items-center gap-2 text-sm text-gray-600"></div>
                         <div className="text-right">
                           <div className="text-2xl font-bold text-black-600">
-                            ${b.total_amount}
+                            €{b.total_amount}
                           </div>
                           <div className="text-xs text-gray-500">Total</div>
                         </div>

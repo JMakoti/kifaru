@@ -424,32 +424,34 @@ export default function PropertySection() {
       </motion.div>
 
       {/* Road Journey Container */}
-      <div className="container mx-auto relative min-h-[900px]">
-        <AnimatedRoad hoveredIndex={hoveredIndex} properties={propertyList} />
+      {propertyList.length > 0 && (
+        <div className="container mx-auto relative min-h-[900px]">
+          <AnimatedRoad hoveredIndex={hoveredIndex} properties={propertyList} />
 
-        {/* Properties Grid */}
-        <div className="relative z-10 grid md:grid-cols-2 gap-y-6 md:gap-y-0 gap-x-8 max-w-6xl mx-auto">
-          {propertyList.map((property, index) => {
-            const isLeft = index % 2 === 0;
+          {/* Properties Grid */}
+          <div className="relative z-10 grid md:grid-cols-2 gap-y-6 md:gap-y-0 gap-x-8 max-w-6xl mx-auto">
+            {propertyList.map((property, index) => {
+              const isLeft = index % 2 === 0;
 
-            return (
-              <div
-                key={property.id}
-                className={isLeft ? "md:col-start-1" : "md:col-start-2"}
-                style={{ gridRow: index + 1 }}
-              >
-                <PropertyDestination
-                  property={property}
-                  index={index}
-                  isLeft={isLeft}
-                  isHighlighted={hoveredIndex === index}
-                  onHover={setHoveredIndex}
-                />
-              </div>
-            );
-          })}
+              return (
+                <div
+                  key={property.id}
+                  className={isLeft ? "md:col-start-1" : "md:col-start-2"}
+                  style={{ gridRow: index + 1 }}
+                >
+                  <PropertyDestination
+                    property={property}
+                    index={index}
+                    isLeft={isLeft}
+                    isHighlighted={hoveredIndex === index}
+                    onHover={setHoveredIndex}
+                  />
+                </div>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }

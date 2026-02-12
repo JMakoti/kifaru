@@ -19,7 +19,6 @@ import { Button } from "@/components/ui/button";
 import Reviews from "@/apps/user/components/property/reviews";
 // import Availability from "@/apps/user/components/property/availability";
 import { usePropertyDetails } from "@/services/property.service";
-import LoadingScreen from "@/components/loadingscreen";
 import { Badge } from "@/components/ui/badge";
 import { PhotoGalleryModal } from "./photogallery";
 import BookingCard from "../../components/property/bookingcard";
@@ -33,7 +32,7 @@ import { resolveImageSrc } from "@/hooks/resolveImage";
 
 export default function KifaruPropertyDetails() {
   const { slug } = useParams<{ slug: string }>();
-  const { data, isLoading, isError, error } = usePropertyDetails(slug!);
+  const { data, isError, error } = usePropertyDetails(slug!);
   // const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<
     "description" | "amenities" | "reviews"
@@ -54,9 +53,9 @@ export default function KifaruPropertyDetails() {
   // "availability",
   //   "maps",
   //   "reviews",
-  if (isLoading) {
-    return <LoadingScreen />;
-  }
+  // if (isLoading) {
+  //   return <LoadingScreen />;
+  // }
   if (isError) return <p>{error.message}</p>;
 
   if (!property || !property.id || !property.slug) {
@@ -457,7 +456,7 @@ export default function KifaruPropertyDetails() {
                                 <div className="flex items-center gap-2">
                                   <LucideIcons.Wallet className="w-5 h-5 text-primary" />
                                   <p className="text-xl font-bold text-primary">
-                                    {option.price_per_night}
+                                    €{option.price_per_night}
                                     <span className="text-sm font-normal text-muted-foreground">
                                       {" "}
                                       / night
@@ -468,7 +467,7 @@ export default function KifaruPropertyDetails() {
                                 {option.weekly_price && (
                                   <div className="flex items-center gap-2 mt-2 text-sm text-muted-foreground">
                                     <LucideIcons.CalendarDays className="w-4 h-4" />
-                                    Weekly: {option.weekly_price}
+                                    Weekly: €{option.weekly_price}
                                   </div>
                                 )}
                               </div>

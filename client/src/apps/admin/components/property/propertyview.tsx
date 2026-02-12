@@ -216,7 +216,7 @@ export default function PropertiesView() {
                 Avg. Nightly Rate
               </p>
               <p className="text-2xl font-bold font-heading">
-                ${avgNightlyRate}
+                €{avgNightlyRate}
               </p>
             </div>
             <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
@@ -286,6 +286,7 @@ export default function PropertiesView() {
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <MapPin className="h-3.5 w-3.5" />
                       <span className="truncate">{property.location}</span>
+                      
                     </div>
 
                     <div className="flex items-center gap-1 text-sm">
@@ -299,7 +300,7 @@ export default function PropertiesView() {
                           Per night
                         </p>
                         <p className="font-semibold font-heading">
-                          $ {property.pricePerNight}
+                          € {property.pricePerNight}
                         </p>
                       </div>
                       <div>

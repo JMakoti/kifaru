@@ -262,7 +262,7 @@ export default function TransactionView() {
                   Total Revenue
                 </p>
                 <p className="text-2xl font-bold font-heading">
-                  ${totalRevenue.toFixed(2)}
+                  €{totalRevenue.toFixed(2)}
                 </p>
                 <p className="text-xs text-muted-foreground">
                   Payments received
@@ -283,7 +283,7 @@ export default function TransactionView() {
                   Pending Amount
                 </p>
                 <p className="text-2xl font-bold font-heading text-primary">
-                  ${pendingAmount.toFixed(2)}
+                  €{pendingAmount.toFixed(2)}
                 </p>
                 <p className="text-xs text-muted-foreground">
                   Awaiting processing
@@ -388,7 +388,7 @@ export default function TransactionView() {
                               {txn.type === "payment" || txn.type === "deposit"
                                 ? "+"
                                 : "-"}
-                              ${txn.amount.toFixed(2)}
+                              €{txn.amount.toFixed(2)}
                             </div>
                             {txn.reference && (
                               <p className="text-ls text-gray-500">

@@ -29,11 +29,9 @@ import { DateRangePicker } from "./DateRangePicker";
 import { useLocation, useNavigate } from "react-router";
 import { usePropertyBookings } from "@/services/property.service";
 import { useCalculateBookingPrice } from "@/services/booking.service";
-import {
-  ACCOMMODATION_TYPES,
-  type AccommodationType,
-} from "@/types/property";
+import { ACCOMMODATION_TYPES, type AccommodationType } from "@/types/property";
 import { useAuth } from "@/providers/useAuth";
+import { format } from "date-fns";
 
 interface StepperProps {
   label: string;
@@ -135,8 +133,8 @@ export default function BookingForm() {
     error: pricingError,
   } = useCalculateBookingPrice({
     property: id,
-    check_in: checkIn ? checkIn.toISOString().split("T")[0] : "",
-    check_out: checkOut ? checkOut.toISOString().split("T")[0] : "",
+    check_in: checkIn ? format(checkIn, "yyyy-MM-dd") : "",
+    check_out: checkOut ? format(checkOut, "yyyy-MM-dd") : "",
     accommodation_type: accommodationType as AccommodationType,
     number_of_guests: adults + children,
     phone: guestData.phone,
@@ -153,8 +151,8 @@ export default function BookingForm() {
       property_id: id,
       property_name: name,
       accommodation_type: accommodationType,
-      check_in: checkIn?.toISOString().split("T")[0],
-      check_out: checkOut?.toISOString().split("T")[0],
+      check_in: checkIn ? format(checkIn, "yyyy-MM-dd") : "",
+    check_out: checkOut ? format(checkOut, "yyyy-MM-dd") : "",
       number_of_adults: adults,
       number_of_children: children,
       number_of_guests: adults + children,
@@ -316,9 +314,9 @@ export default function BookingForm() {
                     />
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 gap-4">
                     <select
-                      className="border rounded-lg px-3 py-2 bg-background"
+                      className="w-full border rounded-lg px-3 py-2 bg-background"
                       value={accommodationType}
                       onChange={(e) =>
                         setAccommodationType(

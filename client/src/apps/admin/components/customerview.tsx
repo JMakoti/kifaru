@@ -193,7 +193,7 @@ export default function CustomersView() {
                         </div>
                         <div>
                           <p className="text-muted-foreground">Total Spent</p>
-                          <p className="font-semibold text-lg">$0</p>
+                          <p className="font-semibold text-lg">€0</p>
                         </div>
                         <div>
                           <p className="text-muted-foreground">Last Booking</p>

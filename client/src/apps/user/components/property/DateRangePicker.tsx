@@ -17,6 +17,7 @@ import {
   endOfWeek,
   isWithinInterval,
   parseISO,
+  startOfDay,
 } from "date-fns";
 import type { BookingEvent } from "@/types/property";
 
@@ -50,8 +51,9 @@ export function DateRangePicker({
   };
 
   const handleDateClick = (date: Date) => {
+    const normalizedDate = startOfDay(date);
     if (selecting === "start") {
-      onDateChange(date, null);
+      onDateChange(normalizedDate, null);
       setSelecting("end");
     } else {
       // Logic to prevent booking OVER an existing reservation
@@ -70,7 +72,7 @@ export function DateRangePicker({
         onDateChange(date, null);
         setSelecting("end");
       } else {
-        onDateChange(startDate, date);
+        onDateChange(startDate, normalizedDate);
         setSelecting("start");
       }
     }
@@ -158,7 +160,8 @@ export function DateRangePicker({
                   // isDisabled &&
                   //   "text-muted-foreground opacity-40 hover:bg-transparent cursor-not-allowed",
                   !isCurrentMonth && "opacity-0 pointer-events-none",
-                  isPast && "text-muted-foreground opacity-40 cursor-not-allowed",
+                  isPast &&
+                    "text-muted-foreground opacity-40 cursor-not-allowed",
 
                   // start / end
                   isStart &&
