@@ -3,6 +3,8 @@ import type {
   BookingPriceQuery,
   InitializePaymentPayload,
   InitializePaymentResponse,
+  PaginatedPayments,
+  Payment,
 } from "@/types/booking.types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { bookingApi, paymentApi } from "./booking.endpoints";
@@ -15,18 +17,23 @@ const BOOKING_KEYS = {
   detail: (id: number) => ["bookings", id] as const,
   price: (params?: BookingPriceQuery) => ["booking-price", params] as const,
 };
+export const TRANSACTION = ["transaction"];
 
 //  QUERIES
 export const useBookings = () =>
   useQuery({
     queryKey: BOOKING_KEYS.all,
     queryFn: bookingApi.getAll,
+    staleTime: 1000 * 60 * 5,
+    retry: 2,
   });
 
 export const useMyBookings = () =>
   useQuery({
     queryKey: BOOKING_KEYS.my,
     queryFn: bookingApi.myBookings,
+    staleTime: 1000 * 60 * 5,
+    retry: 2,
   });
 
 export const useBooking = (id: number) =>
@@ -110,7 +117,7 @@ export const useDeleteBooking = () => {
 export const useInitializePayment = () => {
   return useMutation<
     InitializePaymentResponse,
-    AxiosError<{ message: string }>, 
+    AxiosError<{ message: string }>,
     InitializePaymentPayload
   >({
     mutationFn: paymentApi.initialize,
@@ -129,5 +136,16 @@ export const useInitializePayment = () => {
         backendMessage || error.message,
       );
     },
+  });
+};
+
+// --- GET ALL PAYMENTS---
+
+export const usePayments = () => {
+  return useQuery<PaginatedPayments<Payment>>({
+    queryKey: TRANSACTION,
+    queryFn: paymentApi.getAll,
+    staleTime: 1000 * 60 * 5,
+    retry: 2,
   });
 };

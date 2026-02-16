@@ -96,3 +96,35 @@ export interface InitializePaymentResponse {
   reference: string;
   access_code: string;
 }
+
+export type PaymentStatus = "completed" | "pending" | "failed";
+export type PaymentMethod = "card" | "mpesa";
+
+export interface Payment {
+  id: number;
+  booking: number;
+  payment_method: PaymentMethod;
+  amount: string; 
+  currency: string;
+  card_number_last4: string | null;
+  card_type: string | null;
+  transaction_id: string;
+  payment_status: PaymentStatus;
+  mpesa_receipt_number: string | null;
+  mpesa_phone_number: string | null;
+  paystack_reference: string;
+  paystack_access_code: string;
+  authorization_url: string;
+  created_at: string; 
+  completed_at: string | null;
+  failure_reason: string | null;
+}
+
+export interface PaginatedPayments<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
+
+

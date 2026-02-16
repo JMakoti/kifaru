@@ -1,17 +1,15 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import {
   Search,
   Edit,
   Trash2,
   Building2,
   DollarSign,
-  Home,
   MapPin,
   Bed,
   Users,
@@ -21,18 +19,8 @@ import {
 import { useDeleteProperty, useProperties } from "@/services/property.service";
 import LoadingScreen from "@/components/loadingscreen";
 import { PropertyFormSheet } from "./propertyfrom";
-import type {
-  Property as APIProperty,
-  PropertyCategory,
-} from "@/types/property";
+import type { PropertyCategory } from "@/types/property";
 
-// Extend APIProperty to include optional fields for our UI
-interface ExtendedAPIProperty extends APIProperty {
-  status?: "available" | "booked" | "blocked" | "maintenance";
-  booked_dates?: { check_in: string; check_out: string }[];
-}
-
-// Derived property type for rendering
 interface PropertyView {
   id?: number;
   name: string;
@@ -43,68 +31,35 @@ interface PropertyView {
   bedrooms: number;
   maxGuests: number;
   rating: number;
-  status: "available" | "booked" | "blocked" | "maintenance";
 }
 
 export default function PropertiesView() {
   const [searchTerm, setSearchTerm] = useState("");
   const [deletingProperty, setDeletingProperty] = useState<string | null>(null);
   const [editingSlug, setEditingSlug] = useState<string | null>(null);
-  const [isSheetOpen, setIsSheetOpen] = useState(false); // New state
-  const { data, isLoading, refetch } = useProperties();
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+
+  const { data: propertyList = [], isLoading, refetch } = useProperties();
   const { mutateAsync } = useDeleteProperty();
 
+  if (isLoading) return <LoadingScreen />;
+
   // Map API data to UI-friendly property view
-  const propertyList = useMemo(() => data?.results || [], [data]);
+  const properties: PropertyView[] = propertyList.map((prop) => ({
+    id: prop.id,
+    name: prop.name,
+    slug: prop.slug,
+    type: prop.property_category || "urban",
+    location: prop.location,
+    pricePerNight: parseInt(prop.price) || 200,
+    bedrooms: prop.bedrooms || 1,
+    maxGuests: prop.max_guests || 1,
+    rating: prop.average_rating || 4.5,
+  }));
 
-  const properties: PropertyView[] = useMemo(() => {
-    const today = new Date();
-
-    return propertyList.map((prop) => {
-      const bedrooms = prop.bedrooms || 1;
-      const maxGuests = prop.max_guests || 1;
-      const rating = prop.average_rating || 4.5;
-
-      const getPropertyStatus = (prop: ExtendedAPIProperty, bufferDays = 1) => {
-        if (prop.status === "blocked") return "blocked";
-        if (prop.status === "maintenance") return "maintenance";
-
-        if (!prop.booked_dates || prop.booked_dates.length === 0)
-          return "available";
-
-        const isBookedToday = prop.booked_dates.some((range) => {
-          const checkIn = new Date(range.check_in);
-          const checkOut = new Date(range.check_out);
-          const bufferedCheckout = new Date(checkOut);
-          bufferedCheckout.setDate(bufferedCheckout.getDate() + bufferDays);
-
-          return today >= checkIn && today <= bufferedCheckout;
-        });
-
-        return isBookedToday ? "booked" : "available";
-      };
-
-      const status = getPropertyStatus(prop);
-
-      return {
-        id: prop.id,
-        name: prop.name,
-        slug: prop.slug,
-        type: prop.property_category || "urban",
-        location: prop.location,
-        pricePerNight: parseInt(prop.price) || 200,
-        bedrooms,
-        maxGuests,
-        rating,
-        status,
-      };
-    });
-  }, [propertyList]);
-
-  const editingProperty = useMemo(() => {
-    if (!editingSlug) return undefined;
-    return propertyList.find((p) => p.slug === editingSlug);
-  }, [editingSlug, propertyList]);
+  const editingProperty = editingSlug
+    ? propertyList.find((p) => p.slug === editingSlug)
+    : undefined;
 
   const filteredProperties = properties.filter(
     (p) =>
@@ -113,34 +68,12 @@ export default function PropertiesView() {
       p.location.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
-  const getStatusColor = (status: PropertyView["status"]) => {
-    switch (status) {
-      case "available":
-        return "bg-emerald/50 text-emerald-600";
-      case "booked":
-        return "bg-blue/20 text-blue-600";
-      case "blocked":
-        return "bg-amber/20 text-amber-600";
-      case "maintenance":
-        return "bg-orange/20 text-orange-600";
-      default:
-        return "bg-muted text-muted-foreground";
-    }
-  };
-
   const totalProperties = properties.length;
-  const avgNightlyRate = Math.round(
+  const avgNightlyRate =
     properties.reduce((sum, p) => sum + p.pricePerNight, 0) /
-      (properties.length || 1),
-  );
-  const availableCount = properties.filter(
-    (p) => p.status === "available",
-  ).length;
-
-  if (isLoading) return <LoadingScreen />;
+    (properties.length || 1);
 
   const handleEdit = (slug: string) => {
-    if (!slug) return;
     setEditingSlug(slug);
     setIsSheetOpen(true);
   };
@@ -168,13 +101,7 @@ export default function PropertiesView() {
             Manage your vacation properties and bookings
           </p>
         </div>
-        {/* <PropertyFormSheet
-          property={editingProperty}
-          onSuccess={() => {
-            setEditingSlug(null);
-            refetch();
-          }}
-        /> */}
+
         <PropertyFormSheet
           key={editingSlug || "new"}
           property={editingProperty}
@@ -192,7 +119,7 @@ export default function PropertiesView() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card className="shadow-soft h-30">
           <CardContent className="py-3 px-6 flex items-center justify-between">
             <div>
@@ -216,27 +143,11 @@ export default function PropertiesView() {
                 Avg. Nightly Rate
               </p>
               <p className="text-2xl font-bold font-heading">
-                €{avgNightlyRate}
+                €{Math.round(avgNightlyRate)}
               </p>
             </div>
             <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
               <DollarSign className="h-6 w-6 text-primary" />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="shadow-soft h-30">
-          <CardContent className="py-3 px-6 flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-muted-foreground">
-                Available Now
-              </p>
-              <p className="text-2xl font-bold font-heading text-primary">
-                {availableCount}
-              </p>
-            </div>
-            <div className="h-12 w-12 rounded-xl bg-primary/10 flex items-center justify-center">
-              <Home className="h-6 w-6 text-primary" />
             </div>
           </CardContent>
         </Card>
@@ -278,15 +189,11 @@ export default function PropertiesView() {
                           {property.type}
                         </p>
                       </div>
-                      <Badge className={getStatusColor(property.status)}>
-                        {property.status}
-                      </Badge>
                     </div>
 
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
                       <MapPin className="h-3.5 w-3.5" />
                       <span className="truncate">{property.location}</span>
-                      
                     </div>
 
                     <div className="flex items-center gap-1 text-sm">

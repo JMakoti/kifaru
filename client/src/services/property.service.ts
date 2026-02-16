@@ -14,19 +14,40 @@ export const REVIEWS_QUERY = ["reviews"];
 export const PROPERTY_BOOKING = ["property-bookings"];
 
 // Query hook to fetch all properties
+// export function useProperties() {
+//   return useQuery<PropertyPaginatedResponse<Property>>({
+//     queryKey: PROPERTY_QUERY_KEY,
+//     queryFn: propertyApi.getAll,
+//     staleTime: Infinity,
+//     gcTime: Infinity,
+//     refetchOnMount: false,
+//     refetchOnWindowFocus: false,
+//     refetchOnReconnect: false,
+//     retry: 1,
+//     // placeholderData: (previousData) => previousData,
+//     select: (data) => data?.results ?? [],
+//   });
+// }
+
 export function useProperties() {
-  return useQuery<PropertyPaginatedResponse<Property>>({
+  return useQuery<PropertyPaginatedResponse<Property>, Error, Property[]>({
     queryKey: PROPERTY_QUERY_KEY,
     queryFn: propertyApi.getAll,
-    staleTime: Infinity,
-    gcTime: Infinity,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+    initialData: {
+      count: 0,
+      next: null,
+      previous: null,
+      results: [],
+    },
+    select: (data) => data.results,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
-    retry: 1,
-    placeholderData: (previousData) => previousData,
   });
 }
+
 // Query hook to fetch a single property
 export function usePropertyDetails(slug: string) {
   return useQuery<Property, Error>({

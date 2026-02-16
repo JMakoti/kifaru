@@ -7,6 +7,8 @@ import type {
   BookingResponse,
   InitializePaymentPayload,
   InitializePaymentResponse,
+  PaginatedPayments,
+  Payment,
 } from "@/types/booking.types";
 import { api } from "./user.endpoints";
 const BOOKINGS = "/bookings";
@@ -37,7 +39,7 @@ export const bookingApi = {
   // },
   create: async (data: BookingPayload): Promise<BookingResponse> => {
     const response = await api.post<BookingResponse>(`${BOOKINGS}/`, data);
-    console.log("Full response.data from Backend:", response.data);
+    // console.log("Full response.data from Backend:", response.data);
     return response.data;
   },
 
@@ -77,5 +79,12 @@ export const paymentApi = {
   ): Promise<InitializePaymentResponse> => {
     const { data } = await api.post("/payments/initialize/", payload);
     return data;
+  },
+
+  // get payment details
+  getAll: async (): Promise<PaginatedPayments<Payment>> => {
+    const response =
+      await api.get<PaginatedPayments<Payment>>("/admin/payments/");
+    return response.data;
   },
 };
