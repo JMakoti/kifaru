@@ -48,6 +48,7 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
   if (!slide) return null;
 
   const handleBookingClick = () => {
+    // redirect if property is msambweni
     const name = property.name?.trim().toLowerCase() || "";
     const location = property.location?.trim().toLowerCase() || "";
 
@@ -59,6 +60,25 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
 
     if (isOceanKifaru && isMsambweni) {
       window.location.assign("https://oneocean.co.ke/");
+      return;
+    }
+    // redirect for netherland in season
+    const inSeasonMonths = [ 3, 4, 5, 6, 7, 8]; // April (3) to September (8)
+    const currentMonth = new Date().getMonth();
+
+    const isOceanNetherlands =
+      name.includes("ocean kifaru") || name.includes("north sea");
+    const isNetherlands =
+      location.includes("netherlands") || location.includes("cadzand");
+    if (
+      isOceanNetherlands &&
+      isNetherlands &&
+      inSeasonMonths.includes(currentMonth)
+    ) {
+      // Redirect to local partner for in-season
+      window.location.assign(
+        "https://www.villamer.nl/accommodaties/sincfal-28-cadzand",
+      );
       return;
     }
 

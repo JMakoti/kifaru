@@ -22,21 +22,41 @@ const ReadyToBook = ({ contacts, property }: BookingProps) => {
   const navigate = useNavigate();
 
   const handleBookingClick = () => {
+    // redirect if property is msambweni
     const name = property.name?.trim().toLowerCase() || "";
     const location = property.location?.trim().toLowerCase() || "";
 
-    // Special case redirect if property name and location include keywords
+    // Check for keywords in name & location
+    const isOceanKifaru =
+      name.includes("ocean kifaru") || name.includes("msambweni");
+    const isMsambweni =
+      location.includes("msambweni") || location.includes("south coast");
+
+    if (isOceanKifaru && isMsambweni) {
+      window.location.assign("https://oneocean.co.ke/");
+      return;
+    }
+    // redirect for netherland in season
+    const inSeasonMonths = [3, 4, 5, 6, 7, 8]; // April (3) to September (8)
+    const currentMonth = new Date().getMonth();
+
+    const isOceanNetherlands =
+      name.includes("ocean kifaru") || name.includes("north sea");
+    const isNetherlands =
+      location.includes("netherlands") || location.includes("cadzand");
     if (
-      name.includes("ocean kifaru") ||
-      name.includes("msambwen") ||
-      location.includes("msambweni") ||
-      location.includes("south coast of mombasa")
+      isOceanNetherlands &&
+      isNetherlands &&
+      inSeasonMonths.includes(currentMonth)
     ) {
-      window.location.href = "https://oneocean.co.ke/";
+      // Redirect to local partner for in-season
+      window.location.assign(
+        "https://www.villamer.nl/accommodaties/sincfal-28-cadzand",
+      );
       return;
     }
 
-    // Default internal route
+    // Otherwise, use internal navigation
     navigate(`/property/${property.slug}/booking`, {
       state: {
         id: property.id,
