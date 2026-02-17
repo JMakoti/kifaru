@@ -7,7 +7,7 @@ import type {
   ReviewsPaginatedResponse,
 } from "@/types/property";
 import { api } from "./user.endpoints";
-import { buildPropertyFormData } from "@/apps/admin/utils/formdata";
+// import { buildPropertyFormData } from "@/apps/admin/utils/formdata";
 
 // ENDPOINTS
 const PROPERTY = "/properties";
@@ -16,30 +16,30 @@ const REVIEWS = "/reviews";
 // Property API endpoints
 export const propertyApi = {
   // Create a new property
-  create: async (property: Property): Promise<Property> => {
-    const formData = buildPropertyFormData(property);
-    const response = await api.post<Property>(`${PROPERTY}/`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
-    return response.data;
-  },
+  // create: async (property: Property): Promise<Property> => {
+  //   const formData = buildPropertyFormData(property);
+  //   const response = await api.post<Property>(`${PROPERTY}/`, formData, {
+  //     headers: {
+  //       "Content-Type": "multipart/form-data",
+  //     },
+  //   });
+  //   return response.data;
+  // },
 
   // Update an existing property
-  update: async (slug: string, property: Property): Promise<Property> => {
-    const formData = buildPropertyFormData(property);
-    const response = await api.patch<Property>(
-      `${PROPERTY}/${slug}/`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      },
-    );
-    return response.data;
-  },
+  // update: async (slug: string, property: Property): Promise<Property> => {
+  //   const formData = buildPropertyFormData(property);
+  //   const response = await api.patch<Property>(
+  //     `${PROPERTY}/${slug}/`,
+  //     formData,
+  //     {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     },
+  //   );
+  //   return response.data;
+  // },
 
   // Get all properties
   getAll: async (): Promise<PropertyPaginatedResponse<Property>> => {

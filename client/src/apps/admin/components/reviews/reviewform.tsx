@@ -1,4 +1,4 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef} from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,16 +9,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 import { X, Loader2 } from "lucide-react";
 import type { PropertyReview, ReviewPayload } from "@/types/property";
-import { useProperties } from "@/services/property.service";
+// import { useProperties } from "@/services/property.service";
 
 interface Props {
   open: boolean;
@@ -45,8 +45,8 @@ export default function ReviewFormDialog({
   isLoading: isSubmitting,
 }: Props) {
   // 1. Fetch Real Data
-  const { data, isLoading: loadingProps } = useProperties();
-  const propertyList = useMemo(() => data?.results || [], [data]);
+  // const { data, isLoading: loadingProps } = useProperties();
+  // const propertyList = useMemo(() => data?.results || [], [data]);
 
   //   const [form, setForm] = useState(empty);
   const [form, setForm] = useState(
@@ -113,7 +113,7 @@ export default function ReviewFormDialog({
 
           <div className="grid grid-cols-2 gap-4">
             {/* Property Select */}
-            <div className="space-y-1.5">
+            {/* <div className="space-y-1.5">
               <Label>Property</Label>
               <Select
                 disabled={isSubmitting || loadingProps}
@@ -135,7 +135,7 @@ export default function ReviewFormDialog({
                   ))}
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
 
             {/* Rating Field */}
             <div className="space-y-1.5">

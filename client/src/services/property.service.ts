@@ -29,22 +29,32 @@ export const PROPERTY_BOOKING = ["property-bookings"];
 //   });
 // }
 
+// export function useProperties() {
+//   return useQuery<PropertyPaginatedResponse<Property>, Error, Property[]>({
+//     queryKey: PROPERTY_QUERY_KEY,
+//     queryFn: propertyApi.getAll,
+//     staleTime: 1000 * 60 * 5,
+//     gcTime: 1000 * 60 * 30,
+//     initialData: {
+//       count: 0,
+//       next: null,
+//       previous: null,
+//       results: [],
+//     },
+//     select: (data) => data.results,
+//     refetchOnMount: false,
+//     refetchOnWindowFocus: false,
+//     refetchOnReconnect: false,
+//   });
+// }
+
 export function useProperties() {
-  return useQuery<PropertyPaginatedResponse<Property>, Error, Property[]>({
+  return useQuery<PropertyPaginatedResponse<Property>>({
     queryKey: PROPERTY_QUERY_KEY,
     queryFn: propertyApi.getAll,
     staleTime: 1000 * 60 * 5,
     gcTime: 1000 * 60 * 30,
-    initialData: {
-      count: 0,
-      next: null,
-      previous: null,
-      results: [],
-    },
-    select: (data) => data.results,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    retry: 2,
   });
 }
 
@@ -58,48 +68,48 @@ export function usePropertyDetails(slug: string) {
 }
 
 // Mutation hook to create a property
-export function useCreateProperty() {
-  const queryClient = useQueryClient();
+// export function useCreateProperty() {
+//   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: propertyApi.create,
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: PROPERTY_QUERY_KEY });
-      toast.success("Property created successfully!", {
-        description: `${data.name} has been added to your listings.`,
-      });
-    },
-    onError: (error: Error) => {
-      toast.error("Failed to create property", {
-        description: error.message || "Please try again later.",
-      });
-    },
-  });
-}
+//   return useMutation({
+//     mutationFn: propertyApi.create,
+//     onSuccess: (data) => {
+//       queryClient.invalidateQueries({ queryKey: PROPERTY_QUERY_KEY });
+//       toast.success("Property created successfully!", {
+//         description: `${data.name} has been added to your listings.`,
+//       });
+//     },
+//     onError: (error: Error) => {
+//       toast.error("Failed to create property", {
+//         description: error.message || "Please try again later.",
+//       });
+//     },
+//   });
+// }
 
 // Mutation hook to update a property
-export function useUpdateProperty() {
-  const queryClient = useQueryClient();
+// export function useUpdateProperty() {
+//   const queryClient = useQueryClient();
 
-  return useMutation({
-    mutationFn: ({ slug, property }: { slug: string; property: Property }) =>
-      propertyApi.update(slug, property),
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: PROPERTY_QUERY_KEY });
-      queryClient.invalidateQueries({
-        queryKey: [...PROPERTY_QUERY_KEY, data.id],
-      });
-      toast.success("Property updated successfully!", {
-        description: `${data.name} has been updated.`,
-      });
-    },
-    onError: (error: Error) => {
-      toast.error("Failed to update property", {
-        description: error.message || "Please try again later.",
-      });
-    },
-  });
-}
+//   return useMutation({
+//     mutationFn: ({ slug, property }: { slug: string; property: Property }) =>
+//       propertyApi.update(slug, property),
+//     onSuccess: (data) => {
+//       queryClient.invalidateQueries({ queryKey: PROPERTY_QUERY_KEY });
+//       queryClient.invalidateQueries({
+//         queryKey: [...PROPERTY_QUERY_KEY, data.id],
+//       });
+//       toast.success("Property updated successfully!", {
+//         description: `${data.name} has been updated.`,
+//       });
+//     },
+//     onError: (error: Error) => {
+//       toast.error("Failed to update property", {
+//         description: error.message || "Please try again later.",
+//       });
+//     },
+//   });
+// }
 
 // Mutation hook to delete a property
 export function useDeleteProperty() {

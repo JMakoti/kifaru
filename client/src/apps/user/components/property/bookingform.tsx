@@ -101,7 +101,6 @@ export default function BookingForm() {
     name: string;
     max_guests: number | null;
     slug: string;
-    // min_nights: number;
   };
 
   //guest data

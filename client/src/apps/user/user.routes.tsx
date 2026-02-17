@@ -3,6 +3,7 @@ import { lazy, Suspense } from "react";
 import MainLayout from "./layout/mainlayout";
 import { ProtectedRoute } from "../auth/routes/protected.route";
 import LoadingScreen from "@/components/loadingscreen";
+// import PropertyDetails from "./pages/properties/propertydetails";
 
 /* -------------------------
    Lazy Loaded Pages
@@ -12,10 +13,11 @@ const Home = lazy(() => import("./pages/home"));
 const About = lazy(() => import("./pages/about"));
 const Property = lazy(() => import("./pages/property"));
 const KifaruProperty = lazy(() => import("./pages/properties/kifaru-property"));
-const KifaruPropertyDetails = lazy(
-  () => import("./pages/properties/kifaru-properties-details"),
-);
+// const KifaruPropertyDetails = lazy(
+//   () => import("./pages/properties/kifaru-properties-details"),
+// );
 const Contact = lazy(() => import("./pages/contact"));
+const PropertyDetails = lazy(() => import("./pages/properties/propertydetails"));
 const UserProfile = lazy(() => import("./pages/profiles/userprofile"));
 
 /* -------------------------
@@ -57,7 +59,7 @@ export default function UserRoutes() {
 
           <Route path="property" element={<Property />}>
             <Route index element={<KifaruProperty />} />
-            <Route path=":slug" element={<KifaruPropertyDetails />} />
+            <Route path=":slug" element={<PropertyDetails />} />
             <Route path=":slug/booking" element={<BookingForm />} />
             <Route path=":slug/preview" element={<BookingPreviewPayment />} />
             <Route path=":slug/payment" element={<ConfirmPaymentBooking />} />
@@ -74,6 +76,7 @@ export default function UserRoutes() {
               </ProtectedRoute>
             }
           />
+          {/* <Route path="details" element={< />} /> */}
 
           {/* 404 */}
           <Route path="*" element={<Notfound />} />

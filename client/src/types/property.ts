@@ -11,15 +11,19 @@ export type ImageCategory =
 
 export type AccommodationType = "master_bedroom" | "full_apartment";
 
-export type GuestType = "international" | "local";
+export type GuestType = "international" | "local" | "all";
 
 export type StayType = "short_term" | "long_term" | "weekly";
 
 export type FeatureType = "outdoor" | "indoor" | "service" | "unique";
 
-export interface Amenity {
-  image: File | string | null;
-  label: string;
+export interface AmenityItem {
+  icon: string;
+  title: string;
+}
+
+export interface Amenities {
+  [category: string]: AmenityItem[];
 }
 
 export interface PropertyImage {
@@ -34,11 +38,11 @@ export interface PricingOption {
   accommodation_type: AccommodationType;
   guest_type: GuestType;
   stay_type: StayType;
-  number_of_guests: number;
+  number_of_guests: number | null;
   min_nights: number;
-  max_nights: number;
-  price_per_night: string;
-  weekly_price: string;
+  max_nights: number | null;
+  price_per_night: string | null;
+  weekly_price: string | null;
   includes_breakfast: boolean;
   includes_fullboard: boolean;
 }
@@ -61,48 +65,58 @@ export interface Contact {
 }
 
 export interface Highlight {
-  text: string;
+  title: string;
+  image: File | string | null;
 }
 
 export interface Property {
   id: number;
   name: string;
   slug?: string;
+  tagline: string;
   location: string;
+  location_description: string;
   country: string;
   property_category: PropertyCategory;
   price: string;
   description: string;
   bedrooms: number;
   bathrooms: number;
-  square_meters: number;
-  terrace_size: number;
-  max_guests: number;
+  square_meters: number | null;
+  terrace_size: number | null;
+  max_guests: number | null;
   min_nights: number;
   check_in_time: string;
   check_out_time: string;
   prepayment_percentage: number;
   cancellation_days: number;
-  background_image: File | string | null;
+  background_image: string | File | null;
   wifi_password: string;
-  amenities: Amenity[];
+  amenities?: Amenities;
   property_images: PropertyImage[];
   pricing_options: PricingOption[];
   features: Feature[];
   contacts: Contact[];
   highlights: Highlight[];
   average_rating?: number | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
-export const PROPERTY_CATEGORIES: { value: PropertyCategory; label: string }[] =
-  [
-    { value: "retreat", label: "Retreat" },
-    { value: "beachfront", label: "Beachfront" },
-    { value: "urban", label: "Urban" },
-    { value: "coworking", label: "Co-working" },
-  ];
+export const PROPERTY_CATEGORIES: {
+  value: PropertyCategory;
+  label: string;
+}[] = [
+  { value: "retreat", label: "Retreat" },
+  { value: "beachfront", label: "Beachfront" },
+  { value: "urban", label: "Urban" },
+  { value: "coworking", label: "Co-working" },
+];
 
-export const IMAGE_CATEGORIES: { value: ImageCategory; label: string }[] = [
+export const IMAGE_CATEGORIES: {
+  value: ImageCategory;
+  label: string;
+}[] = [
   { value: "bedroom", label: "Bedroom" },
   { value: "bathroom", label: "Bathroom" },
   { value: "living_room", label: "Living Room" },
@@ -123,6 +137,7 @@ export const ACCOMMODATION_TYPES: {
 export const GUEST_TYPES: { value: GuestType; label: string }[] = [
   { value: "international", label: "International" },
   { value: "local", label: "Local" },
+  { value: "all", label: "All Guests" },
 ];
 
 export const STAY_TYPES: { value: StayType; label: string }[] = [
@@ -136,24 +151,23 @@ export const FEATURE_TYPES: { value: FeatureType; label: string }[] = [
   { value: "indoor", label: "Indoor" },
   { value: "service", label: "Service" },
   { value: "unique", label: "Unique" },
-  // { value: "wellness", label: "Wellness" },
-  // { value: "entertainment", label: "Entertainment" },
-  // { value: "convenience", label: "Convenience" },
 ];
 
 export const emptyPropertyForm: Property = {
   id: 0,
   name: "",
   location: "",
+  location_description: "",
   country: "",
+  tagline: "",
   property_category: "retreat",
   price: "",
   description: "",
   bedrooms: 0,
   bathrooms: 0,
-  square_meters: 0,
-  terrace_size: 0,
-  max_guests: 0,
+  square_meters: null,
+  terrace_size: null,
+  max_guests: null,
   min_nights: 1,
   check_in_time: "15:00",
   check_out_time: "11:00",
@@ -161,15 +175,15 @@ export const emptyPropertyForm: Property = {
   cancellation_days: 30,
   background_image: null,
   wifi_password: "",
-  amenities: [],
+  amenities: {},
   property_images: [],
   pricing_options: [],
   features: [],
   contacts: [],
   highlights: [],
-  average_rating: 0,
+  average_rating: null,
 };
-//property paginated response
+
 export interface PropertyPaginatedResponse<T> {
   count: number;
   next: string | null;

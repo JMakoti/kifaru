@@ -337,13 +337,13 @@ export default function PropertySection() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // const { data: propertyList = [], isLoading } = useProperties();
-  const { data: propertyListResponse, isLoading } = useProperties();
+  const { data, isLoading } = useProperties();
 
-  // Ensure we always have an array to map over
-  const propertyList: Property[] = propertyListResponse;
+  console.log("Data", data);
 
-  if (isLoading && !propertyList.length) {
+  const property = data?.results ?? [];
+
+  if (isLoading) {
     return <LoadingScreen />;
   }
 
@@ -427,14 +427,14 @@ export default function PropertySection() {
       </motion.div>
 
       {/* Road Journey Container */}
-      {propertyList.length > 0 && (
+      {property.length > 0 && (
         <div className="container mx-auto relative min-h-[900px]">
-          <AnimatedRoad hoveredIndex={hoveredIndex} properties={propertyList} />
+          <AnimatedRoad hoveredIndex={hoveredIndex} properties={property} />
 
           {/* Properties Grid */}
           <div className="relative z-10 grid md:grid-cols-2 gap-y-6 md:gap-y-0 gap-x-8 max-w-6xl mx-auto">
-            {propertyList.length > 0 &&
-              propertyList.map((property, index) => {
+            {property.length > 0 &&
+              property.map((property, index) => {
                 const isLeft = index % 2 === 0;
 
                 // Ensure property.id exists to avoid React key errors
@@ -457,7 +457,7 @@ export default function PropertySection() {
                 );
               })}
 
-            {/* {propertyList.map((property, index) => {
+            {/* {property.map((property, index) => {
               const isLeft = index % 2 === 0;
 
               return (
