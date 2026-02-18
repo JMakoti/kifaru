@@ -42,7 +42,7 @@ const AboutSection = ({ property }: AboutProps)  => {
           }`}
         >
           <img
-            src={resolveImageSrc(property.property_images[4]?.image)}
+            src={resolveImageSrc(property.property_images[1]?.image)}
             alt={property.name}
             className="w-full h-[400px] md:h-[500px] lg:h-[600px] object-cover rounded-3xl shadow-2xl"
             loading="lazy"

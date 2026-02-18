@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import AdminLayout from "./layout/adminlayout";
+// import AdminPropertyDetails from "./components/property/propertydetails";
 
 /* -------------------------
    Lazy Loaded Admin Pages
@@ -38,6 +39,7 @@ export default function AdminRoutes() {
         <Route element={<AdminLayout />}>
           <Route index element={<DashboardHome />} />
           <Route path="property" element={<Properties />} />
+          {/* <Route path="property/:slug" element={<AdminPropertyDetails />} /> */}
           <Route path="gallery" element={<Gallery />} />
           <Route path="bookings" element={<Bookings />} />
           <Route path="payments" element={<Transactions />} />
