@@ -38,9 +38,9 @@ export interface PricingOption {
   accommodation_type: AccommodationType;
   guest_type: GuestType;
   stay_type: StayType;
-  number_of_guests: number | null;
+  number_of_guests: number | 0;
   min_nights: number;
-  max_nights: number | null;
+  max_nights: number | 0;
   price_per_night: string | null;
   weekly_price: string | null;
   includes_breakfast: boolean;

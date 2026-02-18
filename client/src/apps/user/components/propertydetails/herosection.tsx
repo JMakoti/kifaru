@@ -63,7 +63,7 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
       return;
     }
     // redirect for netherland in season
-    const inSeasonMonths = [ 3, 4, 5, 6, 7, 8]; // April (3) to September (8)
+    const inSeasonMonths = [3, 4, 5, 6, 7, 8]; // April (3) to September (8)
     const currentMonth = new Date().getMonth();
 
     const isOceanNetherlands =

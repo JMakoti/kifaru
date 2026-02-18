@@ -68,48 +68,48 @@ export function usePropertyDetails(slug: string) {
 }
 
 // Mutation hook to create a property
-// export function useCreateProperty() {
-//   const queryClient = useQueryClient();
+export function useCreateProperty() {
+  const queryClient = useQueryClient();
 
-//   return useMutation({
-//     mutationFn: propertyApi.create,
-//     onSuccess: (data) => {
-//       queryClient.invalidateQueries({ queryKey: PROPERTY_QUERY_KEY });
-//       toast.success("Property created successfully!", {
-//         description: `${data.name} has been added to your listings.`,
-//       });
-//     },
-//     onError: (error: Error) => {
-//       toast.error("Failed to create property", {
-//         description: error.message || "Please try again later.",
-//       });
-//     },
-//   });
-// }
+  return useMutation({
+    mutationFn: propertyApi.create,
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: PROPERTY_QUERY_KEY });
+      toast.success("Property created successfully!", {
+        description: `${data.name} has been added to your listings.`,
+      });
+    },
+    onError: (error: Error) => {
+      toast.error("Failed to create property", {
+        description: error.message || "Please try again later.",
+      });
+    },
+  });
+}
 
 // Mutation hook to update a property
-// export function useUpdateProperty() {
-//   const queryClient = useQueryClient();
+export function useUpdateProperty() {
+  const queryClient = useQueryClient();
 
-//   return useMutation({
-//     mutationFn: ({ slug, property }: { slug: string; property: Property }) =>
-//       propertyApi.update(slug, property),
-//     onSuccess: (data) => {
-//       queryClient.invalidateQueries({ queryKey: PROPERTY_QUERY_KEY });
-//       queryClient.invalidateQueries({
-//         queryKey: [...PROPERTY_QUERY_KEY, data.id],
-//       });
-//       toast.success("Property updated successfully!", {
-//         description: `${data.name} has been updated.`,
-//       });
-//     },
-//     onError: (error: Error) => {
-//       toast.error("Failed to update property", {
-//         description: error.message || "Please try again later.",
-//       });
-//     },
-//   });
-// }
+  return useMutation({
+    mutationFn: ({ slug, property }: { slug: string; property: Property }) =>
+      propertyApi.update(slug, property),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: PROPERTY_QUERY_KEY });
+      queryClient.invalidateQueries({
+        queryKey: [...PROPERTY_QUERY_KEY, data.id],
+      });
+      toast.success("Property updated successfully!", {
+        description: `${data.name} has been updated.`,
+      });
+    },
+    onError: (error: Error) => {
+      toast.error("Failed to update property", {
+        description: error.message || "Please try again later.",
+      });
+    },
+  });
+}
 
 // Mutation hook to delete a property
 export function useDeleteProperty() {
