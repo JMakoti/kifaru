@@ -73,13 +73,13 @@ export default function HeroSection() {
 
           <div className="mt-20 md:mt-10 flex flex-col sm:flex-row gap-4">
             <Button
-              className="bg-[var(--kifaru-accent)] hover:text-white text-primary flex items-center gap-2 text-base animate-pulse"
+              className="bg-[var(--kifaru-accent)] hover:text-white  text-xl text-primary flex items-center gap-2 animate-pulse px-4 py-3"
               asChild
             >
               <Link to="/property">Explore Our Retreats</Link>
             </Button>
             <Button
-              className="bg-white hover:bg-gray-100 text-primary-600 flex items-center gap-2 text-base"
+              className="bg-white hover:bg-gray-100 text-primary-600 text-xl  flex items-center gap-2 px-4 py-3"
               asChild
             >
               <Link to="/contact">

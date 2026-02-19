@@ -92,18 +92,18 @@ function PropertyDestination({
           {/* Content */}
           <div className="p-5">
             <h3
-              className={`text-xl font-serif font-bold mb-2 ${isLeft ? "md:text-right" : "text-left"} text-[var(--foreground)]`}
+              className={`text-xl font-bold mb-2 ${isLeft ? "md:text-right" : "text-left"} text-[var(--foreground)]`}
             >
               {property.name}
             </h3>
             <p
-              className={`text-sm mb-4 line-clamp-2 ${isLeft ? "md:text-right" : "text-left"} text-[var(--muted-foreground)]`}
+              className={`text-lg mb-4 line-clamp-2 ${isLeft ? "md:text-right" : "text-left"} text-[var(--muted-foreground)]`}
             >
               {property.description}
             </p>
 
             <motion.div
-              className={`flex items-center gap-2 font-semibold text-sm ${isLeft ? "md:justify-end" : "justify-start"} text-[var(--kifaru-accent)]`}
+              className={`flex items-center gap-2 font-semibold text-md ${isLeft ? "md:justify-end" : "justify-start"} text-[var(--kifaru-accent)]`}
               whileHover={{ x: 5 }}
               transition={{ type: "spring", stiffness: 400 }}
             >
@@ -406,7 +406,7 @@ export default function PropertySection() {
           </span>
         </motion.div>
         <motion.h2
-          className="text-4xl md:text-5xl font-serif font-bold text-foreground mb-6"
+          className="text-4xl md:text-5xl font-bold text-foreground mb-6"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}

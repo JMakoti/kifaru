@@ -38,10 +38,10 @@ const ReviewsSection = ({ reviews }: ReviewsSectionProps) => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-14">
-          <span className="text-sm font-medium tracking-widest uppercase text-gray-500 font-sans">
+          <span className="text-sm font-medium tracking-widest uppercase text-gray-500">
             Testimonials
           </span>
-          <h2 className="text-4xl md:text-5xl font-serif text-gray-900 mt-3">
+          <h2 className="text-4xl md:text-5xl text-gray-900 mt-3">
             Guest Reviews
           </h2>
         </div>
@@ -69,10 +69,10 @@ const ReviewsSection = ({ reviews }: ReviewsSectionProps) => {
                   </AvatarFallback>
                 </Avatar>
                 <div>
-                  <div className="font-medium text-sm font-sans text-gray-900">
+                  <div className="font-medium text-md text-gray-900">
                     {r.reviewer_name}
                   </div>
-                  <div className="text-xs text-gray-400 font-sans">
+                  <div className="text-xs text-gray-400">
                     {formatDate(r.created_at)}
                   </div>
                 </div>
@@ -89,7 +89,7 @@ const ReviewsSection = ({ reviews }: ReviewsSectionProps) => {
               </div>
 
               {/* Review Text */}
-              <p className="text-sm text-gray-500 leading-relaxed font-sans flex-1">
+              <p className="text-lg text-gray-500 leading-relaxed flex-1">
                 "{r.comment}"
               </p>
             </div>

@@ -74,13 +74,13 @@ export default function Why_UsSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.1 }}
           >
-            <Card className="bg-card border border-border rounded-lg shadow-md p-6 h-64 flex flex-col items-start justify-start">
+            <Card className="bg-card border border-border rounded-lg shadow-md p-6 h-70 flex flex-col items-start justify-start">
               <CardContent className="p-0 space-y-4">
                 {item.icon}
-                <h3 className="text-lg font-semibold text-foreground">
+                <h3 className="text-xl font-semibold text-foreground">
                   {item.title}
                 </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
+                <p className="text-muted-foreground text-lg leading-relaxed">
                   {item.description}
                 </p>
               </CardContent>

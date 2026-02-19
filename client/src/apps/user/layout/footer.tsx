@@ -54,10 +54,10 @@ export default function Footer() {
         <div className="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
       )}
 
-      <div className="relative z-10 container mx-auto px-6 md:px-12">
+      <div className="relative z-10 container mx-auto px-3 md:px-9">
         {isDefaultFooterRoute ? (
           <motion.div
-            className="grid md:grid-cols-4 gap-8 mb-10"
+            className="grid md:grid-cols-4 gap-4 mb-10"
             initial="hidden"
             animate="visible"
             variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
@@ -72,7 +72,7 @@ export default function Footer() {
                 />
                 <h2 className="text-3xl font-bold text-white">Kifaru</h2>
               </div>
-              <p className="text-sm text-gray-300 leading-relaxed">
+              <p className="text-lg text-gray-300 leading-relaxed">
                 Blending luxury, nature, and African culture into unforgettable
                 experiences.
               </p>
@@ -102,7 +102,7 @@ export default function Footer() {
                 Destinations
               </h3>
               <ul className="space-y-2">
-                {propertyList.map((property) => (
+                {propertyList.slice(0, 5).map((property) => (
                   <motion.li
                     key={property.id}
                     whileHover={linkHover}
@@ -119,9 +119,9 @@ export default function Footer() {
             {/* Contact Info */}
             <motion.div variants={fadeUp}>
               <h3 className="text-lg font-semibold text-white mb-3">Contact</h3>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-lg text-gray-300">
                 <li>Email: requests@techbedkifaru.be</li>
-                <li>Phone: +254 708 533 033</li>
+                {/* <li>Phone: +254 708 533 033</li> */}
                 {/* <li>Location: Nairobi, Kenya</li> */}
                 <Link to="/auth/login">Admin</Link>
               </ul>
@@ -132,7 +132,7 @@ export default function Footer() {
             <h2 className="text-2xl font-bold text-white mb-4">
               {currentProperty?.name || "Kifaru"}
             </h2>
-            <p className="text-sm text-gray-300 mb-6 max-w-md mx-auto">
+            <p className="text-lg text-gray-300 mb-6 max-w-md mx-auto">
               {currentProperty?.description ||
                 "Experience luxury and nature in our exclusive properties."}
             </p>
@@ -146,7 +146,7 @@ export default function Footer() {
                 >
                   <Link
                     to={link.to}
-                    className="text-sm transition-colors duration-300"
+                    className="text-lg transition-colors duration-300"
                   >
                     {link.label}
                   </Link>

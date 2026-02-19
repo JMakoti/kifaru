@@ -77,7 +77,7 @@ export default function PropertyDetails() {
       <AmenitiesSection amenities={property?.amenities ?? {}} />
       <GallerySection gallery={property.property_images} />
       <ReviewsSection reviews={reviewList}  />
-      <PackagesSection packages={property.pricing_options} />
+      <PackagesSection packages={property.pricing_options} property={property} />
       <ReadyToBook contacts={property.contacts} property={property} />
       <ExploreMore
         properties={data?.results || []}

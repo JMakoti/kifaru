@@ -16,7 +16,6 @@ export default function TestimonialCard({
   property,
   image,
 }: TestimonialCardProps) {
-  
   const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(
     author,
   )}&background=random&size=128`;
@@ -36,13 +35,13 @@ export default function TestimonialCard({
           strokeWidth={1.5}
         />
 
-        <span className="mb-3 inline-block text-sm font-medium text-accent">
+        <span className="mb-3 inline-block text-md font-medium text-accent">
           {property}
         </span>
 
         <blockquote
           className="mb-8 text-md sm:text-lg md:text-xl leading-relaxed 
-          font-serif italic text-foreground/90"
+          text-foreground/90"
         >
           “{quote}”
         </blockquote>

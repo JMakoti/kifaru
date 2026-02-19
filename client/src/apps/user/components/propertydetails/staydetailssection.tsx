@@ -48,7 +48,7 @@ const StayDetails = ({ property }: StayProps) => {
       ref={ref}
     >
       <div className="max-w-7xl mx-auto text-center mb-14">
-        <span className="text-sm font-medium tracking-widest uppercase text-muted-foreground font-sans">
+        <span className="text-sm font-medium tracking-widest uppercase text-muted-foreground">
           Your Stay
         </span>
         <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary mt-3">
@@ -72,10 +72,10 @@ const StayDetails = ({ property }: StayProps) => {
 
             {/* Value & Label */}
             <div className="flex flex-col items-start">
-              <div className="text-3xl font-serif">
+              <div className="text-3xl">
                 <AnimatedCounter target={stat.value} isActive={isInView} />
               </div>
-              <div className="text-sm text-muted-foreground font-sans font-medium">
+              <div className="text-muted-foreground font-medium text-lg">
                 {stat.label}
               </div>
             </div>

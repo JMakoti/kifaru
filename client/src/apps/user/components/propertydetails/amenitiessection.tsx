@@ -29,10 +29,10 @@ const AmenitiesSection = ({ amenities }: AmenitiesProps) => {
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <span className="text-sm font-medium tracking-widest uppercase text-gray-500 font-sans">
+          <span className="text-sm font-medium tracking-widest uppercase text-gray-500">
             Everything You Need
           </span>
-          <h2 className="text-4xl md:text-5xl font-serif text-gray-900 mt-3">
+          <h2 className="text-4xl md:text-5xl text-gray-900 mt-3">
             Amenities & Services
           </h2>
         </div>

@@ -93,6 +93,11 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
     });
   };
 
+  const isNyali =
+    property.location?.toLowerCase().includes("mkomani") ||
+    (property.location?.toLowerCase().includes("nyali") &&
+      property.name?.toLowerCase().includes("marble inn"));
+
   return (
     <section className="relative w-full overflow-hidden h-[60vh] md:h-[80vh] lg:h-[100vh]">
       {slides.map((s, i) => (
@@ -125,16 +130,22 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
           </h1>
 
           {slide.tagline && (
-            <p className="text-base sm:text-lg md:text-xl text-white/80 font-light mb-10 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
               {slide.tagline}
             </p>
           )}
 
           <button
-            onClick={handleBookingClick}
-            className="inline-flex items-center justify-center rounded-full px-8 py-3 text-sm font-semibold bg-white text-black transition hover:bg-white/90 cursor-pointer"
+            onClick={!isNyali ? handleBookingClick : undefined}
+            disabled={isNyali}
+            className={`inline-flex items-center justify-center rounded-full px-8 py-3 text-lg font-semibold transition
+    ${
+      isNyali
+        ? "bg-accent text-white cursor-not-allowed"
+        : "bg-white text-black hover:bg-white/90 cursor-pointer"
+    }`}
           >
-            Book Now
+            {isNyali ? "Coming Soon ..." : "Book Now"}
           </button>
         </div>
       </div>

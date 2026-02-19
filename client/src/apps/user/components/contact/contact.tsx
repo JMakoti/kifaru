@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, MapPin } from "lucide-react";
 import property1 from "@/assets/property-1.jpg";
 import property2 from "@/assets/property-2.jpg";
 import property3 from "@/assets/property-3.jpg";
@@ -125,21 +125,11 @@ export default function ContactDetailsSection() {
                 purpose-driven team, we are here to design your ideal Kifaru
                 experience.
               </p>
-              <div className="mt-4 mb-4">
-                <h3 className="text-2xl font-bold text-foreground">
-                  What you can expect
-                </h3>
-                <ul className="list-disc list-inside text-muted-foreground space-y-1 text-lg">
-                  <li>One dedicated account manager</li>
-                  <li>Transparent booking and clear communication</li>
-                  <li>End-to-end support from inquiry to departure</li>
-                </ul>
-              </div>
 
               {/* Contact Info Cards */}
-              <div className="space-y-4">
+              <div className="space-y-4 py-5">
                 {[
-                  { icon: Phone, title: "Call Us", value: "+254 708 533 033" },
+                  // { icon: Phone, title: "Call Us", value: "" },
                   {
                     icon: Mail,
                     title: "Email Us",
@@ -160,7 +150,7 @@ export default function ContactDetailsSection() {
                       <item.icon className="w-6 h-6 text-foreground" />
                     </div>
                     <div>
-                      <p className="text-sm text-muted-foreground mb-1">
+                      <p className="text-md text-muted-foreground mb-1">
                         {item.title}
                       </p>
                       <p className="font-semibold text-lg text-foreground">
@@ -212,7 +202,7 @@ export default function ContactDetailsSection() {
                     <div className="space-y-2">
                       <label
                         htmlFor="name"
-                        className="text-sm font-medium text-foreground"
+                        className="text-md font-medium text-foreground"
                       >
                         Full Name *
                       </label>
@@ -230,7 +220,7 @@ export default function ContactDetailsSection() {
                     <div className="space-y-2">
                       <label
                         htmlFor="email"
-                        className="text-sm font-medium text-foreground"
+                        className="text-md font-medium text-foreground"
                       >
                         Email Address *
                       </label>
@@ -250,7 +240,7 @@ export default function ContactDetailsSection() {
                   <div className="space-y-2">
                     <label
                       htmlFor="phone"
-                      className="text-sm font-medium text-foreground"
+                      className="text-md font-medium text-foreground"
                     >
                       Phone Number
                     </label>
@@ -268,7 +258,7 @@ export default function ContactDetailsSection() {
                   <div className="space-y-2">
                     <label
                       htmlFor="message"
-                      className="text-sm font-medium text-foreground"
+                      className="text-md font-medium text-foreground"
                     >
                       Message *
                     </label>
@@ -285,7 +275,7 @@ export default function ContactDetailsSection() {
 
                   <Button
                     type="submit"
-                    className="w-full bg-gradient-to-r from-primary to-accent hover:shadow-luxury transition-all duration-300 text-white font-semibold py-6 text-lg"
+                    className="w-full bg-gradient-to-r from-primary to-accent hover:shadow-luxury transition-all duration-300 text-white -semibold py-font6 text-lg"
                   >
                     Send Message
                   </Button>

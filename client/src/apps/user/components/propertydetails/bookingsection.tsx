@@ -67,6 +67,11 @@ const ReadyToBook = ({ contacts, property }: BookingProps) => {
     });
   };
 
+  const isNyali =
+    property.location?.toLowerCase().includes("mkomani") ||
+    (property.location?.toLowerCase().includes("nyali") &&
+      property.name?.toLowerCase().includes("marble inn"));
+
   return (
     <section className="relative py-24 md:py-32 overflow-hidden" ref={ref}>
       {/* Background Image */}
@@ -86,10 +91,10 @@ const ReadyToBook = ({ contacts, property }: BookingProps) => {
           isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
         }`}
       >
-        <h2 className="text-4xl md:text-5xl lg:text-6xl font-serif text-white mb-4">
+        <h2 className="text-4xl md:text-5xl lg:text-6xl text-white mb-4">
           Ready to Book Your Stay?
         </h2>
-        <p className="text-white/70 text-lg mb-12 max-w-xl mx-auto font-sans">
+        <p className="text-white/70 text-lg mb-12 max-w-xl mx-auto">
           Choose your preferred way to get in touch with us and start planning
           your dream getaway.
         </p>
@@ -97,11 +102,17 @@ const ReadyToBook = ({ contacts, property }: BookingProps) => {
         {/* Buttons */}
         <div className="flex flex-wrap justify-center gap-4">
           <button
-            onClick={handleBookingClick}
-            className="flex items-center gap-2 px-5 py-3 bg-accent text-white font-semibold text-sm uppercase tracking-wider rounded transition-colors hover:bg-accent cursor-pointer"
+            onClick={!isNyali ? handleBookingClick : undefined}
+            disabled={isNyali}
+            className={`flex items-center gap-2 px-5 py-3 font-semibold text-sm uppercase tracking-wider rounded transition-colors
+    ${
+      isNyali
+        ? "bg-white text-black cursor-not-allowed"
+        : "bg-accent text-white font-semibold cursor-pointer"
+    }`}
           >
             <CalendarCheck className="w-4 h-4" />
-            Check Availability
+            {isNyali ? "Coming Soon..." : "Check Availability"}
           </button>
 
           {/* Email */}

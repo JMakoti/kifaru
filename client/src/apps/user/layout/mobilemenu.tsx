@@ -26,7 +26,7 @@ export default function Mobilemenu({ isOpen, onClose }: MobileMenuProps) {
           {navLinks.map((link) =>
             link.label === "Properties" ? (
               <div className="py-2" key={link.label}>
-                <div className="flex items-center justify-between text-white font-semibold">
+                <div className="flex items-center justify-between text-md text-white font-semibold">
                   <span>{link.label}</span>
                 </div>
                 <div className="pl-4 mt-2 border-l border-[var(--border)] space-y-2">
@@ -37,7 +37,7 @@ export default function Mobilemenu({ isOpen, onClose }: MobileMenuProps) {
                       key={property.id}
                       to={`/property/${property.slug}`}
                       onClick={onClose}
-                      className="block text-white text-sm hover:text-[var(--kifaru-accent)] py-1 transition-colors"
+                      className="block text-white text-md hover:text-[var(--kifaru-accent)] py-1 transition-colors"
                     >
                       {property.name}
                     </Link>
@@ -50,7 +50,7 @@ export default function Mobilemenu({ isOpen, onClose }: MobileMenuProps) {
                 to={link.to}
                 onClick={onClose}
                 className={({ isActive }) =>
-                  `py-2 text-white font-medium transition-colors ${
+                  `py-2 text-white font-medium transition-colors text-md ${
                     isActive
                       ? "text-[var(--kifaru-accent)]"
                       : "hover:text-[var(--kifaru-accent)]"

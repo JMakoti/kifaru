@@ -47,10 +47,10 @@ const GallerySection = ({ gallery }: GalleryProps) => {
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
-          <span className="text-sm font-medium tracking-widest uppercase text-gray-500 font-sans">
+          <span className="text-sm font-medium tracking-widest uppercase text-gray-500">
             Visual Tour
           </span>
-          <h2 className="text-4xl md:text-5xl font-serif text-gray-900 mt-3">
+          <h2 className="text-4xl md:text-5xl text-gray-900 mt-3">
             Gallery
           </h2>
         </div>

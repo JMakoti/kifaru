@@ -77,7 +77,7 @@ export default function AboutSection() {
               A Recognizable Experience, Wherever You Land
             </h2>
 
-            <p className="text-sm md:text-base leading-relaxed mt-2">
+            <p className="text-md md:text-xl leading-relaxed mt-2">
               Whether you are working, resting, or reconnecting, Kifaru ensures
               you feel at home anywhere in the world. Each stay is thoughtfully
               curated to include relevant meetings, intimate gatherings,
@@ -85,7 +85,7 @@ export default function AboutSection() {
               with the guest’s personal and professional journey.
             </p>
 
-            <p className="text-sm md:text-base">
+            <p className="text-md md:text-xl">
               Each Kifaru location reflects a shared standard of conscious
               luxury:
             </p>
@@ -120,7 +120,7 @@ export default function AboutSection() {
                   transition={{ duration: 0.4, ease: "easeOut" }}
                   whileHover={{ scale: 1.05 }}
                 >
-                  <Icon className="w-5 h-5 md:w-6 md:h-6 text-primary" />
+                  <Icon className="w-8 h-8 md:w-9 md:h-9 text-primary" />
                   <span className="text-xs md:text-sm font-medium tracking-wide">
                     {label}
                   </span>
@@ -128,7 +128,7 @@ export default function AboutSection() {
               ))}
             </motion.div>
 
-            <Button className="w-full sm:w-40 mt-6">
+            <Button className="w-full sm:w-60 mt-6 text-md md:text-lg" asChild>
               <Link to="/about">Learn More</Link>
             </Button>
           </motion.div>
@@ -144,14 +144,14 @@ export default function AboutSection() {
               Our Story
             </h2>
 
-            <p className="text-foreground/80 text-sm md:text-base leading-relaxed">
+            <p className="text-foreground/80 text-md md:text-xl leading-relaxed">
               Debbie and Olivier are the inspirers behind Kifaru Tech & Bed.
               Guided by compassion, curiosity, and connection, their journey
               spans continents with a mission to create opportunity where it is
               least accessible.
             </p>
 
-            <p className="text-muted-foreground text-sm md:text-base leading-relaxed">
+            <p className="text-muted-foreground text-md md:text-xl leading-relaxed">
               Kifaru—meaning “rhino” in Swahili—is a place of inspiration where
               work, rest, and discovery meet. Small in scale, big in impact.
               African soul, European calm.
@@ -171,7 +171,7 @@ export default function AboutSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             whileHover={{ scale: 1.5 }}
-            className="col-start-1 row-start-1 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-sm"
+            className="col-start-1 row-start-1 w-full aspect-square overflow-hidden rounded-sm"
           >
             <img
               src="https://res.cloudinary.com/drselhsl4/image/upload/v1763483919/Kifaru/k096rs8b5wqru5dwghax.jpg"
@@ -187,7 +187,7 @@ export default function AboutSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             whileHover={{ scale: 1.5 }}
-            className="col-start-1 row-start-2 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-sm"
+            className="col-start-1 row-start-2 w-full aspect-square overflow-hidden rounded-sm"
           >
             <img
               src="https://res.cloudinary.com/drselhsl4/image/upload/v1769107834/Kifaru/KifaruGallery/musx5o2xlveqguyl4ldk.jpg"
@@ -203,7 +203,7 @@ export default function AboutSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             whileHover={{ scale: 1.5 }}
-            className="col-start-1 row-start-3 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-sm"
+            className="col-start-1 row-start-3 w-full aspect-square overflow-hidden rounded-sm"
           >
             <img
               src="https://res.cloudinary.com/drselhsl4/image/upload/v1769111772/Kifaru/KifaruGallery/fxkwbqmcbi07zc68iukl.jpg"
@@ -220,7 +220,7 @@ export default function AboutSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             whileHover={{ scale: 1.5 }}
-            className="col-start-3 row-start-1 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-sm rounded-br-full"
+            className="col-start-3 row-start-1 w-full aspect-square overflow-hidden rounded-sm rounded-br-full"
           >
             <img
               src="https://res.cloudinary.com/drselhsl4/image/upload/v1769544692/Kifaru/Kifaruimages/bb0qhxpnccosdx8tufjq.jpg"
@@ -237,7 +237,7 @@ export default function AboutSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             whileHover={{ scale: 1.5 }}
-            className="col-start-2 row-start-2 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-sm"
+            className="col-start-2 row-start-2 w-full aspect-square overflow-hidden rounded-sm"
           >
             <img
               src={rhino}
@@ -254,7 +254,7 @@ export default function AboutSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut" }}
             whileHover={{ scale: 1.5 }}
-            className="col-start-3 row-start-3 w-full h-20 sm:h-24 md:h-28 lg:h-32 overflow-hidden rounded-lg rounded-tr-full"
+            className="col-start-3 row-start-3 w-full aspect-square overflow-hidden rounded-lg rounded-tr-full"
           >
             <img
               src="https://res.cloudinary.com/drselhsl4/image/upload/v1769544700/Kifaru/Kifaruimages/trxywi0qctlg0qsxleuz.jpg"
@@ -277,7 +277,7 @@ export default function AboutSection() {
               whileInView="visible"
               viewport={{ once: true }}
             >
-              <span className="text-primary font-sans text-sm tracking-[0.2em] uppercase mb-4 block">
+              <span className="text-primary text-sm tracking-[0.2em] uppercase mb-4 block">
                 {/* The Kifaru Promise */}
                 We Make Every Interaction
               </span>
@@ -304,10 +304,10 @@ export default function AboutSection() {
                       <CheckCircle className="w-5 h-5 text-black group-hover:text-primary transition-colors duration-300" />
                     </div>
                     <div>
-                      <h4 className="font-serif text-lg text-foreground mb-1 group-hover:text-primary transition-colors duration-300">
+                      <h4 className="text-lg text-lg text-foreground mb-1 group-hover:text-primary transition-colors duration-300">
                         {point.title}
                       </h4>
-                      <p className="text-body text-muted-foreground text-sm">
+                      <p className="text-body text-md text-muted-foreground">
                         {point.description}
                       </p>
                     </div>
@@ -335,8 +335,8 @@ export default function AboutSection() {
 
               {/* Floating accent card */}
               <div className="absolute -bottom-6 -right-4 md:right-8 bg-card border border-border/50 rounded-lg p-6 shadow-[var(--shadow-soft)] max-w-[200px]">
-                <p className="font-serif text-2xl text-primary mb-1">24/7</p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-2xl text-primary mb-1">24/7</p>
+                <p className="text-md text-muted-foreground">
                   Care & support on the ground
                 </p>
               </div>

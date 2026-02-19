@@ -33,7 +33,7 @@ export default function VideoWordStack() {
   }, []);
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-[70vh] md:min-h-screen bg-white overflow-hidden font-sans p-4 sm:p-8">
+    <div className="relative flex flex-col items-center justify-center min-h-[70vh] md:min-h-screen bg-white overflow-hidden p-4 sm:p-8">
       {/* Background Titles - Uses clamp() for fluid typography across all screens */}
       <div className="absolute inset-0 flex flex-col justify-between items-center opacity-10 md:opacity-20 select-none pointer-events-none py-4 md:py-12 z-0">
         <h1 className="text-[22vw] 2xl:text-[20rem] font-black leading-none tracking-tighter text-black">
@@ -44,9 +44,7 @@ export default function VideoWordStack() {
         </h1>
       </div>
 
-      {/* Video Card Container - Responsive scaling based on viewport */}
       <div className="relative w-full max-w-[280px] xs:max-w-[320px] sm:max-w-[400px] lg:max-w-[450px] aspect-[3/4] z-10">
-        {/* Decorative Background Layers - Scaled transforms for smaller screens */}
         <div className="absolute inset-0 bg-indigo-200 rounded-[1.5rem] sm:rounded-[2rem] shadow-lg transform -rotate-3 sm:-rotate-6 translate-x-2 sm:translate-x-4 translate-y-1 sm:translate-y-2" />
         <div className="absolute inset-0 bg-pink-200 rounded-[1.5rem] sm:rounded-[2rem] shadow-lg transform rotate-2 sm:rotate-3 -translate-x-1 sm:-translate-x-2" />
 

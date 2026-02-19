@@ -29,7 +29,7 @@ const AboutSection = ({ property }: AboutProps)  => {
           <h2 className="text-4xl md:text-5xl lg:text-6xl text-primary leading-tight">
              {property.name}
           </h2>
-          <div className="space-y-4 text-muted-foreground leading-relaxed">
+          <div className="space-y-4 text-muted-foreground text-lg leading-relaxed">
             <p>{property.description}</p>
             <p>{property.location_description}</p>
           </div>

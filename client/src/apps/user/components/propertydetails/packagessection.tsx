@@ -1,15 +1,17 @@
 "use client";
 
-// import { Check } from "lucide-react";
 import { useInView } from "@/hooks/useInView";
-import type { PricingOption } from "@/types/property";
+import type { PricingOption, Property } from "@/types/property";
+import { useNavigate } from "react-router";
 
 interface PackageProps {
   packages?: PricingOption[];
+  property: Property;
 }
 
-const PackagesSection = ({ packages }: PackageProps) => {
+const PackagesSection = ({ packages, property }: PackageProps) => {
   const { ref, isInView } = useInView();
+  const navigate = useNavigate();
   if (!packages || packages.length === 0) return null;
 
   const formatAccommodationType = (type: string) => {
@@ -18,6 +20,22 @@ const PackagesSection = ({ packages }: PackageProps) => {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   };
+
+  const handleBookingClick = () => {
+    navigate(`/property/${property.slug}/booking`, {
+      state: {
+        id: property.id,
+        name: property.name,
+        max_guests: property.max_guests,
+        slug: property.slug,
+      },
+    });
+  };
+
+  const isNyali =
+    property.location?.toLowerCase().includes("mkomani") ||
+    (property.location?.toLowerCase().includes("nyali") &&
+      property.name?.toLowerCase().includes("marble inn"));
 
   return (
     <section className="bg-background py-20 px-6 md:px-12 lg:px-20" ref={ref}>
@@ -63,7 +81,7 @@ const PackagesSection = ({ packages }: PackageProps) => {
                   <div className="text-3xl text-gray-900">
                     {pkg.weekly_price && (
                       <div className="text-3xl text-gray-900">
-                        €{pkg.weekly_price.toLocaleString()} 
+                        €{pkg.weekly_price.toLocaleString()}
                         <span className="text-sm text-gray-500">/ week</span>
                       </div>
                     )}
@@ -94,11 +112,18 @@ const PackagesSection = ({ packages }: PackageProps) => {
                 {/* pkg.popular
                       ? "bg-accent text-white hover:bg-accent"
                       : "border border-gray-400 text-gray-900 hover:bg-gray-100" */}
+
                 <button
-                  className={`w-full py-3 font-semibold bg-accent text-white hover:bg-accent text-sm uppercase tracking-wider cursor-pointer
-                  transition-colors`}
+                  onClick={!isNyali ? handleBookingClick : undefined}
+                  disabled={isNyali}
+                  className={`uppercase flex items-center justify-center py-3 text-sm  tracking-wider rounded transition-colors
+    ${
+      isNyali
+        ? "border border-gray-400 text-gray-900 hover:bg-gray-100 font-bold uppercase cursor-not-allowed"
+        : "bg-accent text-white hover:bg-accent font-semibold cursor-pointer"
+    }`}
                 >
-                  Reserve Package
+                  {isNyali ? "Coming Soon..." : "Reserve Package"}
                 </button>
               </div>
             </div>

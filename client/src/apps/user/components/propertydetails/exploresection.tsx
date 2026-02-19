@@ -83,12 +83,12 @@ const ExploreMore = ({ properties, currentPropertyId }: ExploreMoreProps) => {
                 {/* Content */}
                 <Link to={`/property/${p.slug}`} className="group block">
                   <div className="p-6 flex flex-col flex-1">
-                    <div className="flex items-center gap-1.5 text-gray-500 text-xs mb-2">
+                    <div className="flex items-center gap-1.5 text-gray-500 text-md mb-2">
                       <MapPin className="w-3 h-3" />
                       {p.location}
                     </div>
                     <h3 className="text-xl mb-2 text-gray-900">{p.name}</h3>
-                    <p className="text-sm text-gray-600 mb-4 leading-relaxed flex-1">
+                    <p className="text-md text-gray-600 mb-4 leading-relaxed flex-1">
                       {p.description}
                     </p>
 
@@ -100,7 +100,7 @@ const ExploreMore = ({ properties, currentPropertyId }: ExploreMoreProps) => {
                         <span className="text-xs text-gray-500"> / night</span>
                       </div>
 
-                      <button className="flex items-center gap-1.5 text-sm font-medium text-gray-900 hover:gap-3 transition-all cursor-pointer">
+                      <button className="flex items-center gap-1.5 text-md font-medium text-gray-900 hover:gap-3 transition-all cursor-pointer">
                         View Details <ArrowRight className="w-4 h-4" />
                       </button>
                     </div>
