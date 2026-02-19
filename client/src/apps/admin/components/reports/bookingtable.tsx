@@ -31,7 +31,7 @@ const BookingsTable = ({ bookings }: { bookings: RecentBooking[] }) => (
               <td className="px-4 py-3 max-w-[200px] truncate">{b.property_name}</td>
               <td className="px-4 py-3">{b.guest_name}</td>
               <td className="px-4 py-3">{format(new Date(b.check_in), "MMM d, yyyy")}</td>
-              <td className="px-4 py-3 text-right font-medium">${Number(b.total_amount).toLocaleString()}</td>
+              <td className="px-4 py-3 text-right font-medium">€{Number(b.total_amount).toLocaleString()}</td>
               <td className="px-4 py-3 text-center">
                 <span className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${statusStyles[b.status] || ""}`}>
                   {b.status}

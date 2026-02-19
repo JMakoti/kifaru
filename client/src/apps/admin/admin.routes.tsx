@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import AdminLayout from "./layout/adminlayout";
-// import AdminPropertyDetails from "./components/property/propertydetails";
 
 /* -------------------------
    Lazy Loaded Admin Pages
@@ -17,7 +16,9 @@ const AdminProfile = lazy(() => import("./pages/adminprofile"));
 const Gallery = lazy(() => import("./pages/gallery"));
 const Reviews = lazy(() => import("./pages/reviews"));
 const NotFound = lazy(() => import("@/apps/user/notfound"));
-
+const PropertyReport = lazy(() => import("./pages/reports/propertyreportpage"));
+const BookingsReport = lazy(() => import("./pages/reports/bookingreportpaage"));
+const PaymentsReport = lazy(() => import("./pages/reports/paymentreportpage"));
 /* -------------------------
    Loader Component
 -------------------------- */
@@ -45,6 +46,9 @@ export default function AdminRoutes() {
           <Route path="payments" element={<Transactions />} />
           <Route path="reviews" element={<Reviews />} />
           <Route path="reports" element={<Reports />} />
+          <Route path="reports/properties" element={<PropertyReport />} />
+          <Route path="reports/bookings" element={<BookingsReport />} />
+          <Route path="reports/payments" element={<PaymentsReport />} />
           <Route path="guests" element={<Guests />} />
           <Route path="settings" element={<Settings />} />
           <Route path="profile" element={<AdminProfile />} />

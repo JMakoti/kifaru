@@ -9,7 +9,7 @@ interface StatCardProps {
 }
 
 const StatCard = ({ title, value, subtitle, icon: Icon, accent }: StatCardProps) => (
-  <div className={`rounded-lg border p-5 ${accent ? "bg-primary text-primary-foreground" : "bg-card text-card-foreground"}`}>
+  <div className={`rounded-lg border p-5 ${accent ? "bg-primary/50 text-primary-foreground" : "bg-card text-card-foreground"}`}>
     <div className="flex items-center justify-between mb-3">
       <span className={`text-sm font-medium tracking-wide uppercase ${accent ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
         {title}

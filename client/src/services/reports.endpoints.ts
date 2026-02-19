@@ -9,4 +9,22 @@ export const reportsApi = {
     const { data } = await api.get(`${REPORTS}/dashboard/`);
     return data;
   },
+
+  // --- GET Properties Report ---
+  getPropertiesReport: async () => {
+    const { data } = await api.get(`${REPORTS}/properties/`);
+    return data;
+  },
+
+  // --- GET Bookings Report ---
+  getBookingsReport: async () => {
+    const { data } = await api.get(`${REPORTS}/bookings/`);
+    return data;
+  },
+
+  // --- GET Payments Report ---
+  getPaymentsReport: async () => {
+    const { data } = await api.get(`${REPORTS}/payments/`);
+    return data;
+  },
 };

@@ -45,7 +45,7 @@ export default function ReportsView({ dashboard }: ReportViewProps) {
           />
           <StatCard
             title="All Time Revenue"
-            value={`€${Number(dashboard.all_time.revenue).toLocaleString()}`}
+            value={`€ ${Number(dashboard.all_time.revenue).toLocaleString()}`}
             subtitle={`${dashboard.all_time.properties} properties · ${dashboard.all_time.bookings} bookings`}
             icon={Building2}
           />
@@ -68,16 +68,20 @@ export default function ReportsView({ dashboard }: ReportViewProps) {
               title="Properties Report"
               description="View all property performance & occupancy"
               icon={Home}
+              href="/admin/reports/properties"
             />
+
             <ReportCard
               title="Bookings Report"
               description="Detailed booking analytics & trends"
               icon={BookOpen}
+              href="/admin/reports/bookings"
             />
             <ReportCard
               title="Payments Report"
               description="Revenue breakdown & payment status"
               icon={CreditCard}
+              href="/admin/reports/payments"
             />
           </div>
         </div>
