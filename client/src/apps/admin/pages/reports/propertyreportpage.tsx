@@ -1,6 +1,7 @@
 import LoadingScreen from "@/components/loadingscreen";
 import { usePropertiesReport } from "@/services/reports.services";
 import { ArrowLeft, Download } from "lucide-react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import {
   BarChart,
@@ -30,7 +31,19 @@ const COLORS = [
 
 const PropertyReport = () => {
   const navigate = useNavigate();
-  const { data: propertyData, isLoading, isError } = usePropertiesReport();
+  const {
+    data: propertyData,
+    isLoading,
+    isError,
+    refetch,
+  } = usePropertiesReport();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [refetch]);
 
   if (isLoading) return <LoadingScreen />;
   if (isError || !propertyData) return <div>Error loading property data.</div>;

@@ -1,6 +1,7 @@
 import LoadingScreen from "@/components/loadingscreen";
 import { useBookingsReport } from "@/services/reports.services";
 import { ArrowLeft, Download } from "lucide-react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   BarChart,
@@ -31,7 +32,19 @@ const COLORS = [
 const BookingsReport = () => {
   const navigate = useNavigate();
 
-  const { data: bookingsData, isLoading, isError } = useBookingsReport();
+  const {
+    data: bookingsData,
+    isLoading,
+    isError,
+    refetch,
+  } = useBookingsReport();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 30000);
+    return () => clearInterval(interval);
+  }, [refetch]);
 
   if (isLoading) return <LoadingScreen />;
   if (isError || !bookingsData) return <div>Error loading bookings data.</div>;

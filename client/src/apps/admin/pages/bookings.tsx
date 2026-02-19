@@ -1,11 +1,16 @@
 import BookingView from "@/apps/admin/components/bookingview";
+import LoadingScreen from "@/components/loadingscreen";
 import { useBookings } from "@/services/booking.service";
 import type { Booking } from "@/types/booking.types";
 import { useEffect } from "react";
 
 export default function Bookings() {
   // 1. Destructure correctly. 'data' is renamed to 'allBookings' to avoid confusion.
-  const { data: allBookings = [] as Booking[], isLoading,refetch  } = useBookings();
+  const {
+    data: allBookings = [] as Booking[],
+    isLoading,
+    refetch,
+  } = useBookings();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -15,16 +20,13 @@ export default function Bookings() {
   }, [refetch]);
 
   if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return <LoadingScreen />;
   }
 
   return (
     <div className="min-h-screen bg-background mt-16">
       <div className="container py-8 px-6">
         {allBookings.length > 0 ? (
-          /* 2. Pass the whole array to BookingView. 
-             BookingView handles the internal mapping, searching, and totals.
-          */
           <BookingView data={allBookings} />
         ) : (
           <div className="bg-card rounded-2xl border border-dashed border-border p-12 text-center">

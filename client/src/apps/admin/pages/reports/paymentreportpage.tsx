@@ -6,6 +6,7 @@ import type {
   PaymentsData,
 } from "@/types/reports";
 import { ArrowLeft, Download } from "lucide-react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
 import {
   BarChart,
@@ -37,7 +38,15 @@ const PaymentsReport = () => {
     data: paymentsData,
     isLoading,
     isError,
+    refetch,
   } = usePaymentsReport<PaymentsData>();
+
+  useEffect(() => {
+      const interval = setInterval(() => {
+        refetch();
+      }, 30000);
+      return () => clearInterval(interval);
+    }, [refetch]);
 
   if (isLoading) return <LoadingScreen />;
   if (isError || !paymentsData) return <div>Error loading payments data.</div>;
