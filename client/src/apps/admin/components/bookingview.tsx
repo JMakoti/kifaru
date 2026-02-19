@@ -7,10 +7,11 @@ import {
   Search,
   Eye,
   Calendar,
-  DollarSign,
+  // DollarSign,
   Home,
   MapPin,
   Users,
+  Euro,
 } from "lucide-react";
 import type { Booking } from "@/types/booking.types";
 
@@ -123,7 +124,7 @@ export default function BookingView({ data }: PropertyBooking) {
                 </p>
                 <p className="text-2xl font-bold">€{totalRevenue.toFixed(2)}</p>
               </div>
-              <DollarSign className="h-8 w-8 text-primary" />
+              <Euro className="h-8 w-8 text-primary" />
             </div>
           </CardContent>
         </Card>
