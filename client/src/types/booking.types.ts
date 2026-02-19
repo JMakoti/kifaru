@@ -47,6 +47,8 @@ export interface BookingPriceResponse {
   accommodation_type: AccommodationType;
 }
 
+export type BookingStatus = "pending" | "confirmed" | "cancelled" | "completed";
+
 export interface Booking {
   id: number;
   booking_reference: string;
@@ -57,8 +59,8 @@ export interface Booking {
   check_out: string;
   total_days: number;
   total_amount: string;
-  status: "pending" | "confirmed" | "cancelled" | "completed";
-  payment_status?: string | null; // not called from the backend
+  status: BookingStatus;
+  payment_status?: string | null;
   accommodation_type?: AccommodationType;
   guest_type: string;
   stay_type: string;
@@ -104,7 +106,7 @@ export interface Payment {
   id: number;
   booking: number;
   payment_method: PaymentMethod;
-  amount: string; 
+  amount: string;
   currency: string;
   card_number_last4: string | null;
   card_type: string | null;
@@ -115,7 +117,7 @@ export interface Payment {
   paystack_reference: string;
   paystack_access_code: string;
   authorization_url: string;
-  created_at: string; 
+  created_at: string;
   completed_at: string | null;
   failure_reason: string | null;
 }
@@ -126,5 +128,3 @@ export interface PaginatedPayments<T> {
   previous: string | null;
   results: T[];
 }
-
-
