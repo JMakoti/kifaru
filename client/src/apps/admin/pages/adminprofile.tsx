@@ -1,14 +1,23 @@
+// import type { User } from "@/types/user.types";
+import { useAuth } from "@/providers/useAuth";
+import AdminProfileView from "../components/profileview";
+import LoadingScreen from "@/components/loadingscreen";
+
+
 export default function AdminProfile() {
+  const { user, isLoading } = useAuth();
+  
+    if (isLoading) {
+      return <LoadingScreen />;
+    }
+
+    if (!user) return;
+
   return (
     <>
-      <main className="min-h-screen pt-20 mt-15">
-        <div className="container mx-auto px-6 md:px-12 py-16">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-center mb-8">
-            Profile
-          </h1>
-          <p className="text-center text-muted-foreground max-w-2xl mx-auto">
-             View and manage your account information
-          </p>
+      <main className="min-h-screen mt-15">
+        <div className="container py-8 px-6">
+          <AdminProfileView user={user} />
         </div>
       </main>
     </>

@@ -32,8 +32,10 @@ export default function UserProfile() {
     country_of_residence: user.country_of_residence,
     is_active: user.is_active,
     is_verified: user.is_verified,
-    is_staff: user.is_staff,
     date_joined: user.date_joined,
+    special_preferences: user.special_preferences,
+    assigned_properties: user.assigned_properties,
+    last_login: user.last_login,
   };
 
   return (

@@ -9,7 +9,7 @@ import {
   SidebarInset,
 } from "../../../components/ui/sidebar";
 import { Button } from "../../../components/ui/button";
-import { LogOut, Settings, User } from "lucide-react";
+import { LogOut, User } from "lucide-react";
 import rhino from "@/assets/icon/kifaru.png";
 import { useAuth } from "@/providers/useAuth";
 import { menu } from "../routes";
@@ -109,25 +109,6 @@ export default function AppSidebar({
               <User className="w-5 h-5" />
               <span className="truncate hidden md:inline group-data-[collapsible=icon]:hidden">
                 Profile
-              </span>
-            </NavLink>
-          </div>
-
-          {/* Settings Link */}
-          <div className="p-2">
-            <NavLink
-              to="/admin/settings"
-              className={({ isActive }) =>
-                `flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground ${
-                  isActive
-                    ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
-                    : "text-sidebar-foreground"
-                } group-data-[collapsible=icon]:justify-center`
-              }
-            >
-              <Settings className="w-5 h-5" />
-              <span className="truncate hidden md:inline group-data-[collapsible=icon]:hidden">
-                Settings
               </span>
             </NavLink>
           </div>

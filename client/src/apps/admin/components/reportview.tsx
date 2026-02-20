@@ -19,7 +19,7 @@ interface ReportViewProps {
 export default function ReportsView({ dashboard }: ReportViewProps) {
   if (!dashboard) return null;
   return (
-    <div className="mx-auto">
+    <div>
       <div className="mb-8">
         <h1 className="text-3xl font-bold tracking-tight text-foreground">
           Reports
@@ -27,7 +27,7 @@ export default function ReportsView({ dashboard }: ReportViewProps) {
         <p className="mt-1 text-muted-foreground">Kifaru Retreat Report</p>
       </div>
 
-      <main className="mx-auto max-w-7xl px-4 py-6 space-y-6 sm:px-6">
+      <main className="space-y-6">
         {/* Stats */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <StatCard

@@ -8,12 +8,13 @@ export interface User {
   role: "admin" | "staff" | "concierge" | "property_manager" | "external";
   preferred_language?: string;
   country_of_residence?: string;
-  is_returning_guest?: boolean,
-  // special_preferences: Record<string, any>;
+  is_returning_guest?: boolean;
+  special_preferences: Record<string, unknown>;
   is_active: boolean;
   is_verified: boolean;
-  is_staff: boolean;
+  assigned_properties: unknown[];
   date_joined: string;
+  last_login: string;
 }
 
 export interface AuthResponse {
@@ -30,7 +31,6 @@ export interface AuthError {
 export interface MessageResponse {
   message: string;
 }
-
 
 export interface LoginFormInputs {
   email: string;
@@ -57,7 +57,6 @@ export interface ResetPassInputs {
   token: string;
 }
 
-
 export interface FetchUsersParams {
   role?: string;
   is_active?: string;
@@ -65,7 +64,6 @@ export interface FetchUsersParams {
   search?: string;
   ordering?: string;
 }
-
 
 export interface UsersPaginatedResponse<T> {
   count: number;
@@ -89,4 +87,3 @@ export interface DashboardData {
   verified_users: number;
   users_by_role: UsersByRole;
 }
-
