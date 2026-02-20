@@ -89,6 +89,8 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
         name: property.name,
         max_guests: property.max_guests,
         slug: property.slug,
+        prepayment_percentage: property.prepayment_percentage,
+        cancellation_days: property.cancellation_days,
       },
     });
   };

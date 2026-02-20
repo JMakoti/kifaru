@@ -96,11 +96,20 @@ export default function BookingForm() {
   const location = useLocation();
   const { user, isLoading: authLoading } = useAuth();
 
-  const { id, slug, name, max_guests } = location.state as {
+  const {
+    id,
+    slug,
+    name,
+    max_guests,
+    prepayment_percentage,
+    cancellation_days,
+  } = location.state as {
     id: number;
     name: string;
     max_guests: number | null;
     slug: string;
+    prepayment_percentage: number;
+    cancellation_days: number;
   };
 
   //guest data
@@ -223,12 +232,6 @@ export default function BookingForm() {
                         <span className="px-3 py-1 text-sm rounded-full bg-background border border-border">
                           Card
                         </span>
-                        {/* <span className="px-3 py-1 text-sm rounded-full bg-background border border-border">
-                          PayPal
-                        </span>
-                        <span className="px-3 py-1 text-sm rounded-full bg-background border border-border">
-                          IBAN Transfer
-                        </span> */}
                         <span className="px-3 py-1 text-sm rounded-full bg-background border border-border">
                           M-Pesa
                         </span>
@@ -237,14 +240,36 @@ export default function BookingForm() {
 
                     {/* Cancellation Policy */}
                     <div>
-                      <h4 className="text-lg font-semibold text-foreground mb-2">
-                        Cancellation Policy
-                      </h4>
-                      <ul className="text-md text-muted-foreground space-y-1 list-disc list-inside">
-                        <li>50% prepayment required</li>
-                        <li>Free cancellation up to 30 days before arrival</li>
-                        <li>Special terms available for returning guests</li>
-                      </ul>
+                      {(prepayment_percentage != null ||
+                        cancellation_days != null) && (
+                        <div>
+                          <h4 className="text-lg font-semibold text-foreground mb-2">
+                            Cancellation Policy
+                          </h4>
+
+                          <ul className="text-md text-muted-foreground space-y-2 list-disc list-inside">
+                            {prepayment_percentage != null && (
+                              <li>
+                                {prepayment_percentage > 0
+                                  ? `${prepayment_percentage}% prepayment required`
+                                  : "No prepayment required"}
+                              </li>
+                            )}
+
+                            {cancellation_days != null && (
+                              <li>
+                                Free cancellation up to {cancellation_days}{" "}
+                                {cancellation_days === 1 ? "day" : "days"}{" "}
+                                before arrival
+                              </li>
+                            )}
+
+                            <li>
+                              Special terms available for returning guests
+                            </li>
+                          </ul>
+                        </div>
+                      )}
                     </div>
                   </div>
 

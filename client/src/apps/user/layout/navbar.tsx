@@ -111,11 +111,14 @@ export default function Navbar() {
 
           {/* User Auth / Avatar */}
           {isAuthenticated ? (
-            <Link to="/profile" className="ml-4">
+            <Link
+              to={user?.role === "admin" ? "/admin/profile" : "/profile"}
+              className="ml-4"
+            >
               <Avatar className="h-12 w-12 cursor-pointer">
                 <AvatarFallback className="font-semibold text-white">
-                  {user?.first_name?.[0]}
-                  {user?.last_name?.[0]}
+                  {user?.first_name?.[0] ?? ""}
+                  {user?.last_name?.[0] ?? ""}
                 </AvatarFallback>
               </Avatar>
             </Link>
