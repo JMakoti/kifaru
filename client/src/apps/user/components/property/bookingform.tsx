@@ -223,12 +223,12 @@ export default function BookingForm() {
                         <span className="px-3 py-1 text-sm rounded-full bg-background border border-border">
                           Card
                         </span>
-                        <span className="px-3 py-1 text-sm rounded-full bg-background border border-border">
+                        {/* <span className="px-3 py-1 text-sm rounded-full bg-background border border-border">
                           PayPal
                         </span>
                         <span className="px-3 py-1 text-sm rounded-full bg-background border border-border">
                           IBAN Transfer
-                        </span>
+                        </span> */}
                         <span className="px-3 py-1 text-sm rounded-full bg-background border border-border">
                           M-Pesa
                         </span>

@@ -56,7 +56,7 @@ export default function Navbar() {
                 <NavigationMenu key={link.label} className="bg-transparent">
                   <NavigationMenuList>
                     <NavigationMenuItem>
-                      <NavigationMenuTrigger className="bg-transparent shadow-none h-auto px-2 py-1 font-semibold text-white hover:text-[var(--kifaru-accent)] data-[state=open]:text-[var(--kifaru-accent)]">
+                      <NavigationMenuTrigger className="bg-transparent shadow-none h-auto px-2 py-1 font-semibold text-white hover:text-[var(--kifaru-accent)] data-[state=open]:text-[var(--kifaru-accent)] text-md hover:bg-transparent hover:text-white">
                         {link.label}
                       </NavigationMenuTrigger>
                       <NavigationMenuContent className="backdrop-blur-md bg-[var(--kifaru-body)]/95 border border-[var(--border)] shadow-lg rounded-lg p-2">
