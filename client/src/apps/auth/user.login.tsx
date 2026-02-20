@@ -16,7 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { extractErrorMessage } from "@/lib/extract-error-message";
-import type { AuthResponse } from "@/services/user.types";
+import type { AuthResponse } from "@/types/user.types";
 import kifaru from "@/assets/icon/kifaru.png";
 import { useAuth } from "@/providers/useAuth";
 

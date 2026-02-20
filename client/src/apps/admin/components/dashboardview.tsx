@@ -1,5 +1,3 @@
-"use client";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   PieChart,
@@ -14,19 +12,11 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import DashStatCard from "./dashboard/adminstatscard";
-import { LucideUserLock, ShieldCheck, User, UserCheck } from "lucide-react";
+import { Shield, ShieldCheck, User, UserCheck } from "lucide-react";
+import type { DashboardData } from "@/types/user.types";
 
-interface DashboardData {
-  total_users: number;
-  active_users: number;
-  verified_users: number;
-  users_by_role: {
-    admin: number;
-    staff: number;
-    concierge: number;
-    property_manager: number;
-    external: number;
-  };
+interface AdminDashboardViewProps {
+  data: DashboardData;
 }
 
 const COLORS = [
@@ -38,20 +28,14 @@ const COLORS = [
   "#ef4444",
 ];
 
-export default function AdminDashboardView() {
-  const data: DashboardData = {
-    total_users: 5,
-    active_users: 5,
-    verified_users: 5,
-    users_by_role: {
-      admin: 1,
-      staff: 0,
-      concierge: 0,
-      property_manager: 0,
-      external: 4,
-    },
-  };
+const STATUS_COLORS: Record<string, string> = {
+  Total: "#3b82f6",
+  Active: "#10b981",
+  Verified: "#8b5cf6",
+  Inactive: "#ef4444",
+};
 
+export default function AdminDashboardView({ data }: AdminDashboardViewProps) {
   const roleData = [
     { name: "Admin", value: data.users_by_role.admin },
     { name: "Staff", value: data.users_by_role.staff },
@@ -69,107 +53,96 @@ export default function AdminDashboardView() {
 
   return (
     <div>
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold text-foreground mb-2">
-          Admin Dashboard
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Overview of user statistics and roles
-        </p>
-      </div>
+      <div className="max-w-7xl mx-auto space-y-8">
+        <div className="bg-white rounded-lg shadow-sm p-6">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold text-gray-900">
+              Admin Dashboard
+            </h1>
+            <p className="text-gray-600">
+              Overview of user statistics and roles
+            </p>
+          </div>
+        </div>
 
-      {/* Stats Grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
-        <DashStatCard
-          label="Total Users"
-          value={data.total_users}
-          icon={<User className="h-6 w-6" />}
-        />
-        <DashStatCard
-          label="Active Users"
-          value={data.active_users}
-          icon={<UserCheck className="h-6 w-6" />}
-        />
-        <DashStatCard
-          label="Verified Users"
-          value={data.verified_users}
-          icon={<ShieldCheck className="h-6 w-6" />}
-        />
-        <DashStatCard
-          label="Administrators"
-          value={data.users_by_role.admin}
-          icon={<LucideUserLock className="h-6 w-6" />}
-        />
-      </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <DashStatCard
+            label="Total Users"
+            value={data.total_users}
+            icon={<User size={40} />}
+          />
+          <DashStatCard
+            label="Active Users"
+            value={data.active_users}
+            icon={<UserCheck size={40} />}
+          />
+          <DashStatCard
+            label="Verified Users"
+            value={data.verified_users}
+            icon={<ShieldCheck size={40} />}
+          />
+          <DashStatCard
+            label="Admins"
+            value={data.users_by_role.admin}
+            icon={<Shield size={40} />}
+          />
+        </div>
 
-      {/* Charts */}
-      <div className="grid gap-6 lg:grid-cols-2 mb-8">
-        {/* User Status Chart */}
-        <Card className="rounded-lg border border-border bg-card p-6 shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-foreground">
-              User Status Overview
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={statusData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
-                <XAxis
-                  dataKey="name"
-                  tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
-                />
-                <YAxis
-                  tick={{ fill: "var(--muted-foreground)", fontSize: 12 }}
-                />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "var(--card)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "var(--radius)",
-                  }}
-                />
-                <Bar dataKey="value" fill="#3b82f6" radius={[8, 8, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>User Status Overview</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={statusData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="value">
+                    {statusData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={STATUS_COLORS[entry.name]}
+                      />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
 
-        {/* Role Distribution Chart */}
-        <Card className="rounded-lg border border-border bg-card p-6 shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-foreground">Role Distribution</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  data={roleData}
-                  dataKey="value"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={100}
-                  label={({ name, value }) => `${name}: ${value}`}
-                >
-                  {roleData.map((_, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: "var(--card)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "var(--radius)",
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </CardContent>
-        </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>Role Distribution</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={roleData}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={({ name, value }) => `${name}: ${value}`}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {roleData.map((_, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

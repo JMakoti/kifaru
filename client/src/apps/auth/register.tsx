@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { extractErrorMessage } from "@/lib/extract-error-message";
-import type { AuthResponse } from "@/services/user.types";
+import type { AuthResponse } from "@/types/user.types";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";

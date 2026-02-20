@@ -8,20 +8,23 @@ import {
   updateProfile,
   deleteUser,
   getAdminUsers,
+  getAdminStats,
 } from "./user.endpoints";
 import type {
+  DashboardData,
   FetchUsersParams,
   ForgetPassInput,
   MessageResponse,
   ResetPassInputs,
   User,
   UsersPaginatedResponse,
-} from "./user.types";
+} from "../types/user.types";
 import type { AxiosError } from "axios";
 
 //query keys
 export const USERS_QUERY_KEY = ["admin-users"];
 export const USERPROFILE_QUERY_KEY = ["user-profile"];
+export const ADMIN_STATS_DASH = ["admin-stats-dash"];
 
 //register user
 export const useRegister = () => {
@@ -92,3 +95,12 @@ export function useDeleteUser() {
     mutationFn: deleteUser,
   });
 }
+
+//admin stats
+export const useDashboardStats = () => {
+  return useQuery<DashboardData>({
+    queryKey: ADMIN_STATS_DASH,
+    queryFn: getAdminStats,
+    staleTime: 1000 * 60 * 5,
+  });
+};

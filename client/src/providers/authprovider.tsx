@@ -11,7 +11,7 @@ import type {
   LoginFormInputs,
   RegisterFormInputs,
   AuthResponse,
-} from "@/services/user.types";
+} from "@/types/user.types";
 import { AuthContext } from "./auth-context";
 
 // Helper to check if auth token exists in cookies

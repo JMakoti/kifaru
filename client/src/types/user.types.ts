@@ -74,3 +74,19 @@ export interface UsersPaginatedResponse<T> {
   results: T[];
 }
 
+// types/dashboard.ts
+export interface UsersByRole {
+  admin: number;
+  staff: number;
+  concierge: number;
+  property_manager: number;
+  external: number;
+}
+
+export interface DashboardData {
+  total_users: number;
+  active_users: number;
+  verified_users: number;
+  users_by_role: UsersByRole;
+}
+

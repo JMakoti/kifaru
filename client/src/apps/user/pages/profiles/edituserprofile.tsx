@@ -12,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { toast } from "react-toastify";
-import type { User } from "@/services/user.types";
+import type { User } from "@/types/user.types";
 import { useUpdateProfile } from "@/services/user.service";
 import { useAuth } from "@/providers/useAuth";
 

@@ -1,6 +1,7 @@
 import axios from "axios";
 import type {
   AuthResponse,
+  DashboardData,
   FetchUsersParams,
   ForgetPassInput,
   LoginFormInputs,
@@ -9,7 +10,7 @@ import type {
   ResetPassInputs,
   User,
   UsersPaginatedResponse,
-} from "./user.types";
+} from "../types/user.types";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
@@ -32,6 +33,7 @@ const RESETPASS_URL = `/user/password-reset-confirm/{uidb64}/{token}/`;
 const EDITPROFILE_URL = "/user/me/";
 const GETUSERS_URL = "/user/admin/users/";
 const DELETEUSER_URL = "/user/admin/users";
+const GETADMINSTATS_URL = "/user/admin/stats/";
 
 // get profile
 export const getProfile = async (): Promise<User> => {
@@ -151,7 +153,7 @@ export const updateProfile = async (data: FormData) => {
 
 //get guest list
 export const getAdminUsers = async (
-  params?: FetchUsersParams
+  params?: FetchUsersParams,
 ): Promise<UsersPaginatedResponse<User>> => {
   const response = await api.get<UsersPaginatedResponse<User>>(GETUSERS_URL, {
     params,
@@ -159,7 +161,12 @@ export const getAdminUsers = async (
   return response.data;
 };
 
-
 //delete user
 export const deleteUser = (id: number) =>
   api.delete(`${DELETEUSER_URL}/${id}/`);
+
+//get admin stats
+export const getAdminStats = async (): Promise<DashboardData> => {
+  const { data } = await api.get(GETADMINSTATS_URL);
+  return data;
+};

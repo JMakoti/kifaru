@@ -151,7 +151,7 @@ export default function BookingForm() {
       property_name: name,
       accommodation_type: accommodationType,
       check_in: checkIn ? format(checkIn, "yyyy-MM-dd") : "",
-    check_out: checkOut ? format(checkOut, "yyyy-MM-dd") : "",
+      check_out: checkOut ? format(checkOut, "yyyy-MM-dd") : "",
       number_of_adults: adults,
       number_of_children: children,
       number_of_guests: adults + children,
@@ -204,12 +204,55 @@ export default function BookingForm() {
                     </div>
                     <div>
                       <CardTitle className="text-xl">Guest Details</CardTitle>
-                      <CardDescription>Who will be staying?</CardDescription>
+                      <CardDescription className="text-md">
+                        Who will be staying?
+                      </CardDescription>
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="relative w-full">
+
+                <CardContent className="space-y-6">
+                  {/* Payment & Cancellation Info */}
+                  <div className="p-4 rounded-lg border border-border bg-muted/40 space-y-4">
+                    {/* Payment Methods */}
+                    <div>
+                      <h4 className="text-md font-semibold text-foreground mb-2">
+                        Payment Methods
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        <span className="px-3 py-1 text-sm rounded-full bg-background border border-border">
+                          Card
+                        </span>
+                        <span className="px-3 py-1 text-sm rounded-full bg-background border border-border">
+                          PayPal
+                        </span>
+                        <span className="px-3 py-1 text-sm rounded-full bg-background border border-border">
+                          IBAN Transfer
+                        </span>
+                        <span className="px-3 py-1 text-sm rounded-full bg-background border border-border">
+                          M-Pesa
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Cancellation Policy */}
+                    <div>
+                      <h4 className="text-lg font-semibold text-foreground mb-2">
+                        Cancellation Policy
+                      </h4>
+                      <ul className="text-md text-muted-foreground space-y-1 list-disc list-inside">
+                        <li>50% prepayment required</li>
+                        <li>Free cancellation up to 30 days before arrival</li>
+                        <li>Special terms available for returning guests</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  {/* Guest Inputs */}
+                  <div className="flex items-center border border-border rounded-lg overflow-hidden">
+                    <div className="px-4 border-r border-border flex items-center">
+                      <User2Icon className="w-5 h-5 text-muted-foreground" />
+                    </div>
                     <Input
                       placeholder="Full Name"
                       value={guestData.fullName}
@@ -217,11 +260,14 @@ export default function BookingForm() {
                         setGuestData({ ...guestData, fullName: e.target.value })
                       }
                       required
-                      className="pl-10 pr-3 py-2 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                      className="flex-1 h-10 px-5 bg-card text-foreground"
                     />
-                    <User2Icon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                   </div>
-                  <div className="relative w-full">
+
+                  <div className="flex items-center border border-border rounded-lg overflow-hidden">
+                    <div className="px-4 border-r border-border flex items-center">
+                      <Mail className="w-5 h-5 text-muted-foreground" />
+                    </div>
                     <Input
                       type="email"
                       placeholder="Email Address"
@@ -230,31 +276,32 @@ export default function BookingForm() {
                         setGuestData({ ...guestData, email: e.target.value })
                       }
                       required
-                      className="pl-10 pr-3 py-2 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                      className="flex-1 h-10 px-5 bg-card text-foreground"
                     />
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                   </div>
 
-                  <div className="relative w-full">
+                  <div className="flex items-center border border-border rounded-lg overflow-hidden">
+                    <div className="px-4 border-r border-border flex items-center">
+                      <IdCard className="w-5 h-5 text-muted-foreground" />
+                    </div>
                     <Input
                       placeholder="ID / Passport Number"
                       value={guestData.idNumber}
                       onChange={(e) =>
                         setGuestData({ ...guestData, idNumber: e.target.value })
                       }
-                      className="pl-10 pr-3 py-2 rounded-lg border border-border bg-card text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-1 focus:ring-primary transition-colors"
+                      className="flex-1 h-10 px-5 bg-card text-foreground"
                     />
-                    <IdCard className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
                   </div>
 
-                  <div className="flex items-center border rounded-lg overflow-hidden">
-                    <div className="px-3 border-r flex items-center gap-1">
-                      {/* <span className="text-xs font-semibold">+254</span> */}
-                      <Phone className="w-3 h-3" />
+                  <div className="flex items-center border border-border rounded-lg overflow-hidden">
+                    <div className="px-4 border-r border-border flex items-center">
+                      <Phone className="w-5 h-5 text-muted-foreground" />
                     </div>
-                    <input
-                      className="flex-1 px-3 py-2 outline-none"
-                      placeholder="Phone Number"
+
+                    <Input
+                      className="flex-1 h-10 px-5 bg-card text-foreground"
+                      placeholder="Phone Number e.g. 254712345678"
                       value={guestData.phone}
                       onChange={(e) =>
                         setGuestData({ ...guestData, phone: e.target.value })
@@ -268,21 +315,21 @@ export default function BookingForm() {
               <Card>
                 {pricingError && (
                   <div className="mx-6 mt-4 p-4 rounded-lg border border-amber-500/50 bg-amber-500/10 text-amber-900 dark:text-amber-200 flex gap-3 items-start animate-in fade-in slide-in-from-top-2">
-                    <div className="w-10 h-10 rounded-full bg-amber-500/20 flex items-center justify-center shrink-0">
+                    <div className="w-13 h-13 rounded-full bg-amber-500/20 flex items-center justify-center shrink-0">
                       <AlertCircle className="w-5 h-5 text-amber-600 dark:text-amber-400" />
                     </div>
                     <div className="space-y-1">
-                      <p className="font-bold text-sm leading-none">
+                      <p className="font-bold text-md leading-none">
                         Stay Duration Policy
                       </p>
-                      <p className="text-sm leading-relaxed">
+                      <p className="text-md leading-relaxed">
                         {apiErrorData?.message ||
-                          "Something went wrong with your stay calculation."}
+                          "Something went wrong with your stay booking."}
                       </p>
 
                       {apiErrorData?.suggestion && (
-                        <div className="mt-2 flex items-center gap-2 text-xs font-medium text-amber-700 dark:text-amber-300">
-                          <span className="bg-amber-500/20 px-1.5 py-0.5 rounded uppercase text-[10px]">
+                        <div className="mt-2 flex items-center gap-2 text-md font-medium text-amber-700 dark:text-amber-300">
+                          <span className="bg-amber-500/20 px-1.5 py-0.5 rounded uppercase text-md">
                             Tip
                           </span>
                           {apiErrorData.suggestion}
@@ -298,7 +345,9 @@ export default function BookingForm() {
                     </div>
                     <div>
                       <CardTitle className="text-xl">Stay Details</CardTitle>
-                      <CardDescription>Where and when?</CardDescription>
+                      <CardDescription className="text-md">
+                        Where and when?
+                      </CardDescription>
                     </div>
                   </div>
                 </CardHeader>
