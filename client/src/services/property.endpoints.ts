@@ -18,25 +18,22 @@ export const propertyApi = {
   // Create a new property
   create: async (property: Property): Promise<Property> => {
     const formData = buildPropertyFormData(property);
-    const response = await api.post<Property>(`${PROPERTY}/`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const response = await api.post<Property>(`${PROPERTY}/`, formData);
     return response.data;
   },
 
   // Update an existing property
   update: async (slug: string, property: Property): Promise<Property> => {
     const formData = buildPropertyFormData(property);
+
+    // Log the FormData entries to the conle to inspect them
+    console.log("Inspecting FormData before sending:");
+    for (const [key, value] of formData.entries()) {
+      console.log(`${key}:`, value);
+    }
     const response = await api.patch<Property>(
       `${PROPERTY}/${slug}/`,
       formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      },
     );
     return response.data;
   },

@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { PropertyFormSheet } from "./propertyfrom";
 import type { Property } from "@/types/property";
-import { Link } from "react-router";
+// import { Link } from "react-router";
 
 interface PropertyView {
   properties: Property[];
@@ -217,15 +217,15 @@ export default function PropertiesView({
 
                   {/* Actions */}
                   <div className="flex gap-2 pt-2 mt-auto">
-                    <Link
+                    {/* <Link
                       to={`/admin/property/${property.slug}`}
                       className="group block"
-                    >
+                    > */}
                       <Button size="sm" variant="outline">
                         <Eye className="mr-1 h-4 w-4" />
                         View
                       </Button>
-                    </Link>
+                    {/* </Link> */}
 
                     <Button
                       size="sm"

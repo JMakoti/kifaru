@@ -29,6 +29,10 @@ const ExploreMore = ({ properties, currentPropertyId }: ExploreMoreProps) => {
     containerRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
   };
 
+  const trimWords = (text: string, wordCount: number) => {
+    return text.split(" ").slice(0, wordCount).join(" ") + "...";
+  };
+
   return (
     <section className="relative py-24 bg-gray-50" ref={ref}>
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
@@ -89,7 +93,7 @@ const ExploreMore = ({ properties, currentPropertyId }: ExploreMoreProps) => {
                     </div>
                     <h3 className="text-xl mb-2 text-gray-900">{p.name}</h3>
                     <p className="text-md text-gray-600 mb-4 leading-relaxed flex-1">
-                      {p.description}
+                      {p.description && trimWords(p.description, 15)}
                     </p>
 
                     <div className="flex items-center justify-between mt-auto">

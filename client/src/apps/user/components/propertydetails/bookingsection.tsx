@@ -69,10 +69,17 @@ const ReadyToBook = ({ contacts, property }: BookingProps) => {
     });
   };
 
-  const isNyali =
-    property.location?.toLowerCase().includes("mkomani") ||
-    (property.location?.toLowerCase().includes("nyali") &&
-      property.name?.toLowerCase().includes("marble inn"));
+  const location = property.location?.toLowerCase() ?? "";
+  const description = property.location_description?.toLowerCase() ?? "";
+  const name = property.name?.toLowerCase() ?? "";
+
+  // ONLY Close the Gap HUB
+  const isCloseTheGap =
+    name.includes("close the gap") ||
+    location.includes("close the gap") ||
+    description.includes("tamarind hotel") ||
+    description.includes("nyali bridge") ||
+    description.includes("mombasa creek");
 
   return (
     <section className="relative py-24 md:py-32 overflow-hidden" ref={ref}>
@@ -104,17 +111,17 @@ const ReadyToBook = ({ contacts, property }: BookingProps) => {
         {/* Buttons */}
         <div className="flex flex-wrap justify-center gap-4">
           <button
-            onClick={!isNyali ? handleBookingClick : undefined}
-            disabled={isNyali}
+            onClick={!isCloseTheGap ? handleBookingClick : undefined}
+            disabled={isCloseTheGap}
             className={`flex items-center gap-2 px-5 py-3 font-semibold text-sm uppercase tracking-wider rounded transition-colors
     ${
-      isNyali
+      isCloseTheGap
         ? "bg-white text-black cursor-not-allowed"
         : "bg-accent text-white font-semibold cursor-pointer"
     }`}
           >
             <CalendarCheck className="w-4 h-4" />
-            {isNyali ? "Coming Soon..." : "Check Availability"}
+            {isCloseTheGap ? "Coming Soon..." : "Check Availability"}
           </button>
 
           {/* Email */}

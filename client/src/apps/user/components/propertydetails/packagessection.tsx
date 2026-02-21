@@ -34,10 +34,17 @@ const PackagesSection = ({ packages, property }: PackageProps) => {
     });
   };
 
-  const isNyali =
-    property.location?.toLowerCase().includes("mkomani") ||
-    (property.location?.toLowerCase().includes("nyali") &&
-      property.name?.toLowerCase().includes("marble inn"));
+  const location = property.location?.toLowerCase() ?? "";
+  const description = property.location_description?.toLowerCase() ?? "";
+  const name = property.name?.toLowerCase() ?? "";
+
+  // ONLY Close the Gap HUB
+  const isCloseTheGap =
+    name.includes("close the gap") ||
+    location.includes("close the gap") ||
+    description.includes("tamarind hotel") ||
+    description.includes("nyali bridge") ||
+    description.includes("mombasa creek");
 
   return (
     <section className="bg-background py-20 px-6 md:px-12 lg:px-20" ref={ref}>
@@ -116,16 +123,16 @@ const PackagesSection = ({ packages, property }: PackageProps) => {
                       : "border border-gray-400 text-gray-900 hover:bg-gray-100" */}
 
                 <button
-                  onClick={!isNyali ? handleBookingClick : undefined}
-                  disabled={isNyali}
+                  onClick={!isCloseTheGap ? handleBookingClick : undefined}
+                  disabled={isCloseTheGap}
                   className={`uppercase flex items-center justify-center py-3 text-sm  tracking-wider rounded transition-colors
     ${
-      isNyali
+      isCloseTheGap
         ? "border border-gray-400 text-gray-900 hover:bg-gray-100 font-bold uppercase cursor-not-allowed"
         : "bg-accent text-white hover:bg-accent font-semibold cursor-pointer"
     }`}
                 >
-                  {isNyali ? "Coming Soon..." : "Reserve Package"}
+                  {isCloseTheGap ? "Coming Soon..." : "Reserve Package"}
                 </button>
               </div>
             </div>

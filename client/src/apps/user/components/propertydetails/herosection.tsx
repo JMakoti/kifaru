@@ -95,10 +95,17 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
     });
   };
 
-  const isNyali =
-    property.location?.toLowerCase().includes("mkomani") ||
-    (property.location?.toLowerCase().includes("nyali") &&
-      property.name?.toLowerCase().includes("marble inn"));
+  const location = property.location?.toLowerCase() ?? "";
+  const description = property.location_description?.toLowerCase() ?? "";
+  const name = property.name?.toLowerCase() ?? "";
+
+  // ONLY Close the Gap HUB
+  const isCloseTheGap =
+    name.includes("close the gap") ||
+    location.includes("close the gap") ||
+    description.includes("tamarind hotel") ||
+    description.includes("nyali bridge") ||
+    description.includes("mombasa creek");
 
   return (
     <section className="relative w-full overflow-hidden h-[60vh] md:h-[80vh] lg:h-[100vh]">
@@ -138,16 +145,16 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
           )}
 
           <button
-            onClick={!isNyali ? handleBookingClick : undefined}
-            disabled={isNyali}
+            onClick={!isCloseTheGap ? handleBookingClick : undefined}
+            disabled={isCloseTheGap}
             className={`inline-flex items-center justify-center rounded-full px-8 py-3 text-lg font-semibold transition
     ${
-      isNyali
+      isCloseTheGap
         ? "bg-accent text-white cursor-not-allowed"
         : "bg-white text-black hover:bg-white/90 cursor-pointer"
     }`}
           >
-            {isNyali ? "Coming Soon ..." : "Book Now"}
+            {isCloseTheGap ? "Coming Soon ..." : "Book Now"}
           </button>
         </div>
       </div>

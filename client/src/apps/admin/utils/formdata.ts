@@ -66,21 +66,47 @@ export function buildPropertyFormData(property: Property): FormData {
   //     formData.append(`highlights[${index}][image]`, "");
   //   }
   // });
-  (property.highlights ?? []).forEach((highlight, index) => {
-    formData.append(`highlights[${index}][title]`, highlight.title);
+  // (property.highlights ?? []).forEach((highlight, index) => {
+  //   formData.append(`highlights[${index}][title]`, highlight.title);
 
-    if (highlight.image instanceof File) {
-      // New uploaded file
-      formData.append(`highlights[${index}][image]`, highlight.image);
-    } else if (typeof highlight.image === "string") {
-      // Existing image URL or ID – send as separate field
-      // Don't append as a file, instead let backend know to reuse it
-      formData.append(
-        `highlights[${index}][existing_image_url]`,
-        highlight.image,
-      );
-    }
-  });
+  //   if (highlight.image instanceof File) {
+  //     // New uploaded file
+  //     formData.append(`highlights[${index}][image]`, highlight.image);
+  //   } else if (typeof highlight.image === "string") {
+  //     // Existing image URL or ID – send as separate field
+  //     // Don't append as a file, instead let backend know to reuse it
+  //     formData.append(
+  //       `highlights[${index}][existing_image_url]`,
+  //       highlight.image,
+  //     );
+  //   }
+  // });
+
+  // -------------------- Highlights --------------------
+  // const highlightsMeta = property.highlights.map((h) => ({
+  //   title: h.title,
+  // }));
+
+  // formData.append("highlights", JSON.stringify(highlightsMeta));
+
+  // property.highlights.forEach((highlight) => {
+  //   if (highlight.image instanceof File) {
+  //     formData.append("highlights_images", highlight.image);
+  //   }
+  // });
+
+  // -------------------- Highlights --------------------
+const highlightsMeta = (property.highlights ?? []).map((h) => ({
+  title: h.title,
+}));
+
+formData.append("highlights", JSON.stringify(highlightsMeta));
+
+(property.highlights ?? []).forEach((highlight) => {
+  if (highlight.image instanceof File) {
+    formData.append("highlights_images", highlight.image);
+  }
+});
 
   // -------------------- Pricing Options --------------------
   // formData.append(

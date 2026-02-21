@@ -12,6 +12,10 @@ export default function Footer() {
   const { data } = useProperties();
   const propertyList = useMemo(() => data?.results || [], [data]);
 
+  const trimWords = (text: string, wordCount: number) => {
+    return text.split(" ").slice(0, wordCount).join(" ") + "...";
+  };
+
   const defaultFooterRoutes = [
     "/",
     "/about",
@@ -133,7 +137,8 @@ export default function Footer() {
               {currentProperty?.name || "Kifaru"}
             </h2>
             <p className="text-lg text-gray-300 mb-6 max-w-md mx-auto">
-              {currentProperty?.description ||
+              {(currentProperty?.description &&
+                trimWords(currentProperty.description, 15)) ||
                 "Experience luxury and nature in our exclusive properties."}
             </p>
 
