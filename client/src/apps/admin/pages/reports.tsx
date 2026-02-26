@@ -1,16 +1,36 @@
+import { useReportDash } from "@/services/reports.services";
+import ReportsView from "../components/reportview";
+
 export default function Reports() {
+  const { data, isLoading, error } = useReportDash();
+
+  if (isLoading) {
+    return (
+      <main className="min-h-screen bg-background mt-14">
+        <div className="container py-8 px-6">
+          <p>Loading reports...</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (error || !data) {
+    return (
+      <main className="min-h-screen bg-background mt-14">
+        <div className="container py-8 px-6">
+          <p>Failed to load reports.</p>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <>
-      <main className="min-h-screen pt-20">
-        <div className="container mx-auto px-6 md:px-12 py-16">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-center mb-8">
-            Reports
-          </h1>
-          <p className="text-center text-muted-foreground max-w-2xl mx-auto">
-            Generate and review detailed reports on bookings, revenue, and guest activity to gain valuable business insights.
-          </p>
+      <main className="min-h-screen bg-background mt-14">
+        <div className="container py-8 px-6">
+          <ReportsView dashboard={data}/>
         </div>
       </main>
     </>
-  )
+  );
 }

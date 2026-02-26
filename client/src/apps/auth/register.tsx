@@ -3,18 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
-import { useAuth } from "@/providers/authprovider";
-import {
-  Mail,
-  Lock,
-  User,
-  Eye,
-  EyeOff,
-  BubblesIcon,
-  Contact,
-} from "lucide-react";
+import { extractErrorMessage } from "@/lib/extract-error-message";
+import type { AuthResponse } from "@/types/user.types";
+import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
+import kifaru from "@/assets/icon/kifaru.png";
+import { useAuth } from "@/providers/useAuth";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -26,54 +21,73 @@ export default function Register() {
     phone_number: "",
     whatsapp_number: "",
   });
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const navigate = useNavigate();
 
-  const { register, isLoading, error } = useAuth();
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const navigate = useNavigate();
+  const { register, isLoading } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSuccessMessage(null);
+    setErrorMessage(null);
 
-    await register(formData);
+    try {
+      const response: AuthResponse = await register(formData);
+      setSuccessMessage(response?.message ?? null);
 
-    navigate("/profile", { replace: true });
-    
+      setTimeout(() => {
+        navigate("/auth", { replace: true });
+      }, 1500);
+    } catch (error) {
+      setErrorMessage(extractErrorMessage(error));
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-light to-muted p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-2">
-            <div className="flex justify-center mb-1">
-              <BubblesIcon className="h-8 w-8 text-black-600" />
-            </div>
-          </div>
-          <h1 className="text-2xl font-bold text-black-800 mb-2 text-balance">
-            Kifaru
-          </h1>
-          <p className="text-muted-foreground mt-2">
+         <div className="text-center mb-8 items-center flex flex-col">
+           <img src={kifaru} alt="Kifaru Logo" className="w-20 h-20"/>
+           {/* <p className="text-muted-foreground">
             Start your plans journey today
-          </p>
+          </p> */}
         </div>
 
         <Card className="border-2 shadow-lg">
           <CardHeader className="text-center">
             <CardTitle>Create Account</CardTitle>
           </CardHeader>
+
           <CardContent>
+            {/* Success message */}
+            {successMessage && (
+              <div className="p-3 text-sm text-green-500 bg-green-50 rounded-md border border-green-200 text-center mb-4">
+                {successMessage}
+              </div>
+            )}
+
+            {/* Error message */}
+            {errorMessage && (
+              <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md border border-red-200 text-center mb-4">
+                {errorMessage}
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="first_name">First Name</Label>
+                  <Label>First Name</Label>
                   <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                    <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <Input
-                      id="first_name"
-                      placeholder="John"
                       className="pl-10"
+                      placeholder="John"
                       value={formData.first_name}
                       onChange={(e) =>
                         setFormData({ ...formData, first_name: e.target.value })
@@ -84,9 +98,8 @@ export default function Register() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="last_name">Last Name</Label>
+                  <Label>Last Name</Label>
                   <Input
-                    id="last_name"
                     placeholder="Doe"
                     value={formData.last_name}
                     onChange={(e) =>
@@ -98,14 +111,13 @@ export default function Register() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label>Email</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    id="email"
                     type="email"
-                    placeholder="john@example.com"
                     className="pl-10"
+                    placeholder="john@example.com"
                     value={formData.email}
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
@@ -115,51 +127,29 @@ export default function Register() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="whatsapp_number">Whatsapp Number</Label>
-                  <div className="relative">
-                    <Contact className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                    <Input
-                      id="whatsapp_number"
-                      type="number"
-                      placeholder="Whatsapp number"
-                      className="pl-10"
-                      value={formData.whatsapp_number}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          whatsapp_number: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="phone_number">Phone Number</Label>
-                  <Input
-                    id="phone_number"
-                    type="number"
-                    placeholder="phone number"
-                    value={formData.phone_number}
-                    onChange={(e) =>
-                      setFormData({ ...formData, phone_number: e.target.value })
-                    }
-                    required
-                  />
-                </div>
+              <div className="space-y-2">
+                <Label>Phone Number</Label>
+                <Input
+                  placeholder="+254745678900"
+                  value={formData.phone_number}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      phone_number: e.target.value,
+                    })
+                  }
+                  required
+                />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label>Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    id="password"
                     type={showPassword ? "text" : "password"}
-                    placeholder="••••••••"
                     className="pl-10 pr-10"
+                    placeholder="••••••••"
                     value={formData.password}
                     onChange={(e) =>
                       setFormData({ ...formData, password: e.target.value })
@@ -170,27 +160,22 @@ export default function Register() {
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 h-auto p-1"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-1"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? (
-                      <EyeOff className="w-4 h-4 text-muted-foreground" />
-                    ) : (
-                      <Eye className="w-4 h-4 text-muted-foreground" />
-                    )}
+                    {showPassword ? <EyeOff /> : <Eye />}
                   </Button>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
+                <Label>Confirm Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    id="confirmPassword"
                     type={showConfirmPassword ? "text" : "password"}
-                    placeholder="••••••••"
                     className="pl-10 pr-10"
+                    placeholder="••••••••"
                     value={formData.password_confirm}
                     onChange={(e) =>
                       setFormData({
@@ -204,14 +189,10 @@ export default function Register() {
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 h-auto p-1"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-1"
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                   >
-                    {showConfirmPassword ? (
-                      <EyeOff className="w-4 h-4 text-muted-foreground" />
-                    ) : (
-                      <Eye className="w-4 h-4 text-muted-foreground" />
-                    )}
+                    {showConfirmPassword ? <EyeOff /> : <Eye />}
                   </Button>
                 </div>
               </div>
@@ -222,35 +203,24 @@ export default function Register() {
                 size="lg"
                 disabled={isLoading}
               >
-                <BubblesIcon className="w-4 h-4 mr-2" />
                 {isLoading ? "Creating account..." : "Create Account"}
               </Button>
             </form>
 
-            <div className="mt-6">
-              <Separator className="my-4" />
-              <div className="text-center text-sm text-muted-foreground">
-                Already have an account?{" "}
-                <Link
-                  to="/auth"
-                  className="text-primary font-medium hover:underline"
-                >
-                  Sign in
-                </Link>
-              </div>
+            <Separator className="my-4" />
+
+            <div className="text-center text-sm text-muted-foreground">
+              Already have an account?{" "}
+              <Link to="/auth" className="text-primary hover:underline">
+                Sign in
+              </Link>
             </div>
           </CardContent>
         </Card>
 
-        {error && (
-          <p className="text-sm text-red-500 mt-2">
-            {(error as any)?.response?.data?.message || "Registration failed"}
-          </p>
-        )}
-
-        <div className="text-center mt-6 text-sm text-muted-foreground">
+        <p className="text-center mt-6 text-sm text-muted-foreground">
           By signing up, you agree to our Terms of Service and Privacy Policy
-        </div>
+        </p>
       </div>
     </div>
   );

@@ -1,76 +1,49 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import TestimonialCard from "./testmonialcard";
+import { useReviews } from "@/services/property.service";
+import LoadingScreen from "@/components/loadingscreen";
+import type { PropertyReview } from "@/types/property";
 
-const testimonials = [
-  {
-    quote:
-      "Kifaru Brussels is the perfect blend of work and inspiration. The coworking spaces, cultural touches, and hospitality make it a hub for creativity and connection.",
-    author: "Sophie L.",
-    location: "Entrepreneur",
-    property: "Tech & Bed Kifaru Brussels",
-    image: "https://randomuser.me/api/portraits/women/68.jpg",
-  },
-  {
-    quote:
-      "Our family loved Ocean Kifaru North-Sea! The private jacuzzi and enclosed garden made our stay safe, relaxing, and unforgettable.",
-    author: "Mark D.",
-    location: "Netherlands",
-    property: "Ocean Kifaru North-Sea",
-    image: "https://randomuser.me/api/portraits/men/75.jpg",
-  },
-  {
-    quote:
-      "The Msambweni villa is a slice of paradise. From the infinity pool to the private chefs and concierge service, every detail was perfect.",
-    author: "Clara M.",
-    location: "International Guest",
-    property: "Ocean Kifaru Indian Ocean",
-    image: "https://randomuser.me/api/portraits/women/65.jpg",
-  },
-  {
-    quote:
-      "We enjoyed the Marble Inn for its modern amenities and attentive concierge. Perfect for a short stay in Nyali with easy access to everything.",
-    author: "Jan V.",
-    location: "Kenya",
-    property: "Kifaru Marble Inn Mombasa",
-    image: "https://randomuser.me/api/portraits/men/44.jpg",
-  },
-  {
-    quote:
-      "The rooftop terrace and strategic location of the Close the Gap HUB are ideal for focus, networking, and executive retreats.",
-    author: "Emma R.",
-    location: "Corporate Leader",
-    property: "Close the Gap HUB",
-    image: "https://randomuser.me/api/portraits/women/72.jpg",
-  },
-  {
-    quote:
-      "Kifaru is more than a stay—it's an experience. From Brussels to Msambweni, every property combines comfort and culture.",
-    author: "Tom S.",
-    location: "Traveler & Changemaker",
-    property: "Kifaru Global Experience",
-    image: "https://randomuser.me/api/portraits/men/52.jpg",
-  },
-];
-
-// duplicate for seamless loop
-const SLIDES = [...testimonials, ...testimonials];
-const SLIDE_DURATION = 6000; // speed (ms)
+const SLIDE_DURATION = 6000;
+const mapReviewsToTestimonials = (reviews: PropertyReview[]) =>
+  reviews.slice(0, 10).map((r) => ({
+    quote: r.comment,
+    author: r.reviewer_name,
+    location: r.country || "Guest",
+    property: r.property_name,
+    image: r.avatar,
+  }));
 
 export default function TestimonialSection() {
+  const { useGetReviews } = useReviews();
+  const { data, isLoading, refetch } = useGetReviews();
+
   const [index, setIndex] = useState(0);
   const trackRef = useRef<HTMLDivElement>(null);
 
+  const testimonials = useMemo(
+    () => mapReviewsToTestimonials(data?.results ?? []),
+    [data],
+  );
+
+  // duplicate for seamless loop
+  const slides = useMemo(
+    () => [...testimonials, ...testimonials],
+    [testimonials],
+  );
+
   useEffect(() => {
+    if (testimonials.length === 0) return;
+
     const interval = setInterval(() => {
       setIndex((prev) => prev + 1);
     }, SLIDE_DURATION);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [testimonials.length]);
 
   useEffect(() => {
     if (index === testimonials.length) {
-      // jump back to start WITHOUT animation
       setTimeout(() => {
         if (trackRef.current) {
           trackRef.current.style.transition = "none";
@@ -78,13 +51,27 @@ export default function TestimonialSection() {
         setIndex(0);
         requestAnimationFrame(() => {
           if (trackRef.current) {
-            trackRef.current.style.transition =
-              "transform 700ms ease-in-out";
+            trackRef.current.style.transition = "transform 700ms ease-in-out";
           }
         });
       }, 700);
     }
-  }, [index]);
+  }, [index, testimonials.length]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      refetch();
+    }, 30000); // every 30s
+    return () => clearInterval(interval);
+  }, [refetch]);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (testimonials.length === 0) {
+    return null;
+  }
 
   return (
     <section className="relative overflow-hidden bg-background py-24 px-4">
@@ -106,15 +93,24 @@ export default function TestimonialSection() {
             className="flex transition-transform duration-700 ease-in-out"
             style={{ transform: `translateX(-${index * 100}%)` }}
           >
-            {SLIDES.map((testimonial, i) => (
-              <div
-                key={i}
-                className="min-w-full w-full flex-shrink-0 px-2"
-              >
+            {slides.map((testimonial, i) => (
+              <div key={i} className="min-w-full w-full flex-shrink-0 px-2">
                 <TestimonialCard {...testimonial} />
               </div>
             ))}
           </div>
+        </div>
+
+        {/* Progress Indicator */}
+        <div className="mt-10 flex justify-center gap-2">
+          {testimonials.map((_, i) => (
+            <span
+              key={i}
+              className={`h-1 w-1 rounded-full transition-all duration-500 ${
+                i === index % testimonials.length ? "bg-black" : "bg-black/20"
+              }`}
+            />
+          ))}
         </div>
       </div>
     </section>

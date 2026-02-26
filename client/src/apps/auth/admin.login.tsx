@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Mail, Lock, Eye, EyeOff, BubblesIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import { Mail, Lock, Eye, EyeOff } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -12,7 +13,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import bglogin from "@/assets/property-2.jpg";
-import { useAdminLogin } from "@/services/user.service";
+import { extractErrorMessage } from "@/lib/extract-error-message";
+import kifaru from "@/assets/icon/kifaru.png";
+import { useAuth } from "@/providers/useAuth";
 
 const AdminLogin = () => {
   const [formData, setFormData] = useState({
@@ -20,120 +23,115 @@ const AdminLogin = () => {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const { mutate, isPending, error } = useAdminLogin();
+  const { login, isLoading, error } = useAuth();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    mutate(formData, {
-      onSuccess: () => {
-        navigate("/admin");
-      },
-    });
+    setErrorMessage(null);
+    try {
+      await login(formData);
+      await queryClient.refetchQueries({ queryKey: ["auth-user"] });
+      navigate("/admin", { replace: true });
+    } catch (error) {
+      setErrorMessage(extractErrorMessage(error));
+    }
   };
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-light to-muted p-4 bg-center bg-cover"
-      style={{ background: `url(${bglogin})` }}
+      className="min-h-screen flex items-center justify-center p-4 bg-center bg-cover relative"
+      style={{ backgroundImage: `url(${bglogin})` }}
     >
-      <div className="absolute inset-0 bg-black/50" />
+      {/* Darker overlay for contrast */}
+      <div className="absolute inset-0 bg-black/70" />
+
       <div className="relative z-10 w-full max-w-md">
-        {/* Logo */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-2">
-            <div className="flex justify-center mb-1">
-              <BubblesIcon className="h-8 w-8 text-black-600" />
-            </div>
-          </div>
+        <div className="text-center mb-8 flex flex-col items-center">
+          <img src={kifaru} alt="Kifaru Logo" className="w-20 h-20" />
         </div>
 
-        <Card className="border-2 shadow-lg">
+        <Card className="border border-white/10 bg-background/90 backdrop-blur shadow-xl">
           <CardHeader className="text-center">
-            <CardTitle>Admin Dashboard</CardTitle>
-            <CardDescription>
+            <CardTitle className="text-foreground">Admin Dashboard</CardTitle>
+            <CardDescription className="text-muted-foreground">
               Enter your credentials to access your dashboard
             </CardDescription>
           </CardHeader>
+
           <CardContent>
+            {errorMessage && (
+              <div className="mb-4 rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-center text-sm text-red-400">
+                {errorMessage}
+              </div>
+            )}
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label className="text-foreground/80">Email</Label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    id="email"
                     type="email"
                     placeholder="your@email.com"
-                    className="pl-10"
+                    className="pl-10 bg-muted/40 border-muted focus:border-primary"
                     value={formData.email}
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
+                    disabled={isLoading}
                     required
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label className="text-foreground/80">Password</Label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <Input
-                    id="password"
                     type={showPassword ? "text" : "password"}
                     placeholder="••••••••"
-                    className="pl-10 pr-10"
+                    className="pl-10 pr-10 bg-muted/40 border-muted focus:border-primary"
                     value={formData.password}
                     onChange={(e) =>
                       setFormData({ ...formData, password: e.target.value })
                     }
+                    disabled={isLoading}
                     required
                   />
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
-                    className="absolute right-2 top-1/2 transform -translate-y-1/2 h-auto p-1"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground"
                     onClick={() => setShowPassword(!showPassword)}
                   >
-                    {showPassword ? (
-                      <EyeOff className="w-4 h-4 text-muted-foreground" />
-                    ) : (
-                      <Eye className="w-4 h-4 text-muted-foreground" />
-                    )}
+                    {showPassword ? <EyeOff /> : <Eye />}
                   </Button>
                 </div>
               </div>
 
-              <div className="flex items-center justify-between">
-                <Link
-                  to="/auth/forgot-pass"
-                  className="text-sm text-primary hover:underline"
-                >
-                  Forgot password?
-                </Link>
-              </div>
+              {error && (
+                <div className="rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-center text-sm text-red-400">
+                  {error.message || "Invalid credentials. Please try again."}
+                </div>
+              )}
 
               <Button
                 type="submit"
-                className="w-full"
                 size="lg"
-                disabled={isPending}
+                disabled={isLoading}
+                className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
               >
-                <BubblesIcon className="w-4 h-4 mr-2" />
-                {isPending ? "Signing in..." : "Sign In"}
+                {isLoading ? "Signing in..." : "Sign In"}
               </Button>
             </form>
           </CardContent>
         </Card>
-
-        {error && (
-          <p className="text-sm text-red-500 mt-2">
-            {(error as any)?.response?.data?.message || "Login failed"}
-          </p>
-        )}
       </div>
     </div>
   );

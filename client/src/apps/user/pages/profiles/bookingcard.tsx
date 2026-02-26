@@ -1,66 +1,39 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Calendar, MapPin, Users } from "lucide-react";
+import type { Booking } from "@/types/booking.types";
+import { Button } from "@/components/ui/button";
 import {
-  Eye,
-  Calendar,
-  DollarSign,
-  Home,
-  MapPin,
-  Users,
-  CreditCard,
-} from "lucide-react";
-
-export type Booking = {
-  id: string;
-  propertyName: string;
-  checkIn: Date;
-  checkOut: Date;
-  guests: number;
-  total: number;
-  status: "upcoming" | "completed" | "cancelled";
-  paymentMethod: "mobile" | "card" | "bank_transfer";
-  bookingDate: Date;
-};
+  useCancelBooking,
+  useInitializePayment,
+} from "@/services/booking.service";
 
 interface PropertyBooking {
   booking: Booking;
 }
 
 export default function BookingCard({ booking }: PropertyBooking) {
-  const formatDate = (date: Date) => {
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const month = months[date.getMonth()];
-    const day = date.getDate().toString().padStart(2, "0");
-    const year = date.getFullYear();
-    return `${month} ${day}, ${year}`;
+  const cancelBooking = useCancelBooking();
+  const { mutate: initializePayment, isPending } = useInitializePayment();
+  const handleCancel = () => {
+    if (!confirm("Are you sure you want to cancel this booking?")) return;
+    cancelBooking.mutate(booking.id);
   };
 
-  const formatDateTime = (date: Date) => {
-    const dateStr = formatDate(date);
-    const hours = date.getHours().toString().padStart(2, "0");
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-    return `${dateStr} at ${hours}:${minutes}`;
+  const handlePayment = () => {
+    if (!booking.id) {
+      console.error("No booking ID found in state");
+      return;
+    }
+    initializePayment({ booking_id: booking.id });
   };
 
-  const getStatusColor = (status: PropertyBooking["booking"]["status"]) => {
-    switch (status) {
+  const getStatusStyle = () => {
+    switch (booking.status) {
+      case "confirmed":
       case "completed":
         return "bg-green-100 text-green-700";
-      case "upcoming":
+      case "pending":
         return "bg-yellow-100 text-yellow-700";
       case "cancelled":
         return "bg-red-100 text-red-700";
@@ -69,144 +42,140 @@ export default function BookingCard({ booking }: PropertyBooking) {
     }
   };
 
-  const getPaymentIcon = (
-    method: PropertyBooking["booking"]["paymentMethod"]
-  ) => {
-    switch (method) {
-      case "card":
-        return <CreditCard className="h-4 w-4" />;
-      case "mobile":
-        return <DollarSign className="h-4 w-4" />;
-      case "bank_transfer":
-        return <Home className="w-4 h-4" />;
-      default:
-        return null;
-    }
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    if (isNaN(date.getTime())) return "TBD";
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    });
   };
 
-  const calculateNights = (checkIn: Date, checkOut: Date) => {
-    const diffTime = Math.abs(checkOut.getTime() - checkIn.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
-  };
+  // const getPaymentIcon = (
+  //   method: PropertyBooking["booking"]["paymentMethod"],
+  // ) => {
+  //   switch (method) {
+  //     case "card":
+  //       return <CreditCard className="h-4 w-4" />;
+  //     case "mobile":
+  //       return <DollarSign className="h-4 w-4" />;
+  //     case "bank_transfer":
+  //       return <Home className="w-4 h-4" />;
+  //     default:
+  //       return null;
+  //   }
+  // };
 
   return (
-      <div>
-        <CardContent>
-          <div className="">
-            <Card
-              key={booking.id}
-              className="shadow-soft hover:shadow-medium transition-all"
-            >
-              <CardContent className="p-4">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                  <div className="flex-1 space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-semibold text-lg">
-                          #{booking.id}
-                        </h3>
-                      </div>
-                      <Badge className={getStatusColor(booking.status)}>
-                        {booking.status}
-                      </Badge>
-                    </div>
+    <Card className="border border-border rounded-2xl shadow-sm hover:shadow-md transition">
+      <CardContent className="p-5 space-y-4">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          <h3 className="font-semibold text-lg">{booking.booking_reference}</h3>
+          <Badge className={getStatusStyle()}>{booking.status}</Badge>
+        </div>
 
-                    <div className="space-y-1">
-                      <div className="bg-gray-50 rounded-lg p-4 space-y-3">
-                        <div className="flex items-center gap-2">
-                          <MapPin className="w-4 h-4 text-gray-500" />
-                          <span className="font-medium">
-                            {booking.propertyName}
-                          </span>
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-4 text-sm">
-                          <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-gray-500" />
-                            <div>
-                              <div className="text-gray-600">Check-in</div>
-                              <div className="font-medium">
-                                {formatDate(booking.checkIn)}
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-gray-500" />
-                            <div>
-                              <div className="text-gray-600">Check-out</div>
-                              <div className="font-medium">
-                                {formatDate(booking.checkOut)}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="flex items-center justify-between text-sm pt-2 border-t">
-                          <div className="flex items-center gap-2">
-                            <Users className="w-4 h-4 text-gray-500" />
-                            <span>
-                              {booking.guests} guest
-                              {booking.guests > 1 ? "s" : ""}
-                            </span>
-                          </div>
-                          <div>
-                            <span className="text-gray-600">
-                              {calculateNights(
-                                booking.checkIn,
-                                booking.checkOut
-                              )}{" "}
-                              night
-                              {calculateNights(
-                                booking.checkIn,
-                                booking.checkOut
-                              ) > 1
-                                ? "s"
-                                : ""}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between pt-2">
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
-                        {getPaymentIcon(booking.paymentMethod)}
-                        <span className="capitalize">
-                          {booking.paymentMethod.replace("_", " ")}
-                        </span>
-                        <span className="text-gray-400">•</span>
-                        <span>{formatDateTime(booking.bookingDate)}</span>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-2xl font-bold text-black-600">
-                          ${booking.total.toFixed(2)}
-                        </div>
-                        <div className="text-xs text-gray-500">Total</div>
-                      </div>
-                    </div>
-
-                    <Button
-                      className="w-full"
-                      variant={
-                        booking.status === "upcoming" ? "default" : "outline"
-                      }
-                      size="sm"
-                    >
-                      {booking.status === "upcoming" ? (
-                        <div className="flex">
-                          <Eye className="w-4 h-4 mr-2" /> View Details
-                        </div>
-                      ) : (
-                        "Book Again"
-                      )}
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+        {/* Property Info */}
+        <div className="bg-muted/40 rounded-xl p-4 space-y-3">
+          <div className="flex items-center gap-2">
+            <MapPin className="w-4 h-4 text-muted-foreground" />
+            <span className="font-medium">{booking.property_name}</span>
           </div>
-        </CardContent>
-      </div>
+
+          <div className="grid sm:grid-cols-2 gap-4 text-sm">
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-muted-foreground" />
+              <div>
+                <p className="text-muted-foreground">Check-in</p>
+                <p className="font-medium">{formatDate(booking.check_in)}</p>
+              </div>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4 text-muted-foreground" />
+              <div>
+                <p className="text-muted-foreground">Check-out</p>
+                <p className="font-medium">{formatDate(booking.check_out)}</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-between text-sm border-t border-border/60 pt-3">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1 text-muted-foreground">
+                <Users className="w-4 h-4" />
+                <span className="text-foreground font-medium">
+                  {booking.number_of_guests}
+                </span>
+              </div>
+              <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                ({booking.number_of_adults}A / {booking.number_of_children}C)
+              </span>
+            </div>
+            <span className="text-primary font-semibold">
+              {booking.total_days} Night(s)
+            </span>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          {/* <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            {getPaymentIcon(booking.paymentMethod)}
+            <span className="capitalize">
+              {booking.paymentMethod.replace("_", " ")}
+            </span>
+            <span>•</span>
+            <span>{formatDateTime(booking.bookingDate)}</span>
+          </div> */}
+
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            {/* Show Cancel button if not already cancelled or completed */}
+            {booking.status !== "cancelled" &&
+              booking.status !== "completed" && (
+                <Button
+                  onClick={handleCancel}
+                  className="border border-red-500 text-red-500 bg-red-50 hover:bg-red-50 px-4 py-2 rounded-md transition-colors cursor-pointer"
+                  disabled={cancelBooking.isPending}
+                >
+                  {cancelBooking.isPending ? "Cancelling..." : "Cancel Booking"}
+                </Button>
+              )}
+
+            {/* Only show Make Payment if the status is 'pending' */}
+            {booking.status === "pending" && (
+              <Button
+                onClick={handlePayment}
+                disabled={isPending}
+                className="border border-primary text-primary bg-primary/10 hover:bg-primary/20 px-4 py-2 rounded-md transition-colors cursor-pointer"
+              >
+                {isPending ? "Securing Gateway..." : "Make Payment"}
+              </Button>
+            )}
+          </div>
+
+          <div className="text-right">
+            <p className="text-2xl font-semibold">€{booking.total_amount}</p>
+            <p className="text-xs text-muted-foreground">Total</p>
+          </div>
+        </div>
+
+        {/* Action */}
+        {/* <Button
+          className="w-full"
+          size="sm"
+          variant={booking.status === "upcoming" ? "default" : "outline"}
+        >
+          {booking.status === "upcoming" ? (
+            <span className="flex items-center gap-2">
+              <Eye className="w-4 h-4" /> View Details
+            </span>
+          ) : (
+            "Book Again"
+          )}
+        </Button> */}
+      </CardContent>
+    </Card>
   );
 }

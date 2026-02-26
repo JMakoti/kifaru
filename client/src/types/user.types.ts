@@ -1,0 +1,89 @@
+export interface User {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  phone_number?: string;
+  whatsapp_number?: string;
+  role: "admin" | "staff" | "concierge" | "property_manager" | "external";
+  preferred_language?: string;
+  country_of_residence?: string;
+  is_returning_guest?: boolean;
+  special_preferences: Record<string, unknown>;
+  is_active: boolean;
+  is_verified: boolean;
+  assigned_properties: unknown[];
+  date_joined: string;
+  last_login: string;
+}
+
+export interface AuthResponse {
+  user: User;
+  access_token: string;
+  refresh_token: string;
+  message?: string;
+}
+
+export interface AuthError {
+  message: string;
+}
+
+export interface MessageResponse {
+  message: string;
+}
+
+export interface LoginFormInputs {
+  email: string;
+  password: string;
+}
+
+export interface RegisterFormInputs extends LoginFormInputs {
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  whatsapp_number: string;
+  password: string;
+  password_confirm: string;
+}
+
+export interface ForgetPassInput {
+  email: string;
+}
+
+export interface ResetPassInputs {
+  password: string;
+  password_confirm: string;
+  uidb64: string;
+  token: string;
+}
+
+export interface FetchUsersParams {
+  role?: string;
+  is_active?: string;
+  is_verified?: string;
+  search?: string;
+  ordering?: string;
+}
+
+export interface UsersPaginatedResponse<T> {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+}
+
+// types/dashboard.ts
+export interface UsersByRole {
+  admin: number;
+  staff: number;
+  concierge: number;
+  property_manager: number;
+  external: number;
+}
+
+export interface DashboardData {
+  total_users: number;
+  active_users: number;
+  verified_users: number;
+  users_by_role: UsersByRole;
+}

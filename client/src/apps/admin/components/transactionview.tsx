@@ -9,147 +9,69 @@ import {
   Calendar,
   CreditCard,
   TrendingUp,
-  ArrowUpRight,
   ArrowDownLeft,
   CheckCircle2,
   XCircle,
   Clock,
-  AlertCircle,
 } from "lucide-react";
-
-interface Transaction {
-  id: string;
-  type: "payment" | "refund" | "deposit" | "withdrawal";
-  amount: number;
-  status: "completed" | "pending" | "failed" | "processing";
-  method: "card" | "bank_transfer" | "mobile_money" | "cash";
-  customerName: string;
-  customerEmail?: string;
-  date: Date;
-  reference: string;
-  fee?: number;
-}
+import { usePayments } from "@/services/booking.service";
+import LoadingScreen from "@/components/loadingscreen";
+import type { Payment } from "@/types/booking.types";
 
 export default function TransactionView() {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [transactions] = useState<Transaction[]>([
-    {
-      id: "TXN001",
-      type: "payment",
-      amount: 2800.0,
-      status: "completed",
-      method: "card",
-      customerName: "Alice Johnson",
-      customerEmail: "alice@example.com",
-      date: new Date(2024, 2, 15, 10, 30),
-      reference: "REF-2024-0315-001",
-      fee: 28.0,
-    },
-    {
-      id: "TXN002",
-      type: "payment",
-      amount: 450.0,
-      status: "pending",
-      method: "bank_transfer",
-      customerName: "Bob Smith",
-      customerEmail: "bob@example.com",
-      date: new Date(2024, 2, 15, 14, 15),
-      reference: "REF-2024-0315-002",
-      fee: 4.5,
-    },
-    {
-      id: "TXN003",
-      type: "refund",
-      amount: 120.0,
-      status: "processing",
-      method: "card",
-      customerName: "David Wilson",
-      customerEmail: "david@example.com",
-      date: new Date(2024, 2, 14, 16, 45),
-      reference: "REF-2024-0314-003",
-    },
-    {
-      id: "TXN004",
-      type: "payment",
-      amount: 1950.0,
-      status: "completed",
-      method: "mobile_money",
-      customerName: "Carol Davis",
-      customerEmail: "carol@example.com",
-      date: new Date(2024, 2, 14, 9, 20),
-      reference: "REF-2024-0314-004",
-      fee: 19.5,
-    },
-    {
-      id: "TXN005",
-      type: "withdrawal",
-      amount: 5000.0,
-      status: "completed",
-      method: "bank_transfer",
-      customerName: "Business Account",
-      date: new Date(2024, 2, 13, 15, 0),
-      reference: "REF-2024-0313-005",
-      fee: 25.0,
-    },
-    {
-      id: "TXN006",
-      type: "payment",
-      amount: 680.0,
-      status: "failed",
-      method: "card",
-      customerName: "Emma Brown",
-      customerEmail: "emma@example.com",
-      date: new Date(2024, 2, 13, 11, 30),
-      reference: "REF-2024-0313-006",
-    },
-    {
-      id: "TXN007",
-      type: "deposit",
-      amount: 10000.0,
-      status: "completed",
-      method: "bank_transfer",
-      customerName: "Business Account",
-      date: new Date(2024, 2, 12, 9, 0),
-      reference: "REF-2024-0312-007",
-    },
-  ]);
+  const { data, isLoading } = usePayments();
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
+
+  const payments = data?.results ?? [];
 
   const formatDate = (date: Date) => {
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const month = months[date.getMonth()];
-    const day = date.getDate().toString().padStart(2, "0");
-    const year = date.getFullYear();
-    const hours = date.getHours().toString().padStart(2, "0");
-    const minutes = date.getMinutes().toString().padStart(2, "0");
-    return `${month} ${day}, ${year} at ${hours}:${minutes}`;
+    if (isNaN(date.getTime())) return "TBD";
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    });
   };
 
-  const filteredTransactions = transactions.filter((txn) => {
-    const matchesSearch =
-      txn.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      txn.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      txn.reference.toLowerCase().includes(searchTerm.toLowerCase());
+  // const filteredTransactions = payments.filter((txn) => {
+  //   const matchesSearch =
+  //     txn.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     txn.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //     txn.reference.toLowerCase().includes(searchTerm.toLowerCase());
 
-    const matchesStatus = statusFilter === "all" || txn.status === statusFilter;
+  //   const matchesStatus = statusFilter === "all" || txn.status === statusFilter;
 
-    return matchesSearch && matchesStatus;
-  });
+  //   return matchesSearch && matchesStatus;
+  // });
+  const filteredTransactions = payments
+    .map((payment) => ({
+      id: payment.transaction_id,
+      type: "payment" as const,
+      amount: Number(payment.amount),
+      status: payment.payment_status,
+      method: payment.payment_method,
+      customerName: `Booking #${payment.booking}`,
+      date: new Date(payment.created_at),
+      reference: payment.paystack_reference,
+    }))
+    .filter((txn) => {
+      const matchesSearch =
+        txn.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        txn.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        txn.reference.toLowerCase().includes(searchTerm.toLowerCase());
 
-  const getStatusColor = (status: Transaction["status"]) => {
+      const matchesStatus =
+        statusFilter === "all" || txn.status === statusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
+
+  const getStatusColor = (status: Payment["payment_status"]) => {
     switch (status) {
       case "completed":
         return "bg-green-100 text-green-700";
@@ -157,14 +79,12 @@ export default function TransactionView() {
         return "bg-yellow-100 text-yellow-700";
       case "failed":
         return "bg-red-100 text-red-700";
-      case "processing":
-        return "bg-blue-100 text-blue-700";
       default:
         return "bg-gray-100 text-gray-700";
     }
   };
 
-  const getStatusIcon = (status: Transaction["status"]) => {
+  const getStatusIcon = (status: Payment["payment_status"]) => {
     switch (status) {
       case "completed":
         return <CheckCircle2 className="w-4 h-4" />;
@@ -172,49 +92,37 @@ export default function TransactionView() {
         return <Clock className="w-4 h-4" />;
       case "failed":
         return <XCircle className="w-4 h-4" />;
-      case "processing":
-        return <AlertCircle className="w-4 h-4" />;
       default:
         return null;
     }
   };
 
-  const getTypeIcon = (type: Transaction["type"]) => {
-    switch (type) {
-      case "payment":
-      case "deposit":
-        return <ArrowDownLeft className="w-5 h-5 text-green-600" />;
-      case "refund":
-      case "withdrawal":
-        return <ArrowUpRight className="w-5 h-5 text-red-600" />;
-      default:
-        return null;
-    }
+  const getTypeIcon = () => {
+    return <ArrowDownLeft className="w-5 h-5 text-green-600" />;
   };
 
-  const getMethodBadge = (method: Transaction["method"]) => {
+  type PaymentMethod = Payment["payment_method"];
+
+  const getMethodBadge = (method: PaymentMethod) => {
     const colors = {
       card: "bg-purple-100 text-purple-700",
-      bank_transfer: "bg-blue-100 text-blue-700",
-      mobile_money: "bg-green-100 text-green-700",
-      cash: "bg-gray-100 text-gray-700",
+      mpesa: "bg-green-100 text-green-700",
     };
+
     return colors[method];
   };
 
-  const totalTransactions = transactions.filter(
-    (t) => t.status === "completed"
+  const totalTransactions = payments.filter(
+    (p) => p.payment_status === "completed",
   ).length;
-  const totalRevenue = transactions
-    .filter(
-      (t) =>
-        (t.type === "payment" || t.type === "deposit") &&
-        t.status === "completed"
-    )
-    .reduce((sum, txn) => sum + txn.amount, 0);
-  const pendingAmount = transactions
-    .filter((t) => t.status === "pending")
-    .reduce((sum, txn) => sum + txn.amount, 0);
+
+  const totalRevenue = payments
+    .filter((p) => p.payment_status === "completed")
+    .reduce((sum, p) => sum + Number(p.amount), 0);
+
+  const pendingAmount = payments
+    .filter((p) => p.payment_status === "pending")
+    .reduce((sum, p) => sum + Number(p.amount), 0);
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -262,7 +170,7 @@ export default function TransactionView() {
                   Total Revenue
                 </p>
                 <p className="text-2xl font-bold font-heading">
-                  ${totalRevenue.toFixed(2)}
+                  €{totalRevenue.toFixed(2)}
                 </p>
                 <p className="text-xs text-muted-foreground">
                   Payments received
@@ -283,7 +191,7 @@ export default function TransactionView() {
                   Pending Amount
                 </p>
                 <p className="text-2xl font-bold font-heading text-primary">
-                  ${pendingAmount.toFixed(2)}
+                  €{pendingAmount.toFixed(2)}
                 </p>
                 <p className="text-xs text-muted-foreground">
                   Awaiting processing
@@ -360,7 +268,7 @@ export default function TransactionView() {
                   <div className="flex items-start justify-between">
                     <div className="flex items-start gap-4 flex-1">
                       <div className="p-2 bg-gray-100 rounded-lg">
-                        {getTypeIcon(txn.type)}
+                        {getTypeIcon()}
                       </div>
                       <div className="flex-1 space-y-2">
                         <div className="flex items-start justify-between">
@@ -388,7 +296,9 @@ export default function TransactionView() {
                               {txn.type === "payment" || txn.type === "deposit"
                                 ? "+"
                                 : "-"}
-                              ${txn.amount.toFixed(2)}
+                              {/* € */}
+                              {payments[0]?.currency ?? "KES"}{" "}
+                              {txn.amount.toFixed(2)}
                             </div>
                             {txn.reference && (
                               <p className="text-ls text-gray-500">
@@ -404,12 +314,12 @@ export default function TransactionView() {
                               {txn.customerName}
                             </span>
                           </div>
-                          {txn.customerEmail && (
+                          {/* {txn.customerEmail && (
                             <>
                               <span className="text-gray-300">•</span>
                               <span>{txn.customerEmail}</span>
                             </>
-                          )}
+                          )} */}
                         </div>
 
                         <div className="flex items-center gap-4 text-sm">

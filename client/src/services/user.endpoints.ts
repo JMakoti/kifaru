@@ -1,27 +1,39 @@
 import axios from "axios";
 import type {
   AuthResponse,
+  DashboardData,
+  FetchUsersParams,
+  ForgetPassInput,
   LoginFormInputs,
+  MessageResponse,
   RegisterFormInputs,
+  ResetPassInputs,
   User,
-} from "./user.types";
+  UsersPaginatedResponse,
+} from "../types/user.types";
 
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 export const api = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
-  headers: {
-    "Content-Type": "application/json",
-  },
+  // headers: {
+  //   "Content-Type": "application/json",
+  // },
 });
 
 // endpoints
 const REGISTER_URL = "/user/register/";
 const LOGIN_URL = "/user/login/";
 const PROFILE_URL = "/user/me/";
-const ADMIN_LOGIN_URL = "/admin/login/";
+// const ADMIN_LOGIN_URL = "/admin/login/";
 const LOGOUT_URL = "/user/logout/";
+const FORGETPASS_URL = "/user/password-reset/";
+const RESETPASS_URL = `/user/password-reset-confirm/{uidb64}/{token}/`;
+const EDITPROFILE_URL = "/user/me/";
+const GETUSERS_URL = "/user/admin/users/";
+const DELETEUSER_URL = "/user/admin/users";
+const GETADMINSTATS_URL = "/user/admin/stats/";
 
 // get profile
 export const getProfile = async (): Promise<User> => {
@@ -74,12 +86,12 @@ export const loginUser = async (
 };
 
 //admin login
-export const adminLogin = async (
-  payload: LoginFormInputs,
-): Promise<AuthResponse> => {
-  const { data } = await api.post(ADMIN_LOGIN_URL, payload);
-  return data;
-};
+// export const adminLogin = async (
+//   payload: LoginFormInputs,
+// ): Promise<AuthResponse> => {
+//   const { data } = await api.post(ADMIN_LOGIN_URL, payload);
+//   return data;
+// };
 
 //logout user
 export const logoutUser = async (): Promise<void> => {
@@ -101,4 +113,60 @@ export const logoutUser = async (): Promise<void> => {
     document.cookie =
       "refresh_token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC; SameSite=Strict";
   }
+};
+
+//forget password
+export const forgetPassword = async (
+  inputs: ForgetPassInput,
+): Promise<MessageResponse> => {
+  const { data } = await api.post<MessageResponse>(FORGETPASS_URL, inputs);
+  return data;
+};
+
+//reset password
+export const resetPassword = async (
+  inputs: ResetPassInputs,
+): Promise<{ message: string }> => {
+  const { uidb64, token, password, password_confirm } = inputs;
+
+  const url = RESETPASS_URL.replace("{uidb64}", uidb64).replace(
+    "{token}",
+    token,
+  );
+
+  const { data } = await api.post(url, {
+    password,
+    password_confirm,
+  });
+
+  return data;
+};
+
+// edit user
+export const updateProfile = async (data: FormData) => {
+  const res = await api.patch(EDITPROFILE_URL, data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+
+  return res.data;
+};
+
+//get guest list
+export const getAdminUsers = async (
+  params?: FetchUsersParams,
+): Promise<UsersPaginatedResponse<User>> => {
+  const response = await api.get<UsersPaginatedResponse<User>>(GETUSERS_URL, {
+    params,
+  });
+  return response.data;
+};
+
+//delete user
+export const deleteUser = (id: number) =>
+  api.delete(`${DELETEUSER_URL}/${id}/`);
+
+//get admin stats
+export const getAdminStats = async (): Promise<DashboardData> => {
+  const { data } = await api.get(GETADMINSTATS_URL);
+  return data;
 };

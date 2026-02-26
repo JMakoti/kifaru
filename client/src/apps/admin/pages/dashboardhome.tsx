@@ -1,16 +1,22 @@
+import { useDashboardStats } from "@/services/user.service";
+import AdminDashboardView from "../components/dashboardview";
+import LoadingScreen from "@/components/loadingscreen";
+
 export default function DashboardHome() {
+  const { data, isLoading, error } = useDashboardStats();
+
+  if (isLoading) return <LoadingScreen />;
+  if (error) return <p>Error loading dashboard</p>;
+
+  if (!data) return null;
+
   return (
     <>
-      <main className="min-h-screen pt-20">
-        <div className="container mx-auto px-6 md:px-12 py-16">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold text-center mb-8">
-            Dashboard
-          </h1>
-          <p className="text-center text-muted-foreground max-w-2xl mx-auto">
-            Access key metrics and analytics for your properties, bookings, and guests. Monitor performance and make informed decisions from your admin dashboard.
-          </p>
+      <main className="min-h-screen bg-background mt-15">
+        <div className="container py-8 px-6">
+          <AdminDashboardView data={data} />
         </div>
       </main>
     </>
-  )
+  );
 }

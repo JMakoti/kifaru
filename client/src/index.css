@@ -3,11 +3,15 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ================================
+   Tailwind → CSS Variable Bridge
+================================ */
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -41,80 +45,101 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* ================================
+   ROOT (LIGHT MODE – KIFARU)
+================================ */
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.147 0.004 49.25);
+
+  /* Kifaru Brand Palette */
+  --kifaru-primary: oklch(0.15 0 0);
+  --kifaru-background: oklch(0.97 0.03 85);
+  --kifaru-accent: oklch(0.7 0.08 85);
+  --kifaru-nature: oklch(0.38 0.05 130);
+  --kifaru-body: oklch(0.45 0.01 50);
+
+  /*shadcn token mapping */
+  --background: var(--kifaru-background);
+  --foreground: var(--kifaru-primary);
+
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.147 0.004 49.25);
+  --card-foreground: var(--kifaru-primary);
+
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.147 0.004 49.25);
-  --primary: oklch(0.216 0.006 56.043);
-  --primary-foreground: oklch(0.985 0.001 106.423);
-  --secondary: oklch(0.97 0.001 106.424);
-  --secondary-foreground: oklch(0.216 0.006 56.043);
-  --muted: oklch(0.97 0.001 106.424);
-  --muted-foreground: oklch(0.553 0.013 58.071);
-  --accent: oklch(0.97 0.001 106.424);
-  --accent-foreground: oklch(0.216 0.006 56.043);
+  --popover-foreground: var(--kifaru-primary);
+
+  --primary: var(--kifaru-primary);
+  --primary-foreground: oklch(1 0 0);
+
+  --secondary: var(--kifaru-accent);
+  --secondary-foreground: var(--kifaru-primary);
+
+  --accent: var(--kifaru-accent);
+  --accent-foreground: var(--kifaru-primary);
+
+  --muted: oklch(0.94 0.02 85);
+  --muted-foreground: var(--kifaru-body);
+
+  --border: oklch(0.85 0.03 85);
+  --input: var(--border);
+  --ring: var(--kifaru-primary);
+
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.923 0.003 48.717);
-  --input: oklch(0.923 0.003 48.717);
-  --ring: oklch(0.709 0.01 56.259);
+
+  /* Optional extras (charts, sidebar) */
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0.001 106.423);
-  --sidebar-foreground: oklch(0.147 0.004 49.25);
-  --sidebar-primary: oklch(0.216 0.006 56.043);
-  --sidebar-primary-foreground: oklch(0.985 0.001 106.423);
-  --sidebar-accent: oklch(0.97 0.001 106.424);
-  --sidebar-accent-foreground: oklch(0.216 0.006 56.043);
-  --sidebar-border: oklch(0.923 0.003 48.717);
-  --sidebar-ring: oklch(0.709 0.01 56.259);
+
+  --sidebar: var(--kifaru-background);
+  --sidebar-foreground: var(--kifaru-primary);
+  --sidebar-primary: var(--kifaru-primary);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: var(--kifaru-accent);
+  --sidebar-accent-foreground: var(--kifaru-primary);
+  --sidebar-border: var(--border);
+  --sidebar-ring: var(--kifaru-primary);
 }
 
+/* ================================
+   DARK MODE (OPTIONAL, KIFARU)
+================================ */
 .dark {
-  --background: oklch(0.147 0.004 49.25);
-  --foreground: oklch(0.985 0.001 106.423);
-  --card: oklch(0.216 0.006 56.043);
-  --card-foreground: oklch(0.985 0.001 106.423);
-  --popover: oklch(0.216 0.006 56.043);
-  --popover-foreground: oklch(0.985 0.001 106.423);
-  --primary: oklch(0.923 0.003 48.717);
-  --primary-foreground: oklch(0.216 0.006 56.043);
-  --secondary: oklch(0.268 0.007 34.298);
-  --secondary-foreground: oklch(0.985 0.001 106.423);
-  --muted: oklch(0.268 0.007 34.298);
-  --muted-foreground: oklch(0.709 0.01 56.259);
-  --accent: oklch(0.268 0.007 34.298);
-  --accent-foreground: oklch(0.985 0.001 106.423);
-  --destructive: oklch(0.704 0.191 22.216);
+  --background: oklch(0.15 0 0);
+  --foreground: oklch(0.97 0.03 85);
+
+  --card: oklch(0.2 0.01 50);
+  --card-foreground: oklch(0.97 0.03 85);
+
+  --popover: oklch(0.2 0.01 50);
+  --popover-foreground: oklch(0.97 0.03 85);
+
+  --primary: oklch(0.97 0.03 85);
+  --primary-foreground: oklch(0.15 0 0);
+
+  --secondary: oklch(0.3 0.02 85);
+  --secondary-foreground: oklch(0.97 0.03 85);
+
+  --muted: oklch(0.25 0.01 50);
+  --muted-foreground: oklch(0.75 0.02 85);
+
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.553 0.013 58.071);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.216 0.006 56.043);
-  --sidebar-foreground: oklch(0.985 0.001 106.423);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0.001 106.423);
-  --sidebar-accent: oklch(0.268 0.007 34.298);
-  --sidebar-accent-foreground: oklch(0.985 0.001 106.423);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.553 0.013 58.071);
+  --ring: oklch(0.97 0.03 85);
 }
 
+/* ================================
+   BASE STYLES
+================================ */
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
-    @apply bg-background text-foreground;
+    font-family: "Baskervville", serif;
+    @apply bg-background text-foreground antialiased;
   }
 }
