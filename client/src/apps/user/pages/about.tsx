@@ -4,7 +4,7 @@ import AmenitiesSection from "@/apps/user/components/about/amenities";
 import Why_UsSection from "@/apps/user/components/about/why_us";
 import TestimonialSection from "@/apps/user/components/about/testmonials";
 import { motion } from "framer-motion";
-import propertybg from "@/assets/images/kifaru-about.jpg";
+import propertybg from "@/assets/images/aboutbg.jpg";
 
 export default function About() {
   return (
