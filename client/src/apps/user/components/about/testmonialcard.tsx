@@ -1,5 +1,5 @@
 import { Quote } from "lucide-react";
-import propertyImage from "@/assets/property-2.jpg";
+import propertyImage from "@/assets/images/testimonial-float.jpg";
 
 interface TestimonialCardProps {
   quote: string;

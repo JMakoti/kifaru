@@ -1,4 +1,4 @@
-import rhino from "@/assets/rhino.png";
+import rhino from "@/assets/images/rhino.png";
 import { Link, useLocation } from "react-router";
 import {
   Car,
@@ -8,7 +8,7 @@ import {
   Palette,
   Wifi,
 } from "lucide-react";
-import kifaruExperience from "@/assets/property-1.jpg";
+import kifaruExperience from "@/assets/images/kifaru-about.jpg";
 import { Button } from "@/components/ui/button";
 import { motion, type Variants } from "framer-motion";
 
