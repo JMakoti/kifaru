@@ -132,7 +132,6 @@ export default function BookingForm() {
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
 
-  /*Calendar Queries */
   const { data: bookingData } = usePropertyBookings(id);
   // Price Calculation Query
   const {
@@ -171,8 +170,6 @@ export default function BookingForm() {
     };
 
     navigate(`/property/${slug}/preview`, { state: payload });
-
-    console.log("Booking Payload:", payload);
   };
 
   const safeMaxGuests = max_guests ?? 1;
