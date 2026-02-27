@@ -17,9 +17,6 @@ const BASE_URL = import.meta.env.VITE_API_URL;
 export const api = axios.create({
   baseURL: BASE_URL,
   withCredentials: true,
-  // headers: {
-  //   "Content-Type": "application/json",
-  // },
 });
 
 // endpoints
@@ -84,14 +81,6 @@ export const loginUser = async (
 
   return response.data;
 };
-
-//admin login
-// export const adminLogin = async (
-//   payload: LoginFormInputs,
-// ): Promise<AuthResponse> => {
-//   const { data } = await api.post(ADMIN_LOGIN_URL, payload);
-//   return data;
-// };
 
 //logout user
 export const logoutUser = async (): Promise<void> => {

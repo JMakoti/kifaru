@@ -7,7 +7,6 @@ import {
   Search,
   Eye,
   Calendar,
-  // DollarSign,
   Home,
   MapPin,
   Users,
@@ -45,27 +44,6 @@ export default function BookingView({ data }: PropertyBooking) {
       year: "numeric",
     });
   };
-
-  // const filteredBooking = booking.filter(
-  //   (booking) =>
-  //     booking.guestName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     booking.id.toString().includes(searchTerm) ||
-  //     booking.propertyName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     booking.propertyType.toLowerCase().includes(searchTerm.toLowerCase()),
-  // );
-
-  // const getPaymentIcon = (method: PropertyBooking["paymentMethod"]) => {
-  //   switch (method) {
-  //     case "card":
-  //       return <CreditCard className="h-4 w-4" />;
-  //     case "mobile":
-  //       return <DollarSign className="h-4 w-4" />;
-  //     case "bank_transfer":
-  //       return <Home className="w-4 h-4" />;
-  //     default:
-  //       return null;
-  //   }
-  // };
 
   const totalBookings = data.filter(
     (b) => b.status === "confirmed" || b.status === "completed",
@@ -246,14 +224,6 @@ export default function BookingView({ data }: PropertyBooking) {
                       </div>
 
                       <div className="flex items-center justify-between pt-2">
-                        {/* <div className="flex items-center gap-2 text-sm text-gray-600">
-                        {getPaymentIcon(booking.paymentMethod)}
-                        <span className="capitalize">
-                          {booking.paymentMethod.replace("_", " ")}
-                        </span>
-                        <span className="text-gray-400">•</span>
-                        <span>{formatDateTime(booking.bookingDate)}</span>
-                      </div> */}
                         <div className="flex items-center gap-2 text-sm text-gray-600"></div>
                         <div className="text-right">
                           <div className="text-2xl font-bold text-black-600">

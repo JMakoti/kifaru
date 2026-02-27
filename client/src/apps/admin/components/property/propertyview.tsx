@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 import { PropertyFormSheet } from "./propertyfrom";
 import type { Property } from "@/types/property";
-// import { Link } from "react-router";
 
 interface PropertyView {
   properties: Property[];

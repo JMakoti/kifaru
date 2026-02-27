@@ -25,9 +25,6 @@ export const propertyApi = {
   // Update an existing property
   update: async (slug: string, property: Property): Promise<Property> => {
     const formData = buildPropertyFormData(property);
-
-    // Log the FormData entries to the conle to inspect them
-    console.log("Inspecting FormData before sending:");
     for (const [key, value] of formData.entries()) {
       console.log(`${key}:`, value);
     }
@@ -85,7 +82,6 @@ export const reviewApi = {
 
   //create a new review
   create: async (payload: ReviewPayload): Promise<PropertyReview> => {
-    // Use FormData if sending a File object
     const formData = new FormData();
     Object.entries(payload).forEach(([key, value]) => {
       formData.append(key, value as string | Blob);
@@ -103,7 +99,6 @@ export const reviewApi = {
     const formData = new FormData();
 
     Object.entries(payload).forEach(([key, value]) => {
-      // Only append if value exists to avoid overwriting with null/undefined
       if (value !== undefined && value !== null) {
         formData.append(key, value as string | Blob);
       }

@@ -36,7 +36,6 @@ export function buildPropertyFormData(property: Property): FormData {
   }
 
   // -------------------- Amenities --------------------
-  // Now the whole object can be serialized as JSON
   formData.append("amenities", JSON.stringify(property.amenities ?? {}));
 
   // -------------------- Property Images --------------------
@@ -51,68 +50,20 @@ export function buildPropertyFormData(property: Property): FormData {
     }
   });
 
-  // -------------------- Highlights --------------------
-  // (property.highlights ?? []).forEach((highlight, index) => {
-  //   formData.append(`highlights[${index}][title]`, highlight.title);
+  // -------------------- Pricing Options --------------------
+  const highlightsMeta = (property.highlights ?? []).map((h) => ({
+    title: h.title,
+  }));
 
-  //   if (highlight.image instanceof File) {
-  //     // New uploaded file
-  //     formData.append(`highlights[${index}][image]`, highlight.image);
-  //   } else if (typeof highlight.image === "string") {
-  //     // Existing image URL (for edit mode)
-  //     formData.append(`highlights[${index}][image]`, highlight.image);
-  //   } else {
-  //     // No image
-  //     formData.append(`highlights[${index}][image]`, "");
-  //   }
-  // });
-  // (property.highlights ?? []).forEach((highlight, index) => {
-  //   formData.append(`highlights[${index}][title]`, highlight.title);
+  formData.append("highlights", JSON.stringify(highlightsMeta));
 
-  //   if (highlight.image instanceof File) {
-  //     // New uploaded file
-  //     formData.append(`highlights[${index}][image]`, highlight.image);
-  //   } else if (typeof highlight.image === "string") {
-  //     // Existing image URL or ID – send as separate field
-  //     // Don't append as a file, instead let backend know to reuse it
-  //     formData.append(
-  //       `highlights[${index}][existing_image_url]`,
-  //       highlight.image,
-  //     );
-  //   }
-  // });
-
-  // -------------------- Highlights --------------------
-  // const highlightsMeta = property.highlights.map((h) => ({
-  //   title: h.title,
-  // }));
-
-  // formData.append("highlights", JSON.stringify(highlightsMeta));
-
-  // property.highlights.forEach((highlight) => {
-  //   if (highlight.image instanceof File) {
-  //     formData.append("highlights_images", highlight.image);
-  //   }
-  // });
-
-  // -------------------- Highlights --------------------
-const highlightsMeta = (property.highlights ?? []).map((h) => ({
-  title: h.title,
-}));
-
-formData.append("highlights", JSON.stringify(highlightsMeta));
-
-(property.highlights ?? []).forEach((highlight) => {
-  if (highlight.image instanceof File) {
-    formData.append("highlights_images", highlight.image);
-  }
-});
+  (property.highlights ?? []).forEach((highlight) => {
+    if (highlight.image instanceof File) {
+      formData.append("highlights_images", highlight.image);
+    }
+  });
 
   // -------------------- Pricing Options --------------------
-  // formData.append(
-  //   "pricing_options",
-  //   JSON.stringify(property.pricing_options ?? []),
-  // );
   const cleanedPricing = (property.pricing_options ?? []).map((pricing) => ({
     ...pricing,
     price_per_night:

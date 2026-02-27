@@ -17,7 +17,6 @@ export function extractErrorMessage(error: unknown): string {
       return data.message.filter(Boolean).join(" ");
     }
 
-    // fallback: flatten all values in the object
     return Object.values(data)
       .flatMap((v) => (Array.isArray(v) ? v : [v]))
       .filter(Boolean)

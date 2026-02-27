@@ -57,20 +57,6 @@ export const useCalculateBookingPrice = (params?: BookingPriceQuery) =>
     staleTime: 60_000,
   });
 
-// MUTATIONS
-
-// export const useCreateBooking = () => {
-//   const queryClient = useQueryClient();
-
-//   return useMutation({
-//     mutationFn: (data: BookingPayload) => bookingApi.create(data),
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.all });
-//       queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.my });
-//     },
-//   });
-// };
-
 export const useCreateBooking = () => {
   const queryClient = useQueryClient();
 

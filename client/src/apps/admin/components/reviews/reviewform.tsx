@@ -1,4 +1,4 @@
-import { useState, useRef} from "react";
+import { useState, useRef } from "react";
 import {
   Dialog,
   DialogContent,
@@ -9,16 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
 import { X, Loader2 } from "lucide-react";
 import type { PropertyReview, ReviewPayload } from "@/types/property";
-// import { useProperties } from "@/services/property.service";
 
 interface Props {
   open: boolean;
@@ -44,11 +36,6 @@ export default function ReviewFormDialog({
   onSubmit,
   isLoading: isSubmitting,
 }: Props) {
-  // 1. Fetch Real Data
-  // const { data, isLoading: loadingProps } = useProperties();
-  // const propertyList = useMemo(() => data?.results || [], [data]);
-
-  //   const [form, setForm] = useState(empty);
   const [form, setForm] = useState(
     review
       ? {
@@ -112,31 +99,6 @@ export default function ReviewFormDialog({
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            {/* Property Select */}
-            {/* <div className="space-y-1.5">
-              <Label>Property</Label>
-              <Select
-                disabled={isSubmitting || loadingProps}
-                value={form.property ? String(form.property) : ""}
-                onValueChange={(v) => set("property", +v)}
-              >
-                <SelectTrigger>
-                  <SelectValue
-                    placeholder={
-                      loadingProps ? "Loading..." : "Select property"
-                    }
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  {propertyList.map((p) => (
-                    <SelectItem key={p.id} value={String(p.id)}>
-                      {p.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div> */}
-
             {/* Rating Field */}
             <div className="space-y-1.5">
               <Label>Rating</Label>
@@ -187,19 +149,6 @@ export default function ReviewFormDialog({
                 )}
               </div>
               <div className="flex-1">
-                {/* <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  disabled={isSubmitting}
-                  onClick={() => fileRef.current?.click()}
-                  className="w-full"
-                  
-                >
-
-                  <Upload className="mr-2 h-3.5 w-3.5" />
-                  Upload Photo
-                </Button> */}
                 <input
                   ref={fileRef}
                   type="file"

@@ -1,10 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import AdminLayout from "./layout/adminlayout";
+import LoadingScreen from "@/components/loadingscreen";
 
-/* -------------------------
-   Lazy Loaded Admin Pages
--------------------------- */
 const DashboardHome = lazy(() => import("./pages/dashboardhome"));
 const Properties = lazy(() => import("./pages/properties"));
 const Bookings = lazy(() => import("./pages/bookings"));
@@ -19,23 +17,11 @@ const NotFound = lazy(() => import("@/apps/user/notfound"));
 const PropertyReport = lazy(() => import("./pages/reports/propertyreportpage"));
 const BookingsReport = lazy(() => import("./pages/reports/bookingreportpaage"));
 const PaymentsReport = lazy(() => import("./pages/reports/paymentreportpage"));
-/* -------------------------
-   Loader Component
--------------------------- */
-function PageLoader() {
-  return (
-    <div className="flex items-center justify-center min-h-[60vh]">
-      <div className="text-gray-500 text-lg animate-pulse">Loading...</div>
-    </div>
-  );
-}
 
-/* -------------------------
-   Admin Routes
--------------------------- */
+
 export default function AdminRoutes() {
   return (
-    <Suspense fallback={<PageLoader />}>
+    <Suspense fallback={<LoadingScreen />}>
       <Routes>
         <Route element={<AdminLayout />}>
           <Route index element={<DashboardHome />} />
@@ -60,35 +46,3 @@ export default function AdminRoutes() {
     </Suspense>
   );
 }
-
-// import { Route, Routes } from "react-router-dom";
-// import AdminLayout from "./layout/adminlayout";
-// import DashboardHome from "./pages/dashboardhome";
-// import Properties from "./pages/properties";
-// import Bookings from "./pages/bookings";
-// import Transcations from "./pages/transaction";
-// import Reports from "./pages/reports";
-// import Guests from "./pages/guests";
-// import Settings from "./pages/settings";
-// import AdminProfile from "./pages/adminprofile";
-// import Gallery from "./pages/gallery";
-// import Reviews from "./pages/reviews";
-
-// export default function AdminRoutes() {
-//   return (
-//     <Routes>
-//       <Route element={<AdminLayout />}>
-//         <Route index element={<DashboardHome />} />
-//         <Route path="property" element={<Properties />} />
-//         <Route path="gallery" element={<Gallery />} />
-//         <Route path="bookings" element={<Bookings />} />
-//         <Route path="payments" element={<Transcations />} />
-//         <Route path="reviews" element={<Reviews />} />
-//         <Route path="reports" element={<Reports />} />
-//         <Route path="guests" element={<Guests />} />
-//         <Route path="settings" element={<Settings />} />
-//         <Route path="profile" element={<AdminProfile />} />
-//       </Route>
-//     </Routes>
-//   );
-// }

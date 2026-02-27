@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom";
 import UserApp from "./apps/user/userApp";
 import AdminApp from "./apps/admin/adminApp";
 import AuthRoutes from "./apps/auth/auth.routes";
-// import Notfound from "./apps/user/notfound";
 import "./App.css";
 import LoadingScreen from "./components/loadingscreen";
 import { ProtectedRoute } from "./apps/auth/routes/protected.route";
@@ -32,8 +31,6 @@ export default function App() {
         />
         {/* User main system */}
         <Route path="/*" element={<UserApp />} />
-        {/* 404 Page */}
-        {/* <Route path="*" element={<Notfound />} /> */}
       </Routes>
     </>
   );

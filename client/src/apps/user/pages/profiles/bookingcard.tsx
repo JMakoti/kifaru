@@ -52,21 +52,6 @@ export default function BookingCard({ booking }: PropertyBooking) {
     });
   };
 
-  // const getPaymentIcon = (
-  //   method: PropertyBooking["booking"]["paymentMethod"],
-  // ) => {
-  //   switch (method) {
-  //     case "card":
-  //       return <CreditCard className="h-4 w-4" />;
-  //     case "mobile":
-  //       return <DollarSign className="h-4 w-4" />;
-  //     case "bank_transfer":
-  //       return <Home className="w-4 h-4" />;
-  //     default:
-  //       return null;
-  //   }
-  // };
-
   return (
     <Card className="border border-border rounded-2xl shadow-sm hover:shadow-md transition">
       <CardContent className="p-5 space-y-4">
@@ -121,14 +106,6 @@ export default function BookingCard({ booking }: PropertyBooking) {
 
         {/* Footer */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          {/* <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            {getPaymentIcon(booking.paymentMethod)}
-            <span className="capitalize">
-              {booking.paymentMethod.replace("_", " ")}
-            </span>
-            <span>•</span>
-            <span>{formatDateTime(booking.bookingDate)}</span>
-          </div> */}
 
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             {/* Show Cancel button if not already cancelled or completed */}
@@ -160,21 +137,6 @@ export default function BookingCard({ booking }: PropertyBooking) {
             <p className="text-xs text-muted-foreground">Total</p>
           </div>
         </div>
-
-        {/* Action */}
-        {/* <Button
-          className="w-full"
-          size="sm"
-          variant={booking.status === "upcoming" ? "default" : "outline"}
-        >
-          {booking.status === "upcoming" ? (
-            <span className="flex items-center gap-2">
-              <Eye className="w-4 h-4" /> View Details
-            </span>
-          ) : (
-            "Book Again"
-          )}
-        </Button> */}
       </CardContent>
     </Card>
   );

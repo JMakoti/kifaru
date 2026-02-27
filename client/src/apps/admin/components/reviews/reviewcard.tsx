@@ -11,8 +11,6 @@ interface Props {
 
 export default function ReviewCard({ review, onEdit, onDelete }: Props) {
   const [isExpanded, setIsExpanded] = useState(false);
-
-  // Helper to generate initials if no avatar exists
   const fallbackAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(
     review.reviewer_name
   )}&background=random&size=128`;
@@ -32,7 +30,6 @@ export default function ReviewCard({ review, onEdit, onDelete }: Props) {
       </div>
 
       <div className="flex-1 min-w-0">
-        {/* Header: Name, Rating, and Location */}
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
             <h3 className="font-semibold text-card-foreground leading-tight truncate">
