@@ -4,11 +4,13 @@ import logo from "@/assets/icon/kifaru.png";
 import { useProperties } from "@/services/property.service";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
+import { useAuth } from "@/providers/useAuth";
 
 export default function Footer() {
   const location = useLocation();
   const propertyRoute = location.pathname.split("/")[2];
 
+  const { isAuthenticated } = useAuth();
   const { data } = useProperties();
   const propertyList = useMemo(() => data?.results || [], [data]);
 
@@ -125,7 +127,11 @@ export default function Footer() {
                 <li>Email: requests@techbedkifaru.be</li>
                 {/* <li>Phone: +254 708 533 033</li> */}
                 {/* <li>Location: Nairobi, Kenya</li> */}
-                <Link to="/auth/login">Admin</Link>
+                {isAuthenticated ? (
+                  <Link to="/dashboard/profile">Admin</Link>
+                ) : (
+                  <Link to="/auth/login">Admin</Link>
+                )}
               </ul>
             </motion.div>
           </motion.div>
