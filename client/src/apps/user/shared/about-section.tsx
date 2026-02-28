@@ -9,6 +9,12 @@ import {
   Wifi,
 } from "lucide-react";
 import kifaruExperience from "@/assets/images/kifaru-about.jpg";
+import techandbedLogo from "@/assets/images/techandbed-logo.jpeg";
+import oceankifaru from "@/assets/images/ocean-kifaru-logo.jpg";
+import msambwenikifaru from "@/assets/images/msabweni.jpg";
+import closethegap from "@/assets/images/jet_skiing.jpg";
+import nyali from "@/assets/images/nyali.jpeg"
+
 import { Button } from "@/components/ui/button";
 import { motion, type Variants } from "framer-motion";
 
@@ -174,7 +180,7 @@ export default function AboutSection() {
             className="col-start-1 row-start-1 w-full aspect-square overflow-hidden rounded-sm"
           >
             <img
-              src="https://res.cloudinary.com/drselhsl4/image/upload/v1763483919/Kifaru/k096rs8b5wqru5dwghax.jpg"
+              src={techandbedLogo}
               alt="Kifaru Tech & Bed"
               loading="lazy"
               className="w-full h-full object-contain"
@@ -190,8 +196,8 @@ export default function AboutSection() {
             className="col-start-1 row-start-2 w-full aspect-square overflow-hidden rounded-sm"
           >
             <img
-              src="https://res.cloudinary.com/drselhsl4/image/upload/v1769107834/Kifaru/KifaruGallery/musx5o2xlveqguyl4ldk.jpg"
-              alt="Kifaru Tech & Bed"
+              src={oceankifaru}
+              alt="Ocean Kifaru"
               loading="lazy"
               className="w-full h-full object-contain"
             />
@@ -206,8 +212,8 @@ export default function AboutSection() {
             className="col-start-1 row-start-3 w-full aspect-square overflow-hidden rounded-sm"
           >
             <img
-              src="https://res.cloudinary.com/drselhsl4/image/upload/v1769111772/Kifaru/KifaruGallery/fxkwbqmcbi07zc68iukl.jpg"
-              alt="Kifaru Tech & Bed"
+              src={msambwenikifaru}
+              alt="Msambweni Kifaru"
               loading="lazy"
               className="w-full h-full object-contain"
             />
@@ -223,8 +229,8 @@ export default function AboutSection() {
             className="col-start-3 row-start-1 w-full aspect-square overflow-hidden rounded-sm rounded-br-full"
           >
             <img
-              src="https://res.cloudinary.com/drselhsl4/image/upload/v1769544692/Kifaru/Kifaruimages/bb0qhxpnccosdx8tufjq.jpg"
-              alt="Kifaru Tech & Bed"
+              src={nyali}
+              alt="Nyali Kifaru"
               loading="lazy"
               className="w-full h-full object-contain"
             />
@@ -257,8 +263,8 @@ export default function AboutSection() {
             className="col-start-3 row-start-3 w-full aspect-square overflow-hidden rounded-lg rounded-tr-full"
           >
             <img
-              src="https://res.cloudinary.com/drselhsl4/image/upload/v1769544700/Kifaru/Kifaruimages/trxywi0qctlg0qsxleuz.jpg"
-              alt="Kifaru Tech & Bed"
+              src={closethegap} 
+              alt="Close the Gap Kifaru"
               loading="lazy"
               className="w-full h-full object-contain"
             />

@@ -99,7 +99,7 @@ const ExploreMore = ({ properties, currentPropertyId }: ExploreMoreProps) => {
                     <div className="flex items-center justify-between mt-auto">
                       <div>
                         <span className="text-xl text-gray-900">
-                          ${p.price}
+                          €{p.price}
                         </span>
                         <span className="text-xs text-gray-500"> / night</span>
                       </div>

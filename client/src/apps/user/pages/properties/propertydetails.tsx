@@ -29,13 +29,10 @@ export default function PropertyDetails() {
   const { useGetReviews } = useReviews();
   const { data: reviews, isLoading: reviewsLoading } = useGetReviews();
   const reviewList = useMemo(() => {
-  if (!reviews?.results || !property?.id) return [];
+    if (!reviews?.results || !property?.id) return [];
 
-  return reviews.results.filter(
-    (review) => review.property === property.id
-  );
-}, [reviews, property]);
-
+    return reviews.results.filter((review) => review.property === property.id);
+  }, [reviews, property]);
 
   // Scroll to top when slug changes
   useEffect(() => {
@@ -70,15 +67,36 @@ export default function PropertyDetails() {
 
   return (
     <main>
-      <HeroCarousel property={property} />
-      <AboutSection property={property} />
-      <PropertyHighlights highlights={property.highlights} />
-      <StayDetails property={property} />
-      <AmenitiesSection amenities={property?.amenities ?? {}} />
-      <GallerySection gallery={property.property_images} />
-      <ReviewsSection reviews={reviewList}  />
-      <PackagesSection packages={property.pricing_options} property={property} />
-      <ReadyToBook contacts={property.contacts} property={property} />
+      {property && <HeroCarousel property={property} />}
+
+      {property && <AboutSection property={property} />}
+
+      {property?.highlights?.length > 0 && (
+        <PropertyHighlights highlights={property.highlights} />
+      )}
+
+      {property && <StayDetails property={property} />}
+
+      {property?.amenities && Object.keys(property.amenities).length > 0 && (
+        <AmenitiesSection amenities={property.amenities} />
+      )}
+
+      {property?.property_images?.length > 0 && (
+        <GallerySection gallery={property.property_images} />
+      )}
+
+      {reviewList?.length > 0 && <ReviewsSection reviews={reviewList} />}
+
+      {property?.pricing_options?.length > 0 && (
+        <PackagesSection
+          packages={property.pricing_options}
+          property={property}
+        />
+      )}
+
+      {property?.contacts?.length > 0 && (
+        <ReadyToBook contacts={property.contacts} property={property} />
+      )}
       <ExploreMore
         properties={data?.results || []}
         currentPropertyId={property.id}
