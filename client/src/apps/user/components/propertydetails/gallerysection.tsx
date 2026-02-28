@@ -56,7 +56,7 @@ const GallerySection = ({ gallery }: GalleryProps) => {
 
         <div
           ref={containerRef}
-          className={`flex-1 overflow-y-auto px-6 py-6 ${
+          className={`flex-1 overflow-y-auto px-2 py-6 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           } transition-all duration-1000`}
         >
@@ -78,7 +78,7 @@ const GallerySection = ({ gallery }: GalleryProps) => {
                 const isLarge = positionInRow === largePosition;
 
                 const mobileWidth = "w-[300px]";
-                const desktopWidth = isLarge ? "md:w-[450px]" : "md:w-[300px]";
+                const desktopWidth = isLarge ? "md:w-[440px]" : "md:w-[290px]";
 
                 return (
                   <div
