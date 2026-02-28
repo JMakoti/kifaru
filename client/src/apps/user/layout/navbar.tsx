@@ -112,7 +112,7 @@ export default function Navbar() {
           {/* User Auth / Avatar */}
           {isAuthenticated ? (
             <Link
-              to={user?.role === "admin" ? "/admin/profile" : "/profile"}
+              to={user?.role === "admin" ? "/dashboard/profile" : "/profile"}
               className="ml-4"
             >
               <Avatar className="h-12 w-12 cursor-pointer">

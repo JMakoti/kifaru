@@ -35,7 +35,7 @@ const AdminLogin = () => {
     try {
       await login(formData);
       await queryClient.refetchQueries({ queryKey: ["auth-user"] });
-      navigate("/admin", { replace: true });
+      navigate("/dashboard", { replace: true });
     } catch (error) {
       setErrorMessage(extractErrorMessage(error));
     }

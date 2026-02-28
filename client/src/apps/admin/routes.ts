@@ -10,12 +10,12 @@ import {
 } from "lucide-react";
 
 export const menu = [
-  { to: "/admin", label: "Dashboard", icon: Home },
-  { to: "/admin/property", label: "Properties", icon: Building2 },
-  { to: "/admin/gallery", label: "Gallery", icon: GalleryThumbnails },
-  { to: "/admin/bookings", label: "Bookings", icon: Calendar },
-  { to: "/admin/payments", label: "Transactions", icon: CreditCard },
-  { to: "/admin/reviews", label: "Reviews", icon: ThumbsUp },
-  { to: "/admin/guests", label: "Guests", icon: Users },
-  { to: "/admin/reports", label: "Reports", icon: BarChart2 },
+  { to: "/dashboard", label: "Dashboard", icon: Home },
+  { to: "/dashboard/property", label: "Properties", icon: Building2 },
+  { to: "/dashboard/gallery", label: "Gallery", icon: GalleryThumbnails },
+  { to: "/dashboard/bookings", label: "Bookings", icon: Calendar },
+  { to: "/dashboard/payments", label: "Transactions", icon: CreditCard },
+  { to: "/dashboard/reviews", label: "Reviews", icon: ThumbsUp },
+  { to: "/dashboard/guests", label: "Guests", icon: Users },
+  { to: "/dashboard/reports", label: "Reports", icon: BarChart2 },
 ];
