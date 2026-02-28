@@ -25,8 +25,6 @@ export default function Footer() {
   ];
 
   const isDefaultFooterRoute = defaultFooterRoutes.includes(location.pathname);
-
-  // Find the current property from API data
   const currentProperty = propertyList.find((p) => p.slug === propertyRoute);
 
   // Animation Variants

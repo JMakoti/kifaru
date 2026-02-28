@@ -4,18 +4,13 @@ import { Avatar, AvatarFallback } from "../../../components/ui/avatar";
 import { useAuth } from "@/providers/useAuth";
 
 export default function Topbar() {
-  // GET USER DETAILS
   const { user } = useAuth();
 
   return (
     <header className="w-full border-b bg-background/60 backdrop-blur-sm fixed z-50">
       <div className="max-w-[1020px] px-4 py-3 flex items-center justify-between gap-4">
-        {/* Left side: Title */}
         <div className="flex items-center gap-4">
           <h2 className="text-lg font-semibold">Admin</h2>
-          <p className="text-sm text-muted-foreground hidden sm:block">
-            Control panel
-          </p>
         </div>
 
         {/* Right side: Notifications & User */}

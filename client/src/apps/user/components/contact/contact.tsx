@@ -4,16 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, MapPin } from "lucide-react";
-import property1 from "@/assets/property-1.jpg";
-import property2 from "@/assets/property-2.jpg";
-import property3 from "@/assets/property-3.jpg";
+import contactbg1 from "@/assets/images/contactbg-1.jpg";
+import contactbg2 from "@/assets/images/contactbg-2.jpg";
+import contactbg3 from "@/assets/images/contactbg-3.jpg";
 import { Toaster, toast } from "sonner";
 
 import whatsapp from "@/assets/icon/cl-whatsapp.png";
 import instagram from "@/assets/icon/cl-instagram.png";
 import facebook from "@/assets/icon/cl-facebook.png";
 
-const properties = [property1, property2, property3];
+const properties = [contactbg1, contactbg2, contactbg3];
 
 export default function ContactDetailsSection() {
   const [currentImage, setCurrentImage] = useState(0);

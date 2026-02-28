@@ -63,17 +63,6 @@ export function GalleryModal({
   );
   const [isDragging, setIsDragging] = useState(false);
 
-  // useEffect(() => {
-  //   if (open) {
-  //     // Reset form data to the new editImage values
-  //     setFormData(getInitialFormData(editImage));
-  //     // Set the preview to the existing image URL or null
-  //     setPreview(editImage?.image ?? null);
-  //   }
-  // }, [open, editImage]);
-
-  // FILE HANDLING
-
   const handleFileChange = (file: File | null) => {
     if (!file) return;
 

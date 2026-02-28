@@ -4,7 +4,6 @@ import { resolveImageSrc } from "@/hooks/resolveImage";
 import { useInView } from "@/hooks/useInView";
 import type { PropertyImage } from "@/types/property";
 import { useEffect, useRef, useState } from "react";
-// import { resolveImageSrc } from "@/hooks/resolveImage";
 
 interface GalleryProps {
   gallery?: PropertyImage[];

@@ -5,7 +5,6 @@ import { CheckCircle2 } from "lucide-react";
 export default function Confirmbooking() {
   const [searchParams] = useSearchParams();
 
-  // Get reference from URL
   const reference = searchParams.get("reference") || searchParams.get("trxref");
 
   return (

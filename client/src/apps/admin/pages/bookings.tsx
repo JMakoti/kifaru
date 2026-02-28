@@ -5,7 +5,6 @@ import type { Booking } from "@/types/booking.types";
 import { useEffect } from "react";
 
 export default function Bookings() {
-  // 1. Destructure correctly. 'data' is renamed to 'allBookings' to avoid confusion.
   const {
     data: allBookings = [] as Booking[],
     isLoading,

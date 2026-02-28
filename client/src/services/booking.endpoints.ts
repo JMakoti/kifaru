@@ -16,9 +16,8 @@ const MY_BOOKINGS = "/bookings/my-bookings";
 const CALCULATE_PRICE = "/bookings/calculate-price";
 
 export const bookingApi = {
-  /* --------------------------------
-   * PRICE CALCULATION (GET)
-   * -------------------------------- */
+
+   // PRICE CALCULATION (GET)
   calculatePrice: async (
     params: BookingPriceQuery,
   ): Promise<BookingPriceResponse> => {
@@ -29,17 +28,9 @@ export const bookingApi = {
     return response.data;
   },
 
-  /* --------------------------------
-   * BOOKINGS CRUD
-   * -------------------------------- */
-  // create: async (data: BookingPayload): Promise<BookingPayload> => {
-  //   const response = await api.post<BookingPayload>(`${BOOKINGS}/`, data);
-  //   console.log("Backend Raw Response:", response.data);
-  //   return response.data;
-  // },
+   // BOOKINGS CRUD
   create: async (data: BookingPayload): Promise<BookingResponse> => {
     const response = await api.post<BookingResponse>(`${BOOKINGS}/`, data);
-    // console.log("Full response.data from Backend:", response.data);
     return response.data;
   },
 

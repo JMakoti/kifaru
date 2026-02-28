@@ -94,8 +94,7 @@ const PackagesSection = ({ packages, property }: PackageProps) => {
                         <span className="text-sm text-gray-500">/ week</span>
                       </div>
                     )}
-
-                    {/* {pkg.monthly.toLocaleString()} / month */}
+                    
                   </div>
                   <div className="text-xs text-gray-400">
                     {pkg.min_nights} nights
@@ -105,22 +104,8 @@ const PackagesSection = ({ packages, property }: PackageProps) => {
                 {/* Services */}
                 <div className="border-t border-gray-200 pt-6 mb-8 flex-1">
                   <ul className="space-y-3">
-                    {/* {pkg.services.map((s) => (
-                      <li
-                        key={s}
-                        className="flex items-center gap-2 text-sm text-gray-700"
-                      >
-                        <Check className="w-4 h-4 text-green-500 flex-shrink-0" />
-                        {s}
-                      </li>
-                    ))} */}
                   </ul>
                 </div>
-
-                {/* Reserve Button */}
-                {/* pkg.popular
-                      ? "bg-accent text-white hover:bg-accent"
-                      : "border border-gray-400 text-gray-900 hover:bg-gray-100" */}
 
                 <button
                   onClick={!isCloseTheGap ? handleBookingClick : undefined}

@@ -14,12 +14,10 @@ export function PublicRoute({ children }: PublicRouteProps) {
     return <LoadingScreen />;
   }
 
-  // Redirect authenticated users based on their role
   if (isAuthenticated) {
     if (user?.role === "admin") {
       return <Navigate to="/admin" replace />;
     }
-    // external users and other roles redirect to home
     return <Navigate to="/" replace />;
   }
 

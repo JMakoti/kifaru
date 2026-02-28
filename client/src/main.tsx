@@ -12,7 +12,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { queryClient } from "./queryClient.ts";
 
-
 setupTokenInterceptor();
 
 createRoot(document.getElementById("root")!).render(

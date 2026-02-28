@@ -1,8 +1,6 @@
 import type { AccommodationType } from "./property";
 
-/**
- * Payload used when CREATING a booking
- */
+ // Payload used when CREATING a booking
 export interface BookingPayload {
   property: number;
   accommodation_type: AccommodationType;
@@ -20,9 +18,8 @@ export interface BookingPayload {
   special_requests?: string;
 }
 
-/**
- * Query params for PRICE CALCULATION (GET)
- */
+// Query params for PRICE CALCULATION (GET)
+
 export interface BookingPriceQuery {
   property: number;
   check_in: string;
@@ -32,9 +29,8 @@ export interface BookingPriceQuery {
   phone: string;
 }
 
-/**
- * Response from /bookings/calculate-price/
- */
+// Response from /bookings/calculate-price/
+
 export interface BookingPriceResponse {
   guest_type: string;
   price_per_night: string;

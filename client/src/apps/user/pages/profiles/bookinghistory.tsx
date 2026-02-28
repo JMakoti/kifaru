@@ -3,10 +3,8 @@ import { useMyBookings } from "@/services/booking.service";
 import { Loader2, AlertCircle } from "lucide-react";
 
 export function BookingHistory() {
-  // 1. Fetch real data from TanStack Query
   const { data: bookings = [], isLoading, isError } = useMyBookings();
 
-  // 2. Handle Loading State
   if (isLoading) {
     return (
       <div className="flex h-[400px] flex-col items-center justify-center gap-2">
@@ -16,7 +14,6 @@ export function BookingHistory() {
     );
   }
 
-  // 3. Handle Error State
   if (isError) {
     return (
       <div className="flex flex-col items-center justify-center p-10 text-center border border-destructive/20 bg-destructive/5 rounded-2xl gap-3">
@@ -40,11 +37,6 @@ export function BookingHistory() {
           View all your stays with Kifaru ({bookings.length})
         </p>
       </div>
-
-      {/* Tabs are currently disabled to simplify the view 
-          as per your request.
-      */}
-      {/* <Tabs defaultValue="all"> ... </Tabs> */}
 
       <div className="space-y-4">
         {bookings.length > 0 ? (

@@ -347,9 +347,6 @@ export default function PropertySection() {
     return <LoadingScreen />;
   }
 
-  // if (isLoading) return <LoadingScreen />;
-  // if (isError) return <p>{(error as Error).message}</p>;
-
   return (
     <section
       ref={sectionRef}
@@ -456,26 +453,6 @@ export default function PropertySection() {
                   </div>
                 );
               })}
-
-            {/* {property.map((property, index) => {
-              const isLeft = index % 2 === 0;
-
-              return (
-                <div
-                  key={property.id}
-                  className={isLeft ? "md:col-start-1" : "md:col-start-2"}
-                  style={{ gridRow: index + 1 }}
-                >
-                  <PropertyDestination
-                    property={property}
-                    index={index}
-                    isLeft={isLeft}
-                    isHighlighted={hoveredIndex === index}
-                    onHover={setHoveredIndex}
-                  />
-                </div>
-              );
-            })} */}
           </div>
         </div>
       )}

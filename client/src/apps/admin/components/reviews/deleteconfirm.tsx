@@ -8,13 +8,13 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Loader2 } from "lucide-react"; // Added for the loading spinner
+import { Loader2 } from "lucide-react"; 
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onConfirm: () => void;
-  isLoading?: boolean; // New prop to handle mutation state
+  isLoading?: boolean; 
 }
 
 export default function DeleteConfirmDialog({
@@ -37,7 +37,7 @@ export default function DeleteConfirmDialog({
           <AlertDialogCancel disabled={isLoading}>Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={(e) => {
-              e.preventDefault(); // Prevent auto-closing if you want to wait for success
+              e.preventDefault();
               onConfirm();
             }}
             disabled={isLoading}
