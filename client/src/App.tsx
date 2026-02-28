@@ -22,7 +22,7 @@ export default function App() {
         <Route path="/auth/*" element={<AuthRoutes />} />
         {/* Admin mini-system */}
         <Route
-          path="/admin/*"
+          path="/dashboard/*"
           element={
             <ProtectedRoute allowedRoles={["admin"]}>
               <AdminApp />

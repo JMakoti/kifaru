@@ -97,7 +97,7 @@ export default function AppSidebar({
           {/* Profile Link */}
           <div className="p-2">
             <NavLink
-              to="/admin/profile"
+              to="/dashboard/profile"
               className={({ isActive }) =>
                 `flex items-center gap-3 rounded-md px-3 py-2 text-sm transition-colors hover:bg-sidebar-accent hover:text-sidebar-accent-foreground ${
                   isActive
