@@ -101,16 +101,16 @@ export default function TransactionView() {
     return <ArrowDownLeft className="w-5 h-5 text-green-600" />;
   };
 
-  type PaymentMethod = Payment["payment_method"];
+  // type PaymentMethod = Payment["payment_method"];
 
-  const getMethodBadge = (method: PaymentMethod) => {
-    const colors = {
-      card: "bg-purple-100 text-purple-700",
-      mpesa: "bg-green-100 text-green-700",
-    };
+  // const getMethodBadge = (method: PaymentMethod) => {
+  //   const colors = {
+  //     card: "bg-purple-100 text-purple-700",
+  //     mpesa: "bg-green-100 text-green-700",
+  //   };
 
-    return colors[method];
-  };
+  //   return colors[method];
+  // };
 
   const totalTransactions = payments.filter(
     (p) => p.payment_status === "completed",
@@ -323,13 +323,13 @@ export default function TransactionView() {
                         </div>
 
                         <div className="flex items-center gap-4 text-sm">
-                          <Badge
+                          {/* <Badge
                             className={getMethodBadge(txn.method)}
                             variant="outline"
                           >
                             <CreditCard className="w-3 h-3 mr-1" />
                             {txn.method.replace("_", " ")}
-                          </Badge>
+                          </Badge> */}
                           <div className="flex items-center gap-1 text-gray-500">
                             <Calendar className="w-4 h-4" />
                             {formatDate(txn.date)}
@@ -347,13 +347,13 @@ export default function TransactionView() {
                           </div>
                         )}
 
-                        {txn.status === "pending" && (
+                        {/* {txn.status === "pending" && (
                           <div className="flex gap-2 mt-3">
                             <Button size="sm" variant="outline">
                               View Details
                             </Button>
                           </div>
-                        )}
+                        )} */}
                       </div>
                     </div>
                   </div>

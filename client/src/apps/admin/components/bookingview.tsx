@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
   Search,
-  Eye,
+  // Eye,
   Calendar,
   Home,
   MapPin,
@@ -233,10 +233,10 @@ export default function BookingView({ data }: PropertyBooking) {
                         </div>
                       </div>
 
-                      <Button className="w-full" variant="outline">
+                      {/* <Button className="w-full" variant="outline">
                         <Eye className="w-4 h-4 mr-2" />
                         View Details
-                      </Button>
+                      </Button> */}
                     </div>
                   </div>
                 </CardContent>
