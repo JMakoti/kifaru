@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
+import { ChevronLeft, ChevronRight, Calendar, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   format,
@@ -15,7 +15,6 @@ import {
   isToday,
   startOfWeek,
   endOfWeek,
-  isWithinInterval,
   parseISO,
   startOfDay,
 } from "date-fns";
@@ -36,45 +35,102 @@ export function DateRangePicker({
 }: DateRangePickerProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selecting, setSelecting] = useState<"start" | "end">("start");
+  const [bookingError, setBookingError] = useState<string>("");
 
   const nextMonth = addMonths(currentMonth, 1);
 
-  // check if a day is already booked
+  // Filter only active/blocking bookings (confirmed and pending, exclude cancelled)
+  const activeBookings = bookedEvents.filter(
+    (event) => event.status !== "cancelled" && event.type === "booking",
+  );
+
+  // Check if a specific date is booked
   const isDateBooked = (day: Date) => {
-    return bookedEvents.some((event) => {
+    return activeBookings.some((event) => {
       if (!event.start_date || !event.end_date) return false;
-      return isWithinInterval(day, {
-        start: parseISO(event.start_date),
-        end: parseISO(event.end_date),
-      });
+      const eventStart = startOfDay(parseISO(event.start_date));
+      const eventEnd = startOfDay(parseISO(event.end_date));
+      // Exclude end date - checkout date available for next guest
+      return (
+        (isAfter(day, eventStart) || isSameDay(day, eventStart)) &&
+        isBefore(day, eventEnd)
+      );
     });
+  };
+
+  // Get booking info for tooltip/error messages
+  const getBookingInfo = (day: Date) => {
+    return activeBookings.find((event) => {
+      if (!event.start_date || !event.end_date) return false;
+      const eventStart = startOfDay(parseISO(event.start_date));
+      const eventEnd = startOfDay(parseISO(event.end_date));
+      return (
+        (isAfter(day, eventStart) || isSameDay(day, eventStart)) &&
+        isBefore(day, eventEnd)
+      );
+    });
+  };
+
+  // Improved overlap detection
+  const hasBookingInRange = (
+    rangeStart: Date,
+    rangeEnd: Date,
+  ): BookingEvent | null => {
+    const checkStart = startOfDay(rangeStart);
+    const checkEnd = startOfDay(rangeEnd);
+
+    return (
+      activeBookings.find((event) => {
+        if (!event.start_date || !event.end_date) return false;
+        const eventStart = startOfDay(parseISO(event.start_date));
+        const eventEnd = startOfDay(parseISO(event.end_date));
+
+        // Check if any part of the selected range overlaps with booking
+        // Exclude end date from condition check
+        return isBefore(checkStart, eventEnd) && isAfter(checkEnd, eventStart);
+      }) || null
+    );
   };
 
   const handleDateClick = (date: Date) => {
     const normalizedDate = startOfDay(date);
+    setBookingError("");
+
     if (selecting === "start") {
+      // Check if start date itself is booked
+      if (isDateBooked(normalizedDate)) {
+        const booking = getBookingInfo(normalizedDate);
+        setBookingError(
+          `This date is booked by ${booking?.guest_name || "another guest"}`,
+        );
+        return;
+      }
       onDateChange(normalizedDate, null);
       setSelecting("end");
     } else {
-      // Logic to prevent booking OVER an existing reservation
-      const hasBookingInRange = bookedEvents.some((event) => {
-        const start = parseISO(event.start_date);
-        const end = parseISO(event.end_date);
-        return startDate && isBefore(start, date) && isAfter(end, startDate);
-      });
+      if (!startDate) return;
 
-      if (hasBookingInRange) {
-        alert("Selected range includes already booked dates.");
+      // Ensure end date is after start date
+      if (isBefore(normalizedDate, startDate)) {
+        onDateChange(normalizedDate, null);
+        setSelecting("end");
         return;
       }
 
-      if (startDate && isBefore(date, startDate)) {
-        onDateChange(date, null);
-        setSelecting("end");
-      } else {
-        onDateChange(startDate, normalizedDate);
-        setSelecting("start");
+      // Check if selected range contains any bookings
+      const conflictingBooking = hasBookingInRange(startDate, normalizedDate);
+      if (conflictingBooking) {
+        setBookingError(
+          `Booking conflict: ${format(
+            parseISO(conflictingBooking.start_date),
+            "MMM d",
+          )} - ${format(parseISO(conflictingBooking.end_date), "MMM d")} is already booked`,
+        );
+        return;
       }
+
+      onDateChange(startDate, normalizedDate);
+      setSelecting("start");
     }
   };
 
@@ -147,18 +203,21 @@ export function DateRangePicker({
                 type="button"
                 onClick={() => !isDisabled && handleDateClick(day)}
                 disabled={isDisabled}
+                title={
+                  isBooked && isCurrentMonth
+                    ? `Booked: ${getBookingInfo(day)?.guest_name || "Guest"}`
+                    : undefined
+                }
                 className={cn(
-                  "h-9 w-9 rounded-lg text-sm transition-colors",
+                  "relative h-9 w-9 rounded-lg text-sm transition-colors",
 
                   // normal
                   "text-foreground hover:bg-accent hover:text-accent-foreground",
 
                   isBooked &&
-                    "bg-muted text-muted-foreground opacity-50 cursor-not-allowed line-through",
+                    "bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 opacity-75 cursor-not-allowed border border-red-300 dark:border-red-700",
 
                   // disabled
-                  // isDisabled &&
-                  //   "text-muted-foreground opacity-40 hover:bg-transparent cursor-not-allowed",
                   !isCurrentMonth && "opacity-0 pointer-events-none",
                   isPast &&
                     "text-muted-foreground opacity-40 cursor-not-allowed",
@@ -178,7 +237,7 @@ export function DateRangePicker({
               >
                 {format(day, "d")}
                 {isBooked && isCurrentMonth && (
-                  <span className="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-destructive rounded-full" />
+                  <span className="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-red-500 rounded-full" />
                 )}
               </button>
             );
@@ -232,9 +291,17 @@ export function DateRangePicker({
       </div>
 
       {/* Calendar Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-card border border-border rounded-xl">
-        {renderCalendar(currentMonth, true, false)}
-        {renderCalendar(nextMonth, false, true)}
+      <div className="space-y-3">
+        {bookingError && (
+          <div className="p-3 rounded-lg bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 text-sm flex items-start gap-2">
+            <AlertCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
+            <span>{bookingError}</span>
+          </div>
+        )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-card border border-border rounded-xl">
+          {renderCalendar(currentMonth, true, false)}
+          {renderCalendar(nextMonth, false, true)}
+        </div>
       </div>
     </div>
   );

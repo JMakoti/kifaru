@@ -11,6 +11,8 @@ export default function Bookings() {
     refetch,
   } = useBookings();
 
+  console.log("All Bookings:", allBookings); // Debugging log
+
   useEffect(() => {
     const interval = setInterval(() => {
       refetch();
