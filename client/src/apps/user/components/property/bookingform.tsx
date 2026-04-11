@@ -131,6 +131,9 @@ export default function BookingForm() {
   const [checkOut, setCheckOut] = useState<Date | null>(null);
   const [adults, setAdults] = useState(1);
   const [children, setChildren] = useState(0);
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string>
+  >({});
 
   const { data: bookingData } = usePropertyBookings(id);
   // Price Calculation Query
@@ -148,9 +151,27 @@ export default function BookingForm() {
   });
   const navigate = useNavigate();
 
+  /* Validation */
+  const validateForm = (): boolean => {
+    const errors: Record<string, string> = {};
+
+    if (!guestData.fullName.trim()) errors.fullName = "Full name is required";
+    if (!guestData.email.trim()) errors.email = "Email is required";
+    if (!guestData.phone.trim()) errors.phone = "Phone number is required";
+    if (!accommodationType)
+      errors.accommodationType = "Accommodation type is required";
+    if (!checkIn) errors.checkIn = "Check-in date is required";
+    if (!checkOut) errors.checkOut = "Check-out date is required";
+
+    setValidationErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   /* Submit */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!validateForm()) return;
 
     if (!pricing) return;
 
@@ -271,70 +292,124 @@ export default function BookingForm() {
                   </div>
 
                   {/* Guest Inputs */}
-                  <div className="flex items-center border border-border rounded-lg overflow-hidden">
-                    <div className="px-4 border-r border-border flex items-center">
-                      <User2Icon className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Full Name <span className="text-red-500">*</span>
+                    </label>
+                    <div
+                      className={`flex items-center border rounded-lg overflow-hidden ${
+                        validationErrors.fullName
+                          ? "border-red-500 bg-red-50 dark:bg-red-950"
+                          : "border-border"
+                      }`}
+                    >
+                      <div className="px-4 border-r border-inherit flex items-center">
+                        <User2Icon className="w-5 h-5 text-muted-foreground" />
+                      </div>
+                      <Input
+                        placeholder="Full Name"
+                        value={guestData.fullName}
+                        onChange={(e) =>
+                          setGuestData({
+                            ...guestData,
+                            fullName: e.target.value,
+                          })
+                        }
+                        required
+                        className="flex-1 h-10 px-5 bg-card text-foreground border-0"
+                      />
                     </div>
-                    <Input
-                      placeholder="Full Name"
-                      value={guestData.fullName}
-                      onChange={(e) =>
-                        setGuestData({ ...guestData, fullName: e.target.value })
-                      }
-                      required
-                      className="flex-1 h-10 px-5 bg-card text-foreground"
-                    />
+                    {validationErrors.fullName && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {validationErrors.fullName}
+                      </p>
+                    )}
                   </div>
 
-                  <div className="flex items-center border border-border rounded-lg overflow-hidden">
-                    <div className="px-4 border-r border-border flex items-center">
-                      <Mail className="w-5 h-5 text-muted-foreground" />
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Email Address <span className="text-red-500">*</span>
+                    </label>
+                    <div
+                      className={`flex items-center border rounded-lg overflow-hidden ${
+                        validationErrors.email
+                          ? "border-red-500 bg-red-50 dark:bg-red-950"
+                          : "border-border"
+                      }`}
+                    >
+                      <div className="px-4 border-r border-inherit flex items-center">
+                        <Mail className="w-5 h-5 text-muted-foreground" />
+                      </div>
+                      <Input
+                        type="email"
+                        placeholder="Email Address"
+                        value={guestData.email}
+                        onChange={(e) =>
+                          setGuestData({ ...guestData, email: e.target.value })
+                        }
+                        required
+                        className="flex-1 h-10 px-5 bg-card text-foreground border-0"
+                      />
                     </div>
-                    <Input
-                      type="email"
-                      placeholder="Email Address"
-                      value={guestData.email}
-                      onChange={(e) =>
-                        setGuestData({ ...guestData, email: e.target.value })
-                      }
-                      required
-                      className="flex-1 h-10 px-5 bg-card text-foreground"
-                    />
+                    {validationErrors.email && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {validationErrors.email}
+                      </p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      ID / Passport Number
+                    </label>
+                    <div className="flex items-center border border-border rounded-lg overflow-hidden">
+                      <div className="px-4 border-r border-border flex items-center">
+                        <IdCard className="w-5 h-5 text-muted-foreground" />
+                      </div>
+                      <Input
+                        placeholder="ID / Passport Number"
+                        value={guestData.idNumber}
+                        onChange={(e) =>
+                          setGuestData({
+                            ...guestData,
+                            idNumber: e.target.value,
+                          })
+                        }
+                        className="flex-1 h-10 px-5 bg-card text-foreground"
+                      />
+                    </div>
                   </div>
 
-                  <div className="flex items-center border border-border rounded-lg overflow-hidden">
-                    <div className="px-4 border-r border-border flex items-center">
-                      <IdCard className="w-5 h-5 text-muted-foreground" />
-                    </div>
-                    <Input
-                      placeholder="ID / Passport Number"
-                      value={guestData.idNumber}
-                      onChange={(e) =>
-                        setGuestData({ ...guestData, idNumber: e.target.value })
-                      }
-                      className="flex-1 h-10 px-5 bg-card text-foreground"
-                    />
-                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Phone Number <span className="text-red-500">*</span>
+                    </label>
+                    <div
+                      className={`flex items-center border rounded-lg overflow-hidden ${
+                        validationErrors.phone
+                          ? "border-red-500 bg-red-50 dark:bg-red-950"
+                          : "border-border"
+                      }`}
+                    >
+                      <div className="px-4 border-r border-inherit flex items-center">
+                        <Phone className="w-5 h-5 text-muted-foreground" />
+                      </div>
 
-                  <div className="flex items-center border border-border rounded-lg overflow-hidden">
-                    <div className="px-4 border-r border-border flex items-center">
-                      <Phone className="w-5 h-5 text-muted-foreground" />
+                      <Input
+                        className="flex-1 h-10 px-5 bg-card text-foreground border-0"
+                        placeholder="Phone Number e.g. 254712345678"
+                        value={guestData.phone}
+                        onChange={(e) =>
+                          setGuestData({ ...guestData, phone: e.target.value })
+                        }
+                      />
                     </div>
-
-                    <Input
-                      className="flex-1 h-10 px-5 bg-card text-foreground"
-                      placeholder="Phone Number e.g. 254712345678"
-                      value={guestData.phone}
-                      onChange={(e) =>
-                        setGuestData({ ...guestData, phone: e.target.value })
-                      }
-                    />
+                    {validationErrors.phone && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {validationErrors.phone}
+                      </p>
+                    )}
                   </div>
                 </CardContent>
-              </Card>
-
-              {/* BOOKING DETAILS */}
-              <Card>
                 {pricingError && (
                   <div className="mx-6 mt-4 p-4 rounded-lg border border-amber-500/50 bg-amber-500/10 text-amber-900 dark:text-amber-200 flex gap-3 items-start animate-in fade-in slide-in-from-top-2">
                     <div className="w-13 h-13 rounded-full bg-amber-500/20 flex items-center justify-center shrink-0">
@@ -360,6 +435,10 @@ export default function BookingForm() {
                     </div>
                   </div>
                 )}
+              </Card>
+
+              {/* BOOKING DETAILS */}
+              <Card>
                 <CardHeader className="border-b border-border bg-muted/50 rounded-t-xl">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
@@ -385,34 +464,64 @@ export default function BookingForm() {
                   </div>
 
                   <div className="grid grid-cols-1 gap-4">
-                    <select
-                      className="w-full border rounded-lg px-3 py-2 bg-background"
-                      value={accommodationType}
-                      onChange={(e) =>
-                        setAccommodationType(
-                          e.target.value as AccommodationType,
-                        )
-                      }
-                      required
-                    >
-                      <option value="">Accommodation</option>
-                      {ACCOMMODATION_TYPES.map((type) => (
-                        <option key={type.value} value={type.value}>
-                          {type.label}
-                        </option>
-                      ))}
-                    </select>
+                    <div>
+                      <label className="block text-sm font-medium text-foreground mb-2">
+                        Accommodation Type{" "}
+                        <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        className={`w-full border rounded-lg px-3 py-2 bg-background ${
+                          validationErrors.accommodationType
+                            ? "border-red-500 bg-red-50 dark:bg-red-950"
+                            : "border-border"
+                        }`}
+                        value={accommodationType}
+                        onChange={(e) =>
+                          setAccommodationType(
+                            e.target.value as AccommodationType,
+                          )
+                        }
+                        required
+                      >
+                        <option value="">Select Accommodation Type</option>
+                        {ACCOMMODATION_TYPES.map((type) => (
+                          <option key={type.value} value={type.value}>
+                            {type.label}
+                          </option>
+                        ))}
+                      </select>
+                      {validationErrors.accommodationType && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {validationErrors.accommodationType}
+                        </p>
+                      )}
+                    </div>
                   </div>
 
-                  <DateRangePicker
-                    startDate={checkIn}
-                    endDate={checkOut}
-                    bookedEvents={bookingData?.events || []}
-                    onDateChange={(start, end) => {
-                      setCheckIn(start);
-                      setCheckOut(end);
-                    }}
-                  />
+                  <div>
+                    <label className="block text-sm font-medium text-foreground mb-2">
+                      Dates <span className="text-red-500">*</span>
+                    </label>
+                    <DateRangePicker
+                      startDate={checkIn}
+                      endDate={checkOut}
+                      bookedEvents={bookingData?.events || []}
+                      onDateChange={(start, end) => {
+                        setCheckIn(start);
+                        setCheckOut(end);
+                      }}
+                    />
+                    {validationErrors.checkIn && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {validationErrors.checkIn}
+                      </p>
+                    )}
+                    {validationErrors.checkOut && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {validationErrors.checkOut}
+                      </p>
+                    )}
+                  </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <Stepper

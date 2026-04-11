@@ -10,6 +10,7 @@ import {
   Users,
   Moon,
   Loader2,
+  AlertCircle,
 } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -38,6 +39,16 @@ interface BookingState {
     total_amount: number;
     total_nights: number;
     currency: string;
+  };
+}
+
+interface ApiErrorResponse {
+  response?: {
+    data?: {
+      non_field_errors?: string[];
+      detail?: string;
+      [key: string]: unknown;
+    };
   };
 }
 
@@ -97,6 +108,20 @@ export default function BookingPreviewPayment() {
     }
   };
 
+  // Extract error message from API response
+  const getErrorMessage = () => {
+    const error = createBookingMutation.error as unknown as ApiErrorResponse;
+    if (error?.response?.data?.non_field_errors?.[0]) {
+      return error.response.data.non_field_errors[0];
+    }
+    if (error?.response?.data?.detail) {
+      return error.response.data.detail;
+    }
+    return null;
+  };
+
+  const errorMessage = getErrorMessage();
+
   return (
     <div className="min-h-screen bg-background py-8 md:py-12">
       <div className="container mx-auto px-4 md:px-6 max-w-7xl">
@@ -104,7 +129,7 @@ export default function BookingPreviewPayment() {
         <div className="mb-8 flex items-center justify-between">
           <button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+            className="flex items-center gap-2 text-md text-muted-foreground hover:text-primary transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Edit Selection
@@ -135,7 +160,9 @@ export default function BookingPreviewPayment() {
               <div className="space-y-4 border-t pt-6">
                 <SidebarItem label="Email" value={booking.guest.email} />
                 <SidebarItem label="Phone" value={booking.guest.phone} />
-                <SidebarItem label="ID Number" value={booking.guest.idNumber} />
+                {booking.guest.idNumber && (
+                  <SidebarItem label="ID Number" value={booking.guest.idNumber} />
+                )}
               </div>
             </div>
           </aside>
@@ -200,50 +227,80 @@ export default function BookingPreviewPayment() {
               </div>
 
               {/* Bottom Payment & Confirm Section */}
-              <div className="bg-muted/50 border-t border-border p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-                <div className="flex items-center gap-6">
-                  <div className="flex flex-col">
-                    <p className="text-xs text-muted-foreground font-bold uppercase tracking-tight">
-                      Total Duration
-                    </p>
-                    <div className="flex items-center gap-2 font-bold text-lg text-foreground">
-                      <Moon className="w-4 h-4 text-primary" />
-                      {booking.pricing.total_nights} Nights
+              <div className="bg-muted/50 border-t border-border p-8 flex flex-col gap-6">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                  <div className="flex items-center gap-6">
+                    <div className="flex flex-col">
+                      <p className="text-xs text-muted-foreground font-bold uppercase tracking-tight">
+                        Total Duration
+                      </p>
+                      <div className="flex items-center gap-2 font-bold text-lg text-foreground">
+                        <Moon className="w-4 h-4 text-primary" />
+                        {booking.pricing.total_nights} Nights
+                      </div>
+                    </div>
+                    <div className="w-px h-10 bg-border hidden md:block" />
+                    <div className="flex flex-col">
+                      <p className="text-xs text-muted-foreground font-bold uppercase tracking-tight">
+                        Amount Payable
+                      </p>
+                      <p className="text-3xl font-black text-primary">
+                        {/* {booking.pricing.currency}{" "} */}€
+                        {booking.pricing.total_amount.toLocaleString()}
+                      </p>
                     </div>
                   </div>
-                  <div className="w-px h-10 bg-border hidden md:block" />
-                  <div className="flex flex-col">
-                    <p className="text-xs text-muted-foreground font-bold uppercase tracking-tight">
-                      Amount Payable
-                    </p>
-                    <p className="text-3xl font-black text-primary">
-                      {/* {booking.pricing.currency}{" "} */}€
-                      {booking.pricing.total_amount.toLocaleString()}
-                    </p>
-                  </div>
+
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="px-6 h-14"
+                    style={{"cursor": "pointer"}}
+                    onClick={() => navigate(-1)}
+                  >
+                    <ArrowLeft className="w-4 h-4 mr-2" />
+                    Back
+                  </Button>
+
+                  <Button
+                    size="lg"
+                    className="w-full md:w-auto px-12 h-14 text-lg font-bold shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform"
+                    onClick={handleConfirmBooking}
+                    disabled={createBookingMutation.isPending}
+                  >
+                    {createBookingMutation.isPending ? (
+                      <span className="flex items-center gap-2">
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Processing...
+                      </span>
+                    ) : (
+                      "Confirm & Book Now"
+                    )}
+                  </Button>
                 </div>
 
-                <Button
-                  size="lg"
-                  className="w-full md:w-auto px-12 h-14 text-lg font-bold shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform"
-                  onClick={handleConfirmBooking}
-                  disabled={createBookingMutation.isPending}
-                >
-                  {createBookingMutation.isPending ? (
-                    <span className="flex items-center gap-2">
-                      <Loader2 className="w-5 h-5 animate-spin" />
-                      Processing...
-                    </span>
-                  ) : (
-                    "Confirm & Book Now"
-                  )}
-                </Button>
+                {/* Error Message Display */}
+                {errorMessage && (
+                  <div className="max-w-2xl w-full mx-auto md:mx-0 p-4 rounded-lg border border-red-500/30 bg-red-50 dark:bg-red-950/20 flex gap-3 items-start animate-in fade-in slide-in-from-top-2">
+                    <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-red-900 dark:text-red-200">
+                        Booking Cannot Be Confirmed
+                      </p>
+                      <p className="text-sm text-red-800 dark:text-red-300 mt-1">
+                        {errorMessage}
+                      </p>
+                      <p className="text-xs text-red-700 dark:text-red-400 mt-2">
+                        Please go back and select different dates.
+                      </p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
-            <p className="text-center text-[10px] text-muted-foreground">
-              By confirming, you agree to the property house rules and
-              cancellation policy.
+            <p className="text-center text-sm text-muted-foreground">
+              By confirming, you agree to the property house rules and cancellation policy.
             </p>
           </main>
         </div>
