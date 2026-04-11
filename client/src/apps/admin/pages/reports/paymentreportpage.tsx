@@ -49,7 +49,52 @@ const PaymentsReport = () => {
     }, [refetch]);
 
   if (isLoading) return <LoadingScreen />;
-  if (isError || !paymentsData) return <div>Error loading payments data.</div>;
+  if (isError || !paymentsData)
+    return (
+      <div className="min-h-screen bg-background mt-15">
+        <header className="border-b px-6 py-4 shadow-sm">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => navigate(-1)}
+                className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+              >
+                <ArrowLeft className="h-5 w-5" />
+                <span className="font-medium">Back</span>
+              </button>
+              <div>
+                <h1 className="text-2xl font-bold tracking-tight text-foreground">
+                  Payments Report
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                  Revenue breakdown and payment status analysis
+                </p>
+              </div>
+            </div>
+          </div>
+        </header>
+        <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+          <div className="flex flex-col items-center justify-center min-h-96 rounded-lg border border-border bg-card p-12">
+            <div className="text-center">
+              <h2 className="text-2xl font-semibold text-foreground mb-2">
+                No Payment Data Available
+              </h2>
+              <p className="text-muted-foreground mb-6">
+                There are no payments to report on at the moment. Payment data
+                will appear here once bookings are completed and invoiced.
+              </p>
+              <button
+                onClick={() => navigate(-1)}
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-primary-foreground hover:opacity-90 transition-opacity"
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Go Back
+              </button>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
 
   const exportToExcel = () => {
     const summarySheet = XLSX.utils.json_to_sheet([paymentsData.summary]);

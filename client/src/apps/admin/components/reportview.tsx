@@ -68,20 +68,20 @@ export default function ReportsView({ dashboard }: ReportViewProps) {
               title="Properties Report"
               description="View all property performance & occupancy"
               icon={Home}
-              href="/admin/reports/properties"
+              href="/dashboard/reports/properties"
             />
 
             <ReportCard
               title="Bookings Report"
               description="Detailed booking analytics & trends"
               icon={BookOpen}
-              href="/admin/reports/bookings"
+              href="/dashboard/reports/bookings"
             />
             <ReportCard
               title="Payments Report"
               description="Revenue breakdown & payment status"
               icon={CreditCard}
-              href="/admin/reports/payments"
+              href="/dashboard/reports/payments"
             />
           </div>
         </div>

@@ -184,7 +184,7 @@ export default function CustomersView() {
                         </Badge>
                       </div>
 
-                      <div className="grid grid-cols-3 gap-4 text-sm">
+                      {/* <div className="grid grid-cols-3 gap-4 text-sm">
                         <div>
                           <p className="text-muted-foreground">
                             Total Bookings
@@ -199,7 +199,7 @@ export default function CustomersView() {
                           <p className="text-muted-foreground">Last Booking</p>
                           <p className="font-semibold text-lg">01/01/2026</p>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
 
                     <div className="flex gap-2">
@@ -218,7 +218,7 @@ export default function CustomersView() {
                         className="hover:scale-105"
                       >
                         <Edit className="mr-1 h-4 w-4" />
-                        Edit
+                        {/* Edit */}
                       </Button>
                       <Button
                         size="sm"
