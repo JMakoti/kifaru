@@ -21,6 +21,14 @@ interface PropertyBooking {
 export default function BookingView({ data }: PropertyBooking) {
   const [searchTerm, setSearchTerm] = useState("");
 
+  const getAccommodationLabel = (type: string | undefined) => {
+    const labels: Record<string, string> = {
+      master_bedroom: "Master Bedroom",
+      full_apartment: "Full Apartment",
+    };
+    return type ? labels[type] || type : "Not specified";
+  };
+
   const getStatusStyle = (status: string) => {
     switch (status) {
       case "confirmed":
@@ -176,7 +184,7 @@ export default function BookingView({ data }: PropertyBooking) {
                               {b.property_name}
                             </span>
                             <Badge variant="outline" className="ml-auto">
-                              {b.accommodation_type}
+                              {getAccommodationLabel(b.accommodation_type)}
                             </Badge>
                           </div>
 

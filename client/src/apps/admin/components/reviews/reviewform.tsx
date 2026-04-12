@@ -9,8 +9,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { X, Loader2 } from "lucide-react";
 import type { PropertyReview, ReviewPayload } from "@/types/property";
+import { useProperties } from "@/services/property.service";
 
 interface Props {
   open: boolean;
@@ -52,6 +60,10 @@ export default function ReviewFormDialog({
   const [avatarPreview, setAvatarPreview] = useState<string>("");
   const fileRef = useRef<HTMLInputElement>(null);
 
+  // Fetch properties
+  const { data: propertiesData, isLoading: propertiesLoading } =
+    useProperties();
+
   const set = (key: keyof typeof form, value: string | number) =>
     setForm((f) => ({ ...f, [key]: value }));
 
@@ -72,6 +84,12 @@ export default function ReviewFormDialog({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (form.property === 0) {
+      alert("Please select a property");
+      return;
+    }
+
     onSubmit({
       ...form,
       avatar: avatarFile || form.avatar,
@@ -111,6 +129,36 @@ export default function ReviewFormDialog({
                 required
                 disabled={isSubmitting}
               />
+            </div>
+
+            {/* Property Select */}
+            <div className="space-y-1.5">
+              <Label>Property</Label>
+              <Select
+                value={form.property.toString()}
+                onValueChange={(value) => set("property", parseInt(value, 10))}
+                disabled={propertiesLoading || isSubmitting}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a property..." />
+                </SelectTrigger>
+                <SelectContent>
+                  {propertiesData?.results?.map((property) => (
+                    <SelectItem
+                      key={property.id}
+                      value={property.id.toString()}
+                    >
+                      {property.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {propertiesLoading && (
+                <p className="text-xs text-muted-foreground flex items-center gap-1">
+                  <Loader2 className="h-3 w-3 animate-spin" /> Loading
+                  properties...
+                </p>
+              )}
             </div>
           </div>
 
