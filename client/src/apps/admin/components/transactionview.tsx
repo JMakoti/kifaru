@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import {
   Search,
-  Download,
   Calendar,
   CreditCard,
   TrendingUp,
@@ -38,16 +37,6 @@ export default function TransactionView() {
     });
   };
 
-  // const filteredTransactions = payments.filter((txn) => {
-  //   const matchesSearch =
-  //     txn.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     txn.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     txn.reference.toLowerCase().includes(searchTerm.toLowerCase());
-
-  //   const matchesStatus = statusFilter === "all" || txn.status === statusFilter;
-
-  //   return matchesSearch && matchesStatus;
-  // });
   const filteredTransactions = payments
     .map((payment) => ({
       id: payment.transaction_id,
@@ -101,17 +90,6 @@ export default function TransactionView() {
     return <ArrowDownLeft className="w-5 h-5 text-green-600" />;
   };
 
-  // type PaymentMethod = Payment["payment_method"];
-
-  // const getMethodBadge = (method: PaymentMethod) => {
-  //   const colors = {
-  //     card: "bg-purple-100 text-purple-700",
-  //     mpesa: "bg-green-100 text-green-700",
-  //   };
-
-  //   return colors[method];
-  // };
-
   const totalTransactions = payments.filter(
     (p) => p.payment_status === "completed",
   ).length;
@@ -141,7 +119,7 @@ export default function TransactionView() {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card className="shadow-soft h-30" style={{ animationDelay: "0.1s" }}>
+        <Card className="shadow-soft h-30 bg-card/50 border-border" style={{ animationDelay: "0.1s" }} >
           <CardContent className="py-3 px-6">
             <div className="flex items-center justify-between">
               <div>
@@ -210,10 +188,10 @@ export default function TransactionView() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <CardTitle>Transaction History</CardTitle>
-            <Button variant="outline" size="sm">
+            {/* <Button variant="outline" size="sm">
               <Download className="w-4 h-4 mr-2" />
               Export
-            </Button>
+            </Button> */}
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -222,7 +200,7 @@ export default function TransactionView() {
             <div className="relative flex-1">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
               <Input
-                placeholder="Search by ID, reference, customer name..."
+                placeholder="Search transaction reference"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="pl-10"
@@ -314,22 +292,9 @@ export default function TransactionView() {
                               {txn.customerName}
                             </span>
                           </div>
-                          {/* {txn.customerEmail && (
-                            <>
-                              <span className="text-gray-300">•</span>
-                              <span>{txn.customerEmail}</span>
-                            </>
-                          )} */}
                         </div>
 
                         <div className="flex items-center gap-4 text-sm">
-                          {/* <Badge
-                            className={getMethodBadge(txn.method)}
-                            variant="outline"
-                          >
-                            <CreditCard className="w-3 h-3 mr-1" />
-                            {txn.method.replace("_", " ")}
-                          </Badge> */}
                           <div className="flex items-center gap-1 text-gray-500">
                             <Calendar className="w-4 h-4" />
                             {formatDate(txn.date)}
@@ -347,13 +312,6 @@ export default function TransactionView() {
                           </div>
                         )}
 
-                        {/* {txn.status === "pending" && (
-                          <div className="flex gap-2 mt-3">
-                            <Button size="sm" variant="outline">
-                              View Details
-                            </Button>
-                          </div>
-                        )} */}
                       </div>
                     </div>
                   </div>

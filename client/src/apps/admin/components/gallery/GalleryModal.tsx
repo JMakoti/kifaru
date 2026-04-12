@@ -83,15 +83,17 @@ export function GalleryModal({
     }
   };
 
+
   // SUBMIT
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(formData);
+
   };
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent key={editImage?.id || "new"} className="sm:max-w-lg">
         <DialogHeader>
           <DialogTitle className="text-2xl">
             {editImage ? "Edit Image" : "Add New Image"}

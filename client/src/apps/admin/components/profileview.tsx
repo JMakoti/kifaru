@@ -5,7 +5,6 @@ import {
   Phone,
   MapPin,
   Globe,
-  Calendar,
   Shield,
   CheckCircle,
   LogOut,
@@ -20,21 +19,12 @@ export default function AdminProfileView({
   user,
   onLogout,
 }: AdminProfileViewProps) {
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-  };
 
   return (
     <div>
       <div className="mx-auto space-y-8">
         {/* Header with Avatar */}
-        <div className="bg-white rounded-lg shadow-sm p-8">
+        <div className="bg-card/70 border-border rounded-lg shadow-sm p-8">
           <div className="flex items-start justify-between">
             <div className="flex items-start space-x-6">
               <div className="w-24 h-24 rounded-full flex items-center justify-center bg-primary text-primary-foreground">
@@ -90,7 +80,7 @@ export default function AdminProfileView({
         </div>
 
         {/* Contact Information */}
-        <Card>
+        <Card className="bg-card/70 border-border">
           <CardHeader>
             <CardTitle>Contact Information</CardTitle>
           </CardHeader>
@@ -139,7 +129,7 @@ export default function AdminProfileView({
         </Card>
 
         {/* Preferences & Settings */}
-        <Card>
+        <Card className="bg-card/70 border-border">
           <CardHeader>
             <CardTitle>Preferences & Settings</CardTitle>
           </CardHeader>
@@ -161,7 +151,7 @@ export default function AdminProfileView({
         </Card>
 
         {/* Account Activity */}
-        <Card>
+        {/* <Card>
           <CardHeader>
             <CardTitle>Account Activity</CardTitle>
           </CardHeader>
@@ -189,11 +179,11 @@ export default function AdminProfileView({
               </div>
             </div>
           </CardContent>
-        </Card>
+        </Card> */}
 
         {/* Assigned Properties */}
         {user.assigned_properties && user.assigned_properties.length > 0 && (
-          <Card>
+          <Card className="bg-card/70 border-border">
             <CardHeader>
               <CardTitle>Assigned Properties</CardTitle>
             </CardHeader>

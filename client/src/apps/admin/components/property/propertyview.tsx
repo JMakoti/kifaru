@@ -11,7 +11,6 @@ import {
   Building2,
   DollarSign,
   MapPin,
-  Eye,
 } from "lucide-react";
 import { PropertyFormSheet } from "./propertyfrom";
 import type { Property } from "@/types/property";
@@ -219,12 +218,12 @@ export default function PropertiesView({
                     {/* <Link
                       to={`/admin/property/${property.slug}`}
                       className="group block"
-                    > */}
+                    >
                       <Button size="sm" variant="outline">
                         <Eye className="mr-1 h-4 w-4" />
                         View
                       </Button>
-                    {/* </Link> */}
+                    </Link> */}
 
                     <Button
                       size="sm"

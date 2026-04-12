@@ -16,7 +16,7 @@ export default function ReviewCard({ review, onEdit, onDelete }: Props) {
   )}&background=random&size=128`;
 
   return (
-    <div className="group rounded-lg border border-border bg-card p-5 flex gap-4 transition-all hover:shadow-md hover:border-accent/50">
+    <div className="group rounded-lg border border-border bg-card/50 p-5 flex gap-4 transition-all hover:shadow-md hover:border-accent/50">
       {/* Avatar Section */}
       <div className="shrink-0">
         <img

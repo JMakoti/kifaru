@@ -143,9 +143,10 @@ export default function Gallery() {
         </main>
 
         <GalleryModal
-          key={editingImage?.id}
+          key={
+            editingImage ? editingImage.id : isModalOpen ? "new-open" : "new"
+          }
           open={isModalOpen}
-          // onClose={() => setIsModalOpen(false)}
           onClose={() => {
             setIsModalOpen(false);
             setEditingImage(null);

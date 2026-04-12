@@ -11,7 +11,7 @@ import {
   Mail,
   Phone,
   DollarSign,
-  Plus,
+  // Plus,
 } from "lucide-react";
 
 import { useAdminUsers, useDeleteUser } from "@/services/user.service";
@@ -63,16 +63,16 @@ export default function CustomersView() {
             Track and manage your customer relationships
           </p>
         </div>
-        <Button size="lg" className="animate-bounce-in">
+        {/* <Button size="lg" className="animate-bounce-in">
           <Plus className="mr-2 h-5 w-5" />
           Add Customer
-        </Button>
+        </Button> */}
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card
-          className="shadow-soft hover-lift animate-fade-in"
+          className="shadow-soft hover-lift animate-fade-in bg-card/50 border-border"
           style={{ animationDelay: "0.1s" }}
         >
           <CardContent className="p-6">
@@ -89,7 +89,7 @@ export default function CustomersView() {
         </Card>
 
         <Card
-          className="shadow-soft hover-lift animate-fade-in"
+          className="shadow-soft hover-lift animate-fade-in bg-card/50 border-border"
           style={{ animationDelay: "0.2s" }}
         >
           <CardContent className="p-6">
@@ -108,7 +108,7 @@ export default function CustomersView() {
         </Card>
 
         <Card
-          className="shadow-soft hover-lift animate-fade-in"
+          className="shadow-soft hover-lift animate-fade-in bg-card/50 border-border"
           style={{ animationDelay: "0.3s" }}
         >
           <CardContent className="p-6">
@@ -127,7 +127,7 @@ export default function CustomersView() {
 
       {/* Customer List */}
       <Card
-        className="shadow-soft animate-fade-in"
+        className="shadow-soft animate-fade-in bg-card/50 border-border"
         style={{ animationDelay: "0.4s" }}
       >
         <CardHeader>
@@ -155,7 +155,7 @@ export default function CustomersView() {
             {filteredUsers.map((user, index) => (
               <Card
                 key={user.id}
-                className="shadow-soft hover-lift card-interactive animate-fade-in"
+                className="shadow-soft hover-lift card-interactive animate-fade-in bg-card/70 border-border"
                 style={{ animationDelay: `${0.5 + index * 0.1}s` }}
               >
                 <CardContent className="p-4">
@@ -247,10 +247,10 @@ export default function CustomersView() {
                   ? "Try adjusting your search terms"
                   : "Start by adding your first Guest"}
               </p>
-              <Button variant="default">
+              {/* <Button variant="default">
                 <Plus className="mr-2 h-4 w-4" />
                 Add Guest
-              </Button>
+              </Button> */}
             </div>
           )}
         </CardContent>

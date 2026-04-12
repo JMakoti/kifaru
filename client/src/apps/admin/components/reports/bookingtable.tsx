@@ -8,7 +8,7 @@ const statusStyles: Record<string, string> = {
 };
 
 const BookingsTable = ({ bookings }: { bookings: RecentBooking[] }) => (
-  <div className="rounded-lg border bg-card overflow-hidden">
+  <div className="rounded-lg border bg-card overflow-hidden bg-card/50">
     <div className="p-5 border-b">
       <h2 className="text-lg font-semibold text-card-foreground">Recent Bookings</h2>
     </div>
