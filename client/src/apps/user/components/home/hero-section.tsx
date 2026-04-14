@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import kifaruhero from "@/assets/kifaruhero.mp4";
+import herobg from "@/assets/images/hero-bg.jpg";
 
 const subHeading = [
   "Where purpose, place, and people meet.",
@@ -35,17 +36,13 @@ export default function HeroSection() {
           loop
           playsInline
           className="absolute inset-0 w-full h-full object-cover -z-20"
-          poster="https://res.cloudinary.com/drselhsl4/image/upload/v1763483919/Kifaru/k096rs8b5wqru5dwghax.jpg"
+          poster={herobg}
         >
-          <source
-            src={kifaruhero}
-            type="video/mp4"
-          />
+          <source src={kifaruhero} type="video/mp4" />
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage:
-                "url('https://res.cloudinary.com/drselhsl4/image/upload/v1763483919/Kifaru/k096rs8b5wqru5dwghax.jpg')",
+              backgroundImage: "url('" + herobg + "')",
             }}
           ></div>
         </video>
