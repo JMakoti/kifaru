@@ -161,7 +161,7 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
 
       {slides.length > 1 && (
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3">
-          {slides.map((_, i) => (
+          {slides.slice(0, 5).map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrent(i)}

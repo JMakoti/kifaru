@@ -3,6 +3,7 @@ import { Button } from "../../../../components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import kifaruhero from "@/assets/kifaruhero.mp4";
 
 const subHeading = [
   "Where purpose, place, and people meet.",
@@ -37,7 +38,7 @@ export default function HeroSection() {
           poster="https://res.cloudinary.com/drselhsl4/image/upload/v1763483919/Kifaru/k096rs8b5wqru5dwghax.jpg"
         >
           <source
-            src="https://res.cloudinary.com/drselhsl4/video/upload/v1768159278/Kifaru/jyxq43ne939bishlyvnn.mp4"
+            src={kifaruhero}
             type="video/mp4"
           />
           <div

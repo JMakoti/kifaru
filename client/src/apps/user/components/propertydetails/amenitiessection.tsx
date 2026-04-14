@@ -44,7 +44,7 @@ const AmenitiesSection = ({ amenities }: AmenitiesProps) => {
           } transition-all duration-1000`}
         >
           {Object.entries(amenities).map(([category, items], i) => {
-            const CategoryIcon = iconMap[category.toLowerCase()] || ChefHat;
+            // const CategoryIcon = iconMap[category.toLowerCase()] || ChefHat;
 
             return (
               <div
@@ -53,9 +53,9 @@ const AmenitiesSection = ({ amenities }: AmenitiesProps) => {
                 style={{ transitionDelay: `${i * 100}ms` }}
               >
                 {/* Category Icon */}
-                <div className="w-16 h-16 flex items-center justify-center mb-4 text-gray-900">
+                {/* <div className="w-16 h-16 flex items-center justify-center mb-4 text-gray-900">
                   <CategoryIcon className="w-10 h-10" />
-                </div>
+                </div> */}
 
                 {/* Category Title */}
                 <h3 className="text-xl mb-3 text-gray-900 capitalize">
