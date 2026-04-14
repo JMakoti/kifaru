@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Linkedin, Twitter, Instagram, Facebook } from "lucide-react";
+import george from "@/assets/images/Victor.jpeg"
 
 const teamMembers = [
   {
@@ -42,11 +43,11 @@ const teamMembers = [
     },
   },
   {
-    image: "/team/person4.jpg",
-    name: "Alexander Sibling",
+    image: george,
+    name: "Victor Georges Vanden",
     title: "Junior",
     quote:
-      "Alexander is a true 'born global', having grown up in Amsterdam, Brussels, and Mombasa, thriving in diverse cultures and languages.",
+      "Victor is a true 'born global', having grown up in Amsterdam, Brussels, and Mombasa, thriving in diverse cultures and languages.",
     socials: {
       linkedin: "#",
       twitter: "#",
