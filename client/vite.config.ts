@@ -2,9 +2,27 @@ import path from "path";
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
+import viteCompression from "vite-plugin-compression";
 
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [
+    react(),
+    tailwindcss(),
+
+    // Gzip
+    viteCompression({
+      algorithm: "gzip",
+      ext: ".gz",
+      threshold: 10240,
+    }),
+
+    // Brotli (recommended)
+    viteCompression({
+      algorithm: "brotliCompress",
+      ext: ".br",
+      threshold: 10240,
+    }),
+  ],
 
   resolve: {
     alias: {
@@ -29,7 +47,7 @@ export default defineConfig({
         // Manual chunks for better caching & code splitting
         manualChunks: {
           vendor: ["react", "react-dom", "react-router-dom"],
-          query: ["@tanstack/react-query"],
+          query: ["@tanstack/react-query", "axios"],
         },
       },
     },

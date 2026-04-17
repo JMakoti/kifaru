@@ -1,10 +1,12 @@
 import { Link } from "react-router";
 import { Button } from "../../../../components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { AnimatePresence, motion } from "framer-motion";
+// import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import kifaruhero from "@/assets/kifaruhero.mp4";
+import kifaruhero1080p from "@/assets/kifaruhero-1080p.mp4";
 import herobg from "@/assets/images/hero-bg.jpg";
+import kifaruhero720p from "@/assets/kifaruhero-720p.mp4";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const subHeading = [
   "Where purpose, place, and people meet.",
@@ -16,8 +18,10 @@ const subHeading = [
   "Where each encounter leaves a lasting impression",
 ];
 
+
 export default function HeroSection() {
   const [index, setIndex] = useState(0);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -25,6 +29,8 @@ export default function HeroSection() {
     }, 5000);
     return () => clearInterval(interval);
   }, []);
+
+  const videoSrc = isMobile ? kifaruhero720p : kifaruhero1080p;
 
   return (
     <div>
@@ -35,37 +41,27 @@ export default function HeroSection() {
           muted
           loop
           playsInline
+          preload="metadata"
           className="absolute inset-0 w-full h-full object-cover -z-20"
           poster={herobg}
+          aria-label="Background video of Kifaru Msambweni"
         >
-          <source src={kifaruhero} type="video/mp4" />
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: "url('" + herobg + "')",
-            }}
-          ></div>
+          <source src={videoSrc} type="video/mp4" />
         </video>
 
-        <div className="absolute inset-0 bg-black/40 -z-10"></div>
+        <div className="absolute inset-0 bg-black/60 -z-10"></div>
 
         <div className="container-custom section-padding relative z-10 flex flex-col items-center text-center px-4">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white text-center">
             <span className="text-gradient-blue">Kifaru Impact Retreat</span>
             <br />
-            <span className="block mt-4 text-3xl font-medium h-[1.5em]">
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={subHeading[index]}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.5 }}
-                  className="inline-block text-gradient-blue"
-                >
-                  {subHeading[index]}
-                </motion.span>
-              </AnimatePresence>
+            <span className="block mt-2 text-2xl sm:text-xl font-medium h-[1.5em] overflow-hidden">
+              <div
+                key={subHeading[index]}
+                className="animate-slide-up text-gradient-blue"
+              >
+                {subHeading[index]}
+              </div>
             </span>
           </h1>
 
