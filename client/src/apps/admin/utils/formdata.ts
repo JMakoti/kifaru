@@ -50,16 +50,26 @@ export function buildPropertyFormData(property: Property): FormData {
     }
   });
 
-  // -------------------- Pricing Options --------------------
+  // -------------------- Highligh Options --------------------
   const highlightsMeta = (property.highlights ?? []).map((h) => ({
     title: h.title,
   }));
 
   formData.append("highlights", JSON.stringify(highlightsMeta));
 
+  // (property.highlights ?? []).forEach((highlight) => {
+  //   if (highlight.image instanceof File) {
+  //     formData.append("highlights_images", highlight.image);
+  //   }
+  // });
+
   (property.highlights ?? []).forEach((highlight) => {
     if (highlight.image instanceof File) {
-      formData.append("highlights_images", highlight.image);
+      // If it's a new file upload
+      formData.append(`highlights_images`, highlight.image);
+    } else if (typeof highlight.image === "string" && highlight.image) {
+      // If it's an existing image URL, send a flag to keep it
+      formData.append(`keep_highlight_images`, highlight.image);
     }
   });
 

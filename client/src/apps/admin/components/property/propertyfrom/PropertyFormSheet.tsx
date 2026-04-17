@@ -123,6 +123,22 @@ export function PropertyFormSheet({
     () => property || emptyPropertyForm,
   );
 
+  // In PropertyFormSheet.tsx - update the initialization
+  // const [formData, setFormData] = useState<Property>(() => {
+  //   if (property && property.slug) {
+  //     return {
+  //       ...property,
+  //       highlights: property.highlights || [],
+  //       property_images: property.property_images.map(img => ({
+  //         ...img,
+  //         image: img.image
+  //       })),
+  //     };
+  //   }
+  //   // This is a create operation
+  //   return emptyPropertyForm;
+  // });
+
   const createMutation = useCreateProperty();
   const updateMutation = useUpdateProperty();
 
@@ -193,10 +209,7 @@ export function PropertyFormSheet({
               />
             </FormField>
 
-            <FormField
-              label="Tagline"
-              htmlFor="tagline"
-            >
+            <FormField label="Tagline" htmlFor="tagline">
               <Input
                 id="tagline"
                 placeholder="A short, catchy description"
@@ -239,12 +252,17 @@ export function PropertyFormSheet({
               </FormField>
             </div>
 
-            <FormField label="Location Description" htmlFor="location_description">
+            <FormField
+              label="Location Description"
+              htmlFor="location_description"
+            >
               <Textarea
                 id="location_description"
                 placeholder="Describe your property location in detail..."
                 value={formData.location_description}
-                onChange={(e) => updateField("location_description", e.target.value)}
+                onChange={(e) =>
+                  updateField("location_description", e.target.value)
+                }
                 className="min-h-[80px] resize-none"
               />
             </FormField>

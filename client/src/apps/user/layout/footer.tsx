@@ -58,7 +58,7 @@ export default function Footer() {
         <div className="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
       )}
 
-      <div className="relative z-10 container mx-auto px-3 md:px-9">
+      <div className="relative z-10 container mx-auto px-3 md:px-4">
         {isDefaultFooterRoute ? (
           <motion.div
             className="grid md:grid-cols-4 gap-4 mb-10"
@@ -67,7 +67,7 @@ export default function Footer() {
             variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
           >
             {/* Brand */}
-            <motion.div variants={fadeUp}>
+            <motion.div variants={fadeUp} >
               <div className="flex flex-row items-center gap-2 mb-4">
                 <img
                   src={logo}
@@ -125,8 +125,6 @@ export default function Footer() {
               <h3 className="text-lg font-semibold text-white mb-3">Contact</h3>
               <ul className="space-y-2 text-lg text-gray-300">
                 <li>Email: requests@techbedkifaru.be</li>
-                {/* <li>Phone: +254 708 533 033</li> */}
-                {/* <li>Location: Nairobi, Kenya</li> */}
                 {isAuthenticated ? (
                   <Link to="/dashboard/profile">Admin</Link>
                 ) : (
