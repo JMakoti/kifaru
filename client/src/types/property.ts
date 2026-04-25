@@ -28,7 +28,7 @@ export interface Amenities {
 
 export interface PropertyImage {
   id?: number;
-  image: File | string;
+  image: File | string | null;
   category: ImageCategory;
   order: number;
 }

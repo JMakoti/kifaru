@@ -56,8 +56,10 @@ export function buildPropertyFormData(property: Property): FormData {
 
   // 4. Append actual files
   newImages.forEach((img) => {
+  if (img.image instanceof File) {
     formData.append("images", img.image);
-  });
+  }
+});
   // const imagesMeta = property.property_images.map((img) => ({
   //   category: img.category,
   //   order: img.order,
