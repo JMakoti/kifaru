@@ -60,7 +60,7 @@ export const useCreateGallery = () => {
       return galleryApi.create({ ...data, order: newOrder });
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: galleryKeys.list() });
+      queryClient.invalidateQueries({ queryKey: galleryKeys.list(),exact: true, });
     },
   });
 };
@@ -80,10 +80,12 @@ export const useUpdateGallery = () => {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({
         queryKey: galleryKeys.list(),
+        exact: true,
       });
 
       queryClient.invalidateQueries({
         queryKey: galleryKeys.detail(variables.id),
+        exact: true,
       });
     },
   });
@@ -99,6 +101,7 @@ export const useDeleteGallery = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: galleryKeys.list(),
+        exact: true,
       });
     },
   });
