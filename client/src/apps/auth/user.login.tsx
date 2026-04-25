@@ -30,10 +30,31 @@ export default function Login() {
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const { login, isLoading } = useAuth();
+  const { login, isLoggingIn } = useAuth();
+
+  const validateForm = () => {
+    const { email, password } = formData;
+
+    if (!email || !password) {
+      return "All fields are required";
+    }
+    if (!email) {
+      return "All fields are required";
+    }
+    if (!password) {
+      return "All fields are required";
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const validationError = validateForm();
+
+    if (validationError) {
+      setErrorMessage(validationError);
+      return;
+    }
     setErrorMessage(null);
 
     try {
@@ -111,8 +132,8 @@ export default function Login() {
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    disabled={isLoading}
-                    required
+                    disabled={isLoggingIn}
+                    // required
                   />
                 </div>
               </div>
@@ -130,8 +151,8 @@ export default function Login() {
                     onChange={(e) =>
                       setFormData({ ...formData, password: e.target.value })
                     }
-                    disabled={isLoading}
-                    required
+                    disabled={isLoggingIn}
+                    // required
                   />
                   <Button
                     type="button"
@@ -149,16 +170,16 @@ export default function Login() {
                 type="submit"
                 className="w-full rounded-full"
                 size="lg"
-                disabled={isLoading}
+                disabled={isLoggingIn}
               >
-                {isLoading ? "Signing in..." : "Sign In"}
+                {isLoggingIn ? "Signing in..." : "Sign In"}
               </Button>
             </form>
 
             <Separator className="my-6" />
 
             <div className="text-center text-sm text-muted-foreground">
-              Don&apos;t have an account?{" "}
+              Don't have an account?{" "}
               <Link
                 to="/auth/register"
                 className="text-primary font-medium hover:underline"

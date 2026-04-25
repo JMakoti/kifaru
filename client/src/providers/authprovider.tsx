@@ -29,7 +29,9 @@ export interface AuthContextValue {
   isLoading: boolean;
   error: Error | null;
   login: (data: LoginFormInputs) => Promise<AuthResponse>;
+  isLoggingIn: boolean;
   register: (data: RegisterFormInputs) => Promise<AuthResponse>;
+  isRegistering: boolean;
   logout: () => Promise<void>;
   refreshUser: () => Promise<void>;
 }
@@ -101,6 +103,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         isLoading,
         error: error as Error | null,
         login: loginMutation.mutateAsync,
+        isRegistering: registerMutation.isPending,
+        isLoggingIn: loginMutation.isPending,
         register: registerMutation.mutateAsync,
         logout: logoutMutation.mutateAsync,
       }}

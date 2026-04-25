@@ -6,10 +6,31 @@ import { Separator } from "@/components/ui/separator";
 import { extractErrorMessage } from "@/lib/extract-error-message";
 import type { AuthResponse } from "@/types/user.types";
 import { Mail, Lock, User, Eye, EyeOff } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import kifaru from "@/assets/icon/kifaru.png";
 import { useAuth } from "@/providers/useAuth";
+
+function getPasswordErrors(password: string): string[] {
+  const errors: string[] = [];
+
+  if (password.length < 6) {
+    errors.push("Password must be at least 6 characters long");
+  }
+  if (password.length > 24) {
+    errors.push("Password must be at most 24 characters long");
+  }
+  if (/\s/.test(password)) {
+    errors.push("Password cannot contain spaces");
+  }
+  if (!/[0-9]/.test(password)) {
+    errors.push("Password must contain at least one number");
+  }
+  if (!/[A-Z]/.test(password)) {
+    errors.push("Password must contain at least one uppercase letter");
+  }
+  return errors;
+}
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -22,6 +43,70 @@ export default function Register() {
     whatsapp_number: "",
   });
 
+  const validateForm = () => {
+    const {
+      first_name,
+      last_name,
+      email,
+      password,
+      password_confirm,
+      phone_number,
+    } = formData;
+
+    if (
+      !first_name ||
+      !last_name ||
+      !email ||
+      !password ||
+      !password_confirm ||
+      !phone_number
+    ) {
+      return "All fields are required";
+    }
+
+    if (!first_name) {
+      return "First Name field required";
+    }
+
+    if (!last_name) {
+      return "Last Name required";
+    }
+
+    if (!email) {
+      return "Email required";
+    }
+
+    if (!password) {
+      return "Pasword is required";
+    }
+
+    if (!phone_number) {
+      return "Phone number required";
+    }
+
+    // Reject simple sequential numbers like 12345678
+    const isSequential = (pwd: string) => {
+      const seq = "1234567890";
+      const rev = "0987654321";
+      const pass = "password";
+      return seq.includes(pwd) || rev.includes(pwd) || pass.includes(pwd);
+    };
+
+    if (isSequential(password)) {
+      return "Password is too weak (avoid sequential numbers)";
+    }
+
+    if (password !== password_confirm) {
+      return "Passwords do not match";
+    }
+
+    return null;
+  };
+
+  const passwordErrors = useMemo(() => {
+    return getPasswordErrors(formData.password);
+  }, [formData.password]);
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -29,10 +114,18 @@ export default function Register() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const navigate = useNavigate();
-  const { register, isLoading } = useAuth();
+  const { register, isRegistering } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const validationError = validateForm();
+
+    if (validationError) {
+      setErrorMessage(validationError);
+      return;
+    }
+
     setSuccessMessage(null);
     setErrorMessage(null);
 
@@ -52,9 +145,9 @@ export default function Register() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-light to-muted p-4">
       <div className="w-full max-w-md">
         {/* Logo */}
-         <div className="text-center mb-8 items-center flex flex-col">
-           <img src={kifaru} alt="Kifaru Logo" className="w-20 h-20"/>
-           {/* <p className="text-muted-foreground">
+        <div className="text-center mb-8 items-center flex flex-col">
+          <img src={kifaru} alt="Kifaru Logo" className="w-20 h-20" />
+          {/* <p className="text-muted-foreground">
             Start your plans journey today
           </p> */}
         </div>
@@ -92,7 +185,7 @@ export default function Register() {
                       onChange={(e) =>
                         setFormData({ ...formData, first_name: e.target.value })
                       }
-                      required
+                      // required
                     />
                   </div>
                 </div>
@@ -105,7 +198,7 @@ export default function Register() {
                     onChange={(e) =>
                       setFormData({ ...formData, last_name: e.target.value })
                     }
-                    required
+                    // required
                   />
                 </div>
               </div>
@@ -122,7 +215,7 @@ export default function Register() {
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    required
+                    // required
                   />
                 </div>
               </div>
@@ -138,7 +231,7 @@ export default function Register() {
                       phone_number: e.target.value,
                     })
                   }
-                  required
+                  // required
                 />
               </div>
 
@@ -154,7 +247,7 @@ export default function Register() {
                     onChange={(e) =>
                       setFormData({ ...formData, password: e.target.value })
                     }
-                    required
+                    // required
                   />
                   <Button
                     type="button"
@@ -183,7 +276,7 @@ export default function Register() {
                         password_confirm: e.target.value,
                       })
                     }
-                    required
+                    // required
                   />
                   <Button
                     type="button"
@@ -197,13 +290,21 @@ export default function Register() {
                 </div>
               </div>
 
+              {passwordErrors.length > 0 && (
+                <ul style={{ color: "red" }}>
+                  {passwordErrors.map((err, i) => (
+                    <li key={i}>{err}</li>
+                  ))}
+                </ul>
+              )}
+
               <Button
                 type="submit"
                 className="w-full"
                 size="lg"
-                disabled={isLoading}
+                disabled={isRegistering}
               >
-                {isLoading ? "Creating account..." : "Create Account"}
+                {isRegistering ? "Creating account..." : "Create Account"}
               </Button>
             </form>
 
