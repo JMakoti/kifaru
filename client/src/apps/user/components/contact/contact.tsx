@@ -214,7 +214,7 @@ export default function ContactDetailsSection() {
                         onChange={handleChange}
                         className="bg-background/80 border-border focus:ring-foreground focus:border-foreground"
                         placeholder="Your Name"
-                        required
+                        // required
                       />
                     </div>
                     <div className="space-y-2">
@@ -232,7 +232,7 @@ export default function ContactDetailsSection() {
                         onChange={handleChange}
                         className="bg-background/80 border-border focus:ring-foreground focus:border-foreground"
                         placeholder="Your Email"
-                        required
+                        // required
                       />
                     </div>
                   </div>
@@ -269,7 +269,7 @@ export default function ContactDetailsSection() {
                       onChange={handleChange}
                       className="bg-background/80 border-border focus:ring-foreground focus:border-foreground min-h-[120px]"
                       placeholder="Tell us about your property needs..."
-                      required
+                      // required
                     />
                   </div>
 

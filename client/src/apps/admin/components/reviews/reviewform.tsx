@@ -59,6 +59,7 @@ export default function ReviewFormDialog({
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string>("");
   const fileRef = useRef<HTMLInputElement>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   // Fetch properties
   const { data: propertiesData, isLoading: propertiesLoading } =
@@ -82,11 +83,39 @@ export default function ReviewFormDialog({
     if (fileRef.current) fileRef.current.value = "";
   };
 
+  // const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const validateForm = () => {
+    const { property, reviewer_name, rating, comment } = form;
+
+    if (!property || !reviewer_name || !rating || !comment) {
+      return "All Fields are required";
+    }
+    if (!property) {
+      return "Property are required"; 
+    }
+    if (!reviewer_name) {
+      return "Reviewer Name fields are required";
+    }
+    if (!rating) {
+      return "Rating field are required";
+    }
+    if (!comment) {
+      return "Comment field are required";
+    }
+  };
+
+  // if (validationError) {
+  //     setErrorMessage(validationError);
+  //     return;
+  //   }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (form.property === 0) {
-      alert("Please select a property");
+    const validationError = validateForm();
+
+    if (validationError) {
+      setErrorMessage(validationError);
       return;
     }
 
@@ -103,6 +132,12 @@ export default function ReviewFormDialog({
           <DialogTitle>{review ? "Edit Review" : "New Review"}</DialogTitle>
         </DialogHeader>
 
+        {errorMessage && (
+          <div className="mb-4 rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-center text-sm text-red-400">
+            {errorMessage}
+          </div>
+        )}
+
         <form onSubmit={handleSubmit} className="grid gap-4 py-2">
           {/* Country Field */}
           <div className="space-y-1.5">
@@ -111,7 +146,6 @@ export default function ReviewFormDialog({
               value={form.country}
               onChange={(e) => set("country", e.target.value)}
               placeholder="e.g. Kenya"
-              required
               disabled={isSubmitting}
             />
           </div>
@@ -126,7 +160,6 @@ export default function ReviewFormDialog({
                 max={5}
                 value={form.rating}
                 onChange={(e) => set("rating", +e.target.value)}
-                required
                 disabled={isSubmitting}
               />
             </div>
@@ -169,7 +202,6 @@ export default function ReviewFormDialog({
               value={form.reviewer_name}
               onChange={(e) => set("reviewer_name", e.target.value)}
               placeholder="e.g. John Doe"
-              required
               disabled={isSubmitting}
             />
           </div>
@@ -217,7 +249,6 @@ export default function ReviewFormDialog({
               value={form.comment}
               onChange={(e) => set("comment", e.target.value)}
               placeholder="Enter review feedback..."
-              required
               disabled={isSubmitting}
             />
           </div>

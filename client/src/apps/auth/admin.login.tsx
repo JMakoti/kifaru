@@ -25,13 +25,35 @@ const AdminLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const { login, isLoading, error } = useAuth();
+  const { login, isLoggingIn, error } = useAuth();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  const validateForm = () => {
+    const { email, password } = formData;
+
+    if (!email || !password) {
+      return "All fields are required";
+    }
+    if (!email) {
+      return "All fields are required";
+    }
+    if (!password) {
+      return "All fields are required";
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const validationError = validateForm();
+
+    if (validationError) {
+      setErrorMessage(validationError);
+      return;
+    }
     setErrorMessage(null);
+
     try {
       await login(formData);
       await queryClient.refetchQueries({ queryKey: ["auth-user"] });
@@ -82,8 +104,8 @@ const AdminLogin = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, email: e.target.value })
                     }
-                    disabled={isLoading}
-                    required
+                    disabled={isLoggingIn}
+                    // required
                   />
                 </div>
               </div>
@@ -100,8 +122,8 @@ const AdminLogin = () => {
                     onChange={(e) =>
                       setFormData({ ...formData, password: e.target.value })
                     }
-                    disabled={isLoading}
-                    required
+                    disabled={isLoggingIn}
+                    // required
                   />
                   <Button
                     type="button"
@@ -124,10 +146,10 @@ const AdminLogin = () => {
               <Button
                 type="submit"
                 size="lg"
-                disabled={isLoading}
+                disabled={isLoggingIn}
                 className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
               >
-                {isLoading ? "Signing in..." : "Sign In"}
+                {isLoggingIn ? "Signing in..." : "Sign In"}
               </Button>
             </form>
           </CardContent>

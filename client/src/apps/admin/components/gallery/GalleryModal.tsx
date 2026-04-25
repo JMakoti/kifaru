@@ -58,6 +58,7 @@ export function GalleryModal({
   const [formData, setFormData] = useState<GalleryFormData>(() =>
     getInitialFormData(editImage),
   );
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [preview, setPreview] = useState<string | null>(
     editImage?.image ?? null,
   );
@@ -83,12 +84,41 @@ export function GalleryModal({
     }
   };
 
+  // const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const validateForm = () => {
+    const { image, title, category } = formData;
+
+    if (!image || !title || !category) {
+      return "All Fields are required";
+    }
+    if (!image) {
+      return "Image required";
+    }
+    if (!title) {
+      return "Title required";
+    }
+    if (!category) {
+      return "Category required";
+    }
+  };
+  // const validationError = validateForm();
+  // if (validationError) {
+  //     setErrorMessage(validationError);
+  //     return;
+  //   }
 
   // SUBMIT
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(formData);
 
+    const validationError = validateForm();
+
+    if (validationError) {
+      setErrorMessage(validationError);
+      return;
+    }
+
+    onSubmit(formData);
   };
 
   return (
@@ -99,6 +129,12 @@ export function GalleryModal({
             {editImage ? "Edit Image" : "Add New Image"}
           </DialogTitle>
         </DialogHeader>
+
+        {errorMessage && (
+          <div className="mb-4 rounded-md border border-red-500/30 bg-red-500/10 px-3 py-2 text-center text-sm text-red-400">
+            {errorMessage}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-6 mt-4">
           {/* Image Upload */}
