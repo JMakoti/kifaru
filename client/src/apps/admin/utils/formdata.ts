@@ -38,40 +38,85 @@ export function buildPropertyFormData(property: Property): FormData {
   // -------------------- Amenities --------------------
   formData.append("amenities", JSON.stringify(property.amenities ?? {}));
 
-  // -------------------- Property Images --------------------
-  const imagesMeta = property.property_images.map((img) => ({
+  // // -------------------- Property Images --------------------
+
+  // 1. Get ONLY new images (those with File)
+  const newImages = property.property_images.filter(
+    (img) => img.image instanceof File,
+  );
+
+  // 2. Build metadata ONLY for new images
+  const imagesMeta = newImages.map((img) => ({
     category: img.category,
     order: img.order,
   }));
+
+  // 3. Append metadata
   formData.append("property_images", JSON.stringify(imagesMeta));
-  property.property_images.forEach((img) => {
-    if (img.image instanceof File) {
-      formData.append("images", img.image);
-    }
+
+  // 4. Append actual files
+  newImages.forEach((img) => {
+    formData.append("images", img.image);
   });
-
-  // -------------------- Highligh Options --------------------
-  const highlightsMeta = (property.highlights ?? []).map((h) => ({
-    title: h.title,
-  }));
-
-  formData.append("highlights", JSON.stringify(highlightsMeta));
-
-  // (property.highlights ?? []).forEach((highlight) => {
-  //   if (highlight.image instanceof File) {
-  //     formData.append("highlights_images", highlight.image);
+  // const imagesMeta = property.property_images.map((img) => ({
+  //   category: img.category,
+  //   order: img.order,
+  // }));
+  // formData.append("property_images", JSON.stringify(imagesMeta));
+  // property.property_images.forEach((img) => {
+  //   if (img.image instanceof File) {
+  //     formData.append("images", img.image);
   //   }
   // });
 
-  (property.highlights ?? []).forEach((highlight) => {
-    if (highlight.image instanceof File) {
-      // If it's a new file upload
-      formData.append(`highlights_images`, highlight.image);
-    } else if (typeof highlight.image === "string" && highlight.image) {
-      // If it's an existing image URL, send a flag to keep it
-      formData.append(`keep_highlight_images`, highlight.image);
-    }
-  });
+  // -------------------- Highligh Options --------------------
+  // const highlightsMeta = (property.highlights ?? []).map((h) => ({
+  //   title: h.title,
+  // }));
+
+  // -------------------- Highlights --------------------
+
+// Get all highlights safely
+const highlights = property.highlights ?? [];
+
+// 1. Build metadata for ALL highlights (existing + new)
+const highlightsMeta = highlights.map((h) => ({
+  title: h.title,
+  image: typeof h.image === "string" ? h.image : null, // keep existing URLs
+}));
+
+formData.append("highlights", JSON.stringify(highlightsMeta));
+
+// 2. Send ONLY new highlight images as files
+highlights.forEach((h) => {
+  if (h.image instanceof File) {
+    formData.append(`highlights_images`, h.image);
+  }
+});
+
+  // const highlightsMeta = (property.highlights ?? []).map((h) => ({
+  //   title: h.title,
+  //   image: typeof h.image === "string" ? h.image : null, // include existing URL
+  // }));
+
+  // formData.append("highlights", JSON.stringify(highlightsMeta));
+
+  // // (property.highlights ?? []).forEach((highlight) => {
+  // //   if (highlight.image instanceof File) {
+  // //     formData.append("highlights_images", highlight.image);
+  // //   }
+  // // });
+
+  // (property.highlights ?? []).forEach((highlight) => {
+  //   if (highlight.image instanceof File) {
+  //     // If it's a new file upload
+  //     formData.append(`highlights_images`, highlight.image);
+  //   }
+  //   // else if (typeof highlight.image === "string" && highlight.image) {
+  //   //   // If it's an existing image URL, send a flag to keep it
+  //   //   // formData.append(`keep_highlight_images`, highlight.image);
+  //   // }
+  // });
 
   // -------------------- Pricing Options --------------------
   const cleanedPricing = (property.pricing_options ?? []).map((pricing) => ({
