@@ -40,7 +40,7 @@ export function useCreateProperty() {
   return useMutation({
     mutationFn: propertyApi.create,
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: PROPERTY_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: PROPERTY_QUERY_KEY,exact: true, });
       toast.success("Property created successfully!", {
         description: `${data.name} has been added to your listings.`,
       });
@@ -61,7 +61,7 @@ export function useUpdateProperty() {
     mutationFn: ({ slug, property }: { slug: string; property: Property }) =>
       propertyApi.update(slug, property),
     onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: PROPERTY_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: PROPERTY_QUERY_KEY,exact: true, });
       queryClient.invalidateQueries({
         queryKey: [...PROPERTY_QUERY_KEY, data.id],
       });
@@ -84,7 +84,7 @@ export function useDeleteProperty() {
   return useMutation({
     mutationFn: propertyApi.delete,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: PROPERTY_QUERY_KEY });
+      queryClient.invalidateQueries({ queryKey: PROPERTY_QUERY_KEY,exact: true, });
       toast.success("Property deleted successfully!");
     },
     onError: (error: Error) => {
@@ -130,7 +130,7 @@ export const useReviews = () => {
     useMutation({
       mutationFn: reviewApi.create,
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [REVIEWS_QUERY] });
+        queryClient.invalidateQueries({ queryKey: [REVIEWS_QUERY],exact: true, });
       },
     });
 
@@ -145,7 +145,7 @@ export const useReviews = () => {
         payload: Partial<ReviewPayload>;
       }) => reviewApi.update(id, payload),
       onSuccess: (updatedReview) => {
-        queryClient.invalidateQueries({ queryKey: [REVIEWS_QUERY] });
+        queryClient.invalidateQueries({ queryKey: [REVIEWS_QUERY],exact: true, });
         queryClient.setQueryData(
           [REVIEWS_QUERY, updatedReview.id],
           updatedReview,
@@ -158,7 +158,7 @@ export const useReviews = () => {
     useMutation({
       mutationFn: reviewApi.delete,
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: [REVIEWS_QUERY] });
+        queryClient.invalidateQueries({ queryKey: [REVIEWS_QUERY],exact: true, });
       },
       onError: (error) => {
         console.error("Delete failed:", error);
