@@ -13,7 +13,7 @@ import type { AxiosError } from "axios";
 //  QUERY KEYS
 const BOOKING_KEYS = {
   all: ["bookings"] as const,
-  my: ["my-bookings"] as const,
+  my: ["bookings", "my"] as const,
   detail: (id: number) => ["bookings", id] as const,
   price: (params?: BookingPriceQuery) => ["booking-price", params] as const,
 };
@@ -64,11 +64,11 @@ export const useCreateBooking = () => {
     mutationFn: (data: BookingPayload) => bookingApi.create(data),
     onSuccess: (data) => {
       // Invalidate queries
-      queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.all });
-      queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.my });
-
+      // queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.all });
+      // queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.my });
+           queryClient.invalidateQueries({ queryKey: ["bookings"] });
       // Log here to see if the hook sees the ID
-      console.log("Hook level success, ID:", data?.id);
+      // console.log("Hook level success, ID:", data?.id);
 
       // Return data so the component's mutate call can see it
       return data;
@@ -82,8 +82,9 @@ export const useCancelBooking = () => {
   return useMutation({
     mutationFn: (id: number) => bookingApi.cancel(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.all });
-      queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.my });
+        queryClient.invalidateQueries({ queryKey: ["bookings"] });
+      // queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.all });
+      // queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.my });
     },
   });
 };
@@ -94,7 +95,8 @@ export const useDeleteBooking = () => {
   return useMutation({
     mutationFn: (id: number) => bookingApi.delete(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.all });
+      // queryClient.invalidateQueries({ queryKey: BOOKING_KEYS.all });
+           queryClient.invalidateQueries({ queryKey: ["bookings"] });
     },
   });
 };

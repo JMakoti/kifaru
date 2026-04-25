@@ -38,7 +38,7 @@ export const bookingApi = {
     const response = await api.get<BookingPaginatedResponse<Booking>>(
       `${BOOKINGS}/`,
     );
-    console.log("Booking API Response:", response.data); // Debugging log
+    // console.log("Booking API Response:", response.data); // Debugging log
     return response.data.results;
 
     

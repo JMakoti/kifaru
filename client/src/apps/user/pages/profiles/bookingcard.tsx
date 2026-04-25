@@ -7,6 +7,8 @@ import {
   useCancelBooking,
   useInitializePayment,
 } from "@/services/booking.service";
+import { useState } from "react";
+import ConfirmModal from "./confirmmodal";
 
 interface PropertyBooking {
   booking: Booking;
@@ -15,9 +17,17 @@ interface PropertyBooking {
 export default function BookingCard({ booking }: PropertyBooking) {
   const cancelBooking = useCancelBooking();
   const { mutate: initializePayment, isPending } = useInitializePayment();
+
+  const [showCancelModal, setShowCancelModal] = useState(false);
+
   const handleCancel = () => {
-    if (!confirm("Are you sure you want to cancel this booking?")) return;
-    cancelBooking.mutate(booking.id);
+    setShowCancelModal(true);
+  };
+
+  const confirmCancel = () => {
+    cancelBooking.mutate(booking.id, {
+      onSuccess: () => setShowCancelModal(false),
+    });
   };
 
   const handlePayment = () => {
@@ -53,91 +63,107 @@ export default function BookingCard({ booking }: PropertyBooking) {
   };
 
   return (
-    <Card className="border border-border rounded-2xl shadow-sm hover:shadow-md transition">
-      <CardContent className="p-5 space-y-4">
-        {/* Header */}
-        <div className="flex items-center justify-between">
-          <h3 className="font-semibold text-lg">{booking.booking_reference}</h3>
-          <Badge className={getStatusStyle()}>{booking.status}</Badge>
-        </div>
-
-        {/* Property Info */}
-        <div className="bg-muted/40 rounded-xl p-4 space-y-3">
-          <div className="flex items-center gap-2">
-            <MapPin className="w-4 h-4 text-muted-foreground" />
-            <span className="font-medium">{booking.property_name}</span>
+    <>
+      <Card className="border border-border rounded-2xl shadow-sm hover:shadow-md transition">
+        <CardContent className="p-5 space-y-4">
+          {/* Header */}
+          <div className="flex items-center justify-between">
+            <h3 className="font-semibold text-lg">
+              {booking.booking_reference}
+            </h3>
+            <Badge className={getStatusStyle()}>{booking.status}</Badge>
           </div>
 
-          <div className="grid sm:grid-cols-2 gap-4 text-sm">
+          {/* Property Info */}
+          <div className="bg-muted/40 rounded-xl p-4 space-y-3">
             <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-muted-foreground" />
-              <div>
-                <p className="text-muted-foreground">Check-in</p>
-                <p className="font-medium">{formatDate(booking.check_in)}</p>
+              <MapPin className="w-4 h-4 text-muted-foreground" />
+              <span className="font-medium">{booking.property_name}</span>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-4 text-sm">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-muted-foreground" />
+                <div>
+                  <p className="text-muted-foreground">Check-in</p>
+                  <p className="font-medium">{formatDate(booking.check_in)}</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-muted-foreground" />
+                <div>
+                  <p className="text-muted-foreground">Check-out</p>
+                  <p className="font-medium">{formatDate(booking.check_out)}</p>
+                </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-muted-foreground" />
-              <div>
-                <p className="text-muted-foreground">Check-out</p>
-                <p className="font-medium">{formatDate(booking.check_out)}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between text-sm border-t border-border/60 pt-3">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center gap-1 text-muted-foreground">
-                <Users className="w-4 h-4" />
-                <span className="text-foreground font-medium">
-                  {booking.number_of_guests}
+            <div className="flex items-center justify-between text-sm border-t border-border/60 pt-3">
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1 text-muted-foreground">
+                  <Users className="w-4 h-4" />
+                  <span className="text-foreground font-medium">
+                    {booking.number_of_guests}
+                  </span>
+                </div>
+                <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
+                  ({booking.number_of_adults}A / {booking.number_of_children}C)
                 </span>
               </div>
-              <span className="text-[10px] text-muted-foreground uppercase tracking-wider">
-                ({booking.number_of_adults}A / {booking.number_of_children}C)
+              <span className="text-primary font-semibold">
+                {booking.total_days} Night(s)
               </span>
             </div>
-            <span className="text-primary font-semibold">
-              {booking.total_days} Night(s)
-            </span>
           </div>
-        </div>
 
-        {/* Footer */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          {/* Footer */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              {/* Show Cancel button if not already cancelled or completed */}
+              {booking.status !== "cancelled" &&
+                booking.status !== "completed" && (
+                  <Button
+                    onClick={handleCancel}
+                    className="border border-red-500 text-red-500 bg-red-50 hover:bg-red-50 px-4 py-2 rounded-md transition-colors cursor-pointer"
+                    disabled={cancelBooking.isPending}
+                  >
+                    {cancelBooking.isPending
+                      ? "Cancelling..."
+                      : "Cancel Booking"}
+                  </Button>
+                )}
 
-          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-            {/* Show Cancel button if not already cancelled or completed */}
-            {booking.status !== "cancelled" &&
-              booking.status !== "completed" && (
+              {/* Only show Make Payment if the status is 'pending' */}
+              {booking.status === "pending" && (
                 <Button
-                  onClick={handleCancel}
-                  className="border border-red-500 text-red-500 bg-red-50 hover:bg-red-50 px-4 py-2 rounded-md transition-colors cursor-pointer"
-                  disabled={cancelBooking.isPending}
+                  onClick={handlePayment}
+                  disabled={isPending}
+                  className="border border-primary text-primary bg-primary/10 hover:bg-primary/20 px-4 py-2 rounded-md transition-colors cursor-pointer"
                 >
-                  {cancelBooking.isPending ? "Cancelling..." : "Cancel Booking"}
+                  {isPending ? "Securing Gateway..." : "Make Payment"}
                 </Button>
               )}
+            </div>
 
-            {/* Only show Make Payment if the status is 'pending' */}
-            {booking.status === "pending" && (
-              <Button
-                onClick={handlePayment}
-                disabled={isPending}
-                className="border border-primary text-primary bg-primary/10 hover:bg-primary/20 px-4 py-2 rounded-md transition-colors cursor-pointer"
-              >
-                {isPending ? "Securing Gateway..." : "Make Payment"}
-              </Button>
-            )}
+            <div className="text-right">
+              <p className="text-2xl font-semibold">€{booking.total_amount}</p>
+              <p className="text-xs text-muted-foreground">Total</p>
+            </div>
           </div>
-
-          <div className="text-right">
-            <p className="text-2xl font-semibold">€{booking.total_amount}</p>
-            <p className="text-xs text-muted-foreground">Total</p>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+      {/* cancel booking modal */}
+      {showCancelModal && (
+        <ConfirmModal
+          isOpen={showCancelModal}
+          title="Cancel Booking"
+          message="Are you sure you want to cancel this booking?"
+          onCancel={() => setShowCancelModal(false)}
+          onConfirm={confirmCancel}
+          loading={cancelBooking.isPending}
+        />
+      )}
+    </>
   );
 }
