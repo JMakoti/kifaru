@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import { Link, NavLink, useMatch } from "react-router";
+import { Link, NavLink } from "react-router";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -21,8 +21,8 @@ export default function Navbar() {
   const { isAuthenticated, user } = useAuth();
 
   // Detect property details page
-  const propertyMatch = useMatch("/property/:slug");
-  const isPropertyDetailsPage = !!propertyMatch;
+  // const propertyMatch = useMatch("/property/:slug");
+  // const isPropertyDetailsPage = !!propertyMatch;
 
   // Fetch properties dynamically
   const { data, isLoading, isError } = useProperties();
@@ -46,9 +46,9 @@ export default function Navbar() {
         <div className="hidden md:flex md:items-center md:gap-4 lg:gap-6 text-white text-lg">
           {navLinks.map((link) => {
             // Hide Properties nav on property details page
-            if (link.label === "Properties" && isPropertyDetailsPage) {
-              return null;
-            }
+            // if (link.label === "Properties" && isPropertyDetailsPage) {
+            //   return null;
+            // }
 
             // Properties dropdown
             if (link.label === "Properties") {
