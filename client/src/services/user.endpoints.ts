@@ -123,7 +123,7 @@ export const resetPassword = async (
     token,
   );
 
-  const { data } = await api.post(url, {
+  const { data } = await api.patch(url, {
     password,
     password_confirm,
   });

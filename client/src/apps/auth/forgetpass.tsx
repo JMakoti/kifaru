@@ -13,18 +13,34 @@ import { Button } from "@/components/ui/button";
 import { useForgetPassword } from "@/services/user.service";
 import { extractErrorMessage } from "@/lib/extract-error-message";
 import kifaru from "@/assets/icon/kifaru.png";
+import { useNavigate } from "react-router-dom";
 
 export default function ForgetPass() {
   const [formData, setFormData] = useState({
     email: "",
   });
   const forgetPasswordMutation = useForgetPassword();
+  const navigate = useNavigate();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    forgetPasswordMutation.mutate({
-      email: formData.email,
-    });
+    forgetPasswordMutation.mutate(
+      {
+        email: formData.email,
+      },
+      {
+        onSuccess: (data) => {
+          navigate("/auth/check-email", {
+            replace: true,
+            state: {
+              email: formData.email,
+              message: data?.message,
+            },
+          });
+        },
+      },
+    );
   };
 
   return (

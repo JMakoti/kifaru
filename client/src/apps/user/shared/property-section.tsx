@@ -22,7 +22,7 @@ function PropertyDestination({
       ? property.property_images.map((img) => img.image)
       : [property.background_image];
 
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(images.length - 1);
 
   useEffect(() => {
     if (images.length <= 1) return;

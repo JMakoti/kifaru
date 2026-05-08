@@ -29,7 +29,7 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
       location: property.location,
       title: property.name,
       tagline: property.tagline,
-    }));
+    })).reverse();
   }, [property]);
 
   const next = useCallback(() => {
