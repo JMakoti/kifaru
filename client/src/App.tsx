@@ -6,9 +6,11 @@ import { lazy, Suspense } from "react";
 const UserApp = lazy(() => import("./apps/user/userApp"));
 const AdminApp = lazy(() => import("./apps/admin/adminApp"));
 const AuthRoutes = lazy(() => import("./apps/auth/auth.routes"));
+const ResetPasswordPage = lazy(() => import("./apps/auth/resetpass"));
 import "./App.css";
 import LoadingScreen from "./components/loadingscreen";
 import { ProtectedRoute } from "./apps/auth/routes/protected.route";
+import { PublicRoute } from "./apps/auth/routes/public.route";
 import { useAuth } from "./providers/useAuth";
 import ScrollToTop from "./lib/scrolltotop";
 
@@ -30,6 +32,16 @@ export default function App() {
             <Suspense fallback={<LoadingScreen />}>
               <AuthRoutes />
             </Suspense>
+          }
+        />
+        <Route
+          path="/password-reset-confirm/:uidb64/:token"
+          element={
+            <PublicRoute>
+              <Suspense fallback={<LoadingScreen />}>
+                <ResetPasswordPage />
+              </Suspense>
+            </PublicRoute>
           }
         />
         {/* Admin mini-system */}
