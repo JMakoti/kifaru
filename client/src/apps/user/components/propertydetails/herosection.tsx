@@ -109,7 +109,7 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
 
   return (
     <section className="relative w-full overflow-hidden h-[60vh] md:h-[80vh] lg:h-[100vh]">
-      {slides.map((s, i) => (
+      {slides.slice(0, 5).map((s, i) => (
         <div
           key={i}
           className="absolute inset-0 transition-opacity duration-1000 ease-in-out"

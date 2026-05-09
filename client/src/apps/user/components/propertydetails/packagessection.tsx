@@ -41,10 +41,19 @@ const PackagesSection = ({ packages, property }: PackageProps) => {
   // ONLY Close the Gap HUB
   const isCloseTheGap =
     name.includes("close the gap") ||
+    name.includes("Close the Gap Hub") ||
     location.includes("close the gap") ||
     description.includes("tamarind hotel") ||
     description.includes("nyali bridge") ||
     description.includes("mombasa creek");
+
+  const packageCount = packages.length;
+  const packagesLayoutClass =
+    packageCount === 1
+      ? "grid grid-cols-1 max-w-2xl mx-auto"
+      : packageCount === 2
+        ? "grid grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto"
+        : "grid grid-cols-1 md:grid-cols-3";
 
   return (
     <section className="bg-background py-20 px-6 md:px-12 lg:px-20" ref={ref}>
@@ -61,7 +70,7 @@ const PackagesSection = ({ packages, property }: PackageProps) => {
 
         {/* Packages Grid */}
         <div
-          className={`grid grid-cols-1 md:grid-cols-3 gap-6 items-stretch transition-all duration-1000 ${
+          className={`${packagesLayoutClass} gap-6 items-stretch transition-all duration-1000 ${
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
@@ -110,10 +119,10 @@ const PackagesSection = ({ packages, property }: PackageProps) => {
                 <button
                   onClick={!isCloseTheGap ? handleBookingClick : undefined}
                   disabled={isCloseTheGap}
-                  className={`uppercase flex items-center justify-center py-3 text-sm  tracking-wider rounded transition-colors
+                  className={`uppercase flex items-center justify-center py-3 text-sm tracking-wider rounded transition-colors
     ${
       isCloseTheGap
-        ? "border border-gray-400 text-gray-900 hover:bg-gray-100 font-bold uppercase cursor-not-allowed"
+        ? "border-2 border-gray-300 text-gray-600 bg-gray-50 font-bold uppercase cursor-not-allowed"
         : "bg-accent text-white hover:bg-accent font-semibold cursor-pointer"
     }`}
                 >

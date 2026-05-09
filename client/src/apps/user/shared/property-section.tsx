@@ -19,10 +19,13 @@ function PropertyDestination({
 
   const images =
     property.property_images?.length > 0
-      ? property.property_images.map((img) => img.image)
+      ? property.property_images
+          .slice(-5)
+          .reverse()
+          .map((img) => img.image)
       : [property.background_image];
 
-  const [currentImageIndex, setCurrentImageIndex] = useState(images.length - 1);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     if (images.length <= 1) return;

@@ -5,6 +5,7 @@ import { useProperties } from "@/services/property.service";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { useAuth } from "@/providers/useAuth";
+import { resolveImageSrc } from "@/hooks/resolveImage";
 
 export default function Footer() {
   const location = useLocation();
@@ -28,6 +29,8 @@ export default function Footer() {
 
   const isDefaultFooterRoute = defaultFooterRoutes.includes(location.pathname);
   const currentProperty = propertyList.find((p) => p.slug === propertyRoute);
+  const footerImage = resolveImageSrc(currentProperty?.background_image);
+  const hasPropertyFooterImage = !isDefaultFooterRoute && Boolean(footerImage);
 
   // Animation Variants
   const fadeUp = {
@@ -42,36 +45,46 @@ export default function Footer() {
       initial="hidden"
       animate="visible"
       variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
-      className={`relative w-full pt-12 pb-6 mt-12 text-white`}
+      className="relative w-full mt-12 overflow-hidden bg-[var(--kifaru-body)] pt-12 pb-6 text-white"
       style={
-        !isDefaultFooterRoute && currentProperty?.background_image
-          ? {
-              backgroundImage: `url(${currentProperty.background_image})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-            }
+        hasPropertyFooterImage
+          ? undefined
           : { backgroundColor: "var(--kifaru-body)" }
       }
     >
-      {/* Overlay for property footers */}
-      {!isDefaultFooterRoute && currentProperty?.background_image && (
-        <div className="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
+      {hasPropertyFooterImage && (
+        <img
+          src={footerImage}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          fetchPriority="low"
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
       )}
 
-      <div className="relative z-10 container mx-auto px-3 md:px-4">
+      {/* Overlay for property footers */}
+      {hasPropertyFooterImage && (
+        <div className="absolute inset-0 bg-black/75"></div>
+      )}
+
+      <div className="relative z-10 mx-auto w-full max-w-screen-2xl px-4 sm:px-6 lg:px-10 xl:px-14">
         {isDefaultFooterRoute ? (
           <motion.div
-            className="grid md:grid-cols-4 gap-4 mb-10"
+            className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-[1.25fr_0.75fr_0.95fr_1.35fr] lg:gap-10 mb-10"
             initial="hidden"
             animate="visible"
             variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
           >
             {/* Brand */}
-            <motion.div variants={fadeUp} >
+            <motion.div variants={fadeUp} className="min-w-0">
               <div className="flex flex-row items-center gap-2 mb-4">
                 <img
                   src={logo}
                   alt="Kifaru Logo"
+                  loading="lazy"
+                  decoding="async"
                   className="w-16 h-16 object-contain"
                 />
                 <h2 className="text-3xl font-bold text-white">Kifaru</h2>
@@ -83,7 +96,7 @@ export default function Footer() {
             </motion.div>
 
             {/* Quick Links */}
-            <motion.div variants={fadeUp}>
+            <motion.div variants={fadeUp} className="min-w-0">
               <h3 className="text-lg font-semibold text-white mb-3">
                 Quick Links
               </h3>
@@ -101,7 +114,7 @@ export default function Footer() {
             </motion.div>
 
             {/* Destinations */}
-            <motion.div variants={fadeUp}>
+            <motion.div variants={fadeUp} className="min-w-0">
               <h3 className="text-lg font-semibold text-white mb-3">
                 Destinations
               </h3>
@@ -121,10 +134,13 @@ export default function Footer() {
             </motion.div>
 
             {/* Contact Info */}
-            <motion.div variants={fadeUp}>
+            <motion.div variants={fadeUp} className="min-w-0">
               <h3 className="text-lg font-semibold text-white mb-3">Contact</h3>
               <ul className="space-y-2 text-lg text-gray-300">
-                <li>Email: requests@techbedkifaru.be</li>
+                <li className="flex flex-col gap-1 xl:flex-row xl:gap-2">
+                  <span>Email:</span>
+                  <span className="break-words">requests@techbedkifaru.be</span>
+                </li>
                 {isAuthenticated ? (
                   <Link to="/dashboard/profile">Admin</Link>
                 ) : (
@@ -144,7 +160,7 @@ export default function Footer() {
                 "Experience luxury and nature in our exclusive properties."}
             </p>
 
-            <motion.div className="flex justify-center space-x-6 mb-6">
+            <motion.div className="flex flex-wrap justify-center gap-x-6 gap-y-3 mb-6">
               {navLinks.map((link) => (
                 <motion.li
                   key={link.to}

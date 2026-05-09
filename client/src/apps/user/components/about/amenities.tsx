@@ -2,6 +2,8 @@ import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import coastal from "@/assets/amenities/plsj8c3cj11rdttfwjt6.jpg";
+import culture from "@/assets/amenities/dtai9yryhuwim62nuoxt.jpg";
 
 const smallCards = [
   {
@@ -17,7 +19,7 @@ const smallCards = [
   {
     title: "Coastal Retreats",
     desc: "Peaceful beachfront escapes where soft waves, warm sands, and endless horizons create moments that feel timeless.",
-    img: "https://res.cloudinary.com/drselhsl4/image/upload/v1764184034/Kifaru/amenities/plsj8c3cj11rdttfwjt6.jpg",
+    img: coastal,
   },
   {
     title: "African wine tastings & curated events",
@@ -27,7 +29,7 @@ const smallCards = [
   {
     title: "Cultural Art & Heritage Spaces",
     desc: "Spaces celebrating local artistry, storytelling, and heritage.",
-    img: "https://res.cloudinary.com/drselhsl4/image/upload/v1764184624/Kifaru/amenities/dtai9yryhuwim62nuoxt.jpg",
+    img: culture,
   },
 ];
 
