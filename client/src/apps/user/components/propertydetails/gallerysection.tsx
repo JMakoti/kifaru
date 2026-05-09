@@ -3,7 +3,7 @@
 import { resolveImageSrc } from "@/hooks/resolveImage";
 import { useInView } from "@/hooks/useInView";
 import type { PropertyImage } from "@/types/property";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 interface GalleryProps {
   gallery?: PropertyImage[];
@@ -12,6 +12,10 @@ const GallerySection = ({ gallery }: GalleryProps) => {
   const [showAll, setShowAll] = useState(false);
   const { ref, isInView } = useInView();
   const containerRef = useRef<HTMLDivElement>(null);
+  const orderedGallery = useMemo(
+    () => [...(gallery ?? [])].sort((a, b) => a.order - b.order),
+    [gallery],
+  );
 
   // Infinite scroll
   useEffect(() => {
@@ -35,8 +39,8 @@ const GallerySection = ({ gallery }: GalleryProps) => {
     return () => cancelAnimationFrame(animationFrame);
   }, []);
 
-  if (!gallery || gallery.length === 0) return null;
-  const visible = showAll ? gallery : gallery.slice(0, 6);
+  if (orderedGallery.length === 0) return null;
+  const visible = showAll ? orderedGallery : orderedGallery.slice(0, 6);
 
   return (
     <section
@@ -99,7 +103,7 @@ const GallerySection = ({ gallery }: GalleryProps) => {
           )}
         </div>
 
-        {!showAll && gallery.length > 6 && (
+        {!showAll && orderedGallery.length > 6 && (
           <div className="text-center mt-10">
             <button
               type="button"
