@@ -39,17 +39,15 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
   }, [visibleSlides.length]);
 
   useEffect(() => {
-    setCurrent(0);
-  }, [visibleSlides.length]);
-
-  useEffect(() => {
     if (visibleSlides.length <= 1) return;
 
     const timer = setInterval(next, 6000);
     return () => clearInterval(timer);
   }, [next, visibleSlides.length]);
 
-  const slide = visibleSlides[current];
+  const activeIndex =
+    visibleSlides.length > 0 ? current % visibleSlides.length : 0;
+  const slide = visibleSlides[activeIndex];
 
   if (!slide) return null;
 
@@ -119,7 +117,7 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
         <div
           key={i}
           className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
-          style={{ opacity: i === current ? 1 : 0 }}
+          style={{ opacity: i === activeIndex ? 1 : 0 }}
         >
           <img
             src={resolveImageSrc(s.image)}
@@ -132,7 +130,7 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/20" />
 
       <div className="absolute inset-0 flex items-center justify-center text-center px-6">
-        <div key={current} className="animate-fade-up max-w-4xl mx-auto">
+        <div key={activeIndex} className="animate-fade-up max-w-4xl mx-auto">
           <div className="flex items-center justify-center gap-2 mb-6 text-white/80">
             <MapPin className="w-4 h-4" />
             <span className="text-xs sm:text-sm tracking-widest uppercase font-medium">
@@ -172,7 +170,7 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
               key={i}
               onClick={() => setCurrent(i)}
               className={`h-2 rounded-full transition-all duration-300 ${
-                i === current
+                i === activeIndex
                   ? "bg-white w-8"
                   : "bg-white/40 w-2 hover:bg-white/60"
               }`}
