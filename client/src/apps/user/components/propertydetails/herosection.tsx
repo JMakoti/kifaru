@@ -32,18 +32,24 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
     })).reverse();
   }, [property]);
 
+  const visibleSlides = useMemo(() => slides.slice(0, 5), [slides]);
+
   const next = useCallback(() => {
-    setCurrent((p) => (p + 1) % slides.length);
-  }, [slides.length]);
+    setCurrent((p) => (p + 1) % visibleSlides.length);
+  }, [visibleSlides.length]);
 
   useEffect(() => {
-    if (slides.length <= 1) return;
+    setCurrent(0);
+  }, [visibleSlides.length]);
+
+  useEffect(() => {
+    if (visibleSlides.length <= 1) return;
 
     const timer = setInterval(next, 6000);
     return () => clearInterval(timer);
-  }, [next, slides.length]);
+  }, [next, visibleSlides.length]);
 
-  const slide = slides[current];
+  const slide = visibleSlides[current];
 
   if (!slide) return null;
 
@@ -109,7 +115,7 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
 
   return (
     <section className="relative w-full overflow-hidden h-[60vh] md:h-[80vh] lg:h-[100vh]">
-      {slides.slice(0, 5).map((s, i) => (
+      {visibleSlides.map((s, i) => (
         <div
           key={i}
           className="absolute inset-0 transition-opacity duration-1000 ease-in-out"
@@ -159,9 +165,9 @@ export default function HeroCarousel({ property }: HeroCarouselProps) {
         </div>
       </div>
 
-      {slides.length > 1 && (
+      {visibleSlides.length > 1 && (
         <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex gap-3">
-          {slides.slice(0, 5).map((_, i) => (
+          {visibleSlides.map((_, i) => (
             <button
               key={i}
               onClick={() => setCurrent(i)}
