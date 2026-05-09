@@ -74,9 +74,12 @@ const PackagesSection = ({ packages, property }: PackageProps) => {
             isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          {packages.map((pkg) => (
+          {packages.map((pkg, index) => (
             <div
-              key={pkg.accommodation_type}
+              key={
+                pkg.id ??
+                `${pkg.accommodation_type}-${pkg.guest_type}-${pkg.stay_type}-${index}`
+              }
               className={`bg-card flex flex-col border border-gray-200`}
             >
               <div className="p-8 flex flex-col flex-1">

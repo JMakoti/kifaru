@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import type { GalleryPhoto } from "@/types/gallery";
 import { useGalleryList } from "@/services/gallery.sevice";
+import { resolveImageSrc } from "@/hooks/resolveImage";
 
 interface GalleryItem {
   id: number;
@@ -48,7 +49,7 @@ function ScrollingRow({
             className={`relative h-[180px] md:h-[260px] ${item.mobileWidth} ${item.desktopWidth} flex-shrink-0 group overflow-hidden bg-zinc-100 border border-zinc-200 rounded-sm`}
           >
             <img
-              src={item.imageUrl}
+              src={resolveImageSrc(item.imageUrl, { width: 900 })}
               alt={item.title}
               loading="lazy"
               className="w-full h-full object-cover select-none pointer-events-none transition-transform duration-700 ease-in-out group-hover:scale-110"
@@ -68,7 +69,7 @@ function ScrollingRow({
   );
 }
 const mapGalleryPhotosToUI = (photos: GalleryPhoto[]): GalleryItem[] =>
-  photos
+  [...photos]
     .sort((a, b) => a.order - b.order)
     .map((photo, index) => ({
       id: photo.id,

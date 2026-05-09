@@ -1,29 +1,36 @@
 import { useState, useEffect } from "react";
 import { Play } from "lucide-react";
+import surf from "@/assets/images/jet_skiing.webp";
+import culture from "@/assets/amenities/ma-cultural.webp";
 
 const SLIDES = [
   {
     id: 1,
-    video:
-      "",
+    video: "",
+    fallbackImage: surf,
     words: ["Easy &", "Transparent Booking"],
   },
   {
     id: 2,
-    video:
-      "",
+    video: "",
+    fallbackImage: culture,
     words: ["24/7 Care", "& Support"],
   },
   {
     id: 3,
-    video:
-      "",
+    video: "",
+    fallbackImage: surf,
     words: ["Dedicated", "Account Managers"],
   },
 ];
 
+const isVideoSource = (src: string) =>
+  /\.(mp4|webm|ogg)(\?.*)?$/i.test(src) || src.includes("/video/upload/");
+
 export default function VideoWordStack() {
   const [index, setIndex] = useState(0);
+  const currentSlide = SLIDES[index];
+  const shouldShowVideo = currentSlide.video && isVideoSource(currentSlide.video);
 
   useEffect(() => {
     const slideTimer = setInterval(() => {
@@ -50,16 +57,28 @@ export default function VideoWordStack() {
 
         {/* Main Video Card */}
         <div className="absolute inset-0 bg-black rounded-[1.5rem] sm:rounded-[2rem] shadow-2xl overflow-hidden border-[4px] sm:border-[8px] border-white">
-          <video
-            key={SLIDES[index].video}
-            autoPlay
-            muted
-            loop
-            playsInline
+          <img
+            src={currentSlide.fallbackImage}
+            alt={currentSlide.words.join(" ")}
+            loading="lazy"
+            decoding="async"
             className="absolute inset-0 w-full h-full object-cover"
-          >
-            <source src={SLIDES[index].video} type="video/mp4" />
-          </video>
+          />
+
+          {shouldShowVideo && (
+            <video
+              key={currentSlide.video}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              poster={currentSlide.fallbackImage}
+              className="absolute inset-0 w-full h-full object-cover"
+            >
+              <source src={currentSlide.video} type="video/mp4" />
+            </video>
+          )}
 
           {/* Subtle Overlay */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-black/30" />

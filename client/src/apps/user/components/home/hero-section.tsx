@@ -3,9 +3,9 @@ import { Button } from "../../../../components/ui/button";
 import { ArrowRight } from "lucide-react";
 // import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import kifaruhero1080p from "@/assets/kifaruhero-720p.mp4";
+import heroDesktopVideo from "@/assets/kifaruhero-720p.mp4";
 import herobg from "@/assets/images/hero-bg.webp";
-import kifaruhero720p from "@/assets/kifaruhero-480p.mp4";
+import heroMobileVideo from "@/assets/kifaruhero-480p.mp4";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const subHeading = [
@@ -30,7 +30,7 @@ export default function HeroSection() {
     return () => clearInterval(interval);
   }, []);
 
-  const videoSrc = isMobile ? kifaruhero720p : kifaruhero1080p;
+  const videoSrc = isMobile ? heroMobileVideo : heroDesktopVideo;
 
   return (
     <div>
@@ -41,7 +41,7 @@ export default function HeroSection() {
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="none"
           className="absolute inset-0 w-full h-full object-cover -z-20"
           poster={herobg}
           aria-label="Background video of Kifaru Msambweni"
