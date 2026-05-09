@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, MapPin } from "lucide-react";
-import contactbg1 from "@/assets/images/contactbg-1.jpg";
-import contactbg2 from "@/assets/images/contactbg-2.jpg";
-import contactbg3 from "@/assets/images/contactbg-3.jpg";
+import contactbg1 from "@/assets/images/contactbg-1.webp";
+import contactbg2 from "@/assets/images/contactbg-2.webp";
+import contactbg3 from "@/assets/images/contactbg-3.webp";
 import { Toaster, toast } from "sonner";
 
 import whatsapp from "@/assets/icon/cl-whatsapp.png";

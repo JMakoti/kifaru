@@ -12,7 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import bglogin from "@/assets/images/kifaru-adminbg.jpeg";
+import bglogin from "@/assets/images/kifaru-adminbg.webp";
 import { extractErrorMessage } from "@/lib/extract-error-message";
 import kifaru from "@/assets/icon/kifaru.png";
 import { useAuth } from "@/providers/useAuth";

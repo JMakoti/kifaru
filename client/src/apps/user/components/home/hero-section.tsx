@@ -3,9 +3,9 @@ import { Button } from "../../../../components/ui/button";
 import { ArrowRight } from "lucide-react";
 // import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import kifaruhero1080p from "@/assets/kifaruhero-1080p.mp4";
-import herobg from "@/assets/images/hero-bg.jpg";
-import kifaruhero720p from "@/assets/kifaruhero-720p.mp4";
+import kifaruhero1080p from "@/assets/kifaruhero-720p.mp4";
+import herobg from "@/assets/images/hero-bg.webp";
+import kifaruhero720p from "@/assets/kifaruhero-480p.mp4";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const subHeading = [

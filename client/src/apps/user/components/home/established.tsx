@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Linkedin, Twitter, Instagram, Facebook } from "lucide-react";
-import george from "@/assets/images/Victor.jpeg"
+import george from "@/assets/images/Victor.webp"
 
 const teamMembers = [
   {

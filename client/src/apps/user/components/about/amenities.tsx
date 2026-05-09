@@ -2,8 +2,8 @@ import { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import coastal from "@/assets/amenities/plsj8c3cj11rdttfwjt6.jpg";
-import culture from "@/assets/amenities/dtai9yryhuwim62nuoxt.jpg";
+import coastal from "@/assets/amenities/coastal.webp";
+import culture from "@/assets/amenities/ma-cultural.webp";
 
 const smallCards = [
   {

@@ -5,19 +5,19 @@ const SLIDES = [
   {
     id: 1,
     video:
-      "https://res.cloudinary.com/drselhsl4/video/upload/v1769583865/Kifaru/kifaruvideos/kigpowsxbbohu1infyij.mp4",
+      "",
     words: ["Easy &", "Transparent Booking"],
   },
   {
     id: 2,
     video:
-      "https://res.cloudinary.com/drselhsl4/video/upload/v1769583936/Kifaru/kifaruvideos/gie2yfewwyy4yhvnz3zy.mp4",
+      "",
     words: ["24/7 Care", "& Support"],
   },
   {
     id: 3,
     video:
-      "https://res.cloudinary.com/drselhsl4/video/upload/v1769583900/Kifaru/kifaruvideos/krhqxd8msvs2vausokow.mp4",
+      "",
     words: ["Dedicated", "Account Managers"],
   },
 ];

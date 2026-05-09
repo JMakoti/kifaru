@@ -1,4 +1,4 @@
-import rhino from "@/assets/images/rhino.png";
+import rhino from "@/assets/images/rhino.webp";
 import { Link, useLocation } from "react-router";
 import {
   Car,
@@ -8,12 +8,12 @@ import {
   Palette,
   Wifi,
 } from "lucide-react";
-import kifaruExperience from "@/assets/images/kifaru-about.jpg";
-import techandbedLogo from "@/assets/images/techandbed-logo.jpeg";
-import oceankifaru from "@/assets/images/ocean-kifaru-logo.jpg";
-import msambwenikifaru from "@/assets/images/msabweni.jpg";
-import closethegap from "@/assets/images/jet_skiing.jpg";
-import nyali from "@/assets/images/nyali.jpeg"
+import kifaruExperience from "@/assets/images/kifaru-about.webp";
+import techandbedLogo from "@/assets/images/techandbed-logo.webp";
+import oceankifaru from "@/assets/images/ocean-kifaru-logo.webp";
+import msambwenikifaru from "@/assets/images/msabweni.webp";
+import closethegap from "@/assets/images/jet_skiing.webp";
+import nyali from "@/assets/images/nyali.webp"
 
 import { Button } from "@/components/ui/button";
 import { motion, type Variants } from "framer-motion";
