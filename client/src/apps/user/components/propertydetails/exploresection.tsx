@@ -22,8 +22,11 @@ const ExploreMore = ({ properties, currentPropertyId }: ExploreMoreProps) => {
 
   const scrollByWidth = (direction: "left" | "right") => {
     if (!containerRef.current) return;
+    const gap = Number.parseFloat(
+      window.getComputedStyle(containerRef.current).columnGap,
+    );
     const cardWidth = containerRef.current.firstChild
-      ? (containerRef.current.firstChild as HTMLElement).clientWidth + 32 // +gap
+      ? (containerRef.current.firstChild as HTMLElement).clientWidth + gap
       : 300;
     const scrollAmount = direction === "left" ? -cardWidth : cardWidth;
     containerRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
@@ -34,14 +37,14 @@ const ExploreMore = ({ properties, currentPropertyId }: ExploreMoreProps) => {
   };
 
   return (
-    <section className="relative py-24 bg-gray-50" ref={ref}>
-      <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
+    <section className="relative bg-gray-50 py-14 sm:py-16 md:py-24" ref={ref}>
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-12 lg:px-20">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div className="mb-8 text-center sm:mb-12 md:mb-16">
           <span className="text-sm font-medium tracking-widest uppercase text-gray-500">
             Discover
           </span>
-          <h2 className="text-4xl md:text-5xl text-gray-900 mt-3">
+          <h2 className="mt-3 text-3xl leading-tight text-gray-900 sm:text-4xl md:text-5xl">
             Explore More Properties
           </h2>
         </div>
@@ -51,31 +54,31 @@ const ExploreMore = ({ properties, currentPropertyId }: ExploreMoreProps) => {
           {/* Left Arrow */}
           <button
             onClick={() => scrollByWidth("left")}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 bg-white/80 rounded-full p-2 shadow hover:bg-white transition"
+            className="absolute left-1 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow transition hover:bg-white sm:left-0"
           >
-            <ChevronLeft className="w-6 h-6 text-gray-700" />
+            <ChevronLeft className="h-5 w-5 text-gray-700 sm:h-6 sm:w-6" />
           </button>
 
           {/* Right Arrow */}
           <button
             onClick={() => scrollByWidth("right")}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 bg-white/80 rounded-full p-2 shadow hover:bg-white transition"
+            className="absolute right-1 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/80 p-2 shadow transition hover:bg-white sm:right-0"
           >
-            <ChevronRight className="w-6 h-6 text-gray-700" />
+            <ChevronRight className="h-5 w-5 text-gray-700 sm:h-6 sm:w-6" />
           </button>
 
           {/* Property Grid (scrollable) */}
           <div
             ref={containerRef}
-            className="flex gap-8 overflow-x-auto scroll-smooth scrollbar-hide py-4"
+            className="scrollbar-hide flex gap-4 overflow-x-auto scroll-smooth px-1 py-4 sm:gap-6 md:gap-8 md:px-0"
           >
             {filteredProperties.map((p) => (
               <div
                 key={p.name}
-                className="bg-white rounded-lg overflow-hidden shadow-md flex-shrink-0 w-[300px] md:w-[350px] lg:w-[400px] flex flex-col"
+                className="flex w-[calc(100vw-3rem)] max-w-[300px] flex-shrink-0 flex-col overflow-hidden rounded-lg bg-white shadow-md sm:w-[300px] md:w-[350px] md:max-w-none lg:w-[400px]"
               >
                 {/* Image */}
-                <div className="relative h-64 overflow-hidden">
+                <div className="relative h-56 overflow-hidden sm:h-64">
                   <img
                     src={resolveImageSrc(p.background_image)}
                     alt={p.name}
@@ -86,17 +89,17 @@ const ExploreMore = ({ properties, currentPropertyId }: ExploreMoreProps) => {
 
                 {/* Content */}
                 <Link to={`/property/${p.slug}`} className="group block">
-                  <div className="p-6 flex flex-col flex-1">
-                    <div className="flex items-center gap-1.5 text-gray-500 text-md mb-2">
-                      <MapPin className="w-3 h-3" />
-                      {p.location}
+                  <div className="flex flex-1 flex-col p-5 sm:p-6">
+                    <div className="mb-2 flex items-center gap-1.5 text-md text-gray-500">
+                      <MapPin className="h-3 w-3 shrink-0" />
+                      <span className="truncate">{p.location}</span>
                     </div>
                     <h3 className="text-xl mb-2 text-gray-900">{p.name}</h3>
                     <p className="text-md text-gray-600 mb-4 leading-relaxed flex-1">
                       {p.description && trimWords(p.description, 15)}
                     </p>
 
-                    <div className="flex items-center justify-between mt-auto">
+                    <div className="mt-auto flex flex-wrap items-center justify-between gap-3">
                       <div>
                         <span className="text-xl text-gray-900">
                           €{p.price}

@@ -66,7 +66,7 @@ export default function PropertyDetails() {
   }
 
   return (
-    <main>
+    <main className="[&>section+section]">
       {property && <HeroCarousel property={property} />}
 
       {property && <AboutSection property={property} />}

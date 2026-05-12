@@ -17,6 +17,7 @@ const AnimatedCounter = ({
   const [count, setCount] = useState(0);
 
   useEffect(() => {
+    if (target <= 0) return;
     if (!isActive) return;
     let start = 0;
     const duration = 1200;
@@ -29,7 +30,7 @@ const AnimatedCounter = ({
     return () => clearInterval(timer);
   }, [isActive, target]);
 
-  return <span>{count}</span>;
+  return <span>{target <= 0 ? 0 : count}</span>;
 };
 
 const StayDetails = ({ property }: StayProps) => {
@@ -40,42 +41,44 @@ const StayDetails = ({ property }: StayProps) => {
     { icon: BedDouble, label: "Bedrooms", value: property.bedrooms ?? 0 },
     { icon: Bath, label: "Bathrooms", value: property.bathrooms ?? 0 },
     { icon: Ruler, label: "Square Meters", value: property.square_meters ?? 0 },
-  ];
+  ].filter((stat) => stat.value > 0);
+
+  if (stats.length === 0) return null;
 
   return (
     <section
-      className="relative bg-background py-20 px-6 md:px-12 lg:px-20"
+      className="relative bg-background px-4 py-12 sm:px-6 sm:py-16 md:px-10 lg:px-16 lg:py-20"
       ref={ref}
     >
-      <div className="max-w-7xl mx-auto text-center mb-14">
+      <div className="mx-auto mb-8 max-w-7xl text-center sm:mb-10 lg:mb-14">
         <span className="text-sm font-medium tracking-widest uppercase text-muted-foreground">
           Your Stay
         </span>
-        <h2 className="text-3xl md:text-4xl lg:text-5xl text-primary mt-3">
+        <h2 className="mt-3 text-3xl leading-tight text-primary sm:text-4xl lg:text-5xl">
           The Experience
         </h2>
       </div>
 
-      <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 justify-center gap-4 sm:grid-cols-2 sm:gap-5 lg:flex lg:flex-wrap lg:gap-6">
         {stats.map((stat, i) => (
           <div
             key={stat.label}
-            className={`flex items-center justify-center space-x-4 p-4 transition-all bg-card duration-1000 ease-out transform ${
+            className={`flex min-h-28 items-center justify-start gap-4 rounded-xl bg-card p-4 transition-all duration-1000 ease-out sm:min-h-32 sm:justify-center sm:p-5 lg:min-h-36 lg:w-64 xl:w-72 ${
               isInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
             style={{ transitionDelay: `${i * 150}ms` }}
           >
             {/* Icon */}
-            <div className="w-20 h-20 flex items-center justify-center text-primary">
-              <stat.icon className="w-15 h-15" />
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center text-primary sm:h-16 sm:w-16 lg:h-20 lg:w-20">
+              <stat.icon className="h-10 w-10 sm:h-12 sm:w-12 lg:h-15 lg:w-15" />
             </div>
 
             {/* Value & Label */}
-            <div className="flex flex-col items-start">
-              <div className="text-3xl">
+            <div className="flex min-w-0 flex-col items-start">
+              <div className="text-2xl leading-none sm:text-3xl">
                 <AnimatedCounter target={stat.value} isActive={isInView} />
               </div>
-              <div className="text-muted-foreground font-medium text-lg">
+              <div className="mt-1 text-base font-medium leading-tight text-muted-foreground sm:text-lg">
                 {stat.label}
               </div>
             </div>
