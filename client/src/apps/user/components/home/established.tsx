@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
 import { Linkedin, Twitter, Instagram, Facebook } from "lucide-react";
-import george from "@/assets/images/Victor.webp"
+import george from "@/assets/team/Victor.webp"
+import oliver from "@/assets/team/olivier.webp"
+import debbie from "@/assets/team/debbie.webp"
+import alexander from "@/assets/team/Alexander2.webp"
 
 const teamMembers = [
   {
-    image:
-      "https://techbedkifaru.be/wp-content/uploads/2020/11/Olivier-bewerkt-3-394x394.png",
+    image:oliver,
     name: "Olivier Vanden Eynde",
     title: "Partner",
     quote:
@@ -18,8 +20,7 @@ const teamMembers = [
     },
   },
   {
-    image:
-      "https://techbedkifaru.be/wp-content/uploads/2020/11/debbieOK2-394x394.jpg",
+    image:debbie,
     name: "Debbie",
     title: "Partner",
     quote:
@@ -31,7 +32,7 @@ const teamMembers = [
     },
   },
   {
-    image: "https://techbedkifaru.be/wp-content/uploads/2020/11/Alexander2.jpg",
+    image: alexander,
     name: "Alexander",
     title: "Junior",
     quote:

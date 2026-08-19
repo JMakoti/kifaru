@@ -4,17 +4,20 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import coastal from "@/assets/amenities/coastal.webp";
 import culture from "@/assets/amenities/ma-cultural.webp";
+import winetasting from "@/assets/images/winetasting.webp";
+import coworking from "@/assets/amenities/coworking.webp";
+import watersport from "@/assets/amenities/strandsport.webp";
 
 const smallCards = [
   {
     title: "Coworking & co-growing spaces",
     desc: "Kifaru is a bold coworking space that takes you out of your comfort zone and on a creative journey",
-    img: "https://techbedkifaru.be/wp-content/uploads/2020/11/WhatsApp-Image-2020-10-09-at-11.50.44-3-1-605x465.jpeg",
+    img: coworking,
   },
   {
     title: "WaterSport",
     desc: "There’s plenty to enjoy on the water! You can go sailing, kitesurfing, and surfing on the North Sea",
-    img: "https://www.villamer.nl/assets/uploads/watersport_cadzand/_900x600_crop_center-center_80_none/2392/strandsport.webp",
+    img: watersport,
   },
   {
     title: "Coastal Retreats",
@@ -24,7 +27,7 @@ const smallCards = [
   {
     title: "African wine tastings & curated events",
     desc: "African tastings of wines and curated cultural experiences designed to delight all senses.",
-    img: "https://techbedkifaru.be/wp-content/uploads/2020/11/scott-warman-rrYF1RfotSM-unsplash-bewerkt.jpg",
+    img: winetasting,
   },
   {
     title: "Cultural Art & Heritage Spaces",
